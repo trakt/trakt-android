@@ -635,7 +635,7 @@
     },
     "/calendars/{target}/shows/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns shows airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`), and send `start_date` and `days` to define the window.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns shows airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`), and send `start_date` and `days` to define the window.\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get shows",
         "tags": [
           "calendars"
@@ -1476,7 +1476,7 @@
     },
     "/calendars/{target}/shows/new/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns new shows airing their first season during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns new shows airing their first season during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get new shows",
         "tags": [
           "calendars"
@@ -2306,7 +2306,7 @@
     },
     "/calendars/{target}/shows/premieres/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns season premieres airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns season premieres airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get season premieres",
         "tags": [
           "calendars"
@@ -3136,7 +3136,7 @@
     },
     "/calendars/{target}/shows/finales/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns show finales airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns show finales airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get finales",
         "tags": [
           "calendars"
@@ -3966,7 +3966,7 @@
     },
     "/calendars/{target}/movies/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns movies with a release date during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns movies with a release date during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get movies",
         "tags": [
           "calendars"
@@ -4464,7 +4464,7 @@
     },
     "/calendars/{target}/streaming/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns all movies with a streaming release date during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns all movies with a streaming release date during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get streaming releases",
         "tags": [
           "calendars"
@@ -4962,7 +4962,7 @@
     },
     "/calendars/{target}/dvd/{start_date}/{days}": {
       "get": {
-        "description": "#### ✨ Extended Info 🎚 Filters\nReturns DVD and physical media releases during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns DVD and physical media releases during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`).\n\nThe `years` filter has no effect on this endpoint: results are already scoped by `start_date` and `days`.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
         "summary": "Get DVD releases",
         "tags": [
           "calendars"
@@ -14320,7 +14320,7 @@
     },
     "/users/syncs/": {
       "get": {
-        "description": "#### 🔒 OAuth Required 📄 Pagination\nPaginated list of the authenticated user's data syncs across **every** connected app (younify, plex, importers). Counts only — the paused/skipped item arrays are served by the dedicated paginated endpoints.\n\nPagination is via `page` / `limit` and the standard `X-Pagination-*` headers. `X-Pagination-Item-Count` is the total sync count (use it for the \"Data has synced N times\" banner). All timestamps are normalized to `.000Z`.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required 📄 Pagination\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nPaginated list of the authenticated user's data syncs across **every** connected app (younify, plex, importers). Counts only — the paused/skipped item arrays are served by the dedicated paginated endpoints.\n\nPagination is via `page` / `limit` and the standard `X-Pagination-*` headers. `X-Pagination-Item-Count` is the total sync count (use it for the \"Data has synced N times\" banner). All timestamps are normalized to `.000Z`.",
         "summary": "Get data syncs",
         "tags": [
           "users",
@@ -14502,7 +14502,7 @@
     },
     "/users/syncs/{type}": {
       "get": {
-        "description": "#### 🔒 OAuth Required 📄 Pagination\nSame as the list of data syncs, filtered by the app that created them. The `type` matches the `kind` returned on each row (`younify`, `plex`, or `import` for anything else, including `application_id 0` importers).\n\nAn unknown `type` returns `404` rather than silently returning everything. Pagination and `X-Pagination-*` headers are identical to the unfiltered list.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required 📄 Pagination\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nSame as the list of data syncs, filtered by the app that created them. The `type` matches the `kind` returned on each row (`younify`, `plex`, or `import` for anything else, including `application_id 0` importers).\n\nAn unknown `type` returns `404` rather than silently returning everything. Pagination and `X-Pagination-*` headers are identical to the unfiltered list.",
         "summary": "Get data syncs by type",
         "tags": [
           "users",
@@ -14706,7 +14706,7 @@
     },
     "/users/syncs/{id}": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nReturns a single sync scoped to the authenticated user — foreign ids return `404`. Same shape as a list row: added counts plus `paused_count` / `skipped_count`, no item arrays.\n\nA numeric segment (`/users/syncs/157`) hits this endpoint; a non-numeric segment (`/users/syncs/younify`) is the filtered list.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nReturns a single sync scoped to the authenticated user — foreign ids return `404`. Same shape as a list row: added counts plus `paused_count` / `skipped_count`, no item arrays.\n\nA numeric segment (`/users/syncs/157`) hits this endpoint; a non-numeric segment (`/users/syncs/younify`) is the filtered list.",
         "summary": "Get a data sync",
         "tags": [
           "users",
@@ -14931,7 +14931,7 @@
     },
     "/users/syncs/{id}/paused": {
       "get": {
-        "description": "#### 🔒 OAuth Required 📄 Pagination\nPaginated item array for a sync, scoped to the authenticated user — foreign ids return `404`. Split out because a single sync can hold thousands of items.\n\nPaused items are always `history` (their `kind` is always `\"history\"`). Each item is the raw stored item (so source-specific fields are preserved) plus a normalized envelope, with timestamps normalized to `.000Z`. Pagination and `X-Pagination-*` headers are identical to the list endpoint.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required 📄 Pagination\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nPaginated item array for a sync, scoped to the authenticated user — foreign ids return `404`. Split out because a single sync can hold thousands of items.\n\nPaused items are always `history` (their `kind` is always `\"history\"`). Each item is the raw stored item (so source-specific fields are preserved) plus a normalized envelope, with timestamps normalized to `.000Z`. Pagination and `X-Pagination-*` headers are identical to the list endpoint.",
         "summary": "Get paused sync items",
         "tags": [
           "users",
@@ -15250,7 +15250,7 @@
     },
     "/users/syncs/{id}/skipped": {
       "get": {
-        "description": "#### 🔒 OAuth Required 📄 Pagination\nPaginated item array for a sync, scoped to the authenticated user — foreign ids return `404`. Split out because a single sync can hold thousands of items.\n\nSkipped items mix `history` and `rating` (see each item's `kind` discriminator). Each item is the raw stored item (so source-specific fields are preserved) plus a normalized envelope, with timestamps normalized to `.000Z`. Pagination and `X-Pagination-*` headers are identical to the list endpoint.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required 📄 Pagination\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nPaginated item array for a sync, scoped to the authenticated user — foreign ids return `404`. Split out because a single sync can hold thousands of items.\n\nSkipped items mix `history` and `rating` (see each item's `kind` discriminator). Each item is the raw stored item (so source-specific fields are preserved) plus a normalized envelope, with timestamps normalized to `.000Z`. Pagination and `X-Pagination-*` headers are identical to the list endpoint.",
         "summary": "Get skipped sync items",
         "tags": [
           "users",
@@ -15569,7 +15569,7 @@
     },
     "/users/settings/plex/": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nReturns the authenticated user's Plex connection status, real-time scrobbler webhook info, server/library/home-user selection, and both toggle sets (batch `sync` + real-time `scrobbler`). Read-only, though the VIP webhook URL lazily mints its tokens.\n\n`connection.connected` reflects that a Plex authorization exists; for a live auth check call `servers` and watch for a `bad_auth` error. `webhook.url` is null unless the user is VIP. `sync.configured` indicates the initial sync has been set up. Toggles are booleans (unset ⇒ `false`); sync toggles include `watching`/`watchlist`, scrobbler toggles do not carry `watchlist`. All timestamps are normalized to `.000Z`.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `401` response even with a valid OAuth token.\n\nReturns the authenticated user's Plex connection status, real-time scrobbler webhook info, server/library/home-user selection, and both toggle sets (batch `sync` + real-time `scrobbler`). Read-only, though the VIP webhook URL lazily mints its tokens.\n\n`connection.connected` reflects that a Plex authorization exists; it is not a live check against Plex. `webhook.url` is null unless the user is VIP. `sync.configured` indicates the initial sync has been set up. Toggles are booleans (unset ⇒ `false`); sync toggles include `watching`/`watchlist`, scrobbler toggles do not carry `watchlist`. All timestamps are normalized to `.000Z`.",
         "summary": "Get Plex settings",
         "tags": [
           "users",
@@ -15896,7 +15896,7 @@
         "operationId": "getUsersPlexSettings"
       },
       "put": {
-        "description": "#### 🔒 OAuth Required\nWrites the Plex toggles, selection, and home users. Mirrors the GET shape so it round-trips; omitted toggle keys are left unchanged (no clobbering), and `library_ids` is sent structured and rebuilt into the `server|uuid` storage server-side.\n\nThe optional `trigger_sync` block is the only thing that touches sync timestamps or enqueues work: any `*_all_data: true` resets the affected cursors and enqueues a full sync per selected server; present-but-all-false seeds every cursor to \"now\" (the first sync skips old history); absent writes settings without syncing.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `401` response even with a valid OAuth token.\n\nWrites the Plex toggles, selection, and home users. Mirrors the GET shape so it round-trips; omitted toggle keys are left unchanged (no clobbering), and `library_ids` is sent structured and rebuilt into the `server|uuid` storage server-side.\n\nThe optional `trigger_sync` block is the only thing that touches sync timestamps or enqueues work: any `*_all_data: true` resets the affected cursors and enqueues a full sync per selected server; present-but-all-false seeds every cursor to \"now\" (the first sync skips old history); absent writes settings without syncing.",
         "summary": "Update Plex settings",
         "tags": [
           "users",
@@ -16127,75 +16127,8 @@
       }
     },
     "/users/settings/plex/connect": {
-      "post": {
-        "description": "#### 🔒 OAuth Required\nMints a Plex web-auth URL for the client to open. Plex uses a 2-step PIN OAuth; the PIN is stashed server-side under an opaque `state` token and Plex is forwarded to a website return endpoint that exchanges it and redirects back to your `return_url` with `?plex_status=connected|error`.\n\n`return_url` is validated against the trakt-owned allowlist (`trakt://`, `http(s)://localhost`, `https://*.trakt.tv`); a `400` is returned otherwise.",
-        "summary": "Connect Plex",
-        "tags": [
-          "users",
-          "plex"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "return_url": {
-                    "type": "string",
-                    "description": "Where to return the user once the Plex web-auth flow completes. Must be a trakt-owned destination (`trakt://…`, `http(s)://localhost`, or `https://*.trakt.tv`); the flow appends `?plex_status=connected|error`."
-                  }
-                },
-                "required": [
-                  "return_url"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "description": "The Plex web-auth URL for the client to open."
-                    }
-                  },
-                  "required": [
-                    "url"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "postUsersPlexConnect"
-      },
       "delete": {
-        "description": "#### 🔒 OAuth Required\nDisconnects Plex: destroys the authorization, clears server/library/user selection and sync state, and busts the connection caches.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `401` response even with a valid OAuth token.\n\nDisconnects Plex: destroys the authorization, clears server/library/user selection and sync state, and busts the connection caches.",
         "summary": "Disconnect Plex",
         "tags": [
           "users",
@@ -16222,501 +16155,6 @@
           }
         ],
         "operationId": "deleteUsersPlexDisconnect"
-      }
-    },
-    "/users/settings/plex/servers": {
-      "get": {
-        "description": "#### 🔒 OAuth Required\nLists the authenticated user's Plex servers. Network-bound — probes each server's remote URL. On a Plex/auth failure it returns the shared `{ error_code, message, guidance }` envelope: `bad_auth` (401), `plex_timeout` (504), `plex_bad_response`/`plex_generic_error` (502).",
-        "summary": "Get Plex servers",
-        "tags": [
-          "users",
-          "plex"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "servers": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "connection_count": {
-                            "type": "integer"
-                          },
-                          "connection_timeout": {
-                            "type": "integer",
-                            "description": "Worst-case probe timeout across the server connections, in seconds."
-                          },
-                          "ports": {
-                            "type": "array",
-                            "items": {
-                              "type": "integer"
-                            }
-                          },
-                          "owned": {
-                            "type": "boolean"
-                          },
-                          "url": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "The resolved remote URL, or null when the server is unreachable."
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name",
-                          "connection_count",
-                          "connection_timeout",
-                          "ports",
-                          "owned",
-                          "url"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "servers"
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "401",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "502",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "504",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "getUsersPlexServers"
-      }
-    },
-    "/users/settings/plex/servers/{server_id}": {
-      "get": {
-        "description": "#### 🔒 OAuth Required\nReturns the home accounts (owned servers only) and syncable libraries for a Plex server, with the user's current library selection flagged. Network-bound.\n\nErrors use the shared `{ error_code, message, guidance }` envelope: `missing_token`/`bad_auth` (401), `missing_server_id`/`plex_unprocessable` (422), `invalid_server_id`/`plex_not_found` (404), `invalid_server_url` (503), `plex_timeout` (504), `plex_bad_response`/`plex_generic_error` (502).",
-        "summary": "Get Plex server accounts and libraries",
-        "tags": [
-          "users",
-          "plex"
-        ],
-        "parameters": [
-          {
-            "name": "server_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The Plex server machine identifier."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "accounts": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                          },
-                          "name": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name"
-                        ]
-                      },
-                      "description": "Home accounts on the server; empty for servers the user does not own."
-                    },
-                    "libraries": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                          },
-                          "uuid": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "agent": {
-                            "type": "string"
-                          },
-                          "scanner": {
-                            "type": "string"
-                          },
-                          "selected": {
-                            "type": "boolean",
-                            "description": "Whether this library is in the user's current sync selection."
-                          },
-                          "url": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "uuid",
-                          "type",
-                          "title",
-                          "agent",
-                          "scanner",
-                          "selected",
-                          "url"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "accounts",
-                    "libraries"
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "401",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "422",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "502",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "503",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "504",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error_code": {
-                      "type": "string",
-                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "guidance": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error_code",
-                    "message",
-                    "guidance"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "getUsersPlexServerAccounts"
-      }
-    },
-    "/users/settings/plex/sync": {
-      "post": {
-        "description": "#### 🔒 OAuth Required\nEnqueues a Plex sync immediately. With `server_id`, syncs that server; without it, syncs every server in the saved selection. `all_data: true` re-pulls full history, otherwise an incremental sync. A `422` is returned when there is no server to sync.",
-        "summary": "Sync Plex now",
-        "tags": [
-          "users",
-          "plex"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "server_id": {
-                    "type": "string",
-                    "description": "Sync this server; omit to sync every server in the saved selection."
-                  },
-                  "all_data": {
-                    "type": "boolean",
-                    "description": "When true, re-pulls full history; otherwise an incremental sync."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "201",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "422",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "postUsersPlexSync"
       }
     },
     "/users/{id}/": {
@@ -18354,10 +17792,6 @@
                       "type": "integer",
                       "nullable": true
                     },
-                    "list_comments": {
-                      "type": "integer",
-                      "nullable": true
-                    },
                     "total_minutes": {
                       "type": "integer",
                       "nullable": true
@@ -19518,158 +18952,6 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_include_unrated",
-            "in": "query",
-            "description": "Also include titles without parental guide ratings.",
-            "schema": {
-              "type": "boolean",
               "nullable": true
             }
           },
@@ -49621,7 +48903,7 @@
     },
     "/users/{id}/watchlist/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for the watchlist. By default, the comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for the watchlist. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, and most `replies`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all watchlist comments",
         "tags": [
           "users",
@@ -59140,7 +58422,7 @@
     },
     "/users/{id}/favorites/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for the favorites. By default, the comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for the favorites. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, and most `replies`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all favorites comments",
         "tags": [
           "users",
@@ -69663,7 +68945,7 @@
     },
     "/users/{id}/lists/{list_id}/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a list. By default, the comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a list. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, and most `replies`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all list comments",
         "tags": [
           "users",
@@ -101699,7 +100981,7 @@
     },
     "/sync/collection/minimal/movies": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nReturns the authenticated user movie collection in a minimal format optimized for syncing local state.",
+        "description": "#### 🔒 OAuth Required\nReturns the authenticated user movie collection in a minimal format optimized for syncing local state.\n\nEach value is the `collected_at` datetime. Use `available_on` to keep only `digital` items (synced from a connected media server) or `other` items. When `available_on` is sent, each value becomes `collected_at|source`, where `source` is `plex` or `jellyfin` for synced items and empty otherwise, for example `2002-07-19T21:00:00.000Z|`.",
         "summary": "Get minimal movie collection",
         "tags": [
           "sync",
@@ -101724,7 +101006,8 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "When the item was collected, as an ISO 8601 datetime. When `available_on` is sent, the value is `collected_at|source`: `source` is `plex` or `jellyfin` for items synced from a media server, and empty for everything else (for example `2002-07-19T21:00:00.000Z|`)."
                   }
                 }
               }
@@ -101742,7 +101025,7 @@
     },
     "/sync/collection/minimal/shows": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nReturns the authenticated user show collection in a minimal format optimized for syncing local state.",
+        "description": "#### 🔒 OAuth Required\nReturns the authenticated user show collection in a minimal format optimized for syncing local state.\n\nEach episode value is the `collected_at` datetime. Use `available_on` to keep only `digital` items (synced from a connected media server) or `other` items. When `available_on` is sent, each value becomes `collected_at|source`, where `source` is `plex` or `jellyfin` for synced items and empty otherwise, for example `2002-07-19T21:00:00.000Z|`.",
         "summary": "Get minimal show collection",
         "tags": [
           "sync",
@@ -101771,7 +101054,8 @@
                     "additionalProperties": {
                       "type": "object",
                       "additionalProperties": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "When the item was collected, as an ISO 8601 datetime. When `available_on` is sent, the value is `collected_at|source`: `source` is `plex` or `jellyfin` for items synced from a media server, and empty for everything else (for example `2002-07-19T21:00:00.000Z|`)."
                       }
                     }
                   }
@@ -101791,7 +101075,7 @@
     },
     "/sync/collection/minimal/episodes": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nReturns the authenticated user episode collection in a minimal format optimized for syncing local state.",
+        "description": "#### 🔒 OAuth Required\nReturns the authenticated user episode collection in a minimal format optimized for syncing local state.\n\nEach value is the `collected_at` datetime. Use `available_on` to keep only `digital` items (synced from a connected media server) or `other` items. When `available_on` is sent, each value becomes `collected_at|source`, where `source` is `plex` or `jellyfin` for synced items and empty otherwise, for example `2002-07-19T21:00:00.000Z|`.",
         "summary": "Get minimal episode collection",
         "tags": [
           "sync",
@@ -101816,7 +101100,8 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "When the item was collected, as an ISO 8601 datetime. When `available_on` is sent, the value is `collected_at|source`: `source` is `plex` or `jellyfin` for items synced from a media server, and empty for everything else (for example `2002-07-19T21:00:00.000Z|`)."
                   }
                 }
               }
@@ -109609,7 +108894,7 @@
     },
     "/movies/{id}/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a movie. By default, comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a movie. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, most `replies`, `highest` and `lowest` rating from the comment author, and the author's most `plays`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all movie comments",
         "tags": [
           "movies"
@@ -113489,491 +112774,6 @@
         "operationId": "getMoviesAnticipated"
       }
     },
-    "/movies/hot": {
-      "get": {
-        "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\nReturns movies that are currently hot on Trakt. Results can be filtered by media fields or ignored user state.",
-        "summary": "Get hot movies",
-        "tags": [
-          "movies"
-        ],
-        "parameters": [
-          {
-            "name": "extended",
-            "in": "query",
-            "description": "Extended information to include in the response.",
-            "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_include_unrated",
-            "in": "query",
-            "description": "Also include titles without parental guide ratings.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The page number to retrieve",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watched",
-            "in": "query",
-            "description": "Ignore watched items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_collected",
-            "in": "query",
-            "description": "Ignore collected items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watchlisted",
-            "in": "query",
-            "description": "Ignore watchlisted items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "list_count": {
-                        "type": "integer"
-                      },
-                      "movie": {
-                        "type": "object",
-                        "properties": {
-                          "title": {
-                            "type": "string"
-                          },
-                          "year": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "slug": {
-                                "type": "string"
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "plex": {
-                                "type": "object",
-                                "properties": {
-                                  "guid": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  }
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          },
-                          "images": {
-                            "type": "object",
-                            "properties": {
-                              "fanart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "logo": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "clearart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "banner": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "thumb": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "required": [
-                              "fanart",
-                              "poster",
-                              "logo",
-                              "clearart",
-                              "banner",
-                              "thumb"
-                            ],
-                            "nullable": true
-                          },
-                          "tagline": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "overview": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "released": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "runtime": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "country": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "status": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "rating": {
-                            "type": "number",
-                            "format": "float",
-                            "nullable": true
-                          },
-                          "votes": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "comment_count": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "trailer": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "homepage": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "updated_at": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "language": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "languages": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "available_translations": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "genres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "subgenres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "certification": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "original_title": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "after_credits": {
-                            "type": "boolean",
-                            "nullable": true
-                          },
-                          "during_credits": {
-                            "type": "boolean",
-                            "nullable": true
-                          },
-                          "colors": {
-                            "type": "object",
-                            "properties": {
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          },
-                          "social_ids": {
-                            "type": "object",
-                            "properties": {
-                              "twitter": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "facebook": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "instagram": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "wikipedia": {
-                                "type": "string",
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          }
-                        },
-                        "required": [
-                          "title",
-                          "ids"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "list_count",
-                      "movie"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "getMoviesHot"
-      }
-    },
     "/movies/popular": {
       "get": {
         "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\n\nReturns the most popular movies. Popularity is calculated using the rating percentage and the number of ratings.",
@@ -114454,508 +113254,6 @@
           }
         ],
         "operationId": "getMoviesPopular"
-      }
-    },
-    "/movies/streaming/{period}": {
-      "get": {
-        "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\nReturns movies recently available on streaming services for the requested `period`. Results can be filtered by media fields or ignored user state.",
-        "summary": "Get streaming movies",
-        "tags": [
-          "movies"
-        ],
-        "parameters": [
-          {
-            "name": "period",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "daily",
-                "weekly",
-                "monthly"
-              ]
-            }
-          },
-          {
-            "name": "extended",
-            "in": "query",
-            "description": "Extended information to include in the response.",
-            "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_include_unrated",
-            "in": "query",
-            "description": "Also include titles without parental guide ratings.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The page number to retrieve",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watched",
-            "in": "query",
-            "description": "Ignore watched items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_collected",
-            "in": "query",
-            "description": "Ignore collected items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watchlisted",
-            "in": "query",
-            "description": "Ignore watchlisted items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "rank": {
-                        "type": "integer"
-                      },
-                      "delta": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "movie": {
-                        "type": "object",
-                        "properties": {
-                          "title": {
-                            "type": "string"
-                          },
-                          "year": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "slug": {
-                                "type": "string"
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "plex": {
-                                "type": "object",
-                                "properties": {
-                                  "guid": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  }
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          },
-                          "images": {
-                            "type": "object",
-                            "properties": {
-                              "fanart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "logo": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "clearart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "banner": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "thumb": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "required": [
-                              "fanart",
-                              "poster",
-                              "logo",
-                              "clearart",
-                              "banner",
-                              "thumb"
-                            ],
-                            "nullable": true
-                          },
-                          "tagline": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "overview": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "released": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "runtime": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "country": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "status": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "rating": {
-                            "type": "number",
-                            "format": "float",
-                            "nullable": true
-                          },
-                          "votes": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "comment_count": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "trailer": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "homepage": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "updated_at": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "language": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "languages": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "available_translations": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "genres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "subgenres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "certification": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "original_title": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "after_credits": {
-                            "type": "boolean",
-                            "nullable": true
-                          },
-                          "during_credits": {
-                            "type": "boolean",
-                            "nullable": true
-                          },
-                          "colors": {
-                            "type": "object",
-                            "properties": {
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          },
-                          "social_ids": {
-                            "type": "object",
-                            "properties": {
-                              "twitter": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "facebook": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "instagram": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "wikipedia": {
-                                "type": "string",
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          }
-                        },
-                        "required": [
-                          "title",
-                          "ids"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "rank",
-                      "movie"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "getMoviesStreaming"
       }
     },
     "/notes": {
@@ -120341,7 +118639,7 @@
     },
     "/shows/{id}/seasons/{season}/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a season. By default, comments are sorted by most `likes`.",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a season. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, most `replies`, `highest` and `lowest` rating from the comment author, and the author's most `plays`.",
         "summary": "Get all season comments",
         "tags": [
           "shows",
@@ -122967,7 +121265,7 @@
     },
     "/shows/{id}/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a show. By default, comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, highest `watched` percentage, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a show. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, most `replies`, `highest` and `lowest` rating from the comment author, and the author's most `plays`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all show comments",
         "tags": [
           "shows"
@@ -124416,7 +122714,7 @@
     },
     "/shows/{id}/seasons/{season}/episodes/{episode}/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for an episode. By default, comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for an episode. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, most `replies`, `highest` and `lowest` rating from the comment author, and the author's most `plays`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all episode comments",
         "tags": [
           "shows",
@@ -130461,526 +128759,6 @@
         "operationId": "getShowsAnticipated"
       }
     },
-    "/shows/hot": {
-      "get": {
-        "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\nReturns shows that are currently hot on Trakt. Results can be filtered by media fields or ignored user state.",
-        "summary": "Get hot shows",
-        "tags": [
-          "shows"
-        ],
-        "parameters": [
-          {
-            "name": "extended",
-            "in": "query",
-            "description": "Extended information to include in the response.",
-            "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_include_unrated",
-            "in": "query",
-            "description": "Also include titles without parental guide ratings.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The page number to retrieve",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watched",
-            "in": "query",
-            "description": "Ignore watched items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_collected",
-            "in": "query",
-            "description": "Ignore collected items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watchlisted",
-            "in": "query",
-            "description": "Ignore watchlisted items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "list_count": {
-                        "type": "integer"
-                      },
-                      "show": {
-                        "type": "object",
-                        "properties": {
-                          "title": {
-                            "type": "string"
-                          },
-                          "year": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "tvdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "plex": {
-                                "type": "object",
-                                "properties": {
-                                  "guid": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  }
-                                },
-                                "nullable": true
-                              },
-                              "slug": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          },
-                          "images": {
-                            "type": "object",
-                            "properties": {
-                              "fanart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "logo": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "clearart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "banner": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "thumb": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "required": [
-                              "fanart",
-                              "poster",
-                              "logo",
-                              "clearart",
-                              "banner",
-                              "thumb"
-                            ],
-                            "nullable": true
-                          },
-                          "aired_episodes": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "tagline": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "overview": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "first_aired": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "last_aired": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "airs": {
-                            "type": "object",
-                            "properties": {
-                              "day": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "time": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "timezone": {
-                                "type": "string",
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          },
-                          "runtime": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "total_runtime": {
-                            "type": "integer",
-                            "nullable": true,
-                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
-                          },
-                          "certification": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "network": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "country": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "status": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "ending": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "rating": {
-                            "type": "number",
-                            "format": "float",
-                            "nullable": true
-                          },
-                          "votes": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "comment_count": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "trailer": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "homepage": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "updated_at": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "language": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "languages": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "available_translations": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "genres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "subgenres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "original_title": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "colors": {
-                            "type": "object",
-                            "properties": {
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          },
-                          "social_ids": {
-                            "type": "object",
-                            "properties": {
-                              "twitter": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "facebook": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "instagram": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "wikipedia": {
-                                "type": "string",
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          }
-                        },
-                        "required": [
-                          "title",
-                          "ids"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "list_count",
-                      "show"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "getShowsHot"
-      }
-    },
     "/shows/popular": {
       "get": {
         "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\n\nReturns the most popular shows. Popularity is calculated using the rating percentage and the number of ratings.",
@@ -131496,543 +129274,6 @@
           }
         ],
         "operationId": "getShowsPopular"
-      }
-    },
-    "/shows/streaming/{period}": {
-      "get": {
-        "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\nReturns shows recently available on streaming services for the requested `period`. Results can be filtered by media fields or ignored user state.",
-        "summary": "Get streaming shows",
-        "tags": [
-          "shows"
-        ],
-        "parameters": [
-          {
-            "name": "period",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "daily",
-                "weekly",
-                "monthly"
-              ]
-            }
-          },
-          {
-            "name": "extended",
-            "in": "query",
-            "description": "Extended information to include in the response.",
-            "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "parental_include_unrated",
-            "in": "query",
-            "description": "Also include titles without parental guide ratings.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The page number to retrieve",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
-            "schema": {
-              "type": "integer",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watched",
-            "in": "query",
-            "description": "Ignore watched items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_collected",
-            "in": "query",
-            "description": "Ignore collected items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_watchlisted",
-            "in": "query",
-            "description": "Ignore watchlisted items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "rank": {
-                        "type": "integer"
-                      },
-                      "delta": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "show": {
-                        "type": "object",
-                        "properties": {
-                          "title": {
-                            "type": "string"
-                          },
-                          "year": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "tvdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "plex": {
-                                "type": "object",
-                                "properties": {
-                                  "guid": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  }
-                                },
-                                "nullable": true
-                              },
-                              "slug": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          },
-                          "images": {
-                            "type": "object",
-                            "properties": {
-                              "fanart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "logo": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "clearart": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "banner": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "thumb": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "required": [
-                              "fanart",
-                              "poster",
-                              "logo",
-                              "clearart",
-                              "banner",
-                              "thumb"
-                            ],
-                            "nullable": true
-                          },
-                          "aired_episodes": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "tagline": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "overview": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "first_aired": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "last_aired": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "airs": {
-                            "type": "object",
-                            "properties": {
-                              "day": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "time": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "timezone": {
-                                "type": "string",
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          },
-                          "runtime": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "total_runtime": {
-                            "type": "integer",
-                            "nullable": true,
-                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
-                          },
-                          "certification": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "network": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "country": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "status": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "ending": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "rating": {
-                            "type": "number",
-                            "format": "float",
-                            "nullable": true
-                          },
-                          "votes": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "comment_count": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "trailer": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "homepage": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "updated_at": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "language": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "languages": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "available_translations": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "genres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "subgenres": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "nullable": true
-                          },
-                          "original_title": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "colors": {
-                            "type": "object",
-                            "properties": {
-                              "poster": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          },
-                          "social_ids": {
-                            "type": "object",
-                            "properties": {
-                              "twitter": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "facebook": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "instagram": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "wikipedia": {
-                                "type": "string",
-                                "nullable": true
-                              }
-                            },
-                            "nullable": true
-                          }
-                        },
-                        "required": [
-                          "title",
-                          "ids"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "rank",
-                      "show"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "traktAPI": [],
-            "traktOAuth": []
-          },
-          {
-            "traktAPI": []
-          }
-        ],
-        "operationId": "getShowsStreaming"
       }
     },
     "/search/{type}": {
@@ -147512,7 +144753,7 @@
     },
     "/lists/{id}/comments/{sort}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a list. By default, comments are sorted by most `likes`. Other sorting options include `likes_30`, most `replies`, `replies_30`, most `plays`, highest `rating`, and `added` date.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination 😁 Emojis\n\nReturns all top level comments for a list. By default, comments are sorted by `newest` first. Other sorting options include `oldest`, most `likes`, and most `replies`.\n\n> ### Note\n> _If you send OAuth, comments from blocked users will be automatically filtered out._",
         "summary": "Get all list comments",
         "tags": [
           "lists"
@@ -147532,9 +144773,15 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
-            },
-            "description": "Comment sort option."
+              "type": "string",
+              "enum": [
+                "newest",
+                "oldest",
+                "likes",
+                "replies"
+              ],
+              "nullable": true
+            }
           },
           {
             "name": "extended",
@@ -159013,7 +156260,7 @@
     },
     "/younify/connections": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nLists every connectable streaming service with the current user's connection status merged in, so a settings grid can render each tile in one pass. Read-only — never creates a remote younify user.\n\n> ### IMPORTANT\n> _**Array order is significant.** Clients must preserve the response order when rendering the grid; the list is returned in the intended display order._\n\n`vip: false` is the free tier. `connectable` reflects whether the current user may connect the service on their plan. `connected` plus `active` indicate a healthy link (`active: false` is a broken link). `profile` and `last_synced_at` are null when not connected, and `last_synced_at` is normalized to `.000Z`.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nLists every connectable streaming service with the current user's connection status merged in, so a settings grid can render each tile in one pass. Read-only — never creates a remote younify user.\n\n> ### IMPORTANT\n> _**Array order is significant.** Clients must preserve the response order when rendering the grid; the list is returned in the intended display order._\n\n`vip: false` is the free tier. `connectable` reflects whether the current user may connect the service on their plan. `connected` plus `active` indicate a healthy link (`active: false` is a broken link). `profile` and `last_synced_at` are null when not connected, and `last_synced_at` is normalized to `.000Z`.",
         "summary": "Get streaming connections",
         "tags": [
           "younify"
@@ -159107,7 +156354,7 @@
     },
     "/younify/connect": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nMints a signed younify web-auth URL for the client to open. Accepts the client's own `return_url` (deep link / universal link), validated against trakt-owned destinations only (`trakt://…` or `https://*.trakt.tv`).\n\nA `422` is returned when the service is not connectable on the user's plan, and a `400` when the `return_url` is missing/invalid or no URL could be minted.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nMints a signed younify web-auth URL for the client to open. Accepts the client's own `return_url` (deep link / universal link), validated against trakt-owned destinations only (`trakt://…` or `https://*.trakt.tv`).\n\nA `422` is returned when the service is not connectable on the user's plan, and a `400` when the `return_url` is missing/invalid or no URL could be minted.",
         "summary": "Create a streaming connection",
         "tags": [
           "younify"
@@ -159185,7 +156432,7 @@
     },
     "/younify/users/refresh": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nQueue a re-sync of the connected streaming service named by `service_id` in the body. Free accounts only sync the service within their limit.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nQueue a re-sync of the connected streaming service named by `service_id` in the body. Free accounts only sync the service within their limit.",
         "summary": "Refresh a streaming service (service in the body)",
         "tags": [
           "younify"
@@ -159235,7 +156482,7 @@
     },
     "/younify/users/refresh/{service_id}": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nQueue / force a re-sync of a connected streaming service for the authenticated user.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nQueue / force a re-sync of a connected streaming service for the authenticated user.",
         "summary": "Refresh a streaming service",
         "tags": [
           "younify"
@@ -159288,7 +156535,7 @@
     },
     "/younify/users/refresh/{service_id}/{all_data}": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nQueue / force a re-sync of a connected streaming service for the authenticated user. An `all_data` segment of `true` forces a full re-sync of all data rather than an incremental one.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nQueue / force a re-sync of a connected streaming service for the authenticated user. An `all_data` segment of `true` forces a full re-sync of all data rather than an incremental one.",
         "summary": "Refresh a streaming service (full re-sync)",
         "tags": [
           "younify"
@@ -159354,7 +156601,7 @@
     },
     "/younify/users/services/{service_id}": {
       "delete": {
-        "description": "#### 🔒 OAuth Required\nUnlink a streaming service from the authenticated user.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response even with a valid OAuth token.\n\nUnlink a streaming service from the authenticated user.",
         "summary": "Unlink a streaming service",
         "tags": [
           "younify"
