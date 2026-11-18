@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -29,6 +30,10 @@ internal class SettingsSegmentScope {
 internal fun SettingsSegmentedGroup(
     modifier: Modifier = Modifier,
     title: String? = null,
+    itemPadding: PaddingValues = PaddingValues(
+        horizontal = 16.dp,
+        vertical = 13.dp,
+    ),
     content: SettingsSegmentScope.() -> Unit,
 ) {
     val items = SettingsSegmentScope().apply(content).items
@@ -61,7 +66,7 @@ internal fun SettingsSegmentedGroup(
                             clip = true,
                         )
                         .background(TraktTheme.colors.panelCardContainer)
-                        .padding(horizontal = 16.dp, vertical = 13.dp),
+                        .padding(itemPadding),
                 ) {
                     item()
                 }

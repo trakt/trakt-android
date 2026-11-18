@@ -21,5 +21,6 @@ class FirebaseConfig {
         const val PLEX_PLAY_ENABLED = "plex_play_enabled"
         const val SEASONAL_THEME = "mobile_seasonal_theme"
         const val STAR_WARS_SABER = "star_wars_saber"
+        const val PREVIEW_FEATURE_PREFIX = "preview_feature_"
     }
 }

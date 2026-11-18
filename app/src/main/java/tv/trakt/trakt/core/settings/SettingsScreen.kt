@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,7 +45,6 @@ import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.settings.features.avatar.AvatarCropSheet
 import tv.trakt.trakt.core.settings.model.SettingsCategory
@@ -163,14 +163,40 @@ private fun SettingsScreenContent(
             )
         }
 
-        SettingsSegmentedGroup {
-            SettingsCategory.entries.forEach { category ->
+        SettingsSegmentedGroup(
+            itemPadding = PaddingValues(
+                horizontal = 16.dp,
+                vertical = 10.dp,
+            ),
+        ) {
+            SettingsCategory.entries
+                .filter { it != SettingsCategory.PreviewFeatures }
+                .forEach { category ->
+                    item {
+                        SettingsCategoryField(
+                            category = category,
+                            vip = state.user?.isAnyVip == true,
+                            onClick = {
+                                onCategoryClick(category)
+                            },
+                        )
+                    }
+                }
+        }
+
+        if (state.previewFeaturesVisible) {
+            SettingsSegmentedGroup(
+                itemPadding = PaddingValues(
+                    horizontal = 16.dp,
+                    vertical = 10.dp,
+                ),
+            ) {
                 item {
                     SettingsCategoryField(
-                        category = category,
-                        vip = state.user?.isAnyVip == true,
+                        category = SettingsCategory.PreviewFeatures,
+                        attention = state.previewFeaturesUnseen,
                         onClick = {
-                            onCategoryClick(category)
+                            onCategoryClick(SettingsCategory.PreviewFeatures)
                         },
                     )
                 }
@@ -404,6 +430,7 @@ private fun PreviewDirector() {
                     isVip = true,
                     isDirector = true,
                 ),
+                previewFeaturesVisible = true,
             ),
         )
     }

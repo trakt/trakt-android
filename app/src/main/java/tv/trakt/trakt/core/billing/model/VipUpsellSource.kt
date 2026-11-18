@@ -19,4 +19,5 @@ internal enum class VipUpsellSource(
     ConnectedApps("connected-apps"),
     Onboarding("onboarding"),
     VipLimit("vip-limit"),
+    PreviewFeatures("preview-features"),
 }

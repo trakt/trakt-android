@@ -925,6 +925,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
             onNavigateBlockedUsers = { navigateToBlockedUsers() },
             onNavigateHistoryAnalysis = { navigateToHistoryAnalysis() },
             onNavigateUsage = { navigateToUsage() },
+            onNavigateVip = { navigateToBilling(source = it) },
             onNavigateBack = { popBackStack() },
         )
 

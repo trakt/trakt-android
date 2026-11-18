@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.settings.SECTION_ITEM_HEIGHT_DP
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.AttentionIcon
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val MAX_SUMMARY_SETTINGS = 3
@@ -33,6 +34,7 @@ internal fun SettingsCategoryField(
     category: SettingsCategory,
     modifier: Modifier = Modifier,
     vip: Boolean = false,
+    attention: Boolean = false,
     enabled: Boolean = true,
     onClick: () -> Unit = { },
 ) {
@@ -51,18 +53,25 @@ internal fun SettingsCategoryField(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(24.dp),
         ) {
-            Icon(
-                painter = painterResource(category.icon),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(
-                    when (category) {
-                        SettingsCategory.Account -> 23.dp
-                        SettingsCategory.Support -> 20.dp
-                        else -> 22.dp
-                    },
-                ),
-            )
+            val iconSize = when (category) {
+                SettingsCategory.Account -> 23.dp
+                SettingsCategory.Support -> 20.dp
+                else -> 22.dp
+            }
+
+            if (attention) {
+                AttentionIcon(
+                    painter = painterResource(category.icon),
+                    size = iconSize,
+                )
+            } else {
+                Icon(
+                    painter = painterResource(category.icon),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(iconSize),
+                )
+            }
         }
 
         Column(
@@ -104,6 +113,21 @@ internal fun SettingsCategoryField(
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier.size(20.dp),
         )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewAttention() {
+    TraktThemePreview {
+        SettingsSegmentedGroup {
+            item {
+                SettingsCategoryField(
+                    category = SettingsCategory.PreviewFeatures,
+                    attention = true,
+                )
+            }
+        }
     }
 }
 

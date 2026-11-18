@@ -25,6 +25,7 @@ fun SettingsSwitchField(
     text: String,
     modifier: Modifier = Modifier,
     description: String? = null,
+    descriptionMaxLines: Int = 3,
     checked: Boolean = false,
     enabled: Boolean = true,
     onClick: () -> Unit = { },
@@ -55,7 +56,7 @@ fun SettingsSwitchField(
                     style = TraktTheme.typography.paragraph.copy(
                         fontSize = 11.sp,
                     ),
-                    maxLines = 3,
+                    maxLines = descriptionMaxLines,
                     overflow = Ellipsis,
                 )
             }

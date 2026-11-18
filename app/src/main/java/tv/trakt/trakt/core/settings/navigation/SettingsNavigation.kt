@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.settings.SettingsScreen
 import tv.trakt.trakt.core.settings.categories.account.AccountSettingsScreen
 import tv.trakt.trakt.core.settings.categories.advanced.AdvancedSettingsScreen
@@ -16,6 +17,7 @@ import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsScreen
 import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsViewModel
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersScreen
 import tv.trakt.trakt.core.settings.features.history.HistoryAnalysisScreen
+import tv.trakt.trakt.core.settings.features.preview.PreviewFeaturesScreen
 import tv.trakt.trakt.core.settings.features.usage.UsageScreen
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 
@@ -41,6 +43,9 @@ internal data object NotificationSettingsDestination
 internal data object AdvancedSettingsDestination
 
 @Serializable
+internal data object PreviewFeaturesDestination
+
+@Serializable
 internal data object CommunitySettingsDestination
 
 @Serializable
@@ -59,6 +64,7 @@ internal fun NavGraphBuilder.settingsScreen(
     onNavigateBlockedUsers: () -> Unit,
     onNavigateHistoryAnalysis: () -> Unit,
     onNavigateUsage: () -> Unit,
+    onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SettingsDestination> {
@@ -116,6 +122,14 @@ internal fun NavGraphBuilder.settingsScreen(
         )
     }
 
+    composable<PreviewFeaturesDestination> {
+        PreviewFeaturesScreen(
+            viewModel = koinViewModel(),
+            onNavigateVip = { onNavigateVip(VipUpsellSource.PreviewFeatures) },
+            onNavigateBack = onNavigateBack,
+        )
+    }
+
     composable<CommunitySettingsDestination> {
         CommunitySettingsScreen(
             viewModel = koinViewModel(),
@@ -157,6 +171,7 @@ internal fun NavController.navigateToSettingsCategory(category: SettingsCategory
         SettingsCategory.Streaming -> StreamingSettingsDestination
         SettingsCategory.Notifications -> NotificationSettingsDestination
         SettingsCategory.Advanced -> AdvancedSettingsDestination
+        SettingsCategory.PreviewFeatures -> PreviewFeaturesDestination
         SettingsCategory.Support -> CommunitySettingsDestination
     }
     navigate(route = route)

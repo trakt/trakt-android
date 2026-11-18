@@ -46,6 +46,7 @@ import tv.trakt.trakt.core.checkin.di.checkInModule
 import tv.trakt.trakt.core.comments.di.commentsDataModule
 import tv.trakt.trakt.core.comments.di.commentsModule
 import tv.trakt.trakt.core.discover.di.discoverModule
+import tv.trakt.trakt.core.featureflags.di.featureFlagsModule
 import tv.trakt.trakt.core.filters.di.filtersModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
@@ -200,6 +201,7 @@ internal class TraktApplication : Application() {
                 notificationsModule,
                 settingsModule,
                 settingsDataModule,
+                featureFlagsModule,
                 billingModule,
                 checkInModule,
                 inAppReviewModule,

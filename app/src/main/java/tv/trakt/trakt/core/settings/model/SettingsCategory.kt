@@ -35,6 +35,10 @@ internal enum class SettingsCategory(
         title = R.string.link_text_advanced_settings,
         icon = R.drawable.ic_filters_advanced,
     ),
+    PreviewFeatures(
+        title = R.string.header_preview_features,
+        icon = R.drawable.ic_rocket,
+    ),
     Support(
         title = R.string.link_text_support,
         icon = R.drawable.ic_person_double,
