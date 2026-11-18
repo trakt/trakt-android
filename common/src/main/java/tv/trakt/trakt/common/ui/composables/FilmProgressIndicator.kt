@@ -1,8 +1,10 @@
 package tv.trakt.trakt.common.ui.composables
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -21,6 +23,8 @@ fun FilmProgressIndicator(
     CircularProgressIndicator(
         color = color,
         strokeWidth = strokeWidth ?: (5.dp * (size / DefaultIndicatorSize)),
-        modifier = modifier.size(size),
+        modifier = modifier
+            .wrapContentSize(Alignment.Center)
+            .size(size),
     )
 }
