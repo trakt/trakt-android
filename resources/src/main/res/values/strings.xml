@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP includes</string>
   <string name="header_vip_cancel_kept">Still VIP.</string>
   <string name="header_vip_cancel_library">Nothing gets deleted. It just stops growing.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Extra Plex servers</string>
   <string name="header_vip_cancel_losses">On %s you lose</string>
   <string name="header_vip_cancel_offer">Or stay 2 more years</string>
   <string name="header_vip_cancel_reason">Why are you leaving?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_anticipated_recommendations">Recommends titles that are not out yet, picked for you. Switch between Out now and Coming soon above the Recommended list.</string>
   <string name="preview_feature_description_awards">See Oscar, Golden Globe, Emmy and festival wins and nominations on movie, show and person pages.</string>
+  <string name="preview_feature_description_character_portraits">Cast lists show each actor as their character when we have a portrait of them in the role.</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_insights_card">Shows how hyped a title is and how well it matches your taste in the Insights section of movie and show pages.</string>
   <string name="preview_feature_description_living_poster">Top titles get a poster that tilts with your pointer, with layers that move at different depths and ambient effects such as fog, embers and snow.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
   <string name="preview_feature_title_anticipated_recommendations">Coming soon recommendations</string>
   <string name="preview_feature_title_awards">Awards</string>
+  <string name="preview_feature_title_character_portraits">Character portraits</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_insights_card">Hype and match meters</string>
   <string name="preview_feature_title_living_poster">Living posters</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notes</string>
   <string name="text_vip_cancel_limit_smart_lists">Smart lists</string>
   <string name="text_vip_cancel_limit_watchlist">Watchlist</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Plays stop being tracked on their own</string>
-  <string name="text_vip_cancel_loss_plex_servers">Free accounts sync one server</string>
   <string name="text_vip_cancel_loss_streaming">Stop syncing. Free keeps one service.</string>
   <string name="text_vip_cancel_offer_break">Take your break. The price waits. Starts %s, nothing today.</string>
   <string name="text_vip_cancel_offer_monthly">That\'s %1$s a month. Starts %2$s, nothing today.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Not using it enough</string>
   <string name="text_vip_cancel_step">Step %1$d of %2$d</string>
   <string name="text_vip_cancel_tenure_new">under a month</string>
-  <string name="text_vip_cancel_value_off">Off</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d servers</string>
   <string name="text_vip_cancel_value_service">1 service</string>
   <string name="text_vip_cancel_value_services">%d services</string>
   <string name="text_vip_checkout_failed_title">Couldn\'t start checkout</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Expand your watchlist capacity to keep track of everything you want to watch.</string>
   <string name="vip_feature_description_early_access">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
   <string name="vip_feature_description_global_wtw">See where shows and movies are available to stream anywhere in the world, not just your region.</string>
+  <string name="vip_feature_description_leaderboard">See where you rank amongst your friends on the leaderboard!</string>
   <string name="vip_feature_description_more_lists">Create even more custom lists to organize your shows and movies exactly the way you want.</string>
   <string name="vip_feature_description_plex_sync">Keep your Plex library perfectly synced with more frequent automatic updates throughout the day.</string>
   <string name="vip_feature_description_recaps">Get deeper insights with comprehensive month and year recaps showing everything you watched, rated, and discovered.</string>
