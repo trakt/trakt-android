@@ -8,4 +8,6 @@ import tv.trakt.trakt.common.model.User
 internal data class SettingsState(
     val user: User? = null,
     val avatarLoading: LoadingState = LoadingState.Idle,
+    val previewFeaturesVisible: Boolean = false,
+    val previewFeaturesUnseen: Boolean = false,
 )

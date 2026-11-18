@@ -37,6 +37,9 @@ areas such as `analytics.*` calls, so still read by area:
   deps: `packages.md`
 - Analytics events, screen views, the `Analytics` interface and backends
   (`common/.../firebase/analytics/`, any `analytics.*` call): `analytics.md`
+- Preview features and feature flags (`core/featureflags/`, `FeatureFlag`,
+  `FeatureFlagsUseCase`, `preview_feature_*` Remote Config keys, gating a
+  feature for directors, VIPs or everyone): `feature-flags.md`
 
 Re-read a domain file after a long gap if the context was compacted.
 

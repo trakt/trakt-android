@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.featureflags.usecases.FeatureFlagsUseCase
 import tv.trakt.trakt.core.settings.data.observeSettingsProfile
 import tv.trakt.trakt.core.settings.features.avatar.AvatarCrop
 import tv.trakt.trakt.core.settings.usecases.UpdateUserAvatarUseCase
@@ -32,15 +33,19 @@ import tv.trakt.trakt.resources.R
 internal class SettingsViewModel(
     private val sessionManager: SessionManager,
     private val updateAvatarUseCase: UpdateUserAvatarUseCase,
+    private val featureFlagsUseCase: FeatureFlagsUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val avatarLoadingState = MutableStateFlow(initialState.avatarLoading)
+    private val previewFeaturesVisibleState = MutableStateFlow(initialState.previewFeaturesVisible)
+    private val previewFeaturesUnseenState = MutableStateFlow(initialState.previewFeaturesUnseen)
 
     init {
         loadUser()
+        observePreviewFeatures()
 
         analytics.logScreenView(
             screenName = "settings",
@@ -51,6 +56,20 @@ internal class SettingsViewModel(
         sessionManager.observeSettingsProfile()
             .onEach { user ->
                 userState.update { user }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observePreviewFeatures() {
+        featureFlagsUseCase.observePreviewsVisible()
+            .onEach { visible ->
+                previewFeaturesVisibleState.update { visible }
+            }
+            .launchIn(viewModelScope)
+
+        featureFlagsUseCase.observePreviewsUnseen()
+            .onEach { unseen ->
+                previewFeaturesUnseenState.update { unseen }
             }
             .launchIn(viewModelScope)
     }
@@ -103,10 +122,14 @@ internal class SettingsViewModel(
     val state = combine(
         userState,
         avatarLoadingState,
+        previewFeaturesVisibleState,
+        previewFeaturesUnseenState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
             avatarLoading = state[1] as LoadingState,
+            previewFeaturesVisible = state[2] as Boolean,
+            previewFeaturesUnseen = state[3] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

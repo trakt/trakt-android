@@ -34,6 +34,7 @@ import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
 import tv.trakt.trakt.core.settings.features.history.HistoryAnalysisViewModel
 import tv.trakt.trakt.core.settings.features.history.usecases.CleanUpHistoryPlaysUseCase
 import tv.trakt.trakt.core.settings.features.history.usecases.GetWatchedPlaysUseCase
+import tv.trakt.trakt.core.settings.features.preview.PreviewFeaturesViewModel
 import tv.trakt.trakt.core.settings.features.usage.UsageViewModel
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
@@ -142,6 +143,7 @@ internal val settingsModule = module {
     viewModelOf(::StreamingSettingsViewModel)
     viewModelOf(::HistoryAnalysisViewModel)
     viewModelOf(::UsageViewModel)
+    viewModelOf(::PreviewFeaturesViewModel)
 
     viewModel {
         NotificationSettingsViewModel(
