@@ -71,6 +71,7 @@ internal fun PanelMediaCard(
     subtitle: String,
     subtitleMaxLines: Int = 1,
     contentImageUrl: String?,
+    contentFallbackImageUrl: String? = null,
     containerImageUrl: String?,
     corner: Dp = 16.dp,
     imageWidth: Dp = TraktTheme.size.verticalMediumMediaCardSize,
@@ -90,7 +91,11 @@ internal fun PanelMediaCard(
     // graphicsLayer translations are absolute, so they have to be flipped when the layout mirrors.
     val translationDirection = if (mirrored) -1F else 1F
 
-    var isPosterError by remember { mutableStateOf(false) }
+    var failedContentUrls by remember(contentImageUrl, contentFallbackImageUrl) {
+        mutableStateOf(emptySet<String>())
+    }
+    val displayContentUrl = listOfNotNull(contentImageUrl, contentFallbackImageUrl)
+        .firstOrNull { it !in failedContentUrls && it.isNotBlank() }
     var isContainerError by remember { mutableStateOf(false) }
 
     Row(
@@ -119,14 +124,15 @@ internal fun PanelMediaCard(
             modifier = Modifier
                 .width(imageWidth),
         ) {
-            if (!contentImageUrl.isNullOrBlank() && !isPosterError) {
+            if (displayContentUrl != null) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(contentImageUrl)
+                        .data(displayContentUrl)
                         .crossfade(true)
                         .build(),
                     contentDescription = "Card image",
                     contentScale = ContentScale.Crop,
+                    onError = { failedContentUrls += displayContentUrl },
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .padding(vertical = 4.dp)

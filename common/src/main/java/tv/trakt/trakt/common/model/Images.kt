@@ -112,6 +112,15 @@ data class Images(
             )
         }
 
+        fun portraitUrl(
+            mediaType: MediaType,
+            mediaId: TraktId,
+            personId: TraktId,
+        ): String {
+            val portraitId = "${mediaType.value}-${mediaId.value}-${personId.value}"
+            return "${Config.MEDIA_BASE_URL}portraits/$portraitId/${Size.MEDIUM.value}/portrait.webp"
+        }
+
         fun forPerson(id: TraktId): Images {
             return Images(
                 headshot = mediaUrls("people", id, "headshot"),

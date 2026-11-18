@@ -81,6 +81,7 @@ internal fun VerticalMediaCard(
     watching: Boolean = false,
     watchlist: Boolean = false,
     chipSpacing: Dp = 8.dp,
+    fallbackImageUrl: String? = null,
     chipContent: @Composable (Modifier) -> Unit = {},
     cardContent: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {},
@@ -91,7 +92,8 @@ internal fun VerticalMediaCard(
         else -> TraktTheme.size.verticalMediaCardSize
     }
 
-    var isError by remember(imageUrl) { mutableStateOf(false) }
+    var failedUrls by remember(imageUrl, fallbackImageUrl) { mutableStateOf(emptySet<String>()) }
+    val displayUrl = listOfNotNull(imageUrl, fallbackImageUrl).firstOrNull { it !in failedUrls }
 
     val animatedSaturation by animateFloatAsState(
         targetValue = if (blackWhite) 0f else 1f,
@@ -144,16 +146,16 @@ internal fun VerticalMediaCard(
                                     ),
                             ),
                     ) {
-                        if (imageUrl != null && !isError) {
+                        if (displayUrl != null) {
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data(imageUrl)
+                                    .data(displayUrl)
                                     .crossfade(true)
                                     .build(),
                                 contentDescription = "Card image",
                                 contentScale = ContentScale.Crop,
                                 colorFilter = animatedColorFilter,
-                                onError = { isError = true },
+                                onError = { failedUrls += displayUrl },
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .alpha(animatedAlpha),
@@ -187,7 +189,7 @@ internal fun VerticalMediaCard(
                                 painter = painterResource(R.drawable.ic_more_vertical),
                                 contentDescription = null,
                                 tint = when {
-                                    imageUrl == null || isError -> TraktTheme.colors.textPrimary
+                                    displayUrl == null -> TraktTheme.colors.textPrimary
                                     else -> TraktTheme.colors.textPrimaryOnAccent
                                 },
                                 modifier = Modifier
