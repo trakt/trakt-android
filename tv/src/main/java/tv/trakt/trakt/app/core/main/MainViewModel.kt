@@ -6,8 +6,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,7 +17,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -34,6 +34,8 @@ internal class MainViewModel(
     private val mainDataStore: DataStore<Preferences>,
     private val loadUserProfileUseCase: LoadUserProfileUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val loadUserFavoritesUseCase: LoadUserFavoritesUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -103,10 +105,9 @@ internal class MainViewModel(
                 }
 
                 coroutineScope {
-                    val progressAsync = async { loadUserProgressUseCase.loadProgress() }
-                    awaitAll(
-                        progressAsync,
-                    )
+                    launch { refreshIsolated { loadUserProgressUseCase.loadProgress() } }
+                    launch { refreshIsolated { loadUserRatingsUseCase.loadAll() } }
+                    launch { refreshIsolated { loadUserFavoritesUseCase.loadAll() } }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -114,6 +115,16 @@ internal class MainViewModel(
                 }
             } finally {
                 lastLoadTime = nowUtcInstant()
+            }
+        }
+    }
+
+    private suspend fun refreshIsolated(block: suspend () -> Unit) {
+        try {
+            block()
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }

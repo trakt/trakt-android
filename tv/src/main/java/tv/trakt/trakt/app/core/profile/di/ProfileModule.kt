@@ -35,6 +35,9 @@ internal val profileModule = module {
             showsSyncLocalSource = get(),
             moviesSyncLocalSource = get(),
             episodesSyncLocalSource = get(),
+            userProgressLocalSource = get(),
+            userRatingsLocalSource = get(),
+            userFavoritesLocalSource = get(),
         )
     }
 

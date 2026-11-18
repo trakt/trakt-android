@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.sync.usecases
+package tv.trakt.trakt.common.core.favorites.usecases
 
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
@@ -10,7 +10,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 
-internal class UpdateMovieFavoritesUseCase(
+class UpdateMovieFavoritesUseCase(
     private val remoteSource: MoviesSyncRemoteSource,
     private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val dataChanges: DataChanges,

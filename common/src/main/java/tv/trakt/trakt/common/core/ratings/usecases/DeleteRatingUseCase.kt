@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.ratings
+package tv.trakt.trakt.common.core.ratings.usecases
 
 import tv.trakt.trakt.common.data.remote.RatingsRemoteSource
 import tv.trakt.trakt.common.model.MediaType
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.MediaType.Season
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 
-internal class DeleteRatingUseCase(
+class DeleteRatingUseCase(
     private val remoteSource: RatingsRemoteSource,
 ) {
     suspend fun deleteRating(

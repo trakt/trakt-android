@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.sync.usecases
+package tv.trakt.trakt.common.core.favorites.usecases
 
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 
-internal class UpdateShowFavoritesUseCase(
+class UpdateShowFavoritesUseCase(
     private val remoteSource: ShowsSyncRemoteSource,
     private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val dataChanges: DataChanges,

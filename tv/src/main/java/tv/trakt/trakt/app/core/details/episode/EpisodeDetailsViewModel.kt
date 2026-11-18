@@ -35,6 +35,10 @@ import tv.trakt.trakt.app.core.details.episode.usecases.GetEpisodeSeasonUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.GetExternalRatingsUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.ratings.UserRatingState
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.GetUserRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsWatchedUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
@@ -88,6 +92,9 @@ internal class EpisodeDetailsViewModel(
     private val getSeasonUseCase: GetEpisodeSeasonUseCase,
     private val getHistoryUseCase: GetEpisodeHistoryUseCase,
     private val changeHistoryUseCase: ChangeHistoryUseCase,
+    private val getUserRatingUseCase: GetUserRatingUseCase,
+    private val changeRatingUseCase: ChangeRatingUseCase,
+    private val isWatchedUseCase: IsWatchedUseCase,
     private val getTranslationsUseCase: GetEpisodeTranslationsUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
@@ -107,13 +114,17 @@ internal class EpisodeDetailsViewModel(
     private val episodeSeasonState = MutableStateFlow(initialState.episodeSeason)
     private val episodeHistoryState = MutableStateFlow(initialState.episodeHistory)
     private val episodeTranslationState = MutableStateFlow(initialState.episodeTranslation)
+    private val userRatingState = MutableStateFlow(initialState.userRating)
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
+    private var userDataLoaded = false
+
     private val destination = savedStateHandle.toRoute<EpisodeDestination>()
 
     init {
+        loadUserData()
         observeData()
         observeProgress()
 
@@ -200,6 +211,7 @@ internal class EpisodeDetailsViewModel(
         dataChanges.observe(Kind.Progress)
             .debounce(300.milliseconds)
             .onEach {
+                loadWatched()
                 loadSeason(
                     showId = destination.showId.toTraktId(),
                     seasonEpisode = SeasonEpisode(
@@ -364,6 +376,49 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    private fun loadUserData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val showId = destination.showId.toTraktId()
+                val episodeId = destination.episodeId.toTraktId()
+                coroutineScope {
+                    val ratingAsync = async { getUserRatingUseCase.getRating(episodeId, MediaType.Episode) }
+                    val watchedAsync = async { isWatchedUseCase.isEpisodeWatched(showId, episodeId) }
+                    val rating = ratingAsync.await()
+                    val watched = watchedAsync.await()
+                    userRatingState.update { it.copy(rating = rating, watched = watched) }
+                }
+                userDataLoaded = true
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading user rating data")
+                }
+            }
+        }
+    }
+
+    private fun loadWatched() {
+        viewModelScope.launch {
+            if (!userDataLoaded || !sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val watched = isWatchedUseCase.isEpisodeWatched(
+                    showId = destination.showId.toTraktId(),
+                    episodeId = destination.episodeId.toTraktId(),
+                )
+                userRatingState.update { it.copy(watched = watched) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading watched status")
+                }
+            }
+        }
+    }
+
     private suspend fun loadHistory(episodeId: TraktId) {
         if (!sessionManager.isAuthenticated()) {
             return
@@ -522,6 +577,31 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    fun changeRating(rating: Int?) {
+        viewModelScope.launch {
+            val episodeId = episodeDetailsState.value?.ids?.trakt ?: return@launch
+            if (!sessionManager.isAuthenticated() || userRatingState.value.loading) {
+                return@launch
+            }
+            val previousRating = userRatingState.value.rating
+            try {
+                userRatingState.update { it.copy(rating = rating, loading = true) }
+                changeRatingUseCase.changeRating(
+                    mediaId = episodeId,
+                    mediaType = MediaType.Episode,
+                    rating = rating,
+                )
+                userRatingState.update { it.copy(loading = false) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(rating = previousRating, loading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing rating")
+                }
+            }
+        }
+    }
+
     fun dropEpisodePlayback() {
         viewModelScope.launch {
             try {
@@ -591,6 +671,7 @@ internal class EpisodeDetailsViewModel(
         loadingState,
         snackMessageState,
         reviewState,
+        userRatingState,
     ) { states ->
         EpisodeDetailsState(
             user = states[0] as User?,
@@ -607,6 +688,7 @@ internal class EpisodeDetailsViewModel(
             isLoading = states[11] as Boolean,
             snackMessage = states[12] as StringResource?,
             isReviewRequest = states[13] as Boolean,
+            userRating = states[14] as UserRatingState,
         )
     }.stateIn(
         scope = viewModelScope,

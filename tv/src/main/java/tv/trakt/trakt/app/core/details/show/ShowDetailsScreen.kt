@@ -4,8 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -58,6 +60,8 @@ import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.lists.manage.ManageListsOverlay
+import tv.trakt.trakt.app.core.details.ratings.ui.FavoriteButton
+import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCastCrewList
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCommentsList
@@ -136,6 +140,8 @@ internal fun ShowDetailsScreen(
             onNavigateToStreamings(it)
         },
         onWatchlistClick = viewModel::toggleWatchlist,
+        onRatingChange = viewModel::changeRating,
+        onFavoriteClick = viewModel::toggleFavorite,
         onSeasonClick = viewModel::loadSeason,
         onHistoryClick = { date ->
             pendingHistoryDate = date
@@ -198,6 +204,8 @@ private fun ShowDetailsScreenContent(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveAllHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     onSeasonClick: (ShowSeasons.SeasonItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -306,6 +314,8 @@ private fun ShowDetailsScreenContent(
                     )
                     MainContent(
                         state = state,
+                        onRatingChange = onRatingChange,
+                        onFavoriteClick = onFavoriteClick,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = it
@@ -379,6 +389,8 @@ private fun MainContent(
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
     onManageListsClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -395,24 +407,49 @@ private fun MainContent(
                 ),
         ) {
             if (state.user != null) {
-                ShowActionButtons(
-                    streamingState = state.showStreamings,
-                    collectionState = state.showCollection,
-                    watchAgainEnabled = state.user.settings?.watchOnlyOnce != true,
-                    trailerUrl = state.showVideos?.firstOrNull { it.type == "trailer" }?.url,
-                    onHistoryClick = onHistoryClick,
-                    onRemoveHistoryClick = onRemoveAllHistoryClick,
-                    onWatchlistClick = onWatchlistClick,
-                    onTrailerClick = onVideoClick,
-                    onStreamingLongClick = onStreamingsClick,
-                    onManageListsClick = onManageListsClick,
-                    modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("buttons"))
-                        .onFocusChanged {
-                            if (it.isFocused) onFocused("buttons")
-                        },
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    ShowActionButtons(
+                        streamingState = state.showStreamings,
+                        collectionState = state.showCollection,
+                        watchAgainEnabled = state.user.settings?.watchOnlyOnce != true,
+                        trailerUrl = state.showVideos?.firstOrNull { it.type == "trailer" }?.url,
+                        onHistoryClick = onHistoryClick,
+                        onRemoveHistoryClick = onRemoveAllHistoryClick,
+                        onWatchlistClick = onWatchlistClick,
+                        onTrailerClick = onVideoClick,
+                        onStreamingLongClick = onStreamingsClick,
+                        onManageListsClick = onManageListsClick,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("buttons"))
+                            .onFocusChanged {
+                                if (it.isFocused) onFocused("buttons")
+                            },
+                    )
+
+                    AnimatedVisibility(
+                        visible = state.userRating.watched,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically(),
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(top = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            UserRatingStrip(
+                                state = state.userRating,
+                                onRatingChange = onRatingChange,
+                            )
+                            FavoriteButton(
+                                favorite = state.userRating.favorite,
+                                loading = state.userRating.favoriteLoading,
+                                onClick = onFavoriteClick,
+                            )
+                        }
+                    }
+                }
             } else {
                 val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
                 Spacer(Modifier.width(posterWidth))
@@ -731,6 +768,8 @@ private fun MainScreenPreview() {
             onHistoryClick = {},
             onRemoveAllHistoryClick = {},
             onWatchlistClick = {},
+            onRatingChange = {},
+            onFavoriteClick = {},
             onNavigateToStreamings = {},
             onSeasonClick = {},
         )

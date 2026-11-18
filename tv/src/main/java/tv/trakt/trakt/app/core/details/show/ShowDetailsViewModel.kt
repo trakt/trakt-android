@@ -25,6 +25,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.app.core.details.ratings.UserRatingState
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeFavoriteUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.GetUserRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsFavoriteUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsWatchedUseCase
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.StreamingsState
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
@@ -88,6 +94,11 @@ internal class ShowDetailsViewModel(
     private val getCollectionUseCase: GetCollectionUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
+    private val getUserRatingUseCase: GetUserRatingUseCase,
+    private val changeRatingUseCase: ChangeRatingUseCase,
+    private val isWatchedUseCase: IsWatchedUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val changeFavoriteUseCase: ChangeFavoriteUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val dataChanges: DataChanges,
@@ -108,13 +119,17 @@ internal class ShowDetailsViewModel(
     private val showSeasonsState = MutableStateFlow(initialState.showSeasons)
     private val showCollectionState = MutableStateFlow(initialState.showCollection)
     private val showTranslationState = MutableStateFlow(initialState.showTranslation)
+    private val userRatingState = MutableStateFlow(initialState.userRating)
     private val userState = MutableStateFlow(initialState.user)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
+
+    private var userDataLoaded = false
 
     private val show = savedStateHandle.toRoute<ShowDestination>()
     private var loadingJob: Job? = null
 
     init {
+        loadUserData()
         loadData(show.showId.toTraktId())
         observeProgress()
     }
@@ -124,6 +139,7 @@ internal class ShowDetailsViewModel(
             .debounce(300.milliseconds)
             .onEach {
                 loadSeasons(show.showId.toTraktId())
+                loadWatched()
             }
             .launchIn(viewModelScope)
     }
@@ -386,6 +402,49 @@ internal class ShowDetailsViewModel(
         }
     }
 
+    private fun loadUserData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val mediaId = show.showId.toTraktId()
+                coroutineScope {
+                    val ratingAsync = async { getUserRatingUseCase.getRating(mediaId, MediaType.Show) }
+                    val watchedAsync = async { isWatchedUseCase.isShowWatched(mediaId) }
+                    val favoriteAsync = async { isFavoriteUseCase.isShowFavorite(mediaId) }
+                    val rating = ratingAsync.await()
+                    val watched = watchedAsync.await()
+                    val favorite = favoriteAsync.await()
+                    userRatingState.update {
+                        it.copy(rating = rating, watched = watched, favorite = favorite)
+                    }
+                }
+                userDataLoaded = true
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading user rating data")
+                }
+            }
+        }
+    }
+
+    private fun loadWatched() {
+        viewModelScope.launch {
+            if (!userDataLoaded || !sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val watched = isWatchedUseCase.isShowWatched(show.showId.toTraktId())
+                userRatingState.update { it.copy(watched = watched) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading watched status")
+                }
+            }
+        }
+    }
+
     private fun loadCollection(showId: TraktId) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
@@ -409,17 +468,21 @@ internal class ShowDetailsViewModel(
                     val watchlistAsync = async { getCollectionUseCase.getWatchlistShow(showId) }
 
                     val watched = watchedAsync.await()
-                    val watchlist = watchlistAsync.await()
-
                     showCollectionState.update {
                         it.copy(
                             isWatchedLoading = false,
-                            isWatchlistLoading = false,
-                            isWatchlist = watchlist != null,
                             isWatched = watched != null,
                             episodesPlays = watched?.episodesPlays ?: 0,
                             episodesPlaysWithoutSpecials = watched?.episodesPlaysWithoutSpecials ?: 0,
                             episodesAiredCount = watched?.episodesAired ?: 0,
+                        )
+                    }
+
+                    val watchlist = watchlistAsync.await()
+                    showCollectionState.update {
+                        it.copy(
+                            isWatchlistLoading = false,
+                            isWatchlist = watchlist != null,
                         )
                     }
                 }
@@ -504,6 +567,56 @@ internal class ShowDetailsViewModel(
         }
     }
 
+    fun toggleFavorite() {
+        viewModelScope.launch {
+            val details = showDetailsState.value ?: return@launch
+            if (!sessionManager.isAuthenticated() || userRatingState.value.favoriteLoading) {
+                return@launch
+            }
+            val favorite = !userRatingState.value.favorite
+            try {
+                userRatingState.update { it.copy(favorite = favorite, favoriteLoading = true) }
+                changeFavoriteUseCase.changeShowFavorite(details, favorite)
+                userRatingState.update { it.copy(favoriteLoading = false) }
+                showSnackMessage(
+                    DynamicStringResource(
+                        if (favorite) R.string.text_info_favorites_added else R.string.text_info_favorites_removed,
+                    ),
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(favorite = !favorite, favoriteLoading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing favorite")
+                }
+            }
+        }
+    }
+
+    fun changeRating(rating: Int?) {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated() || userRatingState.value.loading) {
+                return@launch
+            }
+            val previousRating = userRatingState.value.rating
+            try {
+                userRatingState.update { it.copy(rating = rating, loading = true) }
+                changeRatingUseCase.changeRating(
+                    mediaId = show.showId.toTraktId(),
+                    mediaType = MediaType.Show,
+                    rating = rating,
+                )
+                userRatingState.update { it.copy(loading = false) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(rating = previousRating, loading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing rating")
+                }
+            }
+        }
+    }
+
     fun toggleWatchlist() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
@@ -569,6 +682,7 @@ internal class ShowDetailsViewModel(
         userState,
         snackMessageState,
         showTranslationState,
+        userRatingState,
     ) { states ->
         ShowDetailsState(
             isLoading = states[0] as Boolean,
@@ -585,6 +699,7 @@ internal class ShowDetailsViewModel(
             user = states[11] as User?,
             snackMessage = states[12] as StringResource?,
             showTranslation = states[13] as MediaTranslation?,
+            userRating = states[14] as UserRatingState,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -36,6 +36,12 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUs
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.ratings.UserRatingState
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeFavoriteUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.GetUserRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsFavoriteUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsWatchedUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
@@ -88,6 +94,11 @@ internal class MovieDetailsViewModel(
     private val getCollectionUseCase: GetCollectionUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
+    private val getUserRatingUseCase: GetUserRatingUseCase,
+    private val changeRatingUseCase: ChangeRatingUseCase,
+    private val isWatchedUseCase: IsWatchedUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val changeFavoriteUseCase: ChangeFavoriteUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val getTranslationsUseCase: GetMovieTranslationsUseCase,
     private val dataChanges: DataChanges,
@@ -109,14 +120,18 @@ internal class MovieDetailsViewModel(
     private val movieStreamingsState = MutableStateFlow(initialState.movieStreamings)
     private val movieCollectionState = MutableStateFlow(initialState.movieCollection)
     private val movieTranslationState = MutableStateFlow(initialState.movieTranslation)
+    private val userRatingState = MutableStateFlow(initialState.userRating)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
+    private var userDataLoaded = false
+
     private val movie = savedStateHandle.toRoute<MovieDestination>()
 
     init {
+        loadUserData()
         loadData(TraktId(movie.movieId))
         observeData()
     }
@@ -156,6 +171,11 @@ internal class MovieDetailsViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeData() {
+        dataChanges.observe(Kind.Progress)
+            .debounce(250.milliseconds)
+            .onEach { loadWatched() }
+            .launchIn(viewModelScope)
+
         dataChanges.observe(Kind.History, exclude = origin)
             .debounce(250.milliseconds)
             .onEach {
@@ -344,6 +364,49 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    private fun loadUserData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val mediaId = movie.movieId.toTraktId()
+                coroutineScope {
+                    val ratingAsync = async { getUserRatingUseCase.getRating(mediaId, MediaType.Movie) }
+                    val watchedAsync = async { isWatchedUseCase.isMovieWatched(mediaId) }
+                    val favoriteAsync = async { isFavoriteUseCase.isMovieFavorite(mediaId) }
+                    val rating = ratingAsync.await()
+                    val watched = watchedAsync.await()
+                    val favorite = favoriteAsync.await()
+                    userRatingState.update {
+                        it.copy(rating = rating, watched = watched, favorite = favorite)
+                    }
+                }
+                userDataLoaded = true
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading user rating data")
+                }
+            }
+        }
+    }
+
+    private fun loadWatched() {
+        viewModelScope.launch {
+            if (!userDataLoaded || !sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val watched = isWatchedUseCase.isMovieWatched(movie.movieId.toTraktId())
+                userRatingState.update { it.copy(watched = watched) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading watched status")
+                }
+            }
+        }
+    }
+
     private suspend fun loadCollection(
         movieId: TraktId,
         force: Boolean,
@@ -365,15 +428,19 @@ internal class MovieDetailsViewModel(
                 val watchlistAsync = async { getCollectionUseCase.getWatchlistMovie(movieId, force) }
 
                 val watched = watchedAsync.await()
-                val watchlist = watchlistAsync.await()
-
                 movieCollectionState.update {
                     it.copy(
                         isHistoryLoading = false,
-                        isWatchlistLoading = false,
                         isHistory = watched != null,
-                        isWatchlist = watchlist != null,
                         historyCount = watched?.plays ?: 0,
+                    )
+                }
+
+                val watchlist = watchlistAsync.await()
+                movieCollectionState.update {
+                    it.copy(
+                        isWatchlistLoading = false,
+                        isWatchlist = watchlist != null,
                     )
                 }
             }
@@ -486,6 +553,56 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    fun toggleFavorite() {
+        viewModelScope.launch {
+            val details = movieDetailsState.value ?: return@launch
+            if (!sessionManager.isAuthenticated() || userRatingState.value.favoriteLoading) {
+                return@launch
+            }
+            val favorite = !userRatingState.value.favorite
+            try {
+                userRatingState.update { it.copy(favorite = favorite, favoriteLoading = true) }
+                changeFavoriteUseCase.changeMovieFavorite(details, favorite)
+                userRatingState.update { it.copy(favoriteLoading = false) }
+                showSnackMessage(
+                    DynamicStringResource(
+                        if (favorite) R.string.text_info_favorites_added else R.string.text_info_favorites_removed,
+                    ),
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(favorite = !favorite, favoriteLoading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing favorite")
+                }
+            }
+        }
+    }
+
+    fun changeRating(rating: Int?) {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated() || userRatingState.value.loading) {
+                return@launch
+            }
+            val previousRating = userRatingState.value.rating
+            try {
+                userRatingState.update { it.copy(rating = rating, loading = true) }
+                changeRatingUseCase.changeRating(
+                    mediaId = movie.movieId.toTraktId(),
+                    mediaType = MediaType.Movie,
+                    rating = rating,
+                )
+                userRatingState.update { it.copy(loading = false) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(rating = previousRating, loading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing rating")
+                }
+            }
+        }
+    }
+
     fun dropMoviePlayback() {
         viewModelScope.launch {
             try {
@@ -549,6 +666,7 @@ internal class MovieDetailsViewModel(
         userState,
         snackMessageState,
         reviewState,
+        userRatingState,
     ) { states ->
         @Suppress("UNCHECKED_CAST")
         MovieDetailsState(
@@ -566,6 +684,7 @@ internal class MovieDetailsViewModel(
             user = states[11] as User?,
             snackMessage = states[12] as StringResource?,
             isReviewRequest = states[13] as Boolean,
+            userRating = states[14] as UserRatingState,
         )
     }.stateIn(
         scope = viewModelScope,

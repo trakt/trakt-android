@@ -4,8 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -69,6 +71,9 @@ import tv.trakt.trakt.app.core.details.movie.views.content.MovieExtrasList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieRelatedList
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieActionButtons
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieHeader
+import tv.trakt.trakt.app.core.details.ratings.UserRatingState
+import tv.trakt.trakt.app.core.details.ratings.ui.FavoriteButton
+import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
@@ -133,6 +138,8 @@ internal fun MovieDetailsScreen(
         onHistoryClick = viewModel::addHistory,
         onRemoveHistoryClick = { removeHistoryDialog = true },
         onWatchlistClick = viewModel::toggleWatchlist,
+        onRatingChange = viewModel::changeRating,
+        onFavoriteClick = viewModel::toggleFavorite,
         onDropMovieClick = viewModel::dropMoviePlayback,
     )
 
@@ -194,6 +201,8 @@ private fun MovieDetailsScreenContent(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     onDropMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -305,6 +314,8 @@ private fun MovieDetailsScreenContent(
 
                     MainContent(
                         state = state,
+                        onRatingChange = onRatingChange,
+                        onFavoriteClick = onFavoriteClick,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = it
@@ -372,6 +383,8 @@ private fun MainContent(
     onStreamingsClick: () -> Unit,
     onDropMovieClick: () -> Unit,
     onManageListsClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -389,20 +402,45 @@ private fun MainContent(
         ) {
             val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
             if (state.user != null) {
-                MovieActionButtons(
-                    movieState = state,
-                    onHistoryClick = onHistoryClick,
-                    onRemoveHistoryClick = onRemoveHistoryClick,
-                    onWatchlistClick = onWatchlistClick,
-                    onTrailerClick = onVideoClick,
-                    onStreamingLongClick = onStreamingsClick,
-                    onDropMovieClick = onDropMovieClick,
-                    onManageListsClick = onManageListsClick,
-                    modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("buttons"))
-                        .onFocusChanged { if (it.isFocused) onFocused("buttons") },
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    MovieActionButtons(
+                        movieState = state,
+                        onHistoryClick = onHistoryClick,
+                        onRemoveHistoryClick = onRemoveHistoryClick,
+                        onWatchlistClick = onWatchlistClick,
+                        onTrailerClick = onVideoClick,
+                        onStreamingLongClick = onStreamingsClick,
+                        onDropMovieClick = onDropMovieClick,
+                        onManageListsClick = onManageListsClick,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("buttons"))
+                            .onFocusChanged { if (it.isFocused) onFocused("buttons") },
+                    )
+
+                    AnimatedVisibility(
+                        visible = state.userRating.watched,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically(),
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(top = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            UserRatingStrip(
+                                state = state.userRating,
+                                onRatingChange = onRatingChange,
+                            )
+                            FavoriteButton(
+                                favorite = state.userRating.favorite,
+                                loading = state.userRating.favoriteLoading,
+                                onClick = onFavoriteClick,
+                            )
+                        }
+                    }
+                }
             } else {
                 Spacer(Modifier.width(posterWidth))
             }
@@ -587,6 +625,16 @@ private fun Preview() {
         MovieDetailsScreenContent(
             state = MovieDetailsState(
                 movieDetails = PreviewData.movie1,
+                user = PreviewData.user1,
+                movieCollection = MovieDetailsState.CollectionState(
+                    isHistory = true,
+                    historyCount = 1,
+                ),
+                userRating = UserRatingState(
+                    rating = 7,
+                    watched = true,
+                    favorite = true,
+                ),
                 movieRatings = ExternalRating(
                     trakt = null,
                     imdb = ExternalRating.ImdbRating(
@@ -665,6 +713,8 @@ private fun Preview() {
             onHistoryClick = {},
             onRemoveHistoryClick = {},
             onWatchlistClick = {},
+            onRatingChange = {},
+            onFavoriteClick = {},
             onNavigateToStreamings = {},
             onDropMovieClick = {},
         )
