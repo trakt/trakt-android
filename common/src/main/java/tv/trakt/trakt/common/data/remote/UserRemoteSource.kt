@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3PushTokenRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -238,6 +239,19 @@ class UserRemoteSource(
 
     suspend fun removeAvatar() {
         usersApi.deleteUsersRemoveAvatar()
+    }
+
+    suspend fun postPushToken(
+        token: String,
+        deviceId: String,
+    ) {
+        v3Api.postPushToken(
+            V3PushTokenRequest(
+                token = token,
+                deviceId = deviceId,
+                platform = "android",
+            ),
+        )
     }
 
     suspend fun getWatchedMovies(pagination: Pagination): Map<String, List<String>> {

@@ -38,6 +38,10 @@ internal class CompositeAnalytics(
         targets.forEach { it.logUserLogout() }
     }
 
+    override fun logNotificationPermission(granted: Boolean) {
+        targets.forEach { it.logNotificationPermission(granted) }
+    }
+
     override fun logMediaModeClick(mode: String) {
         targets.forEach { it.logMediaModeClick(mode) }
     }

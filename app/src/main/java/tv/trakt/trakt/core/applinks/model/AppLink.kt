@@ -41,6 +41,18 @@ internal sealed interface AppLink {
     ) : AppLink {
         override val share: AppLinkShare? = null
     }
+
+    data class User(
+        val id: TraktId,
+    ) : AppLink {
+        override val share: AppLinkShare? = null
+    }
+
+    data class UserList(
+        val id: TraktId,
+    ) : AppLink {
+        override val share: AppLinkShare? = null
+    }
 }
 
 /**

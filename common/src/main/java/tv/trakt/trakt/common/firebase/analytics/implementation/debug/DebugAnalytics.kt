@@ -37,6 +37,10 @@ internal class DebugAnalytics(
         Timber.d("logUserLogout")
     }
 
+    override fun logNotificationPermission(granted: Boolean) {
+        Timber.d("logNotificationPermission: granted=%s", granted)
+    }
+
     override fun logMediaMode(mode: String) {
         Timber.d("logMediaMode: mode=${mode.lowercase()}")
     }

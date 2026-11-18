@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3PostNoteRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3PushTokenRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3RealityCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationReasonsResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
@@ -451,6 +452,12 @@ class V3Api(
                     user = V3UsernameSettingsRequest.User(username = username),
                 ),
             )
+        }
+    }
+
+    suspend fun postPushToken(request: V3PushTokenRequest) {
+        client.post("${baseUrl}users/token") {
+            setBody(request)
         }
     }
 

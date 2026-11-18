@@ -25,6 +25,9 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Show
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.applinks.AppLinkEvent
 import tv.trakt.trakt.core.applinks.model.AppLink
@@ -34,12 +37,17 @@ import tv.trakt.trakt.core.calendar.model.CalendarView.Weekly
 import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
+import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
+import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
 import tv.trakt.trakt.core.notifications.data.work.mir.INTENT_NOTIFICATION_MONTH_REVIEW_EXTRAS
 import tv.trakt.trakt.core.notifications.model.MonthReviewIntentExtras
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
+import tv.trakt.trakt.core.notifications.push.model.PUSH_EXTRA_PAYLOAD
+import tv.trakt.trakt.core.notifications.push.model.PUSH_EXTRA_TYPE
+import tv.trakt.trakt.core.notifications.push.model.parsePushNotificationLink
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
@@ -48,6 +56,7 @@ import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
+import tv.trakt.trakt.core.userprofile.navigation.navigateToUserProfile
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.INTENT_WIDGET_TARGET_EXTRA
 import tv.trakt.trakt.widgets.WidgetIntentTarget
@@ -69,7 +78,7 @@ internal fun LaunchedIntentHandler(
     LaunchedEffect(intent, newIntent) {
         val currentIntent = newIntent ?: intent
 
-        val appLink = extractAppLink(currentIntent)
+        val appLink = extractAppLink(currentIntent) ?: extractPushLink(currentIntent)
         if (appLink != null) {
             onAppLink(appLink)
             return@LaunchedEffect
@@ -129,12 +138,14 @@ internal fun LaunchedIntentHandler(
 internal fun LaunchedAppLinkEvents(
     events: Flow<AppLinkEvent>,
     welcomeActive: Boolean,
+    currentUserId: TraktId?,
     navController: NavController,
     onOpenComment: (Comment) -> Unit,
 ) {
     val localRes = LocalResources.current
     val localSnackbar = LocalSnackbarState.current
     val isWelcomeActive by rememberUpdatedState(welcomeActive)
+    val userId by rememberUpdatedState(currentUserId)
 
     LaunchedEffect(Unit) {
         events.collect { event ->
@@ -168,6 +179,18 @@ internal fun LaunchedAppLinkEvents(
                 is AppLinkEvent.OpenComment -> {
                     onOpenComment(event.comment)
                 }
+                is AppLinkEvent.OpenUser -> {
+                    navController.navigateToUserProfile(
+                        user = event.user,
+                        currentUserId = userId,
+                    )
+                }
+                is AppLinkEvent.OpenList -> {
+                    navController.navigateToList(
+                        list = event.list,
+                        currentUserId = userId,
+                    )
+                }
                 AppLinkEvent.NotFound -> {
                     localSnackbar.showSnackbar(
                         message = localRes.getString(R.string.error_text_imdb_link_not_found),
@@ -193,6 +216,38 @@ private fun extractAppLink(intent: Intent?): AppLink? {
     intent.data = null
 
     return appLink
+}
+
+private fun extractPushLink(intent: Intent?): AppLink? {
+    val type = intent?.getStringExtra(PUSH_EXTRA_TYPE) ?: return null
+    val payload = intent.getStringExtra(PUSH_EXTRA_PAYLOAD)
+
+    intent.removeExtra(PUSH_EXTRA_TYPE)
+    intent.removeExtra(PUSH_EXTRA_PAYLOAD)
+
+    return parsePushNotificationLink(type, payload)
+}
+
+private fun NavController.navigateToList(
+    list: CustomList,
+    currentUserId: TraktId?,
+) {
+    if (list.user.ids.trakt == currentUserId) {
+        navigateToPersonalList(
+            listId = list.ids.trakt.value,
+            listTitle = list.name,
+            listDescription = list.description,
+            listPrivacy = list.privacy,
+        )
+        return
+    }
+
+    navigateToListDetails(
+        list = list,
+        mediaId = (-1).toTraktId(),
+        mediaType = listOf(Show, Movie),
+        mediaImage = null,
+    )
 }
 
 private fun extractProcessTextQuery(intent: Intent?): String? {

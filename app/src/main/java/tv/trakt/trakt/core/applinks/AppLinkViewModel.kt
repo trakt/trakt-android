@@ -25,11 +25,13 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.applinks.model.AppLink
 import tv.trakt.trakt.core.applinks.usecases.GetLinkedCommentUseCase
+import tv.trakt.trakt.core.applinks.usecases.GetLinkedListUseCase
 import tv.trakt.trakt.core.applinks.usecases.RecordShareArrivalUseCase
 import tv.trakt.trakt.core.applinks.usecases.ResolveImdbLinkUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 @Suppress("UNCHECKED_CAST")
@@ -38,6 +40,8 @@ internal class AppLinkViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getPersonUseCase: GetPersonUseCase,
     private val getLinkedCommentUseCase: GetLinkedCommentUseCase,
+    private val getLinkedListUseCase: GetLinkedListUseCase,
+    private val getUserProfileUseCase: GetUserProfileDetailsUseCase,
     private val resolveImdbLinkUseCase: ResolveImdbLinkUseCase,
     private val recordShareArrivalUseCase: RecordShareArrivalUseCase,
 ) : ViewModel() {
@@ -91,6 +95,12 @@ internal class AppLinkViewModel(
                         comment = getLinkedCommentUseCase.getComment(link.id),
                     )
                     is AppLink.Imdb -> resolveImdbLinkUseCase.resolve(link.imdbId)
+                    is AppLink.User -> AppLinkEvent.OpenUser(
+                        user = getUserProfileUseCase.getUserProfileDetails(link.id),
+                    )
+                    is AppLink.UserList -> AppLinkEvent.OpenList(
+                        list = getLinkedListUseCase.getList(link.id),
+                    )
                 }
                 loadingState.update { Done }
                 events.emit(event)

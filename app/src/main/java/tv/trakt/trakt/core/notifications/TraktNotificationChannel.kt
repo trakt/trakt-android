@@ -33,6 +33,30 @@ enum class TraktNotificationChannel(
         description = "Monthly watching recap notifications",
         importance = NotificationManager.IMPORTANCE_DEFAULT,
     ),
+    SOCIAL_COMMENTS(
+        id = "id_channel_social_comments",
+        title = "Comments",
+        description = "Replies, mentions and comments on your lists",
+        importance = NotificationManager.IMPORTANCE_DEFAULT,
+    ),
+    SOCIAL_REACTIONS(
+        id = "id_channel_social_reactions",
+        title = "Reactions",
+        description = "Reactions to your comments and lists",
+        importance = NotificationManager.IMPORTANCE_DEFAULT,
+    ),
+    SOCIAL_FOLLOWERS(
+        id = "id_channel_social_followers",
+        title = "Followers",
+        description = "New followers and follow requests",
+        importance = NotificationManager.IMPORTANCE_DEFAULT,
+    ),
+    SOCIAL_COLLABORATIONS(
+        id = "id_channel_social_collaborations",
+        title = "List invites",
+        description = "Invites to collaborate on lists",
+        importance = NotificationManager.IMPORTANCE_DEFAULT,
+    ),
     ;
 
     fun createChannel(): NotificationChannel {

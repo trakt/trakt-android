@@ -92,6 +92,8 @@ internal class HalAnalytics(
         events.track(EVENT_LOGOUT)
     }
 
+    override fun logNotificationPermission(granted: Boolean) = Unit
+
     override fun logMediaModeClick(mode: String) {
         val mediaMode = halMediaMode(mode) ?: return
         events.track(

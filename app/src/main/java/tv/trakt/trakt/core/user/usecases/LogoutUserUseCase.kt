@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.data.local.LeaderboardLocalSource
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
+import tv.trakt.trakt.common.data.local.PushTokenLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
 import tv.trakt.trakt.common.data.local.SoundtrackLocalSource
@@ -42,6 +43,7 @@ import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
+import tv.trakt.trakt.core.notifications.push.data.work.DeletePushTokenWorker
 import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalSource
 import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalSource
@@ -91,6 +93,7 @@ internal class LogoutUserUseCase(
     private val localProfileRatings: ProfileRatingsLocalSource,
     private val localProfileComments: ProfileCommentsLocalSource,
     private val localSoundtrack: SoundtrackLocalSource,
+    private val localPushToken: PushTokenLocalSource,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val analytics: Analytics,
 ) {
@@ -138,6 +141,7 @@ internal class LogoutUserUseCase(
         localProfileRatings.clear()
         localProfileComments.clear()
         localSoundtrack.clear()
+        localPushToken.clearUploadedToken()
 
         localRecommendedShows.clear()
         localRecommendedMovies.clear()
@@ -152,6 +156,7 @@ internal class LogoutUserUseCase(
         if (!accessToken.isNullOrBlank()) {
             RevokeTokenWorker.schedule(appContext, accessToken)
         }
+        DeletePushTokenWorker.schedule(appContext)
 
         analytics.setUserId(null)
         analytics.setUserProperty("vip", null)
