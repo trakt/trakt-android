@@ -63,6 +63,8 @@ import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.lists.features.addfrom.AddFromListsSheet
+import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
@@ -127,6 +129,7 @@ internal fun AllPersonalListScreen(
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
+    var addFromListsSheet by remember { mutableStateOf<CustomList?>(null) }
 
     AllPersonalListContent(
         state = state,
@@ -185,7 +188,15 @@ internal fun AllPersonalListScreen(
         onInfoClick = {
             infoSheet = state.list
         },
+        onAddFromListsClick = {
+            addFromListsSheet = state.list
+        },
         onBackClick = onNavigateBack,
+    )
+
+    AddFromListsSheet(
+        list = addFromListsSheet,
+        onDismiss = { addFromListsSheet = null },
     )
 
     ListInfoSheet(
@@ -286,6 +297,7 @@ internal fun AllPersonalListContent(
     onMoreClick: () -> Unit = {},
     onReorderClick: () -> Unit = {},
     onInfoClick: () -> Unit = {},
+    onAddFromListsClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -344,6 +356,7 @@ internal fun AllPersonalListContent(
             onShareClick = onShareClick,
             onReorderClick = onReorderClick,
             onInfoClick = onInfoClick,
+            onAddFromListsClick = onAddFromListsClick,
             onEndOfList = onLoadMoreData,
         )
     }
@@ -365,6 +378,7 @@ private fun TitleBar(
     onReorderClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
     onInfoClick: () -> Unit = {},
+    onAddFromListsClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -441,6 +455,7 @@ private fun TitleBar(
                 onEditClick = onMoreClick,
                 onReorderClick = onReorderClick,
                 onShareClick = onShareClick,
+                onAddFromListsClick = onAddFromListsClick,
             )
         }
     }
@@ -507,6 +522,7 @@ private fun ContentList(
     onMoreClick: () -> Unit,
     onReorderClick: () -> Unit,
     onInfoClick: () -> Unit,
+    onAddFromListsClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -552,6 +568,7 @@ private fun ContentList(
                 onReorderClick = onReorderClick,
                 onFiltersClick = onFiltersClick,
                 onInfoClick = onInfoClick,
+                onAddFromListsClick = onAddFromListsClick,
             )
         }
 
@@ -684,7 +701,10 @@ private fun ContentList(
             }
         } else if (listItems.isEmpty()) {
             item {
-                ContentEmpty(filter = listFilter?.mode)
+                when (itemCount) {
+                    0 -> AddFromListsEmpty(onClick = onAddFromListsClick)
+                    else -> ContentEmpty(filter = listFilter?.mode)
+                }
             }
         }
     }
