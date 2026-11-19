@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -64,6 +65,7 @@ fun DetailsHeaderPoster(
     topRightContent: (@Composable () -> Unit)? = null,
     extraRightColumn: @Composable () -> Unit = {},
     extraRightColumnAtBottom: Boolean = false,
+    posterOverlay: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
@@ -138,6 +140,8 @@ fun DetailsHeaderPoster(
                     color = accentColor,
                     modifier = posterModifier,
                 )
+
+                posterOverlay?.invoke(this)
 
                 this@Row.AnimatedVisibility(
                     visible = !loading,

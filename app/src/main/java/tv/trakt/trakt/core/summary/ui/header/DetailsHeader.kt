@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -105,6 +106,7 @@ internal fun DetailsHeader(
     topRightContent: @Composable (() -> Unit)? = null,
     extraRightColumn: @Composable (() -> Unit)? = null,
     extraRightColumnAtBottom: Boolean = false,
+    posterOverlay: (@Composable BoxScope.() -> Unit)? = null,
     onImdbClick: () -> Unit,
     onMalClick: (link: String) -> Unit,
     onLetterboxdClick: (link: String) -> Unit,
@@ -138,6 +140,7 @@ internal fun DetailsHeader(
                 topRightContent = topRightContent,
                 extraRightColumn = extraRightColumn ?: {},
                 extraRightColumnAtBottom = extraRightColumnAtBottom,
+                posterOverlay = posterOverlay,
             )
         } else {
             DetailsHeaderPosterHorizontal(

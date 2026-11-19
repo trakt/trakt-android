@@ -11,6 +11,8 @@ import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.data.dto.ImageManifestDto
+import tv.trakt.trakt.common.data.dto.LivingPosterIndexDto
+import tv.trakt.trakt.common.data.dto.LivingPosterManifestDto
 import kotlin.time.Duration.Companion.seconds
 
 private val manifestTimeout = 5.seconds
@@ -49,6 +51,16 @@ class MediaImagesRemoteSource(
         id: String,
     ): ImageManifestDto {
         val response = httpClient.get("${Config.MEDIA_BASE_URL}$type/$id/images.json")
+        return manifestJson.decodeFromString(response.bodyAsText())
+    }
+
+    suspend fun getLivingPosterIndex(): LivingPosterIndexDto {
+        val response = httpClient.get("${Config.MEDIA_BASE_URL}live/index.json")
+        return manifestJson.decodeFromString(response.bodyAsText())
+    }
+
+    suspend fun getLivingPoster(baseUrl: String): LivingPosterManifestDto {
+        val response = httpClient.get("$baseUrl/live.json")
         return manifestJson.decodeFromString(response.bodyAsText())
     }
 }

@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.ui.header
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -49,6 +50,7 @@ internal fun DetailsHeader(
     onWatchedClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    posterOverlay: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val isReleased = remember { movie.isReleased }
@@ -122,6 +124,7 @@ internal fun DetailsHeader(
         imageUrl = movie.images?.getPosterUrl(Images.Size.MEDIUM),
         imagePlaceholderUrl = movie.images?.getPosterUrl(Images.Size.THUMB),
         imageHorizontal = false,
+        posterOverlay = posterOverlay,
         accentColor = movie.colors?.colors?.first,
         traktRatings = when {
             isReleased -> movie.rating.ratingPercent

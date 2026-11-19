@@ -97,6 +97,7 @@ import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
+import tv.trakt.trakt.core.summary.livingposter.LivingPosterView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
@@ -703,6 +704,14 @@ internal fun ShowDetailsContent(
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
+                        posterOverlay = {
+                            LivingPosterView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(MediaType.Show, show.ids.trakt) },
+                                ),
+                                modifier = Modifier.matchParentSize(),
+                            )
+                        },
                     )
                 }
 

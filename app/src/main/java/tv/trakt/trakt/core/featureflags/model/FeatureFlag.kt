@@ -14,6 +14,11 @@ internal enum class FeatureFlag(
         title = R.string.preview_feature_title_character_portraits,
         description = R.string.preview_feature_description_character_portraits,
     ),
+    LivingPoster(
+        id = "living-poster",
+        title = R.string.preview_feature_title_living_poster,
+        description = R.string.preview_feature_description_living_poster,
+    ),
     ;
 
     val remoteKey: String

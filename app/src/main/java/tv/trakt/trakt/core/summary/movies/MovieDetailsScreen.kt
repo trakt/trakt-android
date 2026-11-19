@@ -92,6 +92,7 @@ import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
+import tv.trakt.trakt.core.summary.livingposter.LivingPosterView
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsView
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
@@ -613,6 +614,14 @@ internal fun MovieDetailsContent(
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
+                        posterOverlay = {
+                            LivingPosterView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(MediaType.Movie, movie.ids.trakt) },
+                                ),
+                                modifier = Modifier.matchParentSize(),
+                            )
+                        },
                     )
                 }
 

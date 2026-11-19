@@ -80,6 +80,7 @@ import tv.trakt.trakt.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.core.summary.credits.di.allCreditsModule
 import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsModule
 import tv.trakt.trakt.core.summary.history.di.mediaHistoryModule
+import tv.trakt.trakt.core.summary.livingposter.di.livingPosterModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsModule
 import tv.trakt.trakt.core.summary.people.di.personDetailsModule
 import tv.trakt.trakt.core.summary.sentiment.di.sentimentModule
@@ -188,6 +189,7 @@ internal class TraktApplication : Application() {
                 reportModule,
                 triviaModule,
                 soundtrackModule,
+                livingPosterModule,
                 sentimentModule,
                 allCreditsModule,
                 listsModule,
