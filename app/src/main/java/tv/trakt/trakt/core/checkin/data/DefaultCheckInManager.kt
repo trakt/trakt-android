@@ -309,6 +309,11 @@ internal class DefaultCheckInManager(
 
             if (response.endsAt() <= nowUtcInstant()) {
                 finishLocked(context)
+                CheckInCompleteWorker.scheduleOneTime(
+                    appContext = context.applicationContext,
+                    expiresAt = response.expiresAt.toInstant(),
+                    isMovie = response.movie != null,
+                )
                 Timber.d("Active check-in already ended, ignoring it.")
                 return
             }

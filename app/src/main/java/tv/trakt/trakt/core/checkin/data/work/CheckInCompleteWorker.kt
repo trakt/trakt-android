@@ -19,6 +19,7 @@ import java.time.Instant
 
 private const val WORK_NAME = "check_in_complete"
 private const val KEY_IS_MOVIE = "isMovie"
+private const val MAX_RETRY_ATTEMPTS = 3
 
 internal class CheckInCompleteWorker(
     appContext: Context,
@@ -53,18 +54,19 @@ internal class CheckInCompleteWorker(
             return Result.success()
         }
 
-        try {
+        return try {
             when {
                 inputData.getBoolean(KEY_IS_MOVIE, false) -> loadUserProgressUseCase.loadMoviesProgress()
                 else -> loadUserProgressUseCase.loadShowsProgress()
             }
             dataChanges.notify(Kind.CheckIn)
             Timber.d("Check-in completed, progress reloaded.")
+            Result.success()
         } catch (error: Exception) {
             error.rethrowCancellation {
                 Timber.recordError(error)
             }
+            if (runAttemptCount < MAX_RETRY_ATTEMPTS) Result.retry() else Result.failure()
         }
-        return Result.success()
     }
 }
