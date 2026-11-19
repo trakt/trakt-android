@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">重新排序 %s</string>
   <string name="button_label_report_comment">举报评论</string>
   <string name="button_label_report_import_problem">向 Trakt 团队报告此导入的问题</string>
-  <string name="button_label_report_list">举报 %s</string>
   <string name="button_label_report_media">举报 %s</string>
   <string name="button_label_report_person">举报 %s</string>
   <string name="button_label_report_search">报告搜索结果缺失或有误</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">已弃看</string>
   <string name="button_text_progress_ended">已完结</string>
   <string name="button_text_progress_in_progress">进行中</string>
+  <string name="button_text_promotion_claim">领取优惠</string>
   <string name="button_text_raw_export">立即导出</string>
   <string name="button_text_recap_show_anyway">仍然显示</string>
   <string name="button_text_recent_comments">最新</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">在 %s 您将失去</string>
   <string name="header_vip_cancel_offer">或者再续订 2 年</string>
   <string name="header_vip_cancel_reason">您为何离开？</string>
+  <string name="header_vip_deal_limited_offer">两年 VIP 仅需 %s</string>
   <string name="header_vip_deal_paypal_switch">切换到银行卡。以 %s 价格尊享两年 VIP</string>
   <string name="header_vip_paypal_switch">切换到信用卡</string>
   <string name="header_vip_streak">VIP 连贯记录</string>
@@ -1162,10 +1163,10 @@
   <string name="hype_tier_cant_wait">迫不及待</string>
   <string name="hype_tier_looking_good">值得期待</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
-  <string name="image_alt_hype_score">你的期待度为 %d%%</string>
+  <string name="image_alt_hype_score">你的期待度为 %d%</string>
   <string name="image_alt_hype_unknown">暂无期待度分数</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
-  <string name="image_alt_match_score">与你的匹配度为 %d%%</string>
+  <string name="image_alt_match_score">与你的匹配度为 %d%</string>
   <string name="image_alt_match_unknown">暂无匹配分数</string>
   <string name="image_alt_media_poster">“%s”海报</string>
   <string name="image_alt_person_headshot">%s 的大头照</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">时长</string>
   <string name="label_report_reason_spam">垃圾信息</string>
   <string name="label_report_reason_spoilers">剧透</string>
-  <string name="label_report_reason_support">支持问题</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">太短</string>
   <string name="label_season_short">S%s</string>
   <string name="label_smart_list_ceremony_year">颁奖年份</string>
   <string name="label_smart_list_compare_view">选择要显示的版本</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">iOS 应用</string>
   <string name="link_label_open_preview_feature">打开 %s</string>
   <string name="link_label_open_review">%s的评论</string>
+  <string name="link_label_promotion_vip">%1$s：以 %2$s 获取 VIP</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt 状态</string>
   <string name="link_label_view_social_activities">查看%s的社交动态</string>
@@ -1574,7 +1574,7 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="match_tier_good_fit">契合喜好</string>
   <string name="match_tier_maybe">或许喜欢</string>
@@ -1896,13 +1896,15 @@
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
   <string name="tag_mixtape_kept">已保留</string>
-  <string name="tag_mixtape_match">%s%% 匹配</string>
+  <string name="tag_mixtape_match">%s% 匹配</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_award_nominee">提名</string>
   <string name="tag_text_award_pending">已提名</string>
   <string name="tag_text_award_won">获奖</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
   <string name="tag_text_deal_price">前两年</string>
+  <string name="tag_text_deal_price_first_month">首月</string>
+  <string name="tag_text_deal_price_first_year">首年</string>
   <string name="tag_text_dropped">已弃看</string>
   <string name="tag_text_emails_always_on">始终开启</string>
   <string name="tag_text_episodes">剧集</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">您的媒体库</string>
   <string name="tag_text_vip_cancel_offer">在您离开之前 · 仅此一次</string>
   <string name="tag_text_vip_cancel_reason">在您离开之前</string>
+  <string name="tag_text_vip_deal_limited_offer">限时优惠</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal 转银行卡优惠</string>
   <string name="tag_text_vip_preview">VIP 预览</string>
   <string name="tag_text_watch_count">观看次数</string>
@@ -2200,7 +2203,7 @@
   <string name="text_history_sync_filter">同步 ID %d</string>
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
   <string name="text_hype_lists">被加入列表最多的待推出作品之一</string>
-  <string name="text_hype_lists_badge">前 %s%%</string>
+  <string name="text_hype_lists_badge">前 %s%</string>
   <string name="text_hype_lists_detail">大家不断将其加入列表</string>
   <string name="text_hype_out_on">%s 推出</string>
   <string name="text_hype_series_about">与您的平时评分相当</string>
@@ -2292,7 +2295,7 @@
   <string name="text_match_basis_free">匹配分数免费提供，匹配原因为 VIP 专属功能。</string>
   <string name="text_match_basis_history">基于你看过、评分和收藏的内容。</string>
   <string name="text_match_because_liked">因为您喜欢</string>
-  <string name="text_match_better_than">比 %d%% 的影视内容更适合你</string>
+  <string name="text_match_better_than">比 %d% 的影视内容更适合你</string>
   <string name="text_match_not_enough_data">目前数据不足，暂无法为你计算匹配度。</string>
   <string name="text_match_rating_liked">在 Trakt 上颇受欢迎</string>
   <string name="text_match_rating_loved">在 Trakt 上备受喜爱</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">私人</string>
   <string name="text_private_account">私人账户</string>
   <string name="text_private_profile_description">仿佛隐藏的东西还不够多似的，%s 的秘密仍属于他们自己。</string>
+  <string name="text_promotion_chip_price">仅需 <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s <b>VIP</b></string>
+  <string name="text_promotion_ends_on">截止于 %s</string>
+  <string name="text_promotion_ends_today">今日截止，%s</string>
+  <string name="text_promotion_offer_headline">%1$s VIP 仅需 %2$s</string>
+  <string name="text_promotion_offer_pitch">相当于每月仅需 %s！</string>
   <string name="text_rate_prompt_1">你觉得怎么样？</string>
   <string name="text_rate_prompt_2">你的评价是？</string>
   <string name="text_rate_prompt_3">值得一看吗？</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">主题</string>
   <string name="text_this_month">本月</string>
   <string name="text_this_year">今年</string>
+  <string name="text_ticket_admit_one">单人入场</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">第 %s 年</string>
   <string name="text_titles_selected">已选择 %s 个</string>
   <string name="text_today_activities_one">1 项动态</string>
   <string name="text_today_activities_other">%d 项动态</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 年 VIP</string>
   <string name="text_vip_anniversary_title_other">%s 年 VIP</string>
   <string name="text_vip_billed_biyearly">每 2 年计费</string>
+  <string name="text_vip_billed_deal_first_month">首月 %1$s，之后每月 %2$s</string>
   <string name="text_vip_billed_deal_first_term">前两年 %1$s，之后每两年 %2$s</string>
+  <string name="text_vip_billed_deal_first_year">首年 %1$s，之后每年 %2$s</string>
   <string name="text_vip_billing_cycle_monthly">1 个月</string>
   <string name="text_vip_billing_cycle_year">%s 年</string>
   <string name="text_vip_built_to_last">经久不衰</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">为庞大的全球用户群定制 API 基础设施</string>
   <string name="text_vip_costs_metadata">最新的元数据、图片和字幕</string>
   <string name="text_vip_costs_team">维持所有系统运行的团队</string>
+  <string name="text_vip_deal_limited_offer">今日支付 %1$s 即可享受前 2 年，之后每 2 年按 %2$s 续费。折扣将在结算时应用。</string>
   <string name="text_vip_deal_or_standard_plan">比较所有方案</string>
   <string name="text_vip_deal_paypal_switch">首次支付 %1$s 可享两年，之后每两年按 %2$s 自动续订。折扣将在结算时应用。您将保留剩余的 VIP 时长；我们将在结算后自动取消 PayPal 订阅。</string>
   <string name="text_vip_deal_term">两年 VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">虚线区域显示升级 VIP 后的额度空间</string>
   <string name="text_vip_make_it_official">官方认可，您做到了！</string>
   <string name="text_vip_manage_failed_title">无法打开您的订阅设置</string>
+  <string name="text_vip_offer_ended_message">价格已更新。继续前请再次确认。</string>
+  <string name="text_vip_offer_ended_title">此优惠已结束</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">信用卡</string>
   <string name="text_vip_payment_method_google">Google Play</string>
@@ -3236,7 +3253,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>

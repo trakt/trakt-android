@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">Перевпорядкувати %s</string>
   <string name="button_label_report_comment">Повідомити про відгук</string>
   <string name="button_label_report_import_problem">Повідомити команду Trakt про проблему з цим імпортом</string>
-  <string name="button_label_report_list">Повідомити про %s</string>
   <string name="button_label_report_media">Повідомити про %s</string>
   <string name="button_label_report_person">Повідомити про %s</string>
   <string name="button_label_report_search">Повідомити, що результати пошуку відсутні або неправильні</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">Покинуто</string>
   <string name="button_text_progress_ended">Завершено</string>
   <string name="button_text_progress_in_progress">У процесі</string>
+  <string name="button_text_promotion_claim">Отримати знижку</string>
   <string name="button_text_raw_export">Експортувати зараз</string>
   <string name="button_text_recap_show_anyway">Усе одно показати</string>
   <string name="button_text_recent_comments">Останні</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">%s ви втратите</string>
   <string name="header_vip_cancel_offer">Або залишіться ще на 2 роки</string>
   <string name="header_vip_cancel_reason">Чому ви йдете?</string>
+  <string name="header_vip_deal_limited_offer">2 роки VIP лише за %s</string>
   <string name="header_vip_deal_paypal_switch">Перейдіть на картку. Отримайте 2 роки VIP за %s</string>
   <string name="header_vip_paypal_switch">Перейти на кредитну картку</string>
   <string name="header_vip_streak">Серія VIP</string>
@@ -1162,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Не дочекаюся</string>
   <string name="hype_tier_looking_good">Виглядає цікаво</string>
   <string name="image_alt_comment_gif">GIF, прикріплений до коментаря</string>
-  <string name="image_alt_hype_score">%d%% очікування для вас</string>
+  <string name="image_alt_hype_score">%d% очікування для вас</string>
   <string name="image_alt_hype_unknown">Ще немає оцінки очікування для вас</string>
   <string name="image_alt_list_preview_poster">Постер до елемента в %s</string>
-  <string name="image_alt_match_score">%d%% відповідності для вас</string>
+  <string name="image_alt_match_score">%d% відповідності для вас</string>
   <string name="image_alt_match_unknown">Ще немає оцінки відповідності для вас</string>
   <string name="image_alt_media_poster">Постер \"%s\"</string>
   <string name="image_alt_person_headshot">Портрет %s</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">Тривалість</string>
   <string name="label_report_reason_spam">Спам</string>
   <string name="label_report_reason_spoilers">Зі спойлерами</string>
-  <string name="label_report_reason_support">Запит на підтримку</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">Занадто короткий</string>
   <string name="label_season_short">С%s</string>
   <string name="label_smart_list_ceremony_year">Рік церемонії</string>
   <string name="label_smart_list_compare_view">Виберіть, яку версію показати</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">Додаток iOS</string>
   <string name="link_label_open_preview_feature">Відкрити %s</string>
   <string name="link_label_open_review">Відкрити відгук від %s</string>
+  <string name="link_label_promotion_vip">%1$s: отримайте VIP за %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Статус Trakt</string>
   <string name="link_label_view_social_activities">Переглянути соціальні активності для %s</string>
@@ -1574,7 +1574,7 @@
   <string name="match_label_soulmates">Споріднені душі</string>
   <string name="match_label_spin_off">Спін-офф</string>
   <string name="match_pill_anchor">Збіг:</string>
-  <string name="match_pill_aria_label">%1$d%% відповідності, %2$s. Відкрити деталі відповідності.</string>
+  <string name="match_pill_aria_label">%1$d% відповідності, %2$s. Відкрити деталі відповідності.</string>
   <string name="match_pill_loading_aria_label">Обчислення оцінки сумісності</string>
   <string name="match_tier_good_fit">Добре підходить</string>
   <string name="match_tier_maybe">Можливо</string>
@@ -1896,13 +1896,15 @@
   <string name="tag_media_sync_webhook_only">Вебхук лише</string>
   <string name="tag_mixtape_different_mood">Інший настрій</string>
   <string name="tag_mixtape_kept">Збережено</string>
-  <string name="tag_mixtape_match">%s%% збіг</string>
+  <string name="tag_mixtape_match">%s% збіг</string>
   <string name="tag_mixtape_tap_details">Торкніться, щоб дізнатися деталі</string>
   <string name="tag_text_award_nominee">Номінант</string>
   <string name="tag_text_award_pending">Номіновано</string>
   <string name="tag_text_award_won">Перемога</string>
   <string name="tag_text_blocked_user">Заблоковано</string>
   <string name="tag_text_deal_price">Перші 2 роки</string>
+  <string name="tag_text_deal_price_first_month">Перший місяць</string>
+  <string name="tag_text_deal_price_first_year">Перший рік</string>
   <string name="tag_text_dropped">Покинуто</string>
   <string name="tag_text_emails_always_on">Завжди увімкнено</string>
   <string name="tag_text_episodes">Епізоди</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">Ваша бібліотека</string>
   <string name="tag_text_vip_cancel_offer">Перш ніж підете · лише один раз</string>
   <string name="tag_text_vip_cancel_reason">Перш ніж підете</string>
+  <string name="tag_text_vip_deal_limited_offer">Обмежена пропозиція</string>
   <string name="tag_text_vip_deal_paypal_switch">З PayPal на картку</string>
   <string name="tag_text_vip_preview">VIP Попередній перегляд</string>
   <string name="tag_text_watch_count">Кількість переглядів</string>
@@ -2200,7 +2203,7 @@
   <string name="text_history_sync_filter">ID синхронізації %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hype_lists">Один із найпопулярніших майбутніх релізів у списках</string>
-  <string name="text_hype_lists_badge">Топ-%s%%</string>
+  <string name="text_hype_lists_badge">Топ-%s%</string>
   <string name="text_hype_lists_detail">Люди продовжують додавати його до своїх списків</string>
   <string name="text_hype_out_on">Реліз: %s</string>
   <string name="text_hype_series_about">Приблизно як зазвичай</string>
@@ -2292,7 +2295,7 @@
   <string name="text_match_basis_free">Ваша оцінка безкоштовна. Причини її формування — це VIP-функція.</string>
   <string name="text_match_basis_history">На основі переглянутого, оціненого та доданого в обране.</string>
   <string name="text_match_because_liked">Тому що вам сподобалося</string>
-  <string name="text_match_better_than">Підходить вам краще, ніж %d%% тайтлів</string>
+  <string name="text_match_better_than">Підходить вам краще, ніж %d% тайтлів</string>
   <string name="text_match_not_enough_data">Ще недостатньо даних, щоб визначити відповідність для вас.</string>
   <string name="text_match_rating_liked">Подобається на Trakt</string>
   <string name="text_match_rating_loved">Обожнюють на Trakt</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">Приватне</string>
   <string name="text_private_account">Приватний обліковий запис</string>
   <string name="text_private_profile_description">Наче прихованого вже було недостатньо, секрети %s залишаються їхніми власними.</string>
+  <string name="text_promotion_chip_price">лише за <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s <b>VIP</b></string>
+  <string name="text_promotion_ends_on">Закінчується %s</string>
+  <string name="text_promotion_ends_today">Закінчується сьогодні, %s</string>
+  <string name="text_promotion_offer_headline">%1$s VIP лише за %2$s</string>
+  <string name="text_promotion_offer_pitch">Це лише %s на місяць!</string>
   <string name="text_rate_prompt_1">Як вам сподобалося?</string>
   <string name="text_rate_prompt_2">Ваш вердикт?</string>
   <string name="text_rate_prompt_3">Варто перегляду?</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">Тема</string>
   <string name="text_this_month">Цей місяць</string>
   <string name="text_this_year">Цього року</string>
+  <string name="text_ticket_admit_one">На одну особу</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">Рік %s</string>
   <string name="text_titles_selected">Вибрано %s</string>
   <string name="text_today_activities_one">1 активність</string>
   <string name="text_today_activities_other">%d активностей</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 рік VIP</string>
   <string name="text_vip_anniversary_title_other">%s років VIP</string>
   <string name="text_vip_billed_biyearly">Оплата кожні 2 роки</string>
+  <string name="text_vip_billed_deal_first_month">%1$s за перший місяць, потім %2$s щомісяця</string>
   <string name="text_vip_billed_deal_first_term">%1$s за перші 2 роки, потім %2$s кожні 2 роки</string>
+  <string name="text_vip_billed_deal_first_year">%1$s за перший рік, потім %2$s щороку</string>
   <string name="text_vip_billing_cycle_monthly">1 місяць</string>
   <string name="text_vip_billing_cycle_year">%s рік</string>
   <string name="text_vip_built_to_last">Створено надовго</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Спеціальна API-інфраструктура для величезної глобальної бази користувачів</string>
   <string name="text_vip_costs_metadata">Актуальні метадані, зображення та субтитри</string>
   <string name="text_vip_costs_team">Команда, яка підтримує все це в роботі</string>
+  <string name="text_vip_deal_limited_offer">%1$s сьогодні за перші 2 роки, потім %2$s кожні 2 роки. Знижка застосовується під час оформлення замовлення.</string>
   <string name="text_vip_deal_or_standard_plan">Порівняти всі плани</string>
   <string name="text_vip_deal_paypal_switch">%1$s одразу за 2 роки, потім автоматичне поновлення за %2$s кожні 2 роки. Знижка застосовується при оформленні замовлення. Ви зберігаєте свій залишковий VIP-час; ми автоматично скасовуємо PayPal після оформлення замовлення.</string>
   <string name="text_vip_deal_term">2 роки VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">Пунктирні області показують ваші можливості з VIP</string>
   <string name="text_vip_make_it_official">Офіційно, це ваш вибір!</string>
   <string name="text_vip_manage_failed_title">Не вдалося відкрити налаштування підписки</string>
+  <string name="text_vip_offer_ended_message">Ціни оновлено. Перегляньте їх ще раз, перш ніж продовжити.</string>
+  <string name="text_vip_offer_ended_title">Ця пропозиція закінчилася</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Кредитна картка</string>
   <string name="text_vip_payment_method_google">Google Play</string>
@@ -3236,7 +3253,7 @@
   <string name="yir_2026_preview_runner_none">Немає (без гібрида)</string>
   <string name="yir_2026_preview_runner_up">Друге місце</string>
   <string name="yir_2026_preview_title">Попередній перегляд персони</string>
-  <string name="yir_2026_rarity">Лише %1$d%% є %2$s</string>
+  <string name="yir_2026_rarity">Лише %1$d% є %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Трохи %s</string>
   <string name="yir_2026_reel_and_you_are">І ви є</string>
   <string name="yir_2026_reel_but_mostly">Але переважно</string>

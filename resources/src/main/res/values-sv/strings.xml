@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">Omordna %s</string>
   <string name="button_label_report_comment">Rapportera recension</string>
   <string name="button_label_report_import_problem">Rapportera ett problem med den här importen till Trakt-teamet</string>
-  <string name="button_label_report_list">Rapportera %s</string>
   <string name="button_label_report_media">Rapportera %s</string>
   <string name="button_label_report_person">Rapportera %s</string>
   <string name="button_label_report_search">Rapportera att sökresultaten saknas eller är felaktiga</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">Avbruten</string>
   <string name="button_text_progress_ended">Avslutad</string>
   <string name="button_text_progress_in_progress">Pågående</string>
+  <string name="button_text_promotion_claim">Hämta erbjudandet</string>
   <string name="button_text_raw_export">Exportera nu</string>
   <string name="button_text_recap_show_anyway">Visa ändå</string>
   <string name="button_text_recent_comments">Senaste</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">Den %s förlorar du</string>
   <string name="header_vip_cancel_offer">Eller stanna 2 år till</string>
   <string name="header_vip_cancel_reason">Varför lämnar du?</string>
+  <string name="header_vip_deal_limited_offer">2 år VIP för endast %s</string>
   <string name="header_vip_deal_paypal_switch">Byt till kort. Få 2 år VIP för %s</string>
   <string name="header_vip_paypal_switch">Byt till kreditkort</string>
   <string name="header_vip_streak">VIP-svit</string>
@@ -1162,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Kan inte vänta</string>
   <string name="hype_tier_looking_good">Ser lovande ut</string>
   <string name="image_alt_comment_gif">GIF bifogad till kommentaren</string>
-  <string name="image_alt_hype_score">%d %% hype för dig</string>
+  <string name="image_alt_hype_score">%d % hype för dig</string>
   <string name="image_alt_hype_unknown">Ingen hype-poäng för dig än</string>
   <string name="image_alt_list_preview_poster">Affisch för ett objekt i %s</string>
-  <string name="image_alt_match_score">%d %% matchning för dig</string>
+  <string name="image_alt_match_score">%d % matchning för dig</string>
   <string name="image_alt_match_unknown">Ingen matchningspoäng för dig än</string>
   <string name="image_alt_media_poster">\"%s\" affisch</string>
   <string name="image_alt_person_headshot">Porträtt av %s</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">Speltid</string>
   <string name="label_report_reason_spam">Spam</string>
   <string name="label_report_reason_spoilers">Spoilers</string>
-  <string name="label_report_reason_support">Supportfråga</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">För kort</string>
   <string name="label_season_short">S%s</string>
   <string name="label_smart_list_ceremony_year">Ceremoniår</string>
   <string name="label_smart_list_compare_view">Välj vilken version som ska visas</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">iOS-app</string>
   <string name="link_label_open_preview_feature">Öppna %s</string>
   <string name="link_label_open_review">Öppna recension av %s</string>
+  <string name="link_label_promotion_vip">%1$s: få VIP för %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt-status</string>
   <string name="link_label_view_social_activities">Visa sociala aktiviteter för %s</string>
@@ -1574,7 +1574,7 @@
   <string name="match_label_soulmates">Själsfränder</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Matchning:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Öppna matchningsdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Öppna matchningsdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beräknar kompatibilitetspoäng</string>
   <string name="match_tier_good_fit">Bra match</string>
   <string name="match_tier_maybe">Kanske</string>
@@ -1896,13 +1896,15 @@
   <string name="tag_media_sync_webhook_only">Endast Webhook</string>
   <string name="tag_mixtape_different_mood">Annan känsla</string>
   <string name="tag_mixtape_kept">Behållen</string>
-  <string name="tag_mixtape_match">%s%% matchning</string>
+  <string name="tag_mixtape_match">%s% matchning</string>
   <string name="tag_mixtape_tap_details">Tryck för detaljer</string>
   <string name="tag_text_award_nominee">Nominerad</string>
   <string name="tag_text_award_pending">Nominerad</string>
   <string name="tag_text_award_won">Vann</string>
   <string name="tag_text_blocked_user">Blockerad</string>
   <string name="tag_text_deal_price">Första 2 åren</string>
+  <string name="tag_text_deal_price_first_month">Första månaden</string>
+  <string name="tag_text_deal_price_first_year">Första året</string>
   <string name="tag_text_dropped">Avbruten</string>
   <string name="tag_text_emails_always_on">Alltid på</string>
   <string name="tag_text_episodes">Avsnitt</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">Ditt bibliotek</string>
   <string name="tag_text_vip_cancel_offer">Innan du går · endast en gång</string>
   <string name="tag_text_vip_cancel_reason">Innan du går</string>
+  <string name="tag_text_vip_deal_limited_offer">Tidsbegränsat erbjudande</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal till kort-erbjudande</string>
   <string name="tag_text_vip_preview">VIP-förhandsvisning</string>
   <string name="tag_text_watch_count">Visningar</string>
@@ -2200,7 +2203,7 @@
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hype_lists">En av de mest listade kommande titlarna</string>
-  <string name="text_hype_lists_badge">Topp %s%%</string>
+  <string name="text_hype_lists_badge">Topp %s%</string>
   <string name="text_hype_lists_detail">Folk fortsätter lägga till den på sina listor</string>
   <string name="text_hype_out_on">Släpps %s</string>
   <string name="text_hype_series_about">Ungefär som du brukar</string>
@@ -2292,7 +2295,7 @@
   <string name="text_match_basis_free">Din poäng är gratis. Skälen bakom är en VIP-funktion.</string>
   <string name="text_match_basis_history">Baserat på vad du sett, betygsatt och favoritmarkerat.</string>
   <string name="text_match_because_liked">Eftersom du gillade</string>
-  <string name="text_match_better_than">Bättre matchning för dig än %d %% av titlarna</string>
+  <string name="text_match_better_than">Bättre matchning för dig än %d % av titlarna</string>
   <string name="text_match_not_enough_data">Inte tillräckligt med data för att matcha detta med dig än.</string>
   <string name="text_match_rating_liked">Gillad på Trakt</string>
   <string name="text_match_rating_loved">Älskad på Trakt</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">Privat</string>
   <string name="text_private_account">Privat konto</string>
   <string name="text_private_profile_description">Som om det inte redan var tillräckligt dolt. %ss hemligheter förblir deras egna.</string>
+  <string name="text_promotion_chip_price">för endast <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s <b>VIP</b></string>
+  <string name="text_promotion_ends_on">Slutar %s</string>
+  <string name="text_promotion_ends_today">Slutar idag, %s</string>
+  <string name="text_promotion_offer_headline">%1$s VIP för endast %2$s</string>
+  <string name="text_promotion_offer_pitch">Det är bara %s i månaden!</string>
   <string name="text_rate_prompt_1">Vad tyckte du om den?</string>
   <string name="text_rate_prompt_2">Din dom?</string>
   <string name="text_rate_prompt_3">Värt att se?</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">Tema</string>
   <string name="text_this_month">Denna månad</string>
   <string name="text_this_year">I år</string>
+  <string name="text_ticket_admit_one">Gäller för en</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">År %s</string>
   <string name="text_titles_selected">%s valda</string>
   <string name="text_today_activities_one">1 aktivitet</string>
   <string name="text_today_activities_other">%d aktiviteter</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 år VIP</string>
   <string name="text_vip_anniversary_title_other">%s år VIP</string>
   <string name="text_vip_billed_biyearly">Faktureras vartannat år</string>
+  <string name="text_vip_billed_deal_first_month">%1$s för din första månad, sedan %2$s per månad</string>
   <string name="text_vip_billed_deal_first_term">%1$s för dina första 2 år, sedan %2$s varannat år</string>
+  <string name="text_vip_billed_deal_first_year">%1$s för ditt första år, sedan %2$s per år</string>
   <string name="text_vip_billing_cycle_monthly">1 månad</string>
   <string name="text_vip_billing_cycle_year">%s år</string>
   <string name="text_vip_built_to_last">Byggd för att hålla</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Anpassad API-infrastruktur för en massiv global användarbas</string>
   <string name="text_vip_costs_metadata">Uppdaterad metadata, bilder och undertexter</string>
   <string name="text_vip_costs_team">Teamet som håller allt igång</string>
+  <string name="text_vip_deal_limited_offer">%1$s idag för dina första 2 år, sedan %2$s vartannat år. Rabatten tillämpas i kassan.</string>
   <string name="text_vip_deal_or_standard_plan">Jämför alla planer</string>
   <string name="text_vip_deal_paypal_switch">%1$s betalas i förskott för 2 år, förnyas sedan automatiskt för %2$s varannat år. Rabatt tillämpas i kassan. Du behåller din återstående VIP-tid; vi avbryter PayPal automatiskt efter kassan.</string>
   <string name="text_vip_deal_term">2 år VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">De streckade områdena visar din potential med VIP</string>
   <string name="text_vip_make_it_official">Gör det officiellt!</string>
   <string name="text_vip_manage_failed_title">Kunde inte öppna dina prenumerationsinställningar</string>
+  <string name="text_vip_offer_ended_message">Priserna har uppdaterats. Ta en titt till innan du fortsätter.</string>
+  <string name="text_vip_offer_ended_title">Erbjudandet har gått ut</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Kreditkort</string>
   <string name="text_vip_payment_method_google">Google Play</string>
@@ -3236,7 +3253,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andraplats</string>
   <string name="yir_2026_preview_title">Personaförhandsvisning</string>
-  <string name="yir_2026_rarity">Endast %1$d%% är %2$s</string>
+  <string name="yir_2026_rarity">Endast %1$d% är %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litegrann %s</string>
   <string name="yir_2026_reel_and_you_are">Och du är</string>
   <string name="yir_2026_reel_but_mostly">Men mestadels</string>

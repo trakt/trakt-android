@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">%s neu anordnen</string>
   <string name="button_label_report_comment">Rezension melden</string>
   <string name="button_label_report_import_problem">Ein Problem mit diesem Import an das Trakt-Team melden</string>
-  <string name="button_label_report_list">Melden %s</string>
   <string name="button_label_report_media">Melden %s</string>
   <string name="button_label_report_person">Melden %s</string>
   <string name="button_label_report_search">Melden, dass Suchergebnisse fehlen oder falsch sind</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">Abgebrochen</string>
   <string name="button_text_progress_ended">Beendet</string>
   <string name="button_text_progress_in_progress">Laufend</string>
+  <string name="button_text_promotion_claim">Angebot sichern</string>
   <string name="button_text_raw_export">Jetzt exportieren</string>
   <string name="button_text_recap_show_anyway">Trotzdem anzeigen</string>
   <string name="button_text_recent_comments">Neueste</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">Am %s verlieren Sie</string>
   <string name="header_vip_cancel_offer">Oder bleiben Sie weitere 2 Jahre</string>
   <string name="header_vip_cancel_reason">Warum möchten Sie gehen?</string>
+  <string name="header_vip_deal_limited_offer">2 Jahre VIP für nur %s</string>
   <string name="header_vip_deal_paypal_switch">Wechsle zu Karte. Erhalte 2 Jahre VIP für %s</string>
   <string name="header_vip_paypal_switch">Auf Kreditkarte wechseln</string>
   <string name="header_vip_streak">VIP-Serie</string>
@@ -1162,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Kann es kaum erwarten</string>
   <string name="hype_tier_looking_good">Sieht gut aus</string>
   <string name="image_alt_comment_gif">Dem Kommentar angehängtes GIF</string>
-  <string name="image_alt_hype_score">%d%% Hype für dich</string>
+  <string name="image_alt_hype_score">%d% Hype für dich</string>
   <string name="image_alt_hype_unknown">Noch kein Hype-Score für dich</string>
   <string name="image_alt_list_preview_poster">Poster für einen Eintrag in %s</string>
-  <string name="image_alt_match_score">%d%% Übereinstimmung für dich</string>
+  <string name="image_alt_match_score">%d% Übereinstimmung für dich</string>
   <string name="image_alt_match_unknown">Noch kein Match-Score für dich</string>
   <string name="image_alt_media_poster">Poster von \"%s\"</string>
   <string name="image_alt_person_headshot">Porträt von %s</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">Laufzeit</string>
   <string name="label_report_reason_spam">Spam</string>
   <string name="label_report_reason_spoilers">Spoiler</string>
-  <string name="label_report_reason_support">Support-Frage</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">Zu kurz</string>
   <string name="label_season_short">S%s</string>
   <string name="label_smart_list_ceremony_year">Verleihungsjahr</string>
   <string name="label_smart_list_compare_view">Wählen Sie, welche Version angezeigt werden soll</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">iOS App</string>
   <string name="link_label_open_preview_feature">%s öffnen</string>
   <string name="link_label_open_review">Rezension von %s öffnen</string>
+  <string name="link_label_promotion_vip">%1$s: Sichere dir VIP für %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt-Status</string>
   <string name="link_label_view_social_activities">Soziale Aktivitäten für %s anzeigen</string>
@@ -1574,7 +1574,7 @@
   <string name="match_label_soulmates">Seelenverwandte</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Übereinstimmung:</string>
-  <string name="match_pill_aria_label">%1$d%% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
+  <string name="match_pill_aria_label">%1$d% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
   <string name="match_pill_loading_aria_label">Übereinstimmungswert wird berechnet</string>
   <string name="match_tier_good_fit">Passt gut</string>
   <string name="match_tier_maybe">Vielleicht</string>
@@ -1896,13 +1896,15 @@
   <string name="tag_media_sync_webhook_only">Nur Webhook</string>
   <string name="tag_mixtape_different_mood">Andere Stimmung</string>
   <string name="tag_mixtape_kept">Behalten</string>
-  <string name="tag_mixtape_match">%s%% Übereinstimmung</string>
+  <string name="tag_mixtape_match">%s% Übereinstimmung</string>
   <string name="tag_mixtape_tap_details">Für Details tippen</string>
   <string name="tag_text_award_nominee">Nominiert</string>
   <string name="tag_text_award_pending">Nominiert</string>
   <string name="tag_text_award_won">Gewonnen</string>
   <string name="tag_text_blocked_user">Blockiert</string>
   <string name="tag_text_deal_price">Erste 2 Jahre</string>
+  <string name="tag_text_deal_price_first_month">Erster Monat</string>
+  <string name="tag_text_deal_price_first_year">Erstes Jahr</string>
   <string name="tag_text_dropped">Abgebrochen</string>
   <string name="tag_text_emails_always_on">Immer aktiv</string>
   <string name="tag_text_episodes">Episoden</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">Ihre Bibliothek</string>
   <string name="tag_text_vip_cancel_offer">Bevor Sie gehen · einmalig</string>
   <string name="tag_text_vip_cancel_reason">Bevor Sie gehen</string>
+  <string name="tag_text_vip_deal_limited_offer">Zeitlich begrenztes Angebot</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal zu Karte Angebot</string>
   <string name="tag_text_vip_preview">VIP Vorschau</string>
   <string name="tag_text_watch_count">Gesehen</string>
@@ -2200,7 +2203,7 @@
   <string name="text_history_sync_filter">Synchronisierungs-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synchronisierungs-ID %1$d (%2$s)</string>
   <string name="text_hype_lists">Einer der meistgelisteten kommenden Titel</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">Wird laufend zu Listen hinzugefügt</string>
   <string name="text_hype_out_on">Ab %s</string>
   <string name="text_hype_series_about">Etwa wie du sonst bewertest</string>
@@ -2292,7 +2295,7 @@
   <string name="text_match_basis_free">Dein Score ist kostenlos. Die Gründe dahinter sind ein VIP-Feature.</string>
   <string name="text_match_basis_history">Basierend auf dem, was du gesehen, bewertet und favorisiert hast.</string>
   <string name="text_match_because_liked">Weil dir Folgendes gefallen hat</string>
-  <string name="text_match_better_than">Passt besser zu dir als %d%% der Titel</string>
+  <string name="text_match_better_than">Passt besser zu dir als %d% der Titel</string>
   <string name="text_match_not_enough_data">Noch nicht genügend Daten, um dies für dich abzugleichen.</string>
   <string name="text_match_rating_liked">Auf Trakt beliebt</string>
   <string name="text_match_rating_loved">Auf Trakt geliebt</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">Privat</string>
   <string name="text_private_account">Privates Konto</string>
   <string name="text_private_profile_description">Als gäbe es nicht schon genug Verstecktes, bleiben die Geheimnisse von %s ihre/seine eigenen.</string>
+  <string name="text_promotion_chip_price">für nur <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s <b>VIP</b></string>
+  <string name="text_promotion_ends_on">Endet am %s</string>
+  <string name="text_promotion_ends_today">Endet heute um %s</string>
+  <string name="text_promotion_offer_headline">%1$s VIP für nur %2$s</string>
+  <string name="text_promotion_offer_pitch">Das sind nur %s im Monat!</string>
   <string name="text_rate_prompt_1">Wie hat es Ihnen gefallen?</string>
   <string name="text_rate_prompt_2">Ihr Urteil?</string>
   <string name="text_rate_prompt_3">Sehenswert?</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">Design</string>
   <string name="text_this_month">Diesen Monat</string>
   <string name="text_this_year">Dieses Jahr</string>
+  <string name="text_ticket_admit_one">Gültig für 1 Person</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">Jahr %s</string>
   <string name="text_titles_selected">%s ausgewählt</string>
   <string name="text_today_activities_one">1 Aktivität</string>
   <string name="text_today_activities_other">%d Aktivitäten</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 Jahr VIP</string>
   <string name="text_vip_anniversary_title_other">%s Jahre VIP</string>
   <string name="text_vip_billed_biyearly">Abrechnung alle 2 Jahre</string>
+  <string name="text_vip_billed_deal_first_month">%1$s für deinen ersten Monat, danach %2$s monatlich</string>
   <string name="text_vip_billed_deal_first_term">%1$s für deine ersten 2 Jahre, dann %2$s alle 2 Jahre</string>
+  <string name="text_vip_billed_deal_first_year">%1$s für dein erstes Jahr, danach %2$s jährlich</string>
   <string name="text_vip_billing_cycle_monthly">1 Monat</string>
   <string name="text_vip_billing_cycle_year">%s Jahr</string>
   <string name="text_vip_built_to_last">Langlebig konzipiert</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Benutzerdefinierte API-Infrastruktur für eine riesige globale Nutzerbasis</string>
   <string name="text_vip_costs_metadata">Aktuelle Metadaten, Bilder und Untertitel</string>
   <string name="text_vip_costs_team">Das Team, das alles am Laufen hält</string>
+  <string name="text_vip_deal_limited_offer">%1$s heute für deine ersten 2 Jahre, danach %2$s alle 2 Jahre. Rabatt wird beim Bezahlen angewendet.</string>
   <string name="text_vip_deal_or_standard_plan">Alle Pläne vergleichen</string>
   <string name="text_vip_deal_paypal_switch">%1$s im Voraus für 2 Jahre, dann automatische Verlängerung für %2$s alle 2 Jahre. Rabatt wird beim Bezahlen angewendet. Deine verbleibende VIP-Zeit behältst du; PayPal wird nach dem Bezahlen automatisch gekündigt.</string>
   <string name="text_vip_deal_term">2 Jahre VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">Die gestrichelten Bereiche zeigen dein Potenzial mit VIP</string>
   <string name="text_vip_make_it_official">Offiziell: Machen Sie es möglich!</string>
   <string name="text_vip_manage_failed_title">Ihre Abonnementeinstellungen konnten nicht geöffnet werden</string>
+  <string name="text_vip_offer_ended_message">Die Preise wurden aktualisiert. Sieh noch einmal nach, bevor du fortfährst.</string>
+  <string name="text_vip_offer_ended_title">Dieses Angebot ist abgelaufen</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Kreditkarte</string>
   <string name="text_vip_payment_method_google">Google Play</string>
@@ -3236,7 +3253,7 @@
   <string name="yir_2026_preview_runner_none">Keine (kein Hybrid)</string>
   <string name="yir_2026_preview_runner_up">Zweitplatzierter</string>
   <string name="yir_2026_preview_title">Persona-Vorschau</string>
-  <string name="yir_2026_rarity">Nur %1$d%% sind %2$s</string>
+  <string name="yir_2026_rarity">Nur %1$d% sind %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Ein bisschen %s</string>
   <string name="yir_2026_reel_and_you_are">Und du bist</string>
   <string name="yir_2026_reel_but_mostly">Aber hauptsächlich</string>

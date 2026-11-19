@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">Αναδιάταξη %s</string>
   <string name="button_label_report_comment">Αναφορά κριτικής</string>
   <string name="button_label_report_import_problem">Αναφορά προβλήματος με αυτή την εισαγωγή στην ομάδα του Trakt</string>
-  <string name="button_label_report_list">Αναφορά %s</string>
   <string name="button_label_report_media">Αναφορά %s</string>
   <string name="button_label_report_person">Αναφορά %s</string>
   <string name="button_label_report_search">Αναφέρετε ότι τα αποτελέσματα αναζήτησης λείπουν ή είναι λάθος</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">Εγκαταλείφθηκε</string>
   <string name="button_text_progress_ended">Ολοκληρώθηκε</string>
   <string name="button_text_progress_in_progress">Σε εξέλιξη</string>
+  <string name="button_text_promotion_claim">Απόκτηση προσφοράς</string>
   <string name="button_text_raw_export">Εξαγωγή τώρα</string>
   <string name="button_text_recap_show_anyway">Εμφάνιση παρ\' όλα αυτά</string>
   <string name="button_text_recent_comments">Πρόσφατα</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">Στις %s χάνετε</string>
   <string name="header_vip_cancel_offer">Ή παραμείνετε για 2 ακόμη χρόνια</string>
   <string name="header_vip_cancel_reason">Γιατί φεύγετε;</string>
+  <string name="header_vip_deal_limited_offer">2 έτη VIP μόνο με %s</string>
   <string name="header_vip_deal_paypal_switch">Αλλαγή σε κάρτα. Αποκτήστε 2 έτη VIP με %s</string>
   <string name="header_vip_paypal_switch">Μετάβαση σε πιστωτική κάρτα</string>
   <string name="header_vip_streak">Σερί VIP</string>
@@ -1162,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Ανυπομονώ</string>
   <string name="hype_tier_looking_good">Φαίνεται καλό</string>
   <string name="image_alt_comment_gif">GIF συνημμένο στο σχόλιο</string>
-  <string name="image_alt_hype_score">%d%% hype για εσάς</string>
+  <string name="image_alt_hype_score">%d% hype για εσάς</string>
   <string name="image_alt_hype_unknown">Δεν υπάρχει ακόμη βαθμολογία hype για εσάς</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
-  <string name="image_alt_match_score">%d%% αντιστοιχία για εσάς</string>
+  <string name="image_alt_match_score">%d% αντιστοιχία για εσάς</string>
   <string name="image_alt_match_unknown">Δεν υπάρχει ακόμη βαθμολογία αντιστοίχισης για εσάς</string>
   <string name="image_alt_media_poster">Αφίσα του \"%s\"</string>
   <string name="image_alt_person_headshot">Φωτογραφία προσώπου του %s</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">Διάρκεια</string>
   <string name="label_report_reason_spam">Ανεπιθύμητο (Spam)</string>
   <string name="label_report_reason_spoilers">Spoilers</string>
-  <string name="label_report_reason_support">Ερώτηση υποστήριξης</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">Πολύ σύντομο</string>
   <string name="label_season_short">Σ%s</string>
   <string name="label_smart_list_ceremony_year">Έτος τελετής</string>
   <string name="label_smart_list_compare_view">Επιλέξτε ποια έκδοση θα εμφανιστεί</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">Εφαρμογή iOS</string>
   <string name="link_label_open_preview_feature">Άνοιγμα %s</string>
   <string name="link_label_open_review">Άνοιγμα κριτικής από %s</string>
+  <string name="link_label_promotion_vip">%1$s: αποκτήστε VIP με %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Κατάσταση Trakt</string>
   <string name="link_label_view_social_activities">Προβολή κοινωνικών δραστηριοτήτων για το/την %s</string>
@@ -1574,7 +1574,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="match_tier_good_fit">Καλό ταίριασμα</string>
   <string name="match_tier_maybe">Ίσως</string>
@@ -1896,13 +1896,15 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_award_nominee">Υποψηφιότητα</string>
   <string name="tag_text_award_pending">Υποψήφιο</string>
   <string name="tag_text_award_won">Νίκη</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
+  <string name="tag_text_deal_price_first_month">Πρώτος μήνας</string>
+  <string name="tag_text_deal_price_first_year">Πρώτο έτος</string>
   <string name="tag_text_dropped">Εγκαταλείφθηκε</string>
   <string name="tag_text_emails_always_on">Πάντα ενεργό</string>
   <string name="tag_text_episodes">Επεισόδια</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">Η βιβλιοθήκη σας</string>
   <string name="tag_text_vip_cancel_offer">Πριν φύγετε · μία μόνο φορά</string>
   <string name="tag_text_vip_cancel_reason">Πριν φύγετε</string>
+  <string name="tag_text_vip_deal_limited_offer">Προσφορά περιορισμένου χρόνου</string>
   <string name="tag_text_vip_deal_paypal_switch">Προσφορά PayPal σε κάρτα</string>
   <string name="tag_text_vip_preview">VIP Προεπισκόπηση</string>
   <string name="tag_text_watch_count">Αριθμός προβολών</string>
@@ -2200,7 +2203,7 @@
   <string name="text_history_sync_filter">Αναγνωριστικό συγχρονισμού %d</string>
   <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
   <string name="text_hype_lists">Από τους επερχόμενους τίτλους στις περισσότερες λίστες</string>
-  <string name="text_hype_lists_badge">Κορυφαίο %s%%</string>
+  <string name="text_hype_lists_badge">Κορυφαίο %s%</string>
   <string name="text_hype_lists_detail">Ο κόσμος συνεχίζει να το προσθέτει στις λίστες του</string>
   <string name="text_hype_out_on">Κυκλοφορεί %s</string>
   <string name="text_hype_series_about">Περίπου στα συνηθισμένα σας</string>
@@ -2292,7 +2295,7 @@
   <string name="text_match_basis_free">Η βαθμολογία σας είναι δωρεάν. Οι λόγοι πίσω από αυτήν είναι λειτουργία VIP.</string>
   <string name="text_match_basis_history">Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα.</string>
   <string name="text_match_because_liked">Επειδή σας άρεσε</string>
-  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d%% των τίτλων</string>
+  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d% των τίτλων</string>
   <string name="text_match_not_enough_data">Δεν υπάρχουν ακόμη αρκετά δεδομένα για να αντιστοιχιστεί σε εσάς.</string>
   <string name="text_match_rating_liked">Άρεσε στο Trakt</string>
   <string name="text_match_rating_loved">Αγαπήθηκε στο Trakt</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">Ιδιωτικό</string>
   <string name="text_private_account">Ιδιωτικός λογαριασμός</string>
   <string name="text_private_profile_description">Σαν να μην υπήρχαν αρκετά κρυμμένα ήδη, τα μυστικά του/της %s παραμένουν δικά του/της.</string>
+  <string name="text_promotion_chip_price">μόνο με <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s <b>VIP</b></string>
+  <string name="text_promotion_ends_on">Λήγει στις %s</string>
+  <string name="text_promotion_ends_today">Λήγει σήμερα, %s</string>
+  <string name="text_promotion_offer_headline">%1$s VIP μόνο με %2$s</string>
+  <string name="text_promotion_offer_pitch">Δηλαδή μόνο %s τον μήνα!</string>
   <string name="text_rate_prompt_1">Πώς σας φάνηκε;</string>
   <string name="text_rate_prompt_2">Η ετυμηγορία σας;</string>
   <string name="text_rate_prompt_3">Αξίζει την παρακολούθηση;</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">Θέμα</string>
   <string name="text_this_month">Αυτόν τον μήνα</string>
   <string name="text_this_year">Φέτος</string>
+  <string name="text_ticket_admit_one">Είσοδος ενός ατόμου</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">Έτος %s</string>
   <string name="text_titles_selected">%s επιλέχθηκαν</string>
   <string name="text_today_activities_one">1 δραστηριότητα</string>
   <string name="text_today_activities_other">%d δραστηριότητες</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 έτος VIP</string>
   <string name="text_vip_anniversary_title_other">%s έτη VIP</string>
   <string name="text_vip_billed_biyearly">Χρέωση ανά 2 έτη</string>
+  <string name="text_vip_billed_deal_first_month">%1$s για τον πρώτο σας μήνα, κατόπιν %2$s μηνιαίως</string>
   <string name="text_vip_billed_deal_first_term">%1$s για τα πρώτα 2 έτη σας, κατόπιν %2$s κάθε 2 έτη</string>
+  <string name="text_vip_billed_deal_first_year">%1$s για το πρώτο σας έτος, κατόπιν %2$s ετησίως</string>
   <string name="text_vip_billing_cycle_monthly">1 μήνας</string>
   <string name="text_vip_billing_cycle_year">%s έτος</string>
   <string name="text_vip_built_to_last">Κατασκευασμένο για να αντέχει</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Προσαρμοσμένη υποδομή API για μια τεράστια παγκόσμια βάση χρηστών</string>
   <string name="text_vip_costs_metadata">Επικαιροποιημένα μεταδεδομένα, εικόνες και υπότιτλοι</string>
   <string name="text_vip_costs_team">Η ομάδα που τα διατηρεί όλα σε λειτουργία</string>
+  <string name="text_vip_deal_limited_offer">%1$s σήμερα για τα πρώτα 2 έτη σας, κατόπιν %2$s κάθε 2 έτη. Η έκπτωση εφαρμόζεται στο ταμείο.</string>
   <string name="text_vip_deal_or_standard_plan">Σύγκριση όλων των πακέτων</string>
   <string name="text_vip_deal_paypal_switch">%1$s προκαταβολικά για 2 έτη, κατόπιν αυτόματη ανανέωση στα %2$s κάθε 2 έτη. Η έκπτωση εφαρμόζεται στο ταμείο. Διατηρείτε τον υπόλοιπο χρόνο VIP. Ακυρώνουμε αυτόματα το PayPal μετά την ολοκλήρωση της αγοράς.</string>
   <string name="text_vip_deal_term">2 έτη VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">Οι διακεκομμένες περιοχές δείχνουν τις δυνατότητές σας με το VIP</string>
   <string name="text_vip_make_it_official">Επίσημο, το φτιάχνεις!</string>
   <string name="text_vip_manage_failed_title">Δεν ήταν δυνατή η πρόσβαση στις ρυθμίσεις συνδρομής σας</string>
+  <string name="text_vip_offer_ended_message">Οι τιμές ενημερώθηκαν. Ελέγξτε ξανά πριν συνεχίσετε.</string>
+  <string name="text_vip_offer_ended_title">Αυτή η προσφορά έχει λήξει</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Πιστωτική κάρτα</string>
   <string name="text_vip_payment_method_google">Google Play</string>
@@ -3236,7 +3253,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>
