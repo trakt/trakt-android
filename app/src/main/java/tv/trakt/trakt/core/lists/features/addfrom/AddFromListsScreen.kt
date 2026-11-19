@@ -199,9 +199,7 @@ private fun AddFromListsContent(
                         .weight(1F)
                         .fillMaxWidth(),
                 ) {
-                    FilmProgressIndicator(
-                        modifier = Modifier.size(32.dp),
-                    )
+                    FilmProgressIndicator()
                 }
             }
         }
@@ -423,7 +421,7 @@ private fun ItemsList(
     val items = state.items.takeIf { state.listedKeys != null }.orEmpty()
 
     LazyColumn(
-        verticalArrangement = spacedBy(2.dp),
+        verticalArrangement = spacedBy(4.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,
         modifier = modifier,
@@ -490,7 +488,6 @@ private fun OutlineButton(
         textStyle = TraktTheme.typography.buttonTertiary,
         height = 32.dp,
         contentPadding = 18.dp,
-        iconSize = 14.dp,
         loading = loading,
         enabled = !loading,
         border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
@@ -513,6 +510,7 @@ private fun ItemsPlaceholder(state: AddFromListsState) {
         when {
             state.error == null && (state.loading.isLoading || state.items == null || state.listedKeys == null) -> {
                 FilmProgressIndicator(
+                    strokeWidth = 4.dp,
                     modifier = Modifier.size(32.dp),
                 )
             }
@@ -679,6 +677,20 @@ private fun AddFromListsSource.name(): String {
     }
 }
 
+private fun AddFromListsResult.toMessage(
+    resources: Resources,
+    listName: String,
+): String {
+    return when (this) {
+        is AddFromListsResult.Added -> when (count) {
+            1 -> resources.getString(R.string.text_added_title_to_list, listName)
+            else -> resources.getString(R.string.text_added_titles_to_list, count.toString(), listName)
+        }
+        is AddFromListsResult.LimitReached -> error.toUserMessage(resources)
+        is AddFromListsResult.Failed -> resources.getString(R.string.text_failed_to_add_titles, listName)
+    }
+}
+
 @PreviewTraktLightDark
 @Composable
 private fun Preview() {
@@ -743,19 +755,5 @@ private fun EmptyPreview() {
                 ready = true,
             ),
         )
-    }
-}
-
-private fun AddFromListsResult.toMessage(
-    resources: Resources,
-    listName: String,
-): String {
-    return when (this) {
-        is AddFromListsResult.Added -> when (count) {
-            1 -> resources.getString(R.string.text_added_title_to_list, listName)
-            else -> resources.getString(R.string.text_added_titles_to_list, count.toString(), listName)
-        }
-        is AddFromListsResult.LimitReached -> error.toUserMessage(resources)
-        is AddFromListsResult.Failed -> resources.getString(R.string.text_failed_to_add_titles, listName)
     }
 }

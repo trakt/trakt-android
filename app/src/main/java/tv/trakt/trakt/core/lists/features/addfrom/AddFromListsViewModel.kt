@@ -103,6 +103,7 @@ internal class AddFromListsViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { LoadingState.Loading }
+
                 val user = sessionManager.getProfile()
                 if (user == null) {
                     loadingState.update { LoadingState.Done }
