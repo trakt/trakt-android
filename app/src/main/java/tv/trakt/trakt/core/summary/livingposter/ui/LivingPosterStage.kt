@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.livingposter.ui
 
+import android.view.Surface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -22,9 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -34,14 +37,23 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.transformations
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.model.livingposter.LivingPoster
 import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterParticle
 import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterStackItem
+import tv.trakt.trakt.core.summary.livingposter.model.Spring
+import tv.trakt.trakt.core.summary.livingposter.model.Tilt
 import tv.trakt.trakt.core.summary.livingposter.model.toStack
 
 private val cardShape = RoundedCornerShape(24.dp)
 
 private const val LAYER_MAX_SIZE_PX = 1000
+private const val LAYER_TRAVEL = 0.006F
+private const val MAX_LAYER_SHIFT = 1F
+private const val PLANE_SCALE = 1F + 2F * LAYER_TRAVEL * MAX_LAYER_SHIFT
+private const val TILT_STIFFNESS = 140F
+private const val TILT_DAMPING = 15F
+private const val MAX_FRAME_SECONDS = 1F / 30F
 private const val PARTICLE_BASE_SEED = 42
 private const val PARTICLE_SEED_STEP = 101
 
@@ -94,19 +106,25 @@ internal fun LivingPosterStage(
     ) {
         if (!ready) return@Canvas
 
-        val frame = LivingPosterFrame(seconds = motion.seconds)
+        val frame = LivingPosterFrame(
+            tiltX = motion.tiltX,
+            tiltY = motion.tiltY,
+            seconds = motion.seconds,
+        )
 
         drawRect(Color.Black)
-        drawStack(
-            stack = stack,
-            frame = frame,
-            layers = layerPainters,
-            shadows = readyShadows,
-            masks = readyMasks,
-            particles = particles,
-        )
+        withTransform({ scale(PLANE_SCALE, PLANE_SCALE, pivot = center) }) {
+            drawStack(
+                stack = stack,
+                frame = frame,
+                layers = layerPainters,
+                shadows = readyShadows,
+                masks = readyMasks,
+                particles = particles,
+            )
+        }
         drawVignette()
-        drawGlare()
+        drawGlare(frame)
     }
 }
 
@@ -119,30 +137,42 @@ private fun DrawScope.drawStack(
     particles: Map<String, List<LivingPosterParticle>>,
 ) {
     stack.forEach { item ->
-        when (item) {
-            is LivingPosterStackItem.Layer -> {
-                shadows[item.key]?.let { drawCastShadow(it) }
-                layers[item.key]?.let { drawCover(it) }
-            }
+        val shift = item.shift.coerceIn(-MAX_LAYER_SHIFT, MAX_LAYER_SHIFT)
+        translate(
+            left = frame.tiltX * shift * -LAYER_TRAVEL * size.width,
+            top = frame.tiltY * shift * -LAYER_TRAVEL * size.height,
+        ) {
+            when (item) {
+                is LivingPosterStackItem.Layer -> {
+                    shadows[item.key]?.let { drawCastShadow(it, frame) }
+                    layers[item.key]?.let { drawCover(it) }
+                }
 
-            is LivingPosterStackItem.Effect -> {
-                if (item.maskUrl != null && masks[item.key] == null) return@forEach
-                drawEffect(item.effect, masks[item.key], frame)
-            }
+                is LivingPosterStackItem.Effect -> {
+                    if (item.maskUrl != null && masks[item.key] == null) return@translate
+                    drawEffect(item.effect, masks[item.key], frame)
+                }
 
-            is LivingPosterStackItem.Particles -> {
-                drawParticles(
-                    particles = particles[item.key].orEmpty(),
-                    isScreen = item.isScreen,
-                    seconds = frame.seconds,
-                )
+                is LivingPosterStackItem.Particles -> {
+                    drawParticles(
+                        particles = particles[item.key].orEmpty(),
+                        isScreen = item.isScreen,
+                        seconds = frame.seconds,
+                    )
+                }
             }
         }
     }
 }
 
-private fun DrawScope.drawCastShadow(shadow: Painter) {
-    translate(top = 8.dp.toPx()) {
+private fun DrawScope.drawCastShadow(
+    shadow: Painter,
+    frame: LivingPosterFrame,
+) {
+    translate(
+        left = (frame.tiltX * -10F).dp.toPx(),
+        top = (8F + frame.tiltY * -6F).dp.toPx(),
+    ) {
         drawCover(shadow, alpha = 0.25F)
     }
 }
@@ -193,25 +223,49 @@ private fun rememberLayerPainter(
 
 @Stable
 private class LivingPosterMotion {
+    var tiltX by mutableFloatStateOf(0F)
+    var tiltY by mutableFloatStateOf(0F)
     var seconds by mutableFloatStateOf(0F)
 }
 
-/** Advances the effect clock while the screen is started. */
+/** Advances the effect clock and follows the gyroscope tilt while the screen is started. */
 @Composable
 private fun rememberLivingPosterMotion(): LivingPosterMotion {
     val motion = remember { LivingPosterMotion() }
+    val context = LocalContext.current
+    val displayRotation = LocalView.current.display?.rotation ?: Surface.ROTATION_0
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    LaunchedEffect(motion, lifecycle) {
+    LaunchedEffect(motion, lifecycle, displayRotation) {
         var elapsedMillis = (motion.seconds * 1000F).toLong()
 
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            var previousMillis: Long? = null
+            var target = Tilt()
+            var springX = Spring()
+            var springY = Spring()
 
+            launch {
+                var previousNanos: Long? = null
+                context.screenRotationRates(displayRotation).collect { rate ->
+                    val seconds = (rate.timestampNanos - (previousNanos ?: rate.timestampNanos)) / 1E9F
+                    previousNanos = rate.timestampNanos
+                    target = target.integrate(rate, seconds.coerceAtMost(MAX_FRAME_SECONDS))
+                }
+            }
+
+            var previousMillis: Long? = null
             while (true) {
                 withFrameMillis { millis ->
-                    elapsedMillis += millis - (previousMillis ?: millis)
+                    val deltaMillis = millis - (previousMillis ?: millis)
                     previousMillis = millis
+                    elapsedMillis += deltaMillis
+
+                    val seconds = minOf(MAX_FRAME_SECONDS, deltaMillis / 1000F)
+                    springX = springX.step(target.x, seconds, TILT_STIFFNESS, TILT_DAMPING)
+                    springY = springY.step(target.y, seconds, TILT_STIFFNESS, TILT_DAMPING)
+
+                    motion.tiltX = springX.value
+                    motion.tiltY = springY.value
                     motion.seconds = elapsedMillis / 1000F
                 }
             }
