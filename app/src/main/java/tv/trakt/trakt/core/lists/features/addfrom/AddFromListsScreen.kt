@@ -499,7 +499,7 @@ private fun ItemRow(
             VerticalMediaCard(
                 title = "",
                 imageUrl = item.posterUrl,
-                width = 40.dp,
+                width = 48.dp,
                 corner = 8.dp,
                 more = false,
             )
@@ -568,7 +568,7 @@ private fun Footer(
         horizontalArrangement = spacedBy(16.dp),
         modifier = modifier
             .fillMaxWidth()
-            .shadow(TraktTheme.colors.shadowLarge, FooterShape)
+            .shadow(TraktTheme.colors.shadowSmall, FooterShape)
             .background(TraktTheme.colors.panelCardContainer, FooterShape)
             .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
     ) {
@@ -607,7 +607,7 @@ private fun Footer(
             enabled = state.isAddEnabled,
             loading = state.adding.isLoading,
             onClick = onAddClick,
-            modifier = Modifier.widthIn(min = 120.dp),
+            modifier = Modifier.widthIn(min = 92.dp),
         )
     }
 }
