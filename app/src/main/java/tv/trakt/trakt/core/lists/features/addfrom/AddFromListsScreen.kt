@@ -48,6 +48,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -129,6 +131,8 @@ private fun AddFromListsContent(
     onAddClick: () -> Unit = {},
 ) {
     val bottomInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val density = LocalDensity.current
+    var selectorHalfHeight by remember { mutableStateOf(0.dp) }
 
     Box(
         modifier = modifier
@@ -146,35 +150,42 @@ private fun AddFromListsContent(
                 modifier = Modifier.padding(bottom = 8.dp),
             )
 
-            state.activeSource?.let { activeSource ->
-                SourceSelect(
-                    sources = state.sources,
-                    activeSource = activeSource,
-                    pickedCounts = state.pickedCounts,
-                    alreadyInList = state.alreadyInListCount
-                        .takeIf { it > 0 }
-                        ?.let {
-                            stringResource(
-                                R.string.text_add_from_lists_already_in_list,
-                                it.toString(),
-                                state.listName,
-                            )
-                        },
-                    onSourceClick = onSourceClick,
+            Box(modifier = Modifier.weight(1F)) {
+                ItemsList(
+                    state = state,
+                    onItemClick = onItemClick,
+                    onToggleAllClick = onToggleAllClick,
+                    onLoadMoreClick = onLoadMoreClick,
+                    contentPadding = PaddingValues(
+                        top = selectorHalfHeight + 12.dp,
+                        bottom = bottomInset + FOOTER_CLEARANCE,
+                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = selectorHalfHeight),
                 )
-            }
 
-            ItemsList(
-                state = state,
-                onItemClick = onItemClick,
-                onToggleAllClick = onToggleAllClick,
-                onLoadMoreClick = onLoadMoreClick,
-                contentPadding = PaddingValues(
-                    top = 12.dp,
-                    bottom = bottomInset + FOOTER_CLEARANCE,
-                ),
-                modifier = Modifier.weight(1F),
-            )
+                state.activeSource?.let { activeSource ->
+                    SourceSelect(
+                        sources = state.sources,
+                        activeSource = activeSource,
+                        pickedCounts = state.pickedCounts,
+                        alreadyInList = state.alreadyInListCount
+                            .takeIf { it > 0 }
+                            ?.let {
+                                stringResource(
+                                    R.string.text_add_from_lists_already_in_list,
+                                    it.toString(),
+                                    state.listName,
+                                )
+                            },
+                        onSourceClick = onSourceClick,
+                        modifier = Modifier.onSizeChanged {
+                            selectorHalfHeight = with(density) { (it.height / 2).toDp() }
+                        },
+                    )
+                }
+            }
         }
 
         val bottomColor = TraktTheme.colors.backgroundPrimary
