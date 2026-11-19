@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.home.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.EPISODE
-import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.MOVIE
 import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -18,7 +16,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 
 internal class GetPersonalActivityUseCase(
@@ -51,7 +48,7 @@ internal class GetPersonalActivityUseCase(
     ): ImmutableList<HomeActivityItem> {
         val items = when (filter.mode) {
             Media -> remoteUserSource.getMediaHistory(page, limit, filter)
-                .asyncMap { it.toActivityItem() }
+                .asyncMap(HomeActivityItem::fromDto)
             Shows -> remoteUserSource.getEpisodesHistory(page, limit, filter)
                 .asyncMap {
                     HomeActivityItem.EpisodeItem(
@@ -107,39 +104,5 @@ internal class GetPersonalActivityUseCase(
             }
             .sortedByDescending { it.activityAt }
             .toImmutableList()
-    }
-
-    private fun SyncHistoryItemDto.toActivityItem(): HomeActivityItem {
-        return when (type) {
-            EPISODE -> HomeActivityItem.EpisodeItem(
-                id = id,
-                user = null,
-                userRating = null,
-                activity = action.value,
-                activityAt = watchedAt.toInstant(),
-                episode = Episode.fromDto(
-                    checkNotNull(episode) {
-                        "Episode should not be null if type is EPISODE"
-                    },
-                ),
-                show = Show.fromDto(
-                    checkNotNull(show) {
-                        "Show should not be null if type is EPISODE"
-                    },
-                ),
-            )
-            MOVIE -> HomeActivityItem.MovieItem(
-                id = id,
-                user = null,
-                userRating = null,
-                activity = action.value,
-                activityAt = watchedAt.toInstant(),
-                movie = Movie.fromDto(
-                    checkNotNull(movie) {
-                        "Movie should not be null if type is MOVIE"
-                    },
-                ),
-            )
-        }
     }
 }

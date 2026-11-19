@@ -2,13 +2,14 @@ package tv.trakt.trakt.core.userprofile.sections.history.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -26,79 +27,64 @@ internal class GetUserProfileHistoryUseCase(
         pagination: Pagination,
         filters: GlobalFilter? = null,
     ): ImmutableList<HomeActivityItem> {
-        return coroutineScope {
-            val mode = filters?.mode
+        val userIdParam = userId.value.toString()
 
-            val remoteEpisodesAsync =
-                if (mode == null || mode.isMediaOrShows) {
-                    async {
-                        remoteUserSource.getEpisodesHistory(
-                            userId = userId.value.toString(),
-                            page = pagination.page,
-                            limit = pagination.limit,
-                            filters = filters,
-                        )
-                    }
-                } else {
-                    null
-                }
+        val items = when (filters?.mode) {
+            null, Media -> remoteUserSource.getMediaHistory(
+                userId = userIdParam,
+                page = pagination.page,
+                limit = pagination.limit,
+                filters = filters,
+            ).asyncMap(HomeActivityItem::fromDto)
 
-            val remoteMoviesAsync =
-                if (mode == null || mode.isMediaOrMovies) {
-                    async {
-                        remoteUserSource.getMoviesHistory(
-                            userId = userId.value.toString(),
-                            page = pagination.page,
-                            limit = pagination.limit,
-                            filters = filters,
-                        )
-                    }
-                } else {
-                    null
-                }
+            Shows -> remoteUserSource.getEpisodesHistory(
+                userId = userIdParam,
+                page = pagination.page,
+                limit = pagination.limit,
+                filters = filters,
+            ).asyncMap {
+                HomeActivityItem.EpisodeItem(
+                    id = it.id,
+                    user = null,
+                    userRating = null,
+                    activity = it.action.value,
+                    activityAt = it.watchedAt.toInstant(),
+                    episode = Episode.fromDto(
+                        checkNotNull(it.episode) {
+                            "Episode should not be null if type is EPISODE"
+                        },
+                    ),
+                    show = Show.fromDto(
+                        checkNotNull(it.show) {
+                            "Show should not be null if type is SHOW"
+                        },
+                    ),
+                )
+            }
 
-            val remoteEpisodes = remoteEpisodesAsync?.await()
-                ?.asyncMap {
-                    HomeActivityItem.EpisodeItem(
-                        id = it.id,
-                        user = null,
-                        userRating = null,
-                        activity = it.action.value,
-                        activityAt = it.watchedAt.toInstant(),
-                        episode = Episode.fromDto(
-                            checkNotNull(it.episode) {
-                                "Episode should not be null if type is EPISODE"
-                            },
-                        ),
-                        show = Show.fromDto(
-                            checkNotNull(it.show) {
-                                "Show should not be null if type is SHOW"
-                            },
-                        ),
-                    )
-                }
-                ?: emptyList()
-
-            val remoteMovies = remoteMoviesAsync?.await()
-                ?.asyncMap {
-                    HomeActivityItem.MovieItem(
-                        id = it.id,
-                        user = null,
-                        userRating = null,
-                        activity = it.action.value,
-                        activityAt = it.watchedAt.toInstant(),
-                        movie = Movie.fromDto(
-                            checkNotNull(it.movie) {
-                                "Movie should not be null if type is MOVIE"
-                            },
-                        ),
-                    )
-                }
-                ?: emptyList()
-
-            return@coroutineScope getLocalizedTitlesUseCase.localizeActivityItems(remoteEpisodes + remoteMovies)
-                .sortedByDescending { it.activityAt }
-                .toImmutableList()
+            Movies -> remoteUserSource.getMoviesHistory(
+                userId = userIdParam,
+                page = pagination.page,
+                limit = pagination.limit,
+                filters = filters,
+            ).asyncMap {
+                HomeActivityItem.MovieItem(
+                    id = it.id,
+                    user = null,
+                    userRating = null,
+                    activity = it.action.value,
+                    activityAt = it.watchedAt.toInstant(),
+                    movie = Movie.fromDto(
+                        checkNotNull(it.movie) {
+                            "Movie should not be null if type is MOVIE"
+                        },
+                    ),
+                )
+            }
         }
+
+        return getLocalizedTitlesUseCase.localizeActivityItems(items)
+            .sortedByDescending { it.activityAt }
+            .toImmutableList()
     }
 }
