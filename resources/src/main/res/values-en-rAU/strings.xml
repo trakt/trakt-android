@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">Reorder %s</string>
   <string name="button_label_report_comment">Report review</string>
   <string name="button_label_report_import_problem">Report a problem with this import to the Trakt team</string>
-  <string name="button_label_report_list">Report %s</string>
   <string name="button_label_report_media">Report %s</string>
   <string name="button_label_report_person">Report %s</string>
   <string name="button_label_report_search">Report that search results are missing or wrong</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">Dropped</string>
   <string name="button_text_progress_ended">Ended</string>
   <string name="button_text_progress_in_progress">In progress</string>
+  <string name="button_text_promotion_claim">Claim deal</string>
   <string name="button_text_raw_export">Export now</string>
   <string name="button_text_recap_show_anyway">Show it anyway</string>
   <string name="button_text_recent_comments">Recent</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">On %s you lose</string>
   <string name="header_vip_cancel_offer">Or stay 2 more years</string>
   <string name="header_vip_cancel_reason">Why are you leaving?</string>
+  <string name="header_vip_deal_limited_offer">2 years of VIP for only %s</string>
   <string name="header_vip_deal_paypal_switch">Switch to card. Get 2 years of VIP for %s</string>
   <string name="header_vip_paypal_switch">Switch to credit card</string>
   <string name="header_vip_streak">VIP streak</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">Runtime</string>
   <string name="label_report_reason_spam">Spam</string>
   <string name="label_report_reason_spoilers">Spoilers</string>
-  <string name="label_report_reason_support">Support question</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">Too short</string>
   <string name="label_season_short">S%s</string>
   <string name="label_smart_list_ceremony_year">Ceremony year</string>
   <string name="label_smart_list_compare_view">Choose which version to show</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">iOS App</string>
   <string name="link_label_open_preview_feature">Open %s</string>
   <string name="link_label_open_review">Open review by %s</string>
+  <string name="link_label_promotion_vip">%1$s: get VIP for %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">View social activities for %s</string>
@@ -1903,6 +1903,8 @@
   <string name="tag_text_award_won">Won</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
+  <string name="tag_text_deal_price_first_month">First Month</string>
+  <string name="tag_text_deal_price_first_year">First Year</string>
   <string name="tag_text_dropped">Dropped</string>
   <string name="tag_text_emails_always_on">Always on</string>
   <string name="tag_text_episodes">Episodes</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">Your library</string>
   <string name="tag_text_vip_cancel_offer">Before you go · one time only</string>
   <string name="tag_text_vip_cancel_reason">Before you go</string>
+  <string name="tag_text_vip_deal_limited_offer">Limited-time offer</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal to card offer</string>
   <string name="tag_text_vip_preview">VIP Preview</string>
   <string name="tag_text_watch_count">Watch count</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">Private</string>
   <string name="text_private_account">Private Account</string>
   <string name="text_private_profile_description">As if there wasn\'t enough hidden already, %s\'s secrets remain their own.</string>
+  <string name="text_promotion_chip_price">for only <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s of <b>VIP</b></string>
+  <string name="text_promotion_ends_on">Ends %s</string>
+  <string name="text_promotion_ends_today">Ends today, %s</string>
+  <string name="text_promotion_offer_headline">%1$s of VIP for only %2$s</string>
+  <string name="text_promotion_offer_pitch">That\'s just %s a month!</string>
   <string name="text_rate_prompt_1">How did you like it?</string>
   <string name="text_rate_prompt_2">Your verdict?</string>
   <string name="text_rate_prompt_3">Worth the watch?</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">Theme</string>
   <string name="text_this_month">This month</string>
   <string name="text_this_year">This year</string>
+  <string name="text_ticket_admit_one">Admit one</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">Year %s</string>
   <string name="text_titles_selected">%s selected</string>
   <string name="text_today_activities_one">1 activity</string>
   <string name="text_today_activities_other">%d activities</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 year of VIP</string>
   <string name="text_vip_anniversary_title_other">%s years of VIP</string>
   <string name="text_vip_billed_biyearly">Billed every 2 years</string>
+  <string name="text_vip_billed_deal_first_month">%1$s for your first month, then %2$s monthly</string>
   <string name="text_vip_billed_deal_first_term">%1$s for your first 2 years, then %2$s every 2 years</string>
+  <string name="text_vip_billed_deal_first_year">%1$s for your first year, then %2$s yearly</string>
   <string name="text_vip_billing_cycle_monthly">1 month</string>
   <string name="text_vip_billing_cycle_year">%s year</string>
   <string name="text_vip_built_to_last">Built to last</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Custom API infrastructure for a massive global user base</string>
   <string name="text_vip_costs_metadata">Up-to-date metadata, images, and subtitles</string>
   <string name="text_vip_costs_team">The team that keeps it all running</string>
+  <string name="text_vip_deal_limited_offer">%1$s today for your first 2 years, then %2$s every 2 years. Discount applied at checkout.</string>
   <string name="text_vip_deal_or_standard_plan">Compare all plans</string>
   <string name="text_vip_deal_paypal_switch">%1$s upfront for 2 years, then auto-renews at %2$s every 2 years. Discount applied at checkout. You keep your remaining VIP time; we automatically cancel PayPal after checkout.</string>
   <string name="text_vip_deal_term">2 years of VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">The dashed areas show your potential with VIP</string>
   <string name="text_vip_make_it_official">Make it official!</string>
   <string name="text_vip_manage_failed_title">Couldn\'t open your subscription settings</string>
+  <string name="text_vip_offer_ended_message">Prices have been updated. Take another look before you continue.</string>
+  <string name="text_vip_offer_ended_title">This offer has ended</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Credit Card</string>
   <string name="text_vip_payment_method_google">Google Play</string>

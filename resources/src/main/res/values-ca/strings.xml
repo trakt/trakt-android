@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">Reordenar %s</string>
   <string name="button_label_report_comment">Informa de la ressenya</string>
   <string name="button_label_report_import_problem">Informa a l\'equip de Trakt d\'un problema amb aquesta importació</string>
-  <string name="button_label_report_list">Informa de %s</string>
   <string name="button_label_report_media">Reporta %s</string>
   <string name="button_label_report_person">Informa de %s</string>
   <string name="button_label_report_search">Informa que els resultats de la cerca falten o són incorrectes</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">Abandonat</string>
   <string name="button_text_progress_ended">Finalitzat</string>
   <string name="button_text_progress_in_progress">En curs</string>
+  <string name="button_text_promotion_claim">Aprofita l\'oferta</string>
   <string name="button_text_raw_export">Exporta ara</string>
   <string name="button_text_recap_show_anyway">Mostra-ho igualment</string>
   <string name="button_text_recent_comments">Recents</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">El %s perdràs</string>
   <string name="header_vip_cancel_offer">O queda\'t 2 anys més</string>
   <string name="header_vip_cancel_reason">Per què marxes?</string>
+  <string name="header_vip_deal_limited_offer">2 anys de VIP per només %s</string>
   <string name="header_vip_deal_paypal_switch">Canvia a targeta. Aconsegueix 2 anys de VIP per %s</string>
   <string name="header_vip_paypal_switch">Canviar a targeta de crèdit</string>
   <string name="header_vip_streak">Ratxa VIP</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">Durada</string>
   <string name="label_report_reason_spam">Spam</string>
   <string name="label_report_reason_spoilers">Spoilers</string>
-  <string name="label_report_reason_support">Pregunta de suport</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">Massa curt</string>
   <string name="label_season_short">T%s</string>
   <string name="label_smart_list_ceremony_year">Any de la cerimònia</string>
   <string name="label_smart_list_compare_view">Tria quina versió mostrar</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">Aplicació iOS</string>
   <string name="link_label_open_preview_feature">Obre %s</string>
   <string name="link_label_open_review">Obre la ressenya de %s</string>
+  <string name="link_label_promotion_vip">%1$s: aconsegueix VIP per %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Estat de Trakt</string>
   <string name="link_label_view_social_activities">Mostra les activitats socials de %s</string>
@@ -1903,6 +1903,8 @@
   <string name="tag_text_award_won">Guanyat</string>
   <string name="tag_text_blocked_user">Bloquejat</string>
   <string name="tag_text_deal_price">Primers 2 anys</string>
+  <string name="tag_text_deal_price_first_month">Primer mes</string>
+  <string name="tag_text_deal_price_first_year">Primer any</string>
   <string name="tag_text_dropped">Abandonat</string>
   <string name="tag_text_emails_always_on">Sempre activat</string>
   <string name="tag_text_episodes">Episodis</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">La teva biblioteca</string>
   <string name="tag_text_vip_cancel_offer">Abans de marxar · només una vegada</string>
   <string name="tag_text_vip_cancel_reason">Abans de marxar</string>
+  <string name="tag_text_vip_deal_limited_offer">Oferta per temps limitat</string>
   <string name="tag_text_vip_deal_paypal_switch">Oferta de PayPal a targeta</string>
   <string name="tag_text_vip_preview">Previsualització VIP</string>
   <string name="tag_text_watch_count">Compte de vists</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">Privat</string>
   <string name="text_private_account">Compte privat</string>
   <string name="text_private_profile_description">Com si no hi hagués prou ocult ja, els secrets de %s segueixen sent seus.</string>
+  <string name="text_promotion_chip_price">per només <b>%s</b></string>
+  <string name="text_promotion_chip_term">%s de <b>VIP</b></string>
+  <string name="text_promotion_ends_on">Acaba el %s</string>
+  <string name="text_promotion_ends_today">Acaba avui, %s</string>
+  <string name="text_promotion_offer_headline">%1$s de VIP per només %2$s</string>
+  <string name="text_promotion_offer_pitch">Només són %s al mes!</string>
   <string name="text_rate_prompt_1">Com t\'ha agradat?</string>
   <string name="text_rate_prompt_2">El teu veredicte?</string>
   <string name="text_rate_prompt_3">Val la pena veure-ho?</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">Tema</string>
   <string name="text_this_month">Aquest mes</string>
   <string name="text_this_year">Aquest any</string>
+  <string name="text_ticket_admit_one">1 entrada</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">Any %s</string>
   <string name="text_titles_selected">%s seleccionats</string>
   <string name="text_today_activities_one">1 activitat</string>
   <string name="text_today_activities_other">%d activitats</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 any de VIP</string>
   <string name="text_vip_anniversary_title_other">%s anys de VIP</string>
   <string name="text_vip_billed_biyearly">Facturat cada 2 anys</string>
+  <string name="text_vip_billed_deal_first_month">%1$s pel teu primer mes, després %2$s mensualment</string>
   <string name="text_vip_billed_deal_first_term">%1$s pels teus primers 2 anys, després %2$s cada 2 anys</string>
+  <string name="text_vip_billed_deal_first_year">%1$s pel teu primer any, després %2$s anualment</string>
   <string name="text_vip_billing_cycle_monthly">1 mes</string>
   <string name="text_vip_billing_cycle_year">%s any</string>
   <string name="text_vip_built_to_last">Construït per durar</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Infraestructura API personalitzada per a una base d\'usuaris global massiva</string>
   <string name="text_vip_costs_metadata">Metadades, imatges i subtítols actualitzats</string>
   <string name="text_vip_costs_team">L\'equip que ho manté tot en funcionament</string>
+  <string name="text_vip_deal_limited_offer">%1$s avui pels teus primers 2 anys, després %2$s cada 2 anys. Descompte aplicat a la compra.</string>
   <string name="text_vip_deal_or_standard_plan">Compara tots els plans</string>
   <string name="text_vip_deal_paypal_switch">%1$s per avançat durant 2 anys, després es renova automàticament per %2$s cada 2 anys. Descompte aplicat a la compra. Conservaràs el temps VIP restant; cancel·larem automàticament PayPal després de la compra.</string>
   <string name="text_vip_deal_term">2 anys de VIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">Les zones discontínues mostren el teu potencial amb VIP</string>
   <string name="text_vip_make_it_official">Oficial, tu ho fas possible!</string>
   <string name="text_vip_manage_failed_title">No s\'han pogut obrir els ajustos de la subscripció</string>
+  <string name="text_vip_offer_ended_message">S\'han actualitzat els preus. Fes-hi una ullada abans de continuar.</string>
+  <string name="text_vip_offer_ended_title">Aquesta oferta ha finalitzat</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Targeta de crèdit</string>
   <string name="text_vip_payment_method_google">Google Play</string>

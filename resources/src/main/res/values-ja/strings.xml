@@ -272,7 +272,6 @@
   <string name="button_label_reorder_list">%sを並べ替える</string>
   <string name="button_label_report_comment">レビューを報告</string>
   <string name="button_label_report_import_problem">このインポートに関する問題をTraktチームに報告</string>
-  <string name="button_label_report_list">%sを報告</string>
   <string name="button_label_report_media">%sを報告</string>
   <string name="button_label_report_person">%sを報告</string>
   <string name="button_label_report_search">検索結果の不足や誤りを報告</string>
@@ -569,6 +568,7 @@
   <string name="button_text_progress_dropped">視聴中止</string>
   <string name="button_text_progress_ended">終了</string>
   <string name="button_text_progress_in_progress">進行中</string>
+  <string name="button_text_promotion_claim">オファーを利用</string>
   <string name="button_text_raw_export">今すぐエクスポート</string>
   <string name="button_text_recap_show_anyway">それでも表示する</string>
   <string name="button_text_recent_comments">最新</string>
@@ -1137,6 +1137,7 @@
   <string name="header_vip_cancel_losses">%sに失われるもの</string>
   <string name="header_vip_cancel_offer">または、さらに2年間継続する</string>
   <string name="header_vip_cancel_reason">なぜ解約するのですか？</string>
+  <string name="header_vip_deal_limited_offer">2年間のVIPがわずか%s</string>
   <string name="header_vip_deal_paypal_switch">カード払いに変更。%sで2年間VIP会員に</string>
   <string name="header_vip_paypal_switch">クレジットカードに切り替える</string>
   <string name="header_vip_streak">VIP連続記録</string>
@@ -1373,9 +1374,7 @@
   <string name="label_report_reason_runtime">上映時間</string>
   <string name="label_report_reason_spam">スパム</string>
   <string name="label_report_reason_spoilers">ネタバレあり</string>
-  <string name="label_report_reason_support">サポートに関する質問</string>
   <string name="label_report_reason_tmdb">TMDB</string>
-  <string name="label_report_reason_too_short">短すぎる</string>
   <string name="label_season_short">S%s</string>
   <string name="label_smart_list_ceremony_year">授賞式の年</string>
   <string name="label_smart_list_compare_view">表示するバージョンを選択</string>
@@ -1427,6 +1426,7 @@
   <string name="link_label_ios_app">iOSアプリ</string>
   <string name="link_label_open_preview_feature">%s を開く</string>
   <string name="link_label_open_review">%sによるレビューを開く</string>
+  <string name="link_label_promotion_vip">%1$s：%2$sでVIPを利用</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt ステータス</string>
   <string name="link_label_view_social_activities">%sのソーシャルアクティビティを表示</string>
@@ -1903,6 +1903,8 @@
   <string name="tag_text_award_won">受賞</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_deal_price">最初の2年間</string>
+  <string name="tag_text_deal_price_first_month">初月</string>
+  <string name="tag_text_deal_price_first_year">初年度</string>
   <string name="tag_text_dropped">視聴中止</string>
   <string name="tag_text_emails_always_on">常にオン</string>
   <string name="tag_text_episodes">エピソード</string>
@@ -1955,6 +1957,7 @@
   <string name="tag_text_vip_cancel_library">あなたのライブラリ</string>
   <string name="tag_text_vip_cancel_offer">解約前に · 一回限り</string>
   <string name="tag_text_vip_cancel_reason">解約前に</string>
+  <string name="tag_text_vip_deal_limited_offer">期間限定オファー</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPalからカードへの移行オファー</string>
   <string name="tag_text_vip_preview">VIPプレビュー</string>
   <string name="tag_text_watch_count">視聴回数</string>
@@ -2409,6 +2412,12 @@
   <string name="text_private">プライベート</string>
   <string name="text_private_account">プライベートアカウント</string>
   <string name="text_private_profile_description">まるで隠し事が足りないかのように、%sの秘密は彼ら自身のものです。</string>
+  <string name="text_promotion_chip_price">わずか<b>%s</b></string>
+  <string name="text_promotion_chip_term">%sの<b>VIP</b></string>
+  <string name="text_promotion_ends_on">%sに終了</string>
+  <string name="text_promotion_ends_today">本日%sに終了</string>
+  <string name="text_promotion_offer_headline">%1$sのVIPがわずか%2$s</string>
+  <string name="text_promotion_offer_pitch">月額わずか%s！</string>
   <string name="text_rate_prompt_1">いかがでしたか？</string>
   <string name="text_rate_prompt_2">あなたの評価は？</string>
   <string name="text_rate_prompt_3">視聴する価値がありましたか？</string>
@@ -2587,6 +2596,9 @@
   <string name="text_theme">テーマ</string>
   <string name="text_this_month">今月</string>
   <string name="text_this_year">今年</string>
+  <string name="text_ticket_admit_one">1名様有効</string>
+  <string name="text_ticket_brand">Trakt VIP</string>
+  <string name="text_ticket_year">%s年目</string>
   <string name="text_titles_selected">%s件選択済み</string>
   <string name="text_today_activities_one">1件のアクティビティ</string>
   <string name="text_today_activities_other">%d件のアクティビティ</string>
@@ -2645,7 +2657,9 @@
   <string name="text_vip_anniversary_title_one">VIP1周年</string>
   <string name="text_vip_anniversary_title_other">VIP%s周年</string>
   <string name="text_vip_billed_biyearly">2年ごと払い</string>
+  <string name="text_vip_billed_deal_first_month">初月は%1$s、以降は毎月%2$s</string>
   <string name="text_vip_billed_deal_first_term">最初の2年間は%1$s、以降2年ごとに%2$s</string>
+  <string name="text_vip_billed_deal_first_year">初年度は%1$s、以降は毎年%2$s</string>
   <string name="text_vip_billing_cycle_monthly">1ヶ月</string>
   <string name="text_vip_billing_cycle_year">%s年</string>
   <string name="text_vip_built_to_last">長く使えるように設計</string>
@@ -2692,6 +2706,7 @@
   <string name="text_vip_costs_infrastructure">大規模なグローバルユーザーベースのためのカスタムAPIインフラストラクチャ</string>
   <string name="text_vip_costs_metadata">最新のメタデータ、画像、字幕</string>
   <string name="text_vip_costs_team">これらすべてを運営するチーム</string>
+  <string name="text_vip_deal_limited_offer">最初の2年間は本日%1$s、以降は2年ごとに%2$s。割引は決済時に適用されます。</string>
   <string name="text_vip_deal_or_standard_plan">全プランを比較</string>
   <string name="text_vip_deal_paypal_switch">%1$sを2年間一括払い、以降2年ごとに%2$sで自動更新されます。割引は精算時に適用されます。残り期間のVIPは継続され、PayPalは精算後に自動的にキャンセルされます。</string>
   <string name="text_vip_deal_term">2年間のVIP</string>
@@ -2705,6 +2720,8 @@
   <string name="text_vip_limits_dashed_potential">破線部分はVIPで利用可能な上限を示しています</string>
   <string name="text_vip_make_it_official">さあ、公式の仲間入りを！</string>
   <string name="text_vip_manage_failed_title">サブスクリプション設定を開けませんでした</string>
+  <string name="text_vip_offer_ended_message">料金が更新されました。続行する前にもう一度ご確認ください。</string>
+  <string name="text_vip_offer_ended_title">このオファーは終了しました</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">クレジットカード</string>
   <string name="text_vip_payment_method_google">Google Play</string>
