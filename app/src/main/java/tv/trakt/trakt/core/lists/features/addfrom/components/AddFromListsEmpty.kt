@@ -17,7 +17,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-internal const val ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION = 0.65F
+internal const val ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION = 0.85F
 
 @Composable
 internal fun AddFromListsEmpty(
@@ -25,14 +25,14 @@ internal fun AddFromListsEmpty(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = spacedBy(16.dp, Alignment.CenterVertically),
+        verticalArrangement = spacedBy(24.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth(),
     ) {
         Text(
             text = stringResource(R.string.text_empty_list_add_from_lists),
             color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.heading6,
+            style = TraktTheme.typography.paragraph,
             textAlign = TextAlign.Center,
         )
 
