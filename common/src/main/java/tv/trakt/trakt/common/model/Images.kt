@@ -97,7 +97,11 @@ data class Images(
     }
 
     fun getPortraitUrl(size: Size = Size.MEDIUM): String? {
-        return portrait.firstOrNull()?.let {
+        return getPortraitUrls(size).firstOrNull()
+    }
+
+    fun getPortraitUrls(size: Size = Size.MEDIUM): List<String> {
+        return portrait.map {
             buildString {
                 if (!it.startsWith("https://")) {
                     append("https://")
@@ -130,10 +134,22 @@ data class Images(
             mediaId: TraktId,
             personId: TraktId,
         ): Images {
-            val portraitId = "${mediaType.value}-${mediaId.value}-${personId.value}"
             return Images(
                 portrait = persistentListOf(
-                    "${Config.MEDIA_BASE_URL}portraits/$portraitId/${Size.MEDIUM.value}/portrait.webp",
+                    portraitUrl("${mediaType.value}-${mediaId.value}-${personId.value}"),
+                ),
+            )
+        }
+
+        fun forSeasonCharacter(
+            showId: TraktId,
+            season: Int,
+            personId: TraktId,
+        ): Images {
+            return Images(
+                portrait = persistentListOf(
+                    portraitUrl("${MediaType.Show.value}-${showId.value}-s$season-${personId.value}"),
+                    portraitUrl("${MediaType.Show.value}-${showId.value}-${personId.value}"),
                 ),
             )
         }
@@ -143,6 +159,10 @@ data class Images(
                 headshot = mediaUrls("people", id, "headshot"),
                 fanart = mediaUrls("people", id, "fanart"),
             )
+        }
+
+        private fun portraitUrl(portraitId: String): String {
+            return "${Config.MEDIA_BASE_URL}portraits/$portraitId/${Size.MEDIUM.value}/portrait.webp"
         }
 
         private fun forMedia(

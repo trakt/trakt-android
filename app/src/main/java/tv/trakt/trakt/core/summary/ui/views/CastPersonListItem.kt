@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Images.Size.THUMB
@@ -26,6 +27,9 @@ internal fun CastPersonListItem(
     onClick: ((CastPerson) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
+    val imageUrls = person.images?.getPortraitUrls(THUMB).orEmpty() +
+        listOfNotNull(person.person.images?.getHeadshotUrl(THUMB))
+
     PanelMediaCard(
         title = person.person.name,
         titleOriginal = null,
@@ -33,8 +37,8 @@ internal fun CastPersonListItem(
             word.replaceFirstChar { it.uppercaseChar() }
         },
         subtitleMaxLines = 3,
-        contentImageUrl = person.images?.getPortraitUrl(THUMB) ?: person.person.images?.getHeadshotUrl(THUMB),
-        contentFallbackImageUrl = person.person.images?.getHeadshotUrl(THUMB),
+        contentImageUrl = imageUrls.firstOrNull(),
+        contentFallbackImageUrls = imageUrls.drop(1).toImmutableList(),
         containerImageUrl = null,
         imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
         more = false,
