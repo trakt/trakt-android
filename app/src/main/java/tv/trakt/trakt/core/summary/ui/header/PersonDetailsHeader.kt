@@ -25,19 +25,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.summary.people.model.PersonLink
 import tv.trakt.trakt.core.summary.people.model.PersonLinkType
+import tv.trakt.trakt.core.summary.people.model.PersonLinks
 import tv.trakt.trakt.core.summary.people.model.toPersonLinks
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderTitle
+import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPoster
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun DetailsHeader(
+internal fun PersonDetailsHeader(
     person: Person,
     loading: Boolean,
     onShareClick: () -> Unit,
@@ -58,9 +60,37 @@ internal fun DetailsHeader(
     }
 
     DetailsHeader(
-        loading = loading,
-        title = person.name,
-        titleFooter = {
+        poster = {
+            DetailsHeaderPoster(
+                imageUrl = person.images?.getHeadshotUrl(),
+                imagePlaceholderUrl = person.images?.getPosterUrl(Size.THUMB),
+                accentColor = Shade700,
+                loading = loading,
+                creditsCount = null,
+                playsCount = null,
+                watched = false,
+                watching = false,
+                personImdb = person.ids.imdb,
+                onBackClick = onBackClick,
+                onShareClick = onShareClick,
+                onShareImageClick = null,
+                onWatchedClick = {},
+                topRightContent = topRightContent,
+                extraRightColumn = {
+                    PersonLinksColumn(
+                        links = links,
+                        onLinkClick = openLink,
+                        onReportClick = onReportClick,
+                    )
+                },
+                extraRightColumnAtBottom = true,
+            )
+        },
+        title = {
+            DetailsHeaderTitle(
+                title = person.name,
+                translation = null,
+            )
             Text(
                 text = person.knownForDepartment
                     ?.replaceFirstChar { it.uppercaseChar() }
@@ -70,65 +100,42 @@ internal fun DetailsHeader(
                 modifier = Modifier.padding(top = 1.dp),
             )
         },
-        topRightContent = topRightContent,
-        extraRightColumn = {
-            Column(
-                horizontalAlignment = CenterHorizontally,
-                verticalArrangement = spacedBy(20.dp),
-                modifier = Modifier
-                    .padding(top = 17.dp)
-                    .fillMaxWidth(),
-            ) {
-                links.inline.forEach { link ->
-                    Icon(
-                        painter = painterResource(link.type.iconRes),
-                        tint = TraktTheme.colors.textPrimary,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(link.type.iconSize)
-                            .onClick { openLink(link) },
-                    )
-                }
-
-                if (links.overflow.isNotEmpty() || onReportClick != null) {
-                    MoreMenuButton(
-                        overflowLinks = links.overflow,
-                        onLinkClick = openLink,
-                        onReportClick = onReportClick,
-                    )
-                }
-            }
-        },
-        extraRightColumnAtBottom = true,
-        genres = EmptyImmutableList,
-        imageUrl = person.images?.getHeadshotUrl(),
-        imagePlaceholderUrl = person.images?.getPosterUrl(Size.THUMB),
-        imageHorizontal = false,
-        onShareClick = onShareClick,
-        onShareImageClick = null,
-        onBackClick = onBackClick,
-        date = null,
-        status = null,
-        runtime = null,
-        externalRatings = null,
-        externalRatingsVisible = false,
-        externalRottenVisible = false,
-        externalMalVisible = false,
-        episodesCount = null,
-        playsCount = null,
-        certification = null,
-        accentColor = Shade700,
-        creditsCount = null,
-        traktRatings = null,
-        watched = false,
-        watching = false,
-        personImdb = person.ids.imdb,
-        onImdbClick = {},
-        onRottenClick = {},
-        onMalClick = {},
-        onLetterboxdClick = {},
         modifier = modifier,
     )
+}
+
+@Composable
+private fun PersonLinksColumn(
+    links: PersonLinks,
+    onLinkClick: (PersonLink) -> Unit,
+    onReportClick: (() -> Unit)?,
+) {
+    Column(
+        horizontalAlignment = CenterHorizontally,
+        verticalArrangement = spacedBy(20.dp),
+        modifier = Modifier
+            .padding(top = 17.dp)
+            .fillMaxWidth(),
+    ) {
+        links.inline.forEach { link ->
+            Icon(
+                painter = painterResource(link.type.iconRes),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(link.type.iconSize)
+                    .onClick { onLinkClick(link) },
+            )
+        }
+
+        if (links.overflow.isNotEmpty() || onReportClick != null) {
+            MoreMenuButton(
+                overflowLinks = links.overflow,
+                onLinkClick = onLinkClick,
+                onReportClick = onReportClick,
+            )
+        }
+    }
 }
 
 @Composable

@@ -1,38 +1,29 @@
 package tv.trakt.trakt.core.summary.ui.header
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
-import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
-import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaGenre.Anime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderCreators
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderDate
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderMeta
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderRatings
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderStatus
+import tv.trakt.trakt.core.summary.ui.header.components.DetailsHeaderTitle
+import tv.trakt.trakt.core.summary.ui.header.components.toCreators
+import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPoster
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun DetailsHeader(
+internal fun MovieDetailsHeader(
     movie: Movie,
     movieTranslation: MediaTranslation?,
     ratings: ExternalRating?,
@@ -51,143 +42,70 @@ internal fun DetailsHeader(
     modifier: Modifier = Modifier,
     posterOverlay: (@Composable (onReady: (Boolean) -> Unit) -> Unit)? = null,
 ) {
-    val context = LocalContext.current
     val isReleased = remember { movie.isReleased }
     val isAnime = remember { movie.genres.contains(Anime) }
 
     DetailsHeader(
-        title = movie.title,
-        titleTranslation = movieTranslation?.title,
-        status = movie.status,
-        watched = (playsCount ?: 0) > 0,
-        watching = false,
-        date = {
-            Text(
-                text = when {
-                    isReleased -> movie.yearString
-                    else -> movie.released?.format(mediumDateFormat())?.capitalize() ?: movie.yearString
+        poster = {
+            DetailsHeaderPoster(
+                imageUrl = movie.images?.getPosterUrl(Images.Size.MEDIUM),
+                imagePlaceholderUrl = movie.images?.getPosterUrl(Images.Size.THUMB),
+                accentColor = movie.colors?.colors?.first,
+                loading = loading,
+                creditsCount = creditsCount,
+                playsCount = playsCount,
+                watched = (playsCount ?: 0) > 0,
+                watching = false,
+                personImdb = null,
+                onBackClick = onBackClick,
+                onShareClick = onShareClick,
+                onShareImageClick = onShareImageClick,
+                onWatchedClick = onWatchedClick,
+                extraRightColumn = {
+                    DetailsHeaderNotesButton(
+                        visible = notes,
+                        onClick = onNotesClick,
+                    )
                 },
-                color = when {
-                    isReleased -> TraktTheme.colors.textSecondary
-                    else -> TraktTheme.colors.textPrimary
-                },
-                style = when {
-                    isReleased -> TraktTheme.typography.paragraphSmaller
-                    else -> TraktTheme.typography.paragraphSmaller.copy(fontWeight = FontWeight.W700)
-                },
-                maxLines = 1,
-                modifier = Modifier.padding(
-                    end = if (!isReleased) 1.dp else 0.dp,
-                ),
+                posterOverlay = posterOverlay,
             )
         },
-        titleFooter = {
-            val animatedAlpha by animateFloatAsState(
-                targetValue = if (creator == null) 0f else 1f,
-                animationSpec = tween(delayMillis = 50),
-                label = "alpha",
+        title = {
+            DetailsHeaderTitle(
+                title = movie.title,
+                translation = movieTranslation?.title,
             )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(3.dp),
-                modifier = Modifier
-                    .alpha(animatedAlpha)
-                    .padding(top = 2.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.text_directed_by_short),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                )
-
-                Text(
-                    text = (creator?.name ?: "").ifBlank { "-" },
-                    fontWeight = FontWeight.SemiBold,
-                    color = when {
-                        creator?.name?.isNotBlank() == true -> TraktTheme.colors.textPrimary
-                        else -> TraktTheme.colors.textSecondary
-                    },
-                    style = TraktTheme.typography.paragraphSmaller,
-                    modifier = Modifier
-                        .onClick {
-                            creator?.let {
-                                onCreatorClick(it)
-                            }
+            DetailsHeaderCreators(
+                label = stringResource(R.string.text_directed_by_short),
+                creators = creator.toCreators(),
+                onCreatorClick = onCreatorClick,
+            )
+        },
+        details = {
+            DetailsHeaderMeta(
+                genres = movie.genres,
+                date = {
+                    DetailsHeaderDate(
+                        text = when {
+                            isReleased -> movie.yearString
+                            else -> movie.released?.format(mediumDateFormat())?.capitalize() ?: movie.yearString
                         },
-                )
-            }
-        },
-        genres = movie.genres,
-        runtime = movie.runtime,
-        imageUrl = movie.images?.getPosterUrl(Images.Size.MEDIUM),
-        imagePlaceholderUrl = movie.images?.getPosterUrl(Images.Size.THUMB),
-        imageHorizontal = false,
-        posterOverlay = posterOverlay,
-        accentColor = movie.colors?.colors?.first,
-        traktRatings = when {
-            isReleased -> movie.rating.ratingPercent
-            else -> null
-        },
-        externalRatingsVisible = true,
-        externalRottenVisible = true,
-        externalMalVisible = isAnime,
-        externalRatings = ratings,
-        creditsCount = creditsCount,
-        playsCount = playsCount,
-        episodesCount = null,
-        certification = movie.certification,
-        loading = loading,
-        onBackClick = onBackClick,
-        onInfoClick = onInfoClick,
-        onWatchedClick = onWatchedClick,
-        onShareClick = onShareClick,
-        onShareImageClick = onShareImageClick,
-        extraRightColumn = {
-            DetailsHeaderNotesButton(
-                visible = notes,
-                onClick = onNotesClick,
+                        isReleased = isReleased,
+                    )
+                },
+                runtime = movie.runtime,
+                certification = movie.certification,
+                onInfoClick = onInfoClick,
             )
+            movie.status?.let { DetailsHeaderStatus(status = it) }
         },
-        onImdbClick = {
-            movie.ids.imdb?.let {
-                openExternalAppLink(
-                    context = context,
-                    packageId = "com.imdb.mobile",
-                    packageName = "imdb",
-                    uri = webImdbMediaUrl(it.value).toUri(),
-                )
-            }
-        },
-        onMalClick = { link ->
-            if (link.isNotBlank()) {
-                openExternalAppLink(
-                    context = context,
-                    packageId = "net.myanimelist.app",
-                    packageName = "mal",
-                    uri = link.toUri(),
-                )
-            }
-        },
-        onRottenClick = { link ->
-            if (link.isNotBlank()) {
-                openExternalAppLink(
-                    context = context,
-                    packageId = "com.rottentomatoes.android",
-                    packageName = "rottentomatoes",
-                    uri = link.toUri(),
-                )
-            }
-        },
-        onLetterboxdClick = { link ->
-            if (link.isNotBlank()) {
-                openExternalAppLink(
-                    context = context,
-                    packageId = "com.letterboxd.letterboxd",
-                    packageName = "letterboxd",
-                    uri = link.toUri(),
-                )
-            }
+        ratings = {
+            DetailsHeaderRatings(
+                traktRatings = movie.rating.ratingPercent.takeIf { isReleased },
+                externalRatings = ratings,
+                imdbId = movie.ids.imdb,
+                malVisible = isAnime,
+            )
         },
         modifier = modifier,
     )

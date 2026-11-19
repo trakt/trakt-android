@@ -39,7 +39,6 @@ import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.core.summary.ui.DetailsPoster
-import tv.trakt.trakt.core.summary.ui.header.PosterChipsGroup
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktShareButton
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge

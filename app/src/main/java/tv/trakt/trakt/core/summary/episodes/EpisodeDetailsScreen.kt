@@ -95,7 +95,7 @@ import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.header.EpisodeDetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.spoilerFreeTitle
 import tv.trakt.trakt.resources.R
@@ -505,7 +505,7 @@ internal fun EpisodeDetailsContent(
                 overscrollEffect = null,
             ) {
                 item {
-                    DetailsHeader(
+                    EpisodeDetailsHeader(
                         episode = state.episode,
                         show = state.show,
                         episodeTranslation = state.episodeTranslation,

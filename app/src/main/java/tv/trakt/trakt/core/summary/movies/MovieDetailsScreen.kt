@@ -111,7 +111,7 @@ import tv.trakt.trakt.core.summary.soundtrack.SoundtrackView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
-import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.header.MovieDetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.SpoilerBlur
@@ -591,7 +591,7 @@ internal fun MovieDetailsContent(
                 overscrollEffect = null,
             ) {
                 item {
-                    DetailsHeader(
+                    MovieDetailsHeader(
                         movie = movie,
                         movieTranslation = state.movieTranslation,
                         ratings = state.movieRatings,
