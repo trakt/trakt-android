@@ -574,6 +574,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
+            onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateToAllLists = { navigateToAllLists(it) },
             onNavigateToVip = { navigateToBilling(source = VipUpsellSource.NavbarMobile) },
             onNavigateToUser = {
@@ -607,6 +608,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
+            onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateToListsReorder = { navigateToListsReorder() },
             onNavigateBack = { popBackStack() },
             onNavigateToUser = {

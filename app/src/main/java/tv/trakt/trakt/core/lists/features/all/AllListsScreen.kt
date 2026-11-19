@@ -94,6 +94,7 @@ internal fun AllListsScreen(
     onNavigateCreateSmartList: () -> Unit,
     onNavigateEditSmartList: (SmartList) -> Unit,
     onNavigateListReorder: (CustomList) -> Unit,
+    onNavigateAddFromLists: (CustomList) -> Unit,
     onNavigateListsReorder: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateUser: (User) -> Unit,
@@ -129,6 +130,7 @@ internal fun AllListsScreen(
         onReorderClick = onNavigateListsReorder,
         onListEditClick = { editListSheet = it },
         onListReorderClick = onNavigateListReorder,
+        onAddFromListsClick = onNavigateAddFromLists,
         onListShareClick = { list ->
             viewModel.logListShare()
             shareList(
@@ -208,6 +210,7 @@ private fun AllListsScreen(
     onReorderClick: () -> Unit = {},
     onListEditClick: (CustomList) -> Unit = {},
     onListReorderClick: (CustomList) -> Unit = {},
+    onAddFromListsClick: (CustomList) -> Unit = {},
     onListShareClick: (CustomList) -> Unit = {},
     onSmartListDeleteClick: (SmartList) -> Unit = {},
     onSmartListEditClick: (SmartList) -> Unit = {},
@@ -352,6 +355,7 @@ private fun AllListsScreen(
                                             reorderEnabled = (list.itemCount ?: 0) > 0,
                                             onEditClick = { onListEditClick(list) },
                                             onReorderClick = { onListReorderClick(list) },
+                                            onAddFromListsClick = { onAddFromListsClick(list) },
                                             onShareClick = { onListShareClick(list) },
                                         )
                                     },
