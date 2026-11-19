@@ -54,6 +54,7 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,6 +69,7 @@ import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsItem
 import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsPick
 import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsSource
@@ -81,6 +83,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private const val LISTED_ALPHA = 0.4F
 private val FOOTER_CLEARANCE = 104.dp
 private val FooterShape = RoundedCornerShape(100)
+private val SelectorHeight = 56.dp
+private val SelectorShape = RoundedCornerShape(16.dp)
 
 @Composable
 internal fun AddFromListsScreen(
@@ -132,7 +136,7 @@ private fun AddFromListsContent(
 ) {
     val bottomInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val density = LocalDensity.current
-    var selectorHalfHeight by remember { mutableStateOf(0.dp) }
+    var selectorHalfHeight by remember { mutableStateOf(SelectorHeight / 2) }
 
     Box(
         modifier = modifier
@@ -165,8 +169,13 @@ private fun AddFromListsContent(
                         .padding(top = selectorHalfHeight),
                 )
 
-                state.activeSource?.let { activeSource ->
-                    SourceSelect(
+                val selectorModifier = Modifier.onSizeChanged {
+                    selectorHalfHeight = with(density) { (it.height / 2).toDp() }
+                }
+
+                when (val activeSource = state.activeSource) {
+                    null -> SourceSelectPlaceholder(modifier = selectorModifier)
+                    else -> SourceSelect(
                         sources = state.sources,
                         activeSource = activeSource,
                         pickedCounts = state.pickedCounts,
@@ -180,9 +189,7 @@ private fun AddFromListsContent(
                                 )
                             },
                         onSourceClick = onSourceClick,
-                        modifier = Modifier.onSizeChanged {
-                            selectorHalfHeight = with(density) { (it.height / 2).toDp() }
-                        },
+                        modifier = selectorModifier,
                     )
                 }
             }
@@ -198,7 +205,7 @@ private fun AddFromListsContent(
                     Brush.verticalGradient(
                         colors = listOf(
                             Color.Transparent,
-                            bottomColor.copy(alpha = 0.95F),
+                            bottomColor.copy(alpha = 0.98F),
                             bottomColor,
                         ),
                     ),
@@ -270,9 +277,9 @@ private fun SourceSelect(
             horizontalArrangement = spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp)
-                .shadow(TraktTheme.colors.shadowSmall, RoundedCornerShape(16.dp))
-                .background(TraktTheme.colors.panelCardContainer, RoundedCornerShape(16.dp))
+                .heightIn(min = SelectorHeight)
+                .shadow(TraktTheme.colors.shadowSmall, SelectorShape)
+                .background(TraktTheme.colors.panelCardContainer, SelectorShape)
                 .onClick { expanded = !expanded }
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
@@ -316,40 +323,54 @@ private fun SourceSelect(
             )
         }
 
-        DropdownMenu(
-            expanded = expanded,
-            containerColor = TraktTheme.colors.dialogContainer,
-            shape = RoundedCornerShape(16.dp),
-            onDismissRequest = { expanded = false },
-        ) {
-            sources.forEach { source ->
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = source.name(),
-                            style = TraktTheme.typography.buttonTertiary,
-                            color = when (source.key) {
-                                activeSource.key -> TraktTheme.colors.accent
-                                else -> TraktTheme.colors.textPrimary
-                            },
-                            maxLines = 1,
-                            overflow = Ellipsis,
-                        )
-                    },
-                    trailingIcon = {
-                        SourceCounts(
-                            source = source,
-                            picked = pickedCounts[source.key] ?: 0,
-                        )
-                    },
-                    onClick = {
-                        expanded = false
-                        onSourceClick(source)
-                    },
-                )
+        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+            DropdownMenu(
+                expanded = expanded,
+                containerColor = TraktTheme.colors.dialogContainer,
+                shape = RoundedCornerShape(16.dp),
+                offset = DpOffset(x = 0.dp, y = 8.dp),
+                onDismissRequest = { expanded = false },
+            ) {
+                sources.forEach { source ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = source.name(),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = when (source.key) {
+                                    activeSource.key -> TraktTheme.colors.accent
+                                    else -> TraktTheme.colors.textPrimary
+                                },
+                                maxLines = 1,
+                                overflow = Ellipsis,
+                            )
+                        },
+                        trailingIcon = {
+                            SourceCounts(
+                                source = source,
+                                picked = pickedCounts[source.key] ?: 0,
+                            )
+                        },
+                        onClick = {
+                            expanded = false
+                            onSourceClick(source)
+                        },
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun SourceSelectPlaceholder(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(SelectorHeight)
+            .shadow(TraktTheme.colors.shadowSmall, SelectorShape)
+            .background(TraktTheme.colors.panelCardContainer, SelectorShape),
+    )
 }
 
 @Composable
@@ -397,7 +418,7 @@ private fun ItemsList(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val items = state.items.orEmpty()
+    val items = state.items.takeIf { state.listedKeys != null }.orEmpty()
 
     LazyColumn(
         verticalArrangement = spacedBy(2.dp),
@@ -423,7 +444,7 @@ private fun ItemsList(
             }
         }
 
-        if (state.candidates.isNotEmpty() || state.hasMoreItems) {
+        if (items.isNotEmpty() && (state.candidates.isNotEmpty() || state.hasMoreItems)) {
             item {
                 Row(
                     horizontalArrangement = spacedBy(12.dp, Alignment.CenterHorizontally),
@@ -488,7 +509,11 @@ private fun ItemsPlaceholder(state: AddFromListsState) {
             .padding(vertical = 24.dp),
     ) {
         when {
-            state.error == null && (state.loading.isLoading || state.items == null) -> {
+            state.error == null && (state.loading.isLoading || state.items == null || state.listedKeys == null) -> {
+                FilmProgressIndicator(
+                    color = TraktTheme.colors.accent,
+                    modifier = Modifier.size(24.dp),
+                )
                 CircularProgressIndicator(
                     color = TraktTheme.colors.accent,
                     strokeWidth = 2.dp,

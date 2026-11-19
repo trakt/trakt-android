@@ -9,7 +9,6 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,7 +38,6 @@ import tv.trakt.trakt.core.lists.features.addfrom.model.toggleAllPicks
 import tv.trakt.trakt.core.lists.features.addfrom.model.togglePick
 import tv.trakt.trakt.core.lists.features.addfrom.navigation.AddFromListsDestination
 import tv.trakt.trakt.core.lists.features.addfrom.usecases.GetAddFromListsUseCase
-import kotlin.time.Duration.Companion.seconds
 
 private const val PAGE_LIMIT = 50
 
@@ -82,8 +80,6 @@ internal class AddFromListsViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { LoadingState.Loading }
-                delay(3.seconds)
-
                 val user = sessionManager.getProfile()
                 if (user == null) {
                     loadingState.update { LoadingState.Done }
@@ -110,7 +106,6 @@ internal class AddFromListsViewModel(
     private fun loadListedKeys() {
         viewModelScope.launch {
             try {
-                delay(5.seconds)
                 val keys = getAddFromListsUseCase.getListedKeys(list.ids.trakt)
                 listedKeysState.update { keys }
             } catch (error: Exception) {
