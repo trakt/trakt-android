@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
 import tv.trakt.trakt.common.data.remote.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -21,6 +22,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 class LoadUserFavoritesUseCase(
     private val remoteSource: UserFavoritesRemoteSource,
     private val localSource: UserFavoritesLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun loadLocalAll(): ImmutableList<FavoriteItem> {
         return localSource.getAll()
@@ -71,6 +73,13 @@ class LoadUserFavoritesUseCase(
                 listedAt = listedAt,
             )
         }
+            .let { items ->
+                getLocalizedTitlesUseCase.localizeShows(
+                    items = items,
+                    show = { it.show },
+                    update = { item, show -> item.copy(show = show) },
+                )
+            }
             .also { localSource.setShows(it) }
             .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
@@ -88,6 +97,13 @@ class LoadUserFavoritesUseCase(
                 listedAt = listedAt,
             )
         }
+            .let { items ->
+                getLocalizedTitlesUseCase.localizeMovies(
+                    items = items,
+                    movie = { it.movie },
+                    update = { item, movie -> item.copy(movie = movie) },
+                )
+            }
             .also { localSource.setMovies(it) }
             .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()

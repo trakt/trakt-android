@@ -52,6 +52,7 @@ internal val ratingsDataModule = module {
             userHistoryDataSource = get(),
             isShowRatingCandidateUseCase = get(),
             dataChanges = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 

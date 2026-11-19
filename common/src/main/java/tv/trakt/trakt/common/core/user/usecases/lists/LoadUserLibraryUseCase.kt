@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.core.user.usecases.lists
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.library.LibraryItem
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.UserLibraryLocalSource
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -19,6 +20,7 @@ import tv.trakt.trakt.common.model.fromDto
 class LoadUserLibraryUseCase(
     private val remoteSource: UserRemoteSource,
     private val localSource: UserLibraryLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun isLoaded(): Boolean {
         return localSource.isLoaded()
@@ -68,6 +70,7 @@ class LoadUserLibraryUseCase(
                     )
                 } ?: throw Error("Unknown library item type")
             }
+            .let { getLocalizedTitlesUseCase.localizeLibraryItems(it) }
             .also {
                 // Filtered pages would replace the full library cache with a subset.
                 when {

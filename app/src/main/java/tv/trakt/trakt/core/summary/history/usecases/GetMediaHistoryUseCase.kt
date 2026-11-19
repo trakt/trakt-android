@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.history.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -19,6 +20,7 @@ internal const val HISTORY_PAGE_LIMIT = 100
 
 internal class GetMediaHistoryUseCase(
     private val remoteSource: UserHistoryRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getHistory(
         mediaType: MediaHistoryType,
@@ -31,7 +33,7 @@ internal class GetMediaHistoryUseCase(
             MediaHistoryType.Episode -> getEpisodeHistory(mediaId, pagination)
         }
 
-        return items
+        return getLocalizedTitlesUseCase.localizeActivityItems(items)
             .sortedByDescending { it.activityAt }
             .toImmutableList()
     }

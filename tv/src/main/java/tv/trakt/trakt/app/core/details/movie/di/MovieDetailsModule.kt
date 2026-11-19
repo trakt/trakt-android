@@ -105,7 +105,7 @@ internal val movieDetailsModule = module {
         MovieDetailsViewModel(
             savedStateHandle = get(),
             getDetailsUseCase = get(),
-            getTranslationsUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
             getExternalRatingsUseCase = get(),
             getExtraVideosUseCase = get(),
             getCastCrewUseCase = get(),

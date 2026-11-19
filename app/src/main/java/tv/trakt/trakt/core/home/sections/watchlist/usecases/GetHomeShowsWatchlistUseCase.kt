@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.HomeWatchlistLocalSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.networking.WatchlistShowDto
 internal class GetHomeShowsWatchlistUseCase(
     private val userRemoteSource: UserWatchlistRemoteSource,
     private val homeWatchlistLocalSource: HomeWatchlistLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
         return homeWatchlistLocalSource.getShowItems()
@@ -42,7 +44,7 @@ internal class GetHomeShowsWatchlistUseCase(
             filters = filters,
         ).asyncMap {
             mapShowItem(it)
-        }.also {
+        }.localized().also {
             if (!skipLocal) {
                 homeWatchlistLocalSource.setShowItems(items = it)
             }
@@ -56,6 +58,14 @@ internal class GetHomeShowsWatchlistUseCase(
             show = Show.fromDto(item.show),
             rank = item.rank,
             listedAt = item.listedAt.toInstant(),
+        )
+    }
+
+    private suspend fun List<WatchlistItem.ShowItem>.localized(): List<WatchlistItem.ShowItem> {
+        return getLocalizedTitlesUseCase.localizeShows(
+            items = this,
+            show = { it.show },
+            update = { item, show -> item.copy(show = show) },
         )
     }
 }

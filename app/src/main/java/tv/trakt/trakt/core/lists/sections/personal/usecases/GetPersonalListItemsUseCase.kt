@@ -22,10 +22,12 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.usecases.LocalizeListItemsUseCase
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserPersonalListsRemoteSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val localizeListItemsUseCase: LocalizeListItemsUseCase,
 ) {
     suspend fun getItems(
         listId: TraktId,
@@ -49,7 +51,7 @@ internal class GetPersonalListItemsUseCase(
                     Shows -> it is CustomListItem.ShowItem
                     Movies -> it is CustomListItem.MovieItem
                 }
-            }.toImmutableList()
+            }.localized().toImmutableList()
     }
 
     suspend fun getRemoteItems(
@@ -119,7 +121,7 @@ internal class GetPersonalListItemsUseCase(
                 listedAt = listedAt,
                 userRating = moviesRatings[movie.ids.trakt],
             )
-        }.toImmutableList()
+        }.localized().toImmutableList()
     }
 
     private suspend fun getRemoteShowItems(
@@ -147,7 +149,7 @@ internal class GetPersonalListItemsUseCase(
                 listedAt = listedAt,
                 userRating = showsRatings[show.ids.trakt],
             )
-        }.toImmutableList()
+        }.localized().toImmutableList()
     }
 
     private suspend fun getRemoteAllItems(
@@ -176,6 +178,7 @@ internal class GetPersonalListItemsUseCase(
                     episodesRatings = episodesRatings,
                 )
             }
+            .localized()
             .toImmutableList()
     }
 
@@ -232,5 +235,9 @@ internal class GetPersonalListItemsUseCase(
                 throw IllegalArgumentException("Unknown media type: ${dto.type}")
             }
         }
+    }
+
+    private suspend fun List<CustomListItem>.localized(): List<CustomListItem> {
+        return localizeListItemsUseCase.localize(this)
     }
 }

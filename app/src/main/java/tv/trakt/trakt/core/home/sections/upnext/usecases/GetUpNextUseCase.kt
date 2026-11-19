@@ -6,6 +6,8 @@ import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextItem
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
@@ -31,6 +33,7 @@ internal class GetUpNextUseCase(
     private val localShowSource: ShowLocalSource,
     private val localMovieSource: MovieLocalSource,
     private val localEpisodeSource: EpisodeLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalUpNext(limit: Int): ImmutableList<UpNextItem> {
         return localDataSource.getItems()
@@ -47,7 +50,7 @@ internal class GetUpNextUseCase(
         sorting: UpNextSorting = UpNextSorting.Default,
     ): ImmutableList<UpNextItem> {
         val shows = getRemoteShows(page, limit, filters, sorting)
-        val movies = getRemoteMovies(page, limit, filters)
+        val movies = getRemoteMovies(page, limit)
 
         val items = when {
             sorting.isDefault -> when (sorting.order) {
@@ -59,6 +62,7 @@ internal class GetUpNextUseCase(
 
         return items
             .distinctBy { it.key }
+            .localized()
             .toImmutableList()
             .also {
                 if (!skipLocal && sorting == UpNextSorting.Default) {
@@ -128,7 +132,6 @@ internal class GetUpNextUseCase(
     private suspend fun getRemoteMovies(
         page: Int,
         limit: Int,
-        filters: GlobalFilter?,
     ): List<UpNextMovie> {
         val remoteItems = remoteMoviesSyncSource.getPlaybackProgress(
             limit = limit,
@@ -146,5 +149,27 @@ internal class GetUpNextUseCase(
                     ),
                 )
             }
+    }
+
+    private suspend fun List<UpNextItem>.localized(): List<UpNextItem> {
+        val shows = filterIsInstance<UpNextShow>()
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            movieIds = filterIsInstance<UpNextMovie>().map { it.movie.ids.trakt },
+            showIds = shows.map { it.show.ids.trakt },
+            episodeIds = shows.mapNotNull { it.progress.nextEpisode?.ids?.trakt },
+        )
+        return map { it.localized(titles) }
+    }
+}
+
+private fun UpNextItem.localized(titles: LocalizedTitles): UpNextItem {
+    return when (this) {
+        is UpNextShow -> copy(
+            show = titles.show(show),
+            progress = progress.copy(
+                nextEpisode = progress.nextEpisode?.let(titles::episode),
+            ),
+        )
+        is UpNextMovie -> copy(movie = titles.movie(movie))
     }
 }

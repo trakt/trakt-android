@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.core.today.model.FollowingActivity
 import tv.trakt.trakt.common.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.TodayRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -20,6 +21,7 @@ internal class GetTodayStoriesUseCase(
     private val remoteSource: TodayRemoteSource,
     private val localSource: TodayLocalSource,
     private val getForYouUseCase: GetTodayForYouUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalStories(mode: MediaMode): ImmutableList<TodayStoryGroup> {
         return toStoryGroups(
@@ -32,7 +34,9 @@ internal class GetTodayStoriesUseCase(
     suspend fun getStories(mode: MediaMode): ImmutableList<TodayStoryGroup> {
         return coroutineScope {
             val forYou = async { getForYou() }
-            val activities = remoteSource.getFollowingActivities()
+            val activities = getLocalizedTitlesUseCase.localizeFollowingActivities(
+                remoteSource.getFollowingActivities(),
+            )
 
             localSource.setActivities(activities)
             localSource.setForYou(forYou.await())

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover.sections.releases.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -9,7 +10,6 @@ import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -24,6 +24,7 @@ internal class GetReleasesShowsUseCase(
     private val localSource: ReleasesShowsLocalSource,
     private val localShowSource: ShowLocalSource,
     private val localEpisodeSource: EpisodeLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun clearLocal() {
         localSource.clear()
@@ -43,7 +44,7 @@ internal class GetReleasesShowsUseCase(
         days: Int,
         skipLocal: Boolean = false,
         filters: GlobalFilter,
-        type: ReleaseType = ReleaseType.All,
+        type: ReleaseType = All,
     ): ImmutableList<EpisodeItem> {
         val data = when (type) {
             All -> remoteSource.getReleases(
@@ -89,6 +90,7 @@ internal class GetReleasesShowsUseCase(
                     isFullSeason = episodes.isFullSeason(),
                 )
             }
+            .localized()
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
@@ -98,6 +100,14 @@ internal class GetReleasesShowsUseCase(
                 localShowSource.upsertShows(shows.map { it.show })
                 localEpisodeSource.upsertEpisodes(shows.flatMap { it.episodes })
             }
+    }
+
+    private suspend fun List<EpisodeItem>.localized(): List<EpisodeItem> {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            showIds = map { it.show.ids.trakt },
+            episodeIds = flatMap { item -> item.episodes.map { it.ids.trakt } },
+        )
+        return map(titles::calendarItem)
     }
 }
 

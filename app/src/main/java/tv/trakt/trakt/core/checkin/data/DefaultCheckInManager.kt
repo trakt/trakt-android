@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.remote.CheckInRemoteSource
@@ -69,6 +70,7 @@ internal class DefaultCheckInManager(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistMinUseCase: LoadUserWatchlistUseCase,
     private val analytics: Analytics,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) : CheckInManager {
     private val state = MutableStateFlow<CheckInState>(CheckInState.Idle)
     private var lastCheckAt: Instant? = null
@@ -141,7 +143,7 @@ internal class DefaultCheckInManager(
                     startedAt = watching.startedAt.toInstant(),
                     expiresAt = watching.expiresAt.toInstant(),
                     endsAt = watching.endsAt(),
-                )
+                ).localized()
 
                 state.update { activeState }
                 startForegroundService(context, activeState)
@@ -227,7 +229,7 @@ internal class DefaultCheckInManager(
                     startedAt = watching.startedAt.toInstant(),
                     expiresAt = watching.expiresAt.toInstant(),
                     endsAt = watching.endsAt(),
-                )
+                ).localized()
 
                 state.update { activeState }
                 startForegroundService(context, activeState)
@@ -324,7 +326,7 @@ internal class DefaultCheckInManager(
                     startedAt = response.startedAt.toInstant(),
                     expiresAt = response.expiresAt.toInstant(),
                     endsAt = response.endsAt(),
-                )
+                ).localized()
 
                 // Only update state if it's a different movie than currently stored
                 if (state.value !is ActiveMovie || state.value.id != newState.id) {
@@ -350,7 +352,7 @@ internal class DefaultCheckInManager(
                     startedAt = response.startedAt.toInstant(),
                     expiresAt = response.expiresAt.toInstant(),
                     endsAt = response.endsAt(),
-                )
+                ).localized()
 
                 // Only update state if it's a different episode than currently stored
                 if (state.value !is ActiveEpisode || state.value.id != newState.id) {
@@ -546,6 +548,19 @@ internal class DefaultCheckInManager(
             .putLong("checkin_history_id", checkIn?.id ?: -1)
             .putString("checkin_watched_at", checkIn?.watchedAt ?: "none")
             .putString("checkin_device_time", now().toString())
+    }
+
+    private suspend fun ActiveEpisode.localized(): ActiveEpisode {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            showIds = listOf(show.ids.trakt),
+            episodeIds = listOf(episode.ids.trakt),
+        )
+        return copy(show = titles.show(show), episode = titles.episode(episode))
+    }
+
+    private suspend fun ActiveMovie.localized(): ActiveMovie {
+        val titles = getLocalizedTitlesUseCase.getTitles(movieIds = listOf(movie.ids.trakt))
+        return copy(movie = titles.movie(movie))
     }
 }
 

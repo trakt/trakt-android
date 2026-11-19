@@ -2,7 +2,6 @@
 
 package tv.trakt.trakt.app.core.details.episode
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,7 +48,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
-import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
@@ -73,7 +72,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 import java.time.Instant
-import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class EpisodeDetailsViewModel(
@@ -95,7 +93,7 @@ internal class EpisodeDetailsViewModel(
     private val getUserRatingUseCase: GetUserRatingUseCase,
     private val changeRatingUseCase: ChangeRatingUseCase,
     private val isWatchedUseCase: IsWatchedUseCase,
-    private val getTranslationsUseCase: GetEpisodeTranslationsUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val dataChanges: DataChanges,
@@ -167,7 +165,7 @@ internal class EpisodeDetailsViewModel(
                     showDetailsState.update { show }
                     episodeDetailsState.update { episode }
 
-                    loadTranslations(showId, seasonEpisode)
+                    loadTranslations(showId, episodeId, seasonEpisode)
 
                     viewModelScope.launch {
                         val historyAsync = async { loadHistory(episode.ids.trakt) }
@@ -225,15 +223,15 @@ internal class EpisodeDetailsViewModel(
 
     private fun loadTranslations(
         showId: TraktId,
+        episodeId: TraktId,
         seasonEpisode: SeasonEpisode,
     ) {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-                episodeTranslationState.value = getTranslationsUseCase.getEpisodeTranslations(
+                episodeTranslationState.value = getLocalizedTitlesUseCase.getEpisodeTranslation(
+                    episodeId = episodeId,
                     showId = showId,
                     seasonEpisode = seasonEpisode,
-                    locale = locale,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -2,7 +2,6 @@
 
 package tv.trakt.trakt.app.core.details.show
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -53,7 +52,7 @@ import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
-import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -75,13 +74,12 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
-import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getDetailsUseCase: GetShowDetailsUseCase,
-    private val getTranslationsUseCase: GetShowTranslationsUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
     private val getExternalRatingsUseCase: GetExternalRatingsUseCase,
     private val getExtraVideosUseCase: GetExtraVideosUseCase,
     private val getCastCrewUseCase: GetCastCrewUseCase,
@@ -177,12 +175,8 @@ internal class ShowDetailsViewModel(
     private fun loadTranslations(showId: TraktId) {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
                 showTranslationState.update {
-                    getTranslationsUseCase.getShowTranslations(
-                        showId = showId,
-                        locale = locale,
-                    )
+                    getLocalizedTitlesUseCase.getShowTranslation(showId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

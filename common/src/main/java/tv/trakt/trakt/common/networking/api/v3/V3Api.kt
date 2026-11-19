@@ -19,6 +19,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SmartListItemDto
+import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3DeleteNoteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3DocumentaryCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3EditNoteRequest
@@ -273,6 +275,23 @@ class V3Api(
             return null
         }
         return response.body()
+    }
+
+    // Translations
+
+    suspend fun getBulkIntl(request: V3BulkIntlRequest): V3BulkIntlResponse {
+        val response = client.get("${baseV3Url}intl/bulk") {
+            parameter("language", request.language)
+            parameter("country", request.country)
+            request.movieIds.toCsv()?.let { parameter("m", it) }
+            request.showIds.toCsv()?.let { parameter("s", it) }
+            request.episodeIds.toCsv()?.let { parameter("e", it) }
+        }
+        return response.body()
+    }
+
+    private fun List<TraktId>.toCsv(): String? {
+        return takeIf { it.isNotEmpty() }?.joinToString(",") { it.value.toString() }
     }
 
     // Soundtrack

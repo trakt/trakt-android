@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
@@ -79,6 +80,7 @@ internal class DefaultRatePromptManager(
     private val userHistoryDataSource: UserHistoryRemoteSource,
     private val isShowRatingCandidateUseCase: IsShowRatingCandidateUseCase,
     private val dataChanges: DataChanges,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) : RatePromptManager {
     private val state = MutableStateFlow<RatePromptState>(Idle)
     private val heldMedia = MutableStateFlow<Set<String>>(emptySet())
@@ -197,9 +199,11 @@ internal class DefaultRatePromptManager(
 
             // Only consider media the user hasn't rated, favorite, or dismissed, that was watched
             // within the recently watched duration, and - for shows - that hit a rating moment.
-            val media = (movieItems + episodeItems)
+            val recentItems = (movieItems + episodeItems)
                 .filter { it.activityAt >= recentlyWatchedWindow }
                 .sortedByDescending { it.activityAt }
+
+            val media = getLocalizedTitlesUseCase.localizeActivityItems(recentItems)
                 .mapNotNull {
                     it.toPromptMedia(
                         moviesRatings = moviesRatings,

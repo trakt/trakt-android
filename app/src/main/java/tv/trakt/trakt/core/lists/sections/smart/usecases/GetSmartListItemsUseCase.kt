@@ -7,9 +7,11 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.model.SmartListItem
+import tv.trakt.trakt.core.lists.usecases.LocalizeListItemsUseCase
 
 internal class GetSmartListItemsUseCase(
     private val remoteSource: UserSmartListsRemoteSource,
+    private val localizeListItemsUseCase: LocalizeListItemsUseCase,
 ) {
     suspend fun getItems(
         listId: TraktId,
@@ -20,6 +22,7 @@ internal class GetSmartListItemsUseCase(
             pagination = pagination,
         ).asyncMap(SmartListItem::fromDto)
             .filterNotNull()
+            .let { localizeListItemsUseCase.localizeSmart(it) }
             .toImmutableList()
     }
 }

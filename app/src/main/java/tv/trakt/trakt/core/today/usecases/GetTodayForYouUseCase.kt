@@ -4,6 +4,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -26,6 +27,7 @@ private val TodayWindow = 24.hours
 internal class GetTodayForYouUseCase(
     private val showsSyncSource: ShowsSyncRemoteSource,
     private val watchlistSource: UserWatchlistRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getForYou(): List<TodayForYouItem> {
         val now = nowUtcInstant()
@@ -35,8 +37,7 @@ internal class GetTodayForYouUseCase(
             val upNext = async { getUpNext(window) }
             val watchlist = async { getWatchlist(window) }
 
-            val results = upNext.await() + watchlist.await()
-            results
+            getLocalizedTitlesUseCase.localizeTodayForYouItems(upNext.await() + watchlist.await())
         }
     }
 

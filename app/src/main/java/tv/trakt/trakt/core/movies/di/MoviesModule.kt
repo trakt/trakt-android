@@ -22,6 +22,7 @@ internal val moviesModule = module {
             localTrendingSource = get(),
             localMovieSource = get(),
             seasonalThemeUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -33,6 +34,7 @@ internal val moviesModule = module {
             localPopularSource = get(),
             localMovieSource = get(),
             seasonalThemeUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -44,6 +46,7 @@ internal val moviesModule = module {
             localAnticipatedSource = get(),
             localMovieSource = get(),
             seasonalThemeUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -54,6 +57,7 @@ internal val moviesModule = module {
             remoteSource = get(),
             localSource = get(),
             localMovieSource = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -64,6 +68,7 @@ internal val moviesModule = module {
             remoteSource = get(),
             localRecommendedSource = get(),
             localMovieSource = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 

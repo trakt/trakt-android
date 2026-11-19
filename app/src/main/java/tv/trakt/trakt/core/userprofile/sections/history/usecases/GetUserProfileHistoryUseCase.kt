@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 
 internal class GetUserProfileHistoryUseCase(
     private val remoteUserSource: UserHistoryRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getUserHistory(
         userId: TraktId,
@@ -94,7 +96,7 @@ internal class GetUserProfileHistoryUseCase(
                 }
                 ?: emptyList()
 
-            return@coroutineScope (remoteEpisodes + remoteMovies)
+            return@coroutineScope getLocalizedTitlesUseCase.localizeActivityItems(remoteEpisodes + remoteMovies)
                 .sortedByDescending { it.activityAt }
                 .toImmutableList()
         }

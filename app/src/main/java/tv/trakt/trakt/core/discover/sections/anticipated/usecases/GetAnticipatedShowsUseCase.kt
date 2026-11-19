@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover.sections.anticipated.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.AnticipatedShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
@@ -20,6 +21,7 @@ internal class GetAnticipatedShowsUseCase(
     private val localAnticipatedSource: AnticipatedShowsLocalSource,
     private val localShowSource: ShowLocalSource,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
         return localAnticipatedSource.getShows()
@@ -51,6 +53,7 @@ internal class GetAnticipatedShowsUseCase(
                     count = it.listCount,
                 )
             }
+            .localized()
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
@@ -63,5 +66,13 @@ internal class GetAnticipatedShowsUseCase(
                     shows.asyncMap { item -> item.show },
                 )
             }
+    }
+
+    private suspend fun List<DiscoverItem.ShowItem>.localized(): List<DiscoverItem.ShowItem> {
+        return getLocalizedTitlesUseCase.localizeShows(
+            items = this,
+            show = { it.show },
+            update = { item, show -> item.copy(show = show) },
+        )
     }
 }

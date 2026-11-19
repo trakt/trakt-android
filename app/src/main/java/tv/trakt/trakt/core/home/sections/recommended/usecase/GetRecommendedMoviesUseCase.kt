@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
@@ -18,6 +19,7 @@ internal class GetRecommendedMoviesUseCase(
     private val remoteSource: MoviesRemoteSource,
     private val localRecommendedSource: RecommendedMoviesLocalSource,
     private val localMovieSource: MovieLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalMovies(): ImmutableList<RecommendedItem.MovieItem> {
         return localRecommendedSource.getMovies()
@@ -43,6 +45,7 @@ internal class GetRecommendedMoviesUseCase(
                         .toImmutableList(),
                 )
             }
+            .localized()
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {
@@ -55,5 +58,13 @@ internal class GetRecommendedMoviesUseCase(
                     movies.asyncMap { item -> item.movie },
                 )
             }
+    }
+
+    private suspend fun List<RecommendedItem.MovieItem>.localized(): List<RecommendedItem.MovieItem> {
+        return getLocalizedTitlesUseCase.localizeMovies(
+            items = this,
+            movie = { it.movie },
+            update = { item, movie -> item.copy(movie = movie) },
+        )
     }
 }

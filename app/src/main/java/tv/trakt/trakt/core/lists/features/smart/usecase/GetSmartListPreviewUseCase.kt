@@ -7,11 +7,13 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.model.SmartListItem
+import tv.trakt.trakt.core.lists.usecases.LocalizeListItemsUseCase
 
 private const val MAX_PREVIEW_ITEMS = 100
 
 internal class GetSmartListPreviewUseCase(
     private val remoteSource: UserSmartListsRemoteSource,
+    private val localizeListItemsUseCase: LocalizeListItemsUseCase,
 ) {
     suspend fun getPreviewItems(filters: SmartListFilters): ImmutableList<SmartListItem> {
         return remoteSource.getSmartListPreviewItems(
@@ -19,6 +21,7 @@ internal class GetSmartListPreviewUseCase(
             pagination = Pagination(limit = MAX_PREVIEW_ITEMS),
         ).asyncMap(SmartListItem::fromDto)
             .filterNotNull()
+            .let { localizeListItemsUseCase.localizeSmart(it) }
             .toImmutableList()
     }
 }

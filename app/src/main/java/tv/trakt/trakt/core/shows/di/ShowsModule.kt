@@ -21,6 +21,7 @@ internal val showsModule = module {
             localTrendingSource = get(),
             localShowSource = get(),
             seasonalThemeUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -32,6 +33,7 @@ internal val showsModule = module {
             localPopularSource = get(),
             localShowSource = get(),
             seasonalThemeUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -43,6 +45,7 @@ internal val showsModule = module {
             localAnticipatedSource = get(),
             localShowSource = get(),
             seasonalThemeUseCase = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -54,6 +57,7 @@ internal val showsModule = module {
             localSource = get(),
             localShowSource = get(),
             localEpisodeSource = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 
@@ -64,6 +68,7 @@ internal val showsModule = module {
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 

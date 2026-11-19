@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -40,6 +41,7 @@ private fun List<Episode>.isFullSeason(): Boolean {
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteSource,
     private val localDataSource: HomeUpcomingLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalUpcoming(
         filter: GlobalFilter,
@@ -65,7 +67,9 @@ internal class GetUpcomingUseCase(
         return coroutineScope {
             val showsAsync = async { getShows(filter) }
             val moviesAsync = async { getMovies(filter) }
-            val items = showsAsync.await() + moviesAsync.await()
+            val items = getLocalizedTitlesUseCase.localizeCalendarItems(
+                showsAsync.await() + moviesAsync.await(),
+            )
 
             return@coroutineScope items
                 .sortedBy { it.releasedAt }

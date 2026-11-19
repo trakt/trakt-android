@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.lists.features.reorder.watchlist.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -15,6 +17,7 @@ import tv.trakt.trakt.core.lists.features.reorder.watchlist.WatchlistReorderEntr
 
 internal class ReorderWatchlistUseCase(
     private val remoteSource: UserWatchlistRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getRankedItems(): ImmutableList<WatchlistReorderEntry> {
         val all = mutableListOf<WatchlistItemDto>()
@@ -35,8 +38,13 @@ internal class ReorderWatchlistUseCase(
             page += 1
         }
 
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            movieIds = all.mapNotNull { dto -> dto.movie?.let { Movie.fromDto(it).ids.trakt } },
+            showIds = all.mapNotNull { dto -> dto.show?.let { Show.fromDto(it).ids.trakt } },
+        )
+
         return all
-            .mapNotNull(::toEntry)
+            .mapNotNull { toEntry(it, titles) }
             .distinctBy { it.key }
             .toImmutableList()
     }
@@ -51,9 +59,12 @@ private val RankSorting = Sorting(
     order = SortOrder.Asc,
 )
 
-private fun toEntry(dto: WatchlistItemDto): WatchlistReorderEntry? {
+private fun toEntry(
+    dto: WatchlistItemDto,
+    titles: LocalizedTitles,
+): WatchlistReorderEntry? {
     dto.movie?.let {
-        val movie = Movie.fromDto(it)
+        val movie = titles.movie(Movie.fromDto(it))
         return WatchlistReorderEntry(
             id = dto.id,
             key = "${movie.ids.trakt.value}-movie",
@@ -64,7 +75,7 @@ private fun toEntry(dto: WatchlistItemDto): WatchlistReorderEntry? {
     }
 
     dto.show?.let {
-        val show = Show.fromDto(it)
+        val show = titles.show(Show.fromDto(it))
         return WatchlistReorderEntry(
             id = dto.id,
             key = "${show.ids.trakt.value}-show",
