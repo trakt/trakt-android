@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.summary.livingposter.usecases
 
+import androidx.appcompat.app.AppCompatDelegate
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.Config.DEFAULT_LANGUAGE
 import tv.trakt.trakt.common.data.local.LivingPosterLocalSource
 import tv.trakt.trakt.common.data.remote.MediaImagesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -9,6 +11,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.livingposter.LivingPoster
 import tv.trakt.trakt.common.model.livingposter.LivingPosterIndex
 import java.time.Instant
+import java.util.Locale
 
 internal class GetLivingPosterUseCase(
     private val remoteSource: MediaImagesRemoteSource,
@@ -18,6 +21,8 @@ internal class GetLivingPosterUseCase(
         type: MediaType,
         mediaId: TraktId,
     ): LivingPoster? {
+        if (!isDefaultLanguage()) return null
+
         val now = nowUtcInstant()
         val index = getIndex(now) ?: return null
         if (!index.contains(type, mediaId)) return null
@@ -41,7 +46,15 @@ internal class GetLivingPosterUseCase(
     }
 
     suspend fun preloadIndex() {
+        if (!isDefaultLanguage()) return
+
         getIndex(nowUtcInstant())
+    }
+
+    // Living posters carry English artwork only.
+    private fun isDefaultLanguage(): Boolean {
+        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+        return locale.language == DEFAULT_LANGUAGE
     }
 
     private suspend fun getIndex(now: Instant): LivingPosterIndex? {
