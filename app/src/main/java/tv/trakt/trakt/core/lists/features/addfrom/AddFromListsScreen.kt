@@ -570,11 +570,11 @@ private fun PickCheck(picked: Boolean) {
         onCheckedChange = null,
         enabled = false,
         colors = CheckboxDefaults.colors().copy(
-            checkedCheckmarkColor = TraktTheme.colors.backgroundPrimary,
+            checkedCheckmarkColor = TraktTheme.colors.textPrimaryOnAccent,
             disabledUncheckedBoxColor = Color.Transparent,
             disabledUncheckedBorderColor = TraktTheme.colors.textPrimary,
-            disabledCheckedBoxColor = TraktTheme.colors.textPrimary,
-            disabledBorderColor = TraktTheme.colors.textPrimary,
+            disabledCheckedBoxColor = TraktTheme.colors.accent,
+            disabledBorderColor = TraktTheme.colors.accent,
         ),
     )
 }
