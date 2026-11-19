@@ -2,26 +2,29 @@ package tv.trakt.trakt.core.lists.features.addfrom
 
 import android.content.res.Resources
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -40,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalResources
@@ -66,12 +70,14 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val LISTED_ALPHA = 0.45F
-private const val PICKED_ALPHA = 0.13F
+private val FOOTER_CLEARANCE = 104.dp
+private val FooterShape = RoundedCornerShape(100)
+private val ChipPadding = PaddingValues(horizontal = 16.dp)
 
 @Composable
 internal fun AddFromListsScreen(
@@ -121,67 +127,61 @@ private fun AddFromListsContent(
     onLoadMoreClick: () -> Unit = {},
     onAddClick: () -> Unit = {},
 ) {
-    Column(
+    val bottomInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-            .padding(
-                top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
-                bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-                    .plus(16.dp),
-            ),
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
     ) {
-        TitleBar(
-            title = state.listName,
-            onBackClick = onBackClick,
-            modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
-        )
-
-        state.activeSource?.let { activeSource ->
-            SourceSelect(
-                sources = state.sources,
-                activeSource = activeSource,
-                pickedCounts = state.pickedCounts,
-                onSourceClick = onSourceClick,
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
+        ) {
+            TitleBar(
+                title = state.listName,
+                onBackClick = onBackClick,
+                modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
             )
-        }
 
-        if (state.alreadyInListCount > 0) {
-            Text(
-                text = stringResource(
-                    R.string.text_add_from_lists_already_in_list,
-                    state.alreadyInListCount.toString(),
-                    state.listName,
+            state.activeSource?.let { activeSource ->
+                SourceSelect(
+                    sources = state.sources,
+                    activeSource = activeSource,
+                    pickedCounts = state.pickedCounts,
+                    alreadyInList = state.alreadyInListCount
+                        .takeIf { it > 0 }
+                        ?.let {
+                            stringResource(
+                                R.string.text_add_from_lists_already_in_list,
+                                it.toString(),
+                                state.listName,
+                            )
+                        },
+                    onSourceClick = onSourceClick,
+                )
+            }
+
+            ItemsList(
+                state = state,
+                onItemClick = onItemClick,
+                onToggleAllClick = onToggleAllClick,
+                onLoadMoreClick = onLoadMoreClick,
+                contentPadding = PaddingValues(
+                    top = 8.dp,
+                    bottom = bottomInset + FOOTER_CLEARANCE,
                 ),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmaller,
-                maxLines = 1,
-                overflow = Ellipsis,
-                modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.weight(1F),
             )
         }
-
-        ItemsList(
-            state = state,
-            onItemClick = onItemClick,
-            onToggleAllClick = onToggleAllClick,
-            onLoadMoreClick = onLoadMoreClick,
-            modifier = Modifier
-                .weight(1F)
-                .padding(top = 8.dp),
-        )
-
-        Spacer(
-            modifier = Modifier
-                .background(TraktTheme.colors.separator)
-                .fillMaxWidth()
-                .height(1.dp),
-        )
 
         Footer(
             state = state,
             onAddClick = onAddClick,
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = bottomInset + 16.dp),
         )
     }
 }
@@ -229,6 +229,7 @@ private fun SourceSelect(
     sources: ImmutableList<AddFromListsSource>,
     activeSource: AddFromListsSource,
     pickedCounts: ImmutableMap<String, Int>,
+    alreadyInList: String?,
     onSourceClick: (AddFromListsSource) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -240,20 +241,34 @@ private fun SourceSelect(
             horizontalArrangement = spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .heightIn(min = 48.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(TraktTheme.colors.panelCardContainer)
                 .onClick { expanded = !expanded }
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
-            Text(
-                text = activeSource.name(),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.buttonPrimary,
-                maxLines = 1,
-                overflow = Ellipsis,
+            Column(
+                verticalArrangement = spacedBy(2.dp),
                 modifier = Modifier.weight(1F),
-            )
+            ) {
+                Text(
+                    text = activeSource.name(),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.buttonPrimary,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                )
+
+                alreadyInList?.let {
+                    Text(
+                        text = it,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                        maxLines = 1,
+                        overflow = Ellipsis,
+                    )
+                }
+            }
 
             SourceCounts(
                 source = activeSource,
@@ -348,12 +363,14 @@ private fun ItemsList(
     onItemClick: (AddFromListsItem) -> Unit,
     onToggleAllClick: () -> Unit,
     onLoadMoreClick: () -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val items = state.items.orEmpty()
 
     LazyColumn(
         verticalArrangement = spacedBy(2.dp),
+        contentPadding = contentPadding,
         overscrollEffect = null,
         modifier = modifier,
     ) {
@@ -384,27 +401,41 @@ private fun ItemsList(
                         .padding(vertical = 16.dp),
                 ) {
                     if (state.candidates.isNotEmpty()) {
-                        TertiaryButton(
+                        FilterChip(
+                            selected = false,
                             text = stringResource(
                                 when {
                                     state.isAllPicked -> R.string.button_text_deselect_all
                                     else -> R.string.button_text_select_all
                                 },
                             ),
-                            containerColor = TraktTheme.colors.panelCardContainer,
-                            contentColor = TraktTheme.colors.textPrimary,
+                            height = 32.dp,
+                            animated = false,
+                            paddingHorizontal = ChipPadding,
                             onClick = onToggleAllClick,
                         )
                     }
 
                     if (state.hasMoreItems) {
-                        TertiaryButton(
+                        FilterChip(
+                            selected = false,
                             text = stringResource(R.string.button_text_load_more),
-                            loading = state.loadingMore.isLoading,
-                            enabled = !state.loadingMore.isLoading,
-                            containerColor = TraktTheme.colors.panelCardContainer,
-                            contentColor = TraktTheme.colors.textPrimary,
-                            onClick = onLoadMoreClick,
+                            height = 32.dp,
+                            animated = false,
+                            leadingAlwaysVisible = state.loadingMore.isLoading,
+                            leadingContent = {
+                                CircularProgressIndicator(
+                                    color = TraktTheme.colors.textPrimary,
+                                    strokeWidth = 1.5.dp,
+                                    modifier = Modifier.size(12.dp),
+                                )
+                            },
+                            paddingHorizontal = ChipPadding,
+                            onClick = {
+                                if (!state.loadingMore.isLoading) {
+                                    onLoadMoreClick()
+                                }
+                            },
                         )
                     }
                 }
@@ -455,15 +486,8 @@ private fun ItemRow(
         horizontalArrangement = spacedBy(12.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(
-                when {
-                    picked -> TraktTheme.colors.accent.copy(alpha = PICKED_ALPHA)
-                    else -> Color.Transparent
-                },
-            )
             .onClick(enabled = !listed, throttle = false, onClick = onClick)
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .padding(vertical = 4.dp),
     ) {
         Row(
             verticalAlignment = CenterVertically,
@@ -516,27 +540,18 @@ private fun ItemRow(
 
 @Composable
 private fun PickCheck(picked: Boolean) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(22.dp)
-            .clip(CircleShape)
-            .background(if (picked) TraktTheme.colors.accent else Color.Transparent)
-            .border(
-                width = 2.dp,
-                color = if (picked) TraktTheme.colors.accent else TraktTheme.colors.textSecondary,
-                shape = CircleShape,
-            ),
-    ) {
-        if (picked) {
-            Icon(
-                painter = painterResource(R.drawable.ic_check),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimaryOnAccent,
-                modifier = Modifier.size(14.dp),
-            )
-        }
-    }
+    Checkbox(
+        checked = picked,
+        onCheckedChange = null,
+        enabled = false,
+        colors = CheckboxDefaults.colors().copy(
+            checkedCheckmarkColor = TraktTheme.colors.backgroundPrimary,
+            disabledUncheckedBoxColor = Color.Transparent,
+            disabledUncheckedBorderColor = TraktTheme.colors.textPrimary,
+            disabledCheckedBoxColor = TraktTheme.colors.textPrimary,
+            disabledBorderColor = TraktTheme.colors.textPrimary,
+        ),
+    )
 }
 
 @Composable
@@ -551,7 +566,11 @@ private fun Footer(
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(16.dp),
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .shadow(TraktTheme.colors.shadowLarge, FooterShape)
+            .background(TraktTheme.colors.panelCardContainer, FooterShape)
+            .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
     ) {
         Column(
             verticalArrangement = spacedBy(2.dp),
@@ -588,6 +607,7 @@ private fun Footer(
             enabled = state.isAddEnabled,
             loading = state.adding.isLoading,
             onClick = onAddClick,
+            modifier = Modifier.widthIn(min = 120.dp),
         )
     }
 }
