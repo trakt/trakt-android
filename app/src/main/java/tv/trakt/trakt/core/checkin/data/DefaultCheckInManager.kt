@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
+import tv.trakt.trakt.core.checkin.data.work.CheckInCompleteWorker
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
@@ -427,9 +428,16 @@ internal class DefaultCheckInManager(
         state.update { CheckInState.Idle }
         CheckInService.stop(context.applicationContext)
         cacheMarkerProvider.invalidate()
-
-        loadProgressIfNeeded(currentState)
         dataChanges.notify(Kind.CheckIn)
+
+        // The server marks the item watched only at expiresAt, so progress reloads then.
+        currentState.expiresAt?.let { expiresAt ->
+            CheckInCompleteWorker.scheduleOneTime(
+                appContext = context.applicationContext,
+                expiresAt = expiresAt,
+                isMovie = currentState is ActiveMovie,
+            )
+        }
 
         Timber.d("Finished check-in.")
     }
