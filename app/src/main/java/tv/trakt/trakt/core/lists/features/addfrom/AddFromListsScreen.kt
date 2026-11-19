@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalResources
@@ -52,6 +53,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -74,7 +76,7 @@ import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val LISTED_ALPHA = 0.45F
+private const val LISTED_ALPHA = 0.4F
 private val FOOTER_CLEARANCE = 104.dp
 private val FooterShape = RoundedCornerShape(100)
 
@@ -141,7 +143,7 @@ private fun AddFromListsContent(
             TitleBar(
                 title = state.listName,
                 onBackClick = onBackClick,
-                modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+                modifier = Modifier.padding(bottom = 8.dp),
             )
 
             state.activeSource?.let { activeSource ->
@@ -168,12 +170,29 @@ private fun AddFromListsContent(
                 onToggleAllClick = onToggleAllClick,
                 onLoadMoreClick = onLoadMoreClick,
                 contentPadding = PaddingValues(
-                    top = 8.dp,
+                    top = 12.dp,
                     bottom = bottomInset + FOOTER_CLEARANCE,
                 ),
                 modifier = Modifier.weight(1F),
             )
         }
+
+        val bottomColor = TraktTheme.colors.backgroundPrimary
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(bottomInset + FOOTER_CLEARANCE)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            bottomColor.copy(alpha = 0.95F),
+                            bottomColor,
+                        ),
+                    ),
+                ),
+        )
 
         Footer(
             state = state,
@@ -240,14 +259,14 @@ private fun SourceSelect(
             horizontalArrangement = spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 48.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(TraktTheme.colors.panelCardContainer)
+                .heightIn(min = 56.dp)
+                .shadow(TraktTheme.colors.shadowSmall, RoundedCornerShape(16.dp))
+                .background(TraktTheme.colors.panelCardContainer, RoundedCornerShape(16.dp))
                 .onClick { expanded = !expanded }
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             Column(
-                verticalArrangement = spacedBy(2.dp),
+                verticalArrangement = spacedBy(1.dp),
                 modifier = Modifier.weight(1F),
             ) {
                 Text(
@@ -262,7 +281,9 @@ private fun SourceSelect(
                     Text(
                         text = it,
                         color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.paragraphSmaller,
+                        style = TraktTheme.typography.paragraphSmaller.copy(
+                            fontSize = 12.sp,
+                        ),
                         maxLines = 1,
                         overflow = Ellipsis,
                     )
@@ -327,7 +348,7 @@ private fun SourceCounts(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(6.dp),
+        horizontalArrangement = spacedBy(11.dp),
     ) {
         if (picked > 0) {
             Box(
@@ -453,7 +474,7 @@ private fun ItemsPlaceholder(state: AddFromListsState) {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp),
+            .padding(vertical = 24.dp),
     ) {
         when {
             state.error == null && (state.loading.isLoading || state.items == null) -> {
@@ -503,7 +524,7 @@ private fun ItemRow(
                 title = "",
                 imageUrl = item.posterUrl,
                 width = 48.dp,
-                corner = 8.dp,
+                corner = 10.dp,
                 more = false,
             )
 
@@ -513,7 +534,7 @@ private fun ItemRow(
                 Text(
                     text = item.title,
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.cardTitle,
+                    style = TraktTheme.typography.cardTitle.copy(fontSize = 14.sp),
                     maxLines = 1,
                     overflow = Ellipsis,
                 )
@@ -533,7 +554,8 @@ private fun ItemRow(
             Text(
                 text = stringResource(R.string.text_already_in_list),
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmaller,
+                style = TraktTheme.typography.meta,
+                modifier = Modifier.padding(end = 2.dp),
             )
         } else {
             PickCheck(picked = picked)
@@ -573,10 +595,10 @@ private fun Footer(
             .fillMaxWidth()
             .shadow(TraktTheme.colors.shadowSmall, FooterShape)
             .background(TraktTheme.colors.panelCardContainer, FooterShape)
-            .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            .padding(start = 22.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
     ) {
         Column(
-            verticalArrangement = spacedBy(2.dp),
+            verticalArrangement = spacedBy(1.dp),
             modifier = Modifier.weight(1F),
         ) {
             Text(
@@ -596,7 +618,9 @@ private fun Footer(
                     else -> stringResource(R.string.text_pick_from_other_lists_hint)
                 },
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmaller,
+                style = TraktTheme.typography.paragraphSmaller.copy(
+                    fontSize = 12.sp,
+                ),
                 maxLines = 1,
                 overflow = Ellipsis,
             )

@@ -62,7 +62,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
-private const val PLACEHOLDER_ICON_FRACTION = 0.45F
+private const val PLACEHOLDER_ICON_FRACTION = 0.55F
 private val PlaceholderIconMaxSize = 48.dp
 
 @Composable
