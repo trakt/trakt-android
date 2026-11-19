@@ -3,10 +3,14 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.search.model.SearchInput
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.calendar.model.CalendarSource
@@ -22,6 +26,9 @@ internal fun MainNavHost(
     onSearchLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val scope = rememberCoroutineScope()
+    val snackbar = LocalSnackbarState.current
+
     NavHost(
         startDestination = HomeDestination,
         navController = navController,
@@ -40,7 +47,18 @@ internal fun MainNavHost(
         showsScreens(navController, userId)
         moviesScreens(navController, userId)
         episodesScreens(navController, userId)
-        listsScreens(navController, userId)
+        listsScreens(
+            controller = navController,
+            userId = userId,
+            onShowMessage = { message ->
+                scope.launch {
+                    snackbar.showSnackbar(
+                        message = message,
+                        duration = SnackbarDuration.Short,
+                    )
+                }
+            },
+        )
         profileScreens(navController, userId)
         commentsScreens(navController, userId)
         allShowSeasonsScreens(navController, userId)

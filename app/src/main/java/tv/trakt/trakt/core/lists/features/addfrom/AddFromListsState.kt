@@ -15,6 +15,7 @@ import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsSource
 
 @Immutable
 internal data class AddFromListsState(
+    val listName: String = "",
     val sources: ImmutableList<AddFromListsSource> = persistentListOf(),
     val activeSource: AddFromListsSource? = null,
     val items: ImmutableList<AddFromListsItem>? = null,

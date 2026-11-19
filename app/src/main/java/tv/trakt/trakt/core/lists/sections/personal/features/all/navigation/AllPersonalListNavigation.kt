@@ -26,6 +26,7 @@ internal fun NavGraphBuilder.allPersonalListScreen(
     onNavigateToEpisode: (TraktId, Episode) -> Unit,
     onNavigateToReorder: (CustomList) -> Unit,
     onNavigateToPerson: (Person) -> Unit,
+    onNavigateToAddFromLists: (CustomList) -> Unit,
 ) {
     composable<ListsPersonalDestination> {
         AllPersonalListScreen(
@@ -36,6 +37,7 @@ internal fun NavGraphBuilder.allPersonalListScreen(
             onEpisodeClick = onNavigateToEpisode,
             onReorderClick = onNavigateToReorder,
             onPersonClick = onNavigateToPerson,
+            onAddFromListsClick = onNavigateToAddFromLists,
         )
     }
 }

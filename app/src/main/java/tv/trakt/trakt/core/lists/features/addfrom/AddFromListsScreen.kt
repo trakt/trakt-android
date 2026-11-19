@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.features.addfrom
 
+import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -7,12 +8,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +28,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +40,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -43,6 +52,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
+import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.common.core.lists.usecases.toUserMessage
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -53,6 +64,7 @@ import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsPick
 import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsSource
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -62,21 +74,33 @@ private const val LISTED_ALPHA = 0.45F
 private const val PICKED_ALPHA = 0.13F
 
 @Composable
-internal fun AddFromListsView(
-    listName: String,
+internal fun AddFromListsScreen(
     viewModel: AddFromListsViewModel,
-    onResult: (AddFromListsResult) -> Unit,
+    onNavigateBack: () -> Unit,
+    onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val resources = LocalResources.current
+    val bottomBarVisibility = LocalBottomBarVisibility.current
+
+    DisposableEffect(Unit) {
+        bottomBarVisibility.value = false
+        onDispose {
+            bottomBarVisibility.value = true
+        }
+    }
 
     LaunchedEffect(viewModel) {
-        viewModel.results.collect(onResult)
+        viewModel.results.collect { result ->
+            onShowMessage(result.toMessage(resources, state.listName))
+            onNavigateBack()
+        }
     }
 
     AddFromListsContent(
         state = state,
-        listName = listName,
+        onBackClick = onNavigateBack,
         onSourceClick = viewModel::selectSource,
         onItemClick = viewModel::togglePick,
         onToggleAllClick = { viewModel.toggleAllPicks(state.candidates) },
@@ -89,8 +113,8 @@ internal fun AddFromListsView(
 @Composable
 private fun AddFromListsContent(
     state: AddFromListsState,
-    listName: String,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
     onSourceClick: (AddFromListsSource) -> Unit = {},
     onItemClick: (AddFromListsItem) -> Unit = {},
     onToggleAllClick: () -> Unit = {},
@@ -98,23 +122,19 @@ private fun AddFromListsContent(
     onAddClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+            .padding(
+                top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+                bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+                    .plus(16.dp),
+            ),
     ) {
-        Text(
-            text = stringResource(R.string.header_add_from_lists, listName),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading2,
-            maxLines = 1,
-            overflow = Ellipsis,
-        )
-
-        Text(
-            text = stringResource(R.string.text_add_from_lists_description),
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.paragraphSmaller,
-            maxLines = 1,
-            overflow = Ellipsis,
-            modifier = Modifier.padding(top = 2.dp),
+        TitleBar(
+            title = state.listName,
+            onBackClick = onBackClick,
+            modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
         )
 
         state.activeSource?.let { activeSource ->
@@ -123,7 +143,6 @@ private fun AddFromListsContent(
                 activeSource = activeSource,
                 pickedCounts = state.pickedCounts,
                 onSourceClick = onSourceClick,
-                modifier = Modifier.padding(top = 18.dp),
             )
         }
 
@@ -132,7 +151,7 @@ private fun AddFromListsContent(
                 text = stringResource(
                     R.string.text_add_from_lists_already_in_list,
                     state.alreadyInListCount.toString(),
-                    listName,
+                    state.listName,
                 ),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.paragraphSmaller,
@@ -168,6 +187,44 @@ private fun AddFromListsContent(
 }
 
 @Composable
+private fun TitleBar(
+    title: String,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(12.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(TraktTheme.size.titleBarHeight)
+            .graphicsLayer {
+                translationX = -2.dp.toPx()
+            },
+    ) {
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .weight(1F, fill = false)
+                .onClick(onClick = onBackClick),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+
+            TraktHeader(
+                title = title,
+                subtitle = stringResource(R.string.text_add_from_lists_description),
+                modifier = Modifier.weight(1F, fill = false),
+            )
+        }
+    }
+}
+
+@Composable
 private fun SourceSelect(
     sources: ImmutableList<AddFromListsSource>,
     activeSource: AddFromListsSource,
@@ -185,7 +242,7 @@ private fun SourceSelect(
                 .fillMaxWidth()
                 .height(48.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(TraktTheme.colors.dialogOnContainer)
+                .background(TraktTheme.colors.panelCardContainer)
                 .onClick { expanded = !expanded }
                 .padding(horizontal = 16.dp),
         ) {
@@ -215,7 +272,7 @@ private fun SourceSelect(
 
         DropdownMenu(
             expanded = expanded,
-            containerColor = TraktTheme.colors.dialogOnContainer,
+            containerColor = TraktTheme.colors.dialogContainer,
             shape = RoundedCornerShape(16.dp),
             onDismissRequest = { expanded = false },
         ) {
@@ -334,7 +391,7 @@ private fun ItemsList(
                                     else -> R.string.button_text_select_all
                                 },
                             ),
-                            containerColor = TraktTheme.colors.dialogOnContainer,
+                            containerColor = TraktTheme.colors.panelCardContainer,
                             contentColor = TraktTheme.colors.textPrimary,
                             onClick = onToggleAllClick,
                         )
@@ -345,7 +402,7 @@ private fun ItemsList(
                             text = stringResource(R.string.button_text_load_more),
                             loading = state.loadingMore.isLoading,
                             enabled = !state.loadingMore.isLoading,
-                            containerColor = TraktTheme.colors.dialogOnContainer,
+                            containerColor = TraktTheme.colors.panelCardContainer,
                             contentColor = TraktTheme.colors.textPrimary,
                             onClick = onLoadMoreClick,
                         )
@@ -402,7 +459,7 @@ private fun ItemRow(
             .background(
                 when {
                     picked -> TraktTheme.colors.accent.copy(alpha = PICKED_ALPHA)
-                    else -> TraktTheme.colors.dialogContainer
+                    else -> Color.Transparent
                 },
             )
             .onClick(enabled = !listed, throttle = false, onClick = onClick)
@@ -464,7 +521,7 @@ private fun PickCheck(picked: Boolean) {
         modifier = Modifier
             .size(22.dp)
             .clip(CircleShape)
-            .background(if (picked) TraktTheme.colors.accent else TraktTheme.colors.dialogContainer)
+            .background(if (picked) TraktTheme.colors.accent else Color.Transparent)
             .border(
                 width = 2.dp,
                 color = if (picked) TraktTheme.colors.accent else TraktTheme.colors.textSecondary,
@@ -577,8 +634,8 @@ private fun Preview() {
 
     TraktThemePreview {
         AddFromListsContent(
-            listName = "Weekend Picks",
             state = AddFromListsState(
+                listName = "Weekend Picks",
                 sources = persistentListOf(AddFromListsSource.Watchlist, source),
                 activeSource = source,
                 items = items,
@@ -596,8 +653,8 @@ private fun Preview() {
 private fun EmptyPreview() {
     TraktThemePreview {
         AddFromListsContent(
-            listName = "Weekend Picks",
             state = AddFromListsState(
+                listName = "Weekend Picks",
                 sources = persistentListOf(AddFromListsSource.Watchlist),
                 activeSource = AddFromListsSource.Watchlist,
                 items = persistentListOf(),
@@ -605,5 +662,19 @@ private fun EmptyPreview() {
                 loading = LoadingState.Done,
             ),
         )
+    }
+}
+
+private fun AddFromListsResult.toMessage(
+    resources: Resources,
+    listName: String,
+): String {
+    return when (this) {
+        is AddFromListsResult.Added -> when (count) {
+            1 -> resources.getString(R.string.text_added_title_to_list, listName)
+            else -> resources.getString(R.string.text_added_titles_to_list, count.toString(), listName)
+        }
+        is AddFromListsResult.LimitReached -> error.toUserMessage(resources)
+        is AddFromListsResult.Failed -> resources.getString(R.string.text_failed_to_add_titles, listName)
     }
 }

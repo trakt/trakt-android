@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.lists.features.addfrom
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
@@ -15,6 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.usecases.AddPersonalListItemUseCase
@@ -33,20 +36,23 @@ import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsPick
 import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsSource
 import tv.trakt.trakt.core.lists.features.addfrom.model.toggleAllPicks
 import tv.trakt.trakt.core.lists.features.addfrom.model.togglePick
+import tv.trakt.trakt.core.lists.features.addfrom.navigation.AddFromListsDestination
 import tv.trakt.trakt.core.lists.features.addfrom.usecases.GetAddFromListsUseCase
 
 private const val PAGE_LIMIT = 50
 
 @Suppress("UNCHECKED_CAST")
 internal class AddFromListsViewModel(
-    private val list: CustomList,
+    savedStateHandle: SavedStateHandle,
     private val sessionManager: SessionManager,
     private val getAddFromListsUseCase: GetAddFromListsUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
-    private val initialState = AddFromListsState()
+    private val destination = savedStateHandle.toRoute<AddFromListsDestination>()
+    private val list = Json.decodeFromString<CustomList>(destination.listJson)
+    private val initialState = AddFromListsState(listName = list.name)
 
     private val sourcesState = MutableStateFlow(initialState.sources)
     private val activeSourceState = MutableStateFlow(initialState.activeSource)
@@ -247,6 +253,7 @@ internal class AddFromListsViewModel(
         errorState,
     ) { state ->
         AddFromListsState(
+            listName = list.name,
             sources = state[0] as ImmutableList<AddFromListsSource>,
             activeSource = state[1] as AddFromListsSource?,
             items = state[2] as ImmutableList<AddFromListsItem>?,

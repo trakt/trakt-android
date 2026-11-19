@@ -128,16 +128,7 @@ internal val listsModule = module {
             analytics = get(),
         )
     }
-    viewModel { (list: CustomList) ->
-        AddFromListsViewModel(
-            list = list,
-            sessionManager = get(),
-            getAddFromListsUseCase = get(),
-            addListItemUseCase = get(),
-            dataChanges = get(),
-            analytics = get(),
-        )
-    }
+    viewModelOf(::AddFromListsViewModel)
     viewModel { (listId: TraktId) ->
         ListInfoViewModel(
             listId = listId,

@@ -63,7 +63,6 @@ import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
-import tv.trakt.trakt.core.lists.features.addfrom.AddFromListsSheet
 import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
@@ -102,6 +101,7 @@ internal fun AllPersonalListScreen(
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onReorderClick: (CustomList) -> Unit,
     onPersonClick: (Person) -> Unit,
+    onAddFromListsClick: (CustomList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -129,7 +129,6 @@ internal fun AllPersonalListScreen(
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
-    var addFromListsSheet by remember { mutableStateOf<CustomList?>(null) }
 
     AllPersonalListContent(
         state = state,
@@ -189,14 +188,9 @@ internal fun AllPersonalListScreen(
             infoSheet = state.list
         },
         onAddFromListsClick = {
-            addFromListsSheet = state.list
+            state.list?.let(onAddFromListsClick)
         },
         onBackClick = onNavigateBack,
-    )
-
-    AddFromListsSheet(
-        list = addFromListsSheet,
-        onDismiss = { addFromListsSheet = null },
     )
 
     ListInfoSheet(

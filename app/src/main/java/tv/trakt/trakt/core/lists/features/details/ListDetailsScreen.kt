@@ -85,7 +85,6 @@ import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
-import tv.trakt.trakt.core.lists.features.addfrom.AddFromListsSheet
 import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
@@ -122,6 +121,7 @@ internal fun ListDetailsScreen(
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onPersonClick: (Person) -> Unit,
+    onAddFromListsClick: (CustomList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -175,7 +175,6 @@ internal fun ListDetailsScreen(
     var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
-    var addFromListsSheet by remember { mutableStateOf<CustomList?>(null) }
 
     ListDetailsContent(
         state = state,
@@ -238,14 +237,9 @@ internal fun ListDetailsScreen(
                 }
         },
         onAddFromListsClick = {
-            addFromListsSheet = state.list?.list
+            state.list?.list?.let(onAddFromListsClick)
         },
         onBackClick = onNavigateBack,
-    )
-
-    AddFromListsSheet(
-        list = addFromListsSheet,
-        onDismiss = { addFromListsSheet = null },
     )
 
     ShowContextSheet(
