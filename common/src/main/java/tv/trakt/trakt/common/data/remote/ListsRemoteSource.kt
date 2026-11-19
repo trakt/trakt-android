@@ -134,6 +134,46 @@ class ListsRemoteSource(
         cacheMarker.invalidate()
     }
 
+    suspend fun addItemsToList(
+        userId: TraktId,
+        listId: TraktId,
+        movieIds: List<TraktId>,
+        showIds: List<TraktId>,
+    ) {
+        listsApi.postUsersListsListAdd(
+            id = userId.value.toString(),
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = PostUsersListsListAddRequest(
+                movies = movieIds.map {
+                    PostUsersListsListAddRequestMoviesInner(
+                        ids = PostUsersListsListAddRequestMoviesInnerIds(
+                            trakt = it.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = 0,
+                        ),
+                        title = "",
+                        year = 0,
+                    )
+                },
+                shows = showIds.map {
+                    PostUsersListsListAddRequestShowsInner(
+                        ids = PostUsersListsListAddRequestShowsInnerIds(
+                            trakt = it.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = null,
+                            tvdb = 0,
+                        ),
+                        title = "",
+                        year = 0,
+                    )
+                },
+            ),
+        )
+        cacheMarker.invalidate()
+    }
+
     suspend fun removeShowFromList(
         userId: TraktId,
         listId: TraktId,

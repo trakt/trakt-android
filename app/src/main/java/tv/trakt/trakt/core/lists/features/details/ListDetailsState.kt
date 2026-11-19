@@ -29,6 +29,7 @@ internal data class ListDetailsState(
     val user: User? = null,
     val info: StringResource? = null,
     val error: Exception? = null,
+    val canAddFromLists: Boolean = false,
 ) {
     @Immutable
     data class ListDetails(

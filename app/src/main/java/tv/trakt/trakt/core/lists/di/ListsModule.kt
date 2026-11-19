@@ -20,6 +20,8 @@ import org.koin.dsl.module
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.ListsViewModel
+import tv.trakt.trakt.core.lists.features.addfrom.AddFromListsViewModel
+import tv.trakt.trakt.core.lists.features.addfrom.usecases.GetAddFromListsUseCase
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoViewModel
@@ -92,6 +94,7 @@ internal val listsModule = module {
     factoryOf(::ReorderListUseCase)
     factoryOf(::ReorderPersonalListsUseCase)
     factoryOf(::ReorderWatchlistUseCase)
+    factoryOf(::GetAddFromListsUseCase)
 
     factory {
         GetListsFilterUseCase(
@@ -125,6 +128,7 @@ internal val listsModule = module {
             analytics = get(),
         )
     }
+    viewModelOf(::AddFromListsViewModel)
     viewModel { (listId: TraktId) ->
         ListInfoViewModel(
             listId = listId,

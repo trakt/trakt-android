@@ -39,6 +39,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (TraktId, Episode) -> Unit,
     onNavigateToPerson: (Person) -> Unit,
+    onNavigateToAddFromLists: (CustomList) -> Unit,
 ) {
     composable<ListsDetailsDestination> {
         ListDetailsScreen(
@@ -48,6 +49,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
             onMovieClick = onNavigateToMovie,
             onEpisodeClick = onNavigateToEpisode,
             onPersonClick = onNavigateToPerson,
+            onAddFromListsClick = onNavigateToAddFromLists,
         )
     }
 }

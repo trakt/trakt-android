@@ -11,15 +11,22 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -57,6 +64,7 @@ import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseC
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
 import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val PAGE_LIMIT = LISTS_ITEMS_ALL_LIMIT
 
@@ -66,10 +74,12 @@ internal class ListDetailsViewModel(
     filtersManager: GlobalFilterManager,
     private val getListItemsUseCase: GetListItemsUseCase,
     private val getListLikedUseCase: LoadUserLikedListsUseCase,
+    private val loadUserListsUseCase: LoadUserListsUseCase,
     private val addLikedListUseCase: AddLikedListUseCase,
     private val removeLikedListUseCase: RemoveLikedListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
     navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
@@ -87,6 +97,7 @@ internal class ListDetailsViewModel(
     )
     private val itemsState = MutableStateFlow(initialState.items)
     private val likedState = MutableStateFlow(initialState.liked)
+    private val canAddFromListsState = MutableStateFlow(initialState.canAddFromLists)
     private val filterState = MutableStateFlow(
         when {
             showFilters -> filtersManager.getFilter()
@@ -112,8 +123,40 @@ internal class ListDetailsViewModel(
     init {
         loadInitialData()
         loadLikedData()
+        loadCanAddFromLists()
 
         observeCollection()
+        observeListChanges()
+    }
+
+    private fun observeListChanges() {
+        dataChanges.observe(Kind.Lists)
+            .filter { it.targetId == destinationList.ids.trakt.value }
+            .debounce(250.milliseconds)
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
+    }
+
+    private fun loadCanAddFromLists() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            try {
+                val lists = when {
+                    loadUserListsUseCase.isLoaded() -> loadUserListsUseCase.loadLocalLists()
+                    else -> loadUserListsUseCase.loadLists()
+                }
+                canAddFromListsState.update {
+                    lists.containsKey(destinationList.ids.trakt)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     private fun observeCollection() {
@@ -373,6 +416,7 @@ internal class ListDetailsViewModel(
         sessionManager.observeProfile(),
         infoState,
         errorState,
+        canAddFromListsState,
     ) { state ->
         ListDetailsState(
             loading = state[0] as LoadingState,
@@ -389,6 +433,7 @@ internal class ListDetailsViewModel(
             user = state[11] as User?,
             info = state[12] as StringResource?,
             error = state[13] as Exception?,
+            canAddFromLists = state[14] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

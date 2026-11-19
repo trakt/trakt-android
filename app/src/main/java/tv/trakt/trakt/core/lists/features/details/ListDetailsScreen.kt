@@ -85,6 +85,8 @@ import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.lists.features.addfrom.components.ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION
+import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
@@ -120,6 +122,7 @@ internal fun ListDetailsScreen(
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onPersonClick: (Person) -> Unit,
+    onAddFromListsClick: (CustomList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -234,6 +237,9 @@ internal fun ListDetailsScreen(
                     }
                 }
         },
+        onAddFromListsClick = {
+            state.list?.list?.let(onAddFromListsClick)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -326,6 +332,7 @@ internal fun ListDetailsContent(
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
+    onAddFromListsClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMoreData: () -> Unit = {},
 ) {
@@ -390,6 +397,7 @@ internal fun ListDetailsContent(
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onLikeClick = onLikeClick,
+            onAddFromListsClick = onAddFromListsClick.takeIf { state.canAddFromLists },
             onBackClick = onBackClick,
         )
     }
@@ -410,6 +418,7 @@ private fun TitleBar(
     onBackClick: () -> Unit,
     onFiltersClick: () -> Unit,
     onInfoClick: () -> Unit,
+    onAddFromListsClick: (() -> Unit)?,
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -492,6 +501,18 @@ private fun TitleBar(
                 }
             }
 
+            onAddFromListsClick?.let {
+                Icon(
+                    painter = painterResource(R.drawable.ic_plus),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .size(20.dp)
+                        .onClick(onClick = it),
+                )
+            }
+
             if (infoEnabled) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -545,6 +566,7 @@ private fun ContentList(
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onLikeClick: () -> Unit,
+    onAddFromListsClick: (() -> Unit)?,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
@@ -590,6 +612,7 @@ private fun ContentList(
                 onBackClick = onBackClick,
                 onFiltersClick = onFiltersClick,
                 onInfoClick = onInfoClick,
+                onAddFromListsClick = onAddFromListsClick,
             )
         }
 
@@ -721,7 +744,14 @@ private fun ContentList(
             }
         } else if (listItems.isEmpty()) {
             item {
-                ContentEmpty(filter = listFilter?.mode)
+                if (itemCount == 0 && onAddFromListsClick != null) {
+                    AddFromListsEmpty(
+                        onClick = onAddFromListsClick,
+                        modifier = Modifier.fillParentMaxHeight(ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION),
+                    )
+                } else {
+                    ContentEmpty(filter = listFilter?.mode)
+                }
             }
         }
     }

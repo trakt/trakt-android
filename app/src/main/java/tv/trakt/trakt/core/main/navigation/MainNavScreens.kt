@@ -37,6 +37,8 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigate
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.homeWatchlistScreen
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.navigateToAllHomeWatchlist
 import tv.trakt.trakt.core.inreview.navigation.inReviewScreen
+import tv.trakt.trakt.core.lists.features.addfrom.navigation.addFromListsScreen
+import tv.trakt.trakt.core.lists.features.addfrom.navigation.navigateToAddFromLists
 import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
@@ -542,6 +544,7 @@ internal fun NavGraphBuilder.moviesScreens(
 internal fun NavGraphBuilder.listsScreens(
     controller: NavHostController,
     userId: TraktId?,
+    onShowMessage: (String) -> Unit,
 ) {
     with(controller) {
         listsScreen(
@@ -571,6 +574,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
+            onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateToAllLists = { navigateToAllLists(it) },
             onNavigateToVip = { navigateToBilling(source = VipUpsellSource.NavbarMobile) },
             onNavigateToUser = {
@@ -604,6 +608,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
+            onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateToListsReorder = { navigateToListsReorder() },
             onNavigateBack = { popBackStack() },
             onNavigateToUser = {
@@ -638,6 +643,7 @@ internal fun NavGraphBuilder.listsScreens(
                     backdropUrl = null,
                 )
             },
+            onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateBack = { popBackStack() },
         )
         listDetailsScreen(
@@ -654,6 +660,7 @@ internal fun NavGraphBuilder.listsScreens(
                     backdropUrl = null,
                 )
             },
+            onNavigateToAddFromLists = { navigateToAddFromLists(it) },
         )
         smartListDetailsScreen(
             onNavigateBack = { popBackStack() },
@@ -663,6 +670,10 @@ internal fun NavGraphBuilder.listsScreens(
         )
         listReorderScreen(
             onNavigateBack = { popBackStack() },
+        )
+        addFromListsScreen(
+            onNavigateBack = { popBackStack() },
+            onShowMessage = onShowMessage,
         )
         listsReorderScreen(
             onNavigateBack = { popBackStack() },

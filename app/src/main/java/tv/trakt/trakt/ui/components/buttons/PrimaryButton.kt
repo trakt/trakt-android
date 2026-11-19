@@ -2,6 +2,7 @@ package tv.trakt.trakt.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -12,8 +13,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
@@ -66,20 +69,14 @@ internal fun PrimaryButton(
         onClick = onClick,
         enabled = enabled,
     ) {
-        Row(
-            verticalAlignment = CenterVertically,
+        Box(
+            contentAlignment = Alignment.Center,
         ) {
-            when {
-                loading -> {
-                    FilmProgressIndicator(
-                        size = iconSize,
-                        color = if (enabled) contentColor else disabledContentColor,
-                        modifier = Modifier
-                            .padding(end = iconSpace),
-                    )
-                }
-
-                icon != null -> {
+            Row(
+                verticalAlignment = CenterVertically,
+                modifier = Modifier.alpha(if (loading) 0F else 1F),
+            ) {
+                if (icon != null) {
                     Image(
                         painter = icon,
                         contentDescription = null,
@@ -90,17 +87,23 @@ internal fun PrimaryButton(
                             .requiredSize(iconSize),
                     )
                 }
+
+                Text(
+                    text = text,
+                    color = if (enabled) contentColor else disabledContentColor,
+                    style = textStyle,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = if (icon != null) TextAlign.Start else TextAlign.Center,
+                )
             }
 
-            Text(
-                text = text,
-                color = if (enabled) contentColor else disabledContentColor,
-                style = textStyle,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = if (icon != null || loading) TextAlign.Start else TextAlign.Center,
-                modifier = Modifier,
-            )
+            if (loading) {
+                FilmProgressIndicator(
+                    size = iconSize,
+                    color = if (enabled) contentColor else disabledContentColor,
+                )
+            }
         }
     }
 }

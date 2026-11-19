@@ -62,6 +62,9 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
+private const val PLACEHOLDER_ICON_FRACTION = 0.55F
+private val PlaceholderIconMaxSize = 48.dp
+
 @Composable
 internal fun VerticalMediaCard(
     title: String,
@@ -167,7 +170,7 @@ internal fun VerticalMediaCard(
                                 contentScale = ContentScale.Fit,
                                 colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                                 modifier = Modifier
-                                    .size(48.dp)
+                                    .size(minOf(cardWidth * PLACEHOLDER_ICON_FRACTION, PlaceholderIconMaxSize))
                                     .align(Alignment.Center),
                             )
 
@@ -314,6 +317,21 @@ private fun PosterPreviewPlaceholder() {
             imageUrl = null,
             modifier = Modifier
                 .padding(16.dp),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PosterPreviewPlaceholderSmall() {
+    TraktThemeLightDark {
+        VerticalMediaCard(
+            title = "",
+            imageUrl = null,
+            width = 40.dp,
+            corner = 8.dp,
+            more = false,
+            modifier = Modifier.padding(16.dp),
         )
     }
 }
