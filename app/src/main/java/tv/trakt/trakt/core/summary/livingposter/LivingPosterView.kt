@@ -14,6 +14,7 @@ internal fun LivingPosterView(
     viewModel: LivingPosterViewModel,
     onReady: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    tiltEnabled: Boolean = true,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val animationsDisabled = rememberAnimationsDisabled()
@@ -22,6 +23,7 @@ internal fun LivingPosterView(
         state = state,
         animationsDisabled = animationsDisabled,
         onReady = onReady,
+        tiltEnabled = tiltEnabled,
         modifier = modifier,
     )
 }
@@ -31,6 +33,7 @@ private fun LivingPosterContent(
     state: LivingPosterState,
     animationsDisabled: Boolean,
     onReady: (Boolean) -> Unit,
+    tiltEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     if (!state.enabled || animationsDisabled) return
@@ -39,6 +42,7 @@ private fun LivingPosterContent(
     LivingPosterStage(
         poster = poster,
         onReady = onReady,
+        tiltEnabled = tiltEnabled,
         modifier = modifier.fillMaxSize(),
     )
 }

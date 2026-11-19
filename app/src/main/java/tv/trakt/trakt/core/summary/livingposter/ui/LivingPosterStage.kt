@@ -62,6 +62,7 @@ private const val PARTICLE_SEED_STEP = 101
 internal fun LivingPosterStage(
     poster: LivingPoster,
     onReady: (Boolean) -> Unit,
+    tiltEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val stack = remember(poster) { poster.toStack() }
@@ -95,7 +96,8 @@ internal fun LivingPosterStage(
     LaunchedEffect(ready) { currentOnReady(ready) }
     DisposableEffect(Unit) { onDispose { currentOnReady(false) } }
 
-    val motion = rememberLivingPosterMotion()
+    val motion = rememberLivingPosterMotion(tiltEnabled)
+    val planeScale = if (tiltEnabled) PLANE_SCALE else 1F
 
     Canvas(
         modifier = modifier.graphicsLayer {
@@ -113,7 +115,7 @@ internal fun LivingPosterStage(
         )
 
         drawRect(Color.Black)
-        withTransform({ scale(PLANE_SCALE, PLANE_SCALE, pivot = center) }) {
+        withTransform({ scale(planeScale, planeScale, pivot = center) }) {
             drawStack(
                 stack = stack,
                 frame = frame,
@@ -228,15 +230,15 @@ private class LivingPosterMotion {
     var seconds by mutableFloatStateOf(0F)
 }
 
-/** Advances the effect clock and follows the gyroscope tilt while the screen is started. */
+/** Advances the effect clock and, with [tiltEnabled], follows the gyroscope while the screen is started. */
 @Composable
-private fun rememberLivingPosterMotion(): LivingPosterMotion {
+private fun rememberLivingPosterMotion(tiltEnabled: Boolean): LivingPosterMotion {
     val motion = remember { LivingPosterMotion() }
     val context = LocalContext.current
     val displayRotation = LocalView.current.display?.rotation ?: Surface.ROTATION_0
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    LaunchedEffect(motion, lifecycle, displayRotation) {
+    LaunchedEffect(motion, lifecycle, displayRotation, tiltEnabled) {
         var elapsedMillis = (motion.seconds * 1000F).toLong()
 
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -244,12 +246,14 @@ private fun rememberLivingPosterMotion(): LivingPosterMotion {
             var springX = Spring()
             var springY = Spring()
 
-            launch {
-                var previousNanos: Long? = null
-                context.screenRotationRates(displayRotation).collect { rate ->
-                    val seconds = (rate.timestampNanos - (previousNanos ?: rate.timestampNanos)) / 1E9F
-                    previousNanos = rate.timestampNanos
-                    target = target.integrate(rate, seconds.coerceAtMost(MAX_FRAME_SECONDS))
+            if (tiltEnabled) {
+                launch {
+                    var previousNanos: Long? = null
+                    context.screenRotationRates(displayRotation).collect { rate ->
+                        val seconds = (rate.timestampNanos - (previousNanos ?: rate.timestampNanos)) / 1E9F
+                        previousNanos = rate.timestampNanos
+                        target = target.integrate(rate, seconds.coerceAtMost(MAX_FRAME_SECONDS))
+                    }
                 }
             }
 
