@@ -57,6 +57,7 @@ internal val showsModule = module {
             localSource = get(),
             localShowSource = get(),
             localEpisodeSource = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 

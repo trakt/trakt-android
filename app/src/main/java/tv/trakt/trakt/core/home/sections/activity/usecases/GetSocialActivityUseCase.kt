@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.EPISODE
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.MOVIE
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.HomeSocialLocalSource
 import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -27,6 +28,7 @@ import tv.trakt.trakt.common.model.toTraktId
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserSocialRemoteSource,
     private val localDataSource: HomeSocialLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalSocialActivity(
         limit: Int,
@@ -59,7 +61,7 @@ internal class GetSocialActivityUseCase(
             type = "following",
             filters = filters,
         )
-        return items
+        val activityItems = items
             .asyncMap {
                 when (it.type) {
                     MOVIE -> {
@@ -110,6 +112,8 @@ internal class GetSocialActivityUseCase(
                     }
                 }
             }
+
+        return getLocalizedTitlesUseCase.localizeActivityItems(activityItems)
             .sortedWith(
                 compareByDescending<HomeActivityItem> { it.activityAt }
                     .thenByDescending { it.sortId },

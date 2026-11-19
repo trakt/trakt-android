@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserRatingsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -16,6 +17,7 @@ import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileR
 internal class GetProfileRatingsUseCase(
     private val remoteSource: UserRatingsRemoteSource,
     private val localDataSource: ProfileRatingsLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalRatings(limit: Int): ImmutableList<ProfileRatingItem> {
         return localDataSource.getItems()
@@ -57,6 +59,7 @@ internal class GetProfileRatingsUseCase(
                     else -> null
                 }
             }
+            .let { getLocalizedTitlesUseCase.localizeRatingItems(it) }
             .also {
                 when (pagination.page) {
                     1 -> localDataSource.setItems(it)

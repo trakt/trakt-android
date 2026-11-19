@@ -57,6 +57,7 @@ internal val moviesModule = module {
             remoteSource = get(),
             localSource = get(),
             localMovieSource = get(),
+            getLocalizedTitlesUseCase = get(),
         )
     }
 

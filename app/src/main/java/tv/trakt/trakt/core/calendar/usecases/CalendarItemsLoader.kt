@@ -9,7 +9,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
-import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
 import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
@@ -98,7 +97,7 @@ internal class CalendarItemsLoader(
                 }
             }
 
-            val items = itemsAsync.await().localized()
+            val items = getLocalizedTitlesUseCase.localizeCalendarItems(itemsAsync.await())
             val showsProgress = showsProgressAsync.await()
                 .associateBy { it.showId }
             val watchedMovies = moviesProgressAsync.await()
@@ -130,16 +129,6 @@ internal class CalendarItemsLoader(
 
             result.toImmutableMap()
         }
-    }
-
-    private suspend fun List<CalendarItem>.localized(): List<CalendarItem> {
-        val episodeItems = filterIsInstance<CalendarItem.EpisodeItem>()
-        val titles = getLocalizedTitlesUseCase.getTitles(
-            movieIds = filterIsInstance<CalendarItem.MovieItem>().map { it.movie.ids.trakt },
-            showIds = episodeItems.map { it.show.ids.trakt },
-            episodeIds = episodeItems.flatMap { item -> item.episodes.map { it.ids.trakt } },
-        )
-        return map { it.localized(titles) }
     }
 
     private suspend fun loadPersonalItems(
@@ -229,16 +218,6 @@ internal class CalendarItemsLoader(
 
             showsAsync.await() + moviesAsync.await()
         }
-    }
-}
-
-private fun CalendarItem.localized(titles: LocalizedTitles): CalendarItem {
-    return when (this) {
-        is CalendarItem.EpisodeItem -> copy(
-            show = titles.show(show),
-            episodes = episodes.map(titles::episode).toImmutableList(),
-        )
-        is CalendarItem.MovieItem -> copy(movie = titles.movie(movie))
     }
 }
 

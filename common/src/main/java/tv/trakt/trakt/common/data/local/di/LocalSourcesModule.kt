@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.local.LivingPosterLocalSource
+import tv.trakt.trakt.common.data.local.LocalizedTitlesLocalSource
 import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.PeopleLocalSource
@@ -69,6 +70,7 @@ private const val POSTER_LANGUAGES_PREFERENCES = "poster_languages"
 private const val SEARCH_PREFERENCES = "search_preferences"
 private const val PUSH_PREFERENCES = "push_preferences"
 private const val MEDIA_MODE_PREFERENCES = "media_mode_preferences"
+private const val LOCALIZED_TITLES_PREFERENCES = "localized_titles"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -238,18 +240,39 @@ val localSourcesModule = module {
         )
     }
 
-    // Rebuildable from the network, so it lives in the cache dir and the system may clear it.
     single<DataStore<Preferences>>(named(POSTER_LANGUAGES_PREFERENCES)) {
-        PreferenceDataStoreFactory.create(
-            corruptionHandler = ReplaceFileCorruptionHandler(
-                produceNewData = { emptyPreferences() },
-            ),
-            scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-            produceFile = {
-                File(androidApplication().cacheDir, "$POSTER_LANGUAGES_PREFERENCES.preferences_pb")
-            },
+        createCacheStore(
+            context = androidApplication(),
+            name = POSTER_LANGUAGES_PREFERENCES,
         )
     }
+
+    single {
+        LocalizedTitlesLocalSource(
+            dataStore = get(named(LOCALIZED_TITLES_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(LOCALIZED_TITLES_PREFERENCES)) {
+        createCacheStore(
+            context = androidApplication(),
+            name = LOCALIZED_TITLES_PREFERENCES,
+        )
+    }
+}
+
+// Rebuildable from the network, so it lives in the cache dir and the system may clear it.
+private fun createCacheStore(
+    context: Context,
+    name: String,
+): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { File(context.cacheDir, "$name.preferences_pb") },
+    )
 }
 
 private fun createStore(

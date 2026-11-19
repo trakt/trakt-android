@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.progress.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
@@ -13,6 +14,7 @@ import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 internal class GetProgressCompleteUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
     private val localDataSource: ProgressCompletedLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalCompleted(
         limit: Int,
@@ -43,6 +45,13 @@ internal class GetProgressCompleteUseCase(
             .asyncMap {
                 ProfileProgressItem.ShowItem(
                     show = Show.fromDto(it.show),
+                )
+            }
+            .let { items ->
+                getLocalizedTitlesUseCase.localizeShows(
+                    items = items,
+                    show = { it.show },
+                    update = { item, show -> item.copy(show = show) },
                 )
             }
 

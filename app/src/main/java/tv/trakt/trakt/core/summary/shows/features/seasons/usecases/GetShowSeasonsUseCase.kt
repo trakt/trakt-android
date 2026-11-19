@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.shows.features.seasons.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -16,6 +17,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 internal class GetShowSeasonsUseCase(
     private val remoteShowsSource: ShowsRemoteSource,
     private val remoteEpisodesSource: EpisodesRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getAllSeasons(
         showId: TraktId,
@@ -48,7 +50,7 @@ internal class GetShowSeasonsUseCase(
             return ShowSeasons(
                 seasons = remoteSeasons.toImmutableList(),
                 selectedSeason = selectedSeason.season,
-                selectedSeasonEpisodes = episodes.toImmutableList(),
+                selectedSeasonEpisodes = episodes.localized().toImmutableList(),
             )
         }
 
@@ -68,6 +70,15 @@ internal class GetShowSeasonsUseCase(
                     episode = Episode.fromDto(it),
                 )
             }
+            .localized()
             .toImmutableList()
+    }
+
+    private suspend fun List<EpisodeItem>.localized(): List<EpisodeItem> {
+        return getLocalizedTitlesUseCase.localizeEpisodes(
+            items = this,
+            episode = { it.episode },
+            update = { item, episode -> item.copy(episode = episode) },
+        )
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
@@ -17,6 +18,7 @@ import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 
 internal class GetPersonCreditsUseCase(
     private val peopleRemoteSource: PeopleRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     private val mutex = Mutex()
 
@@ -84,7 +86,7 @@ internal class GetPersonCreditsUseCase(
                 results.putAll(it)
             }
 
-        return results.toImmutableMap()
+        return results.localizedShows()
     }
 
     suspend fun getMovieCredits(
@@ -149,6 +151,30 @@ internal class GetPersonCreditsUseCase(
                 results.putAll(it)
             }
 
-        return results.toImmutableMap()
+        return results.localizedMovies()
+    }
+
+    private suspend fun Map<String, ImmutableList<PersonCreditItem.ShowItem>>.localizedShows():
+        ImmutableMap<String, ImmutableList<PersonCreditItem.ShowItem>> {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            showIds = values.flatten().map { it.show.ids.trakt },
+        )
+        return mapValues { (_, items) ->
+            items
+                .map { it.copy(show = titles.show(it.show)) }
+                .toImmutableList()
+        }.toImmutableMap()
+    }
+
+    private suspend fun Map<String, ImmutableList<PersonCreditItem.MovieItem>>.localizedMovies():
+        ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>> {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            movieIds = values.flatten().map { it.movie.ids.trakt },
+        )
+        return mapValues { (_, items) ->
+            items
+                .map { it.copy(movie = titles.movie(it.movie)) }
+                .toImmutableList()
+        }.toImmutableMap()
     }
 }

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover.sections.releases.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -24,6 +25,7 @@ internal class GetReleasesShowsUseCase(
     private val localSource: ReleasesShowsLocalSource,
     private val localShowSource: ShowLocalSource,
     private val localEpisodeSource: EpisodeLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun clearLocal() {
         localSource.clear()
@@ -89,6 +91,7 @@ internal class GetReleasesShowsUseCase(
                     isFullSeason = episodes.isFullSeason(),
                 )
             }
+            .localized()
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
@@ -98,6 +101,14 @@ internal class GetReleasesShowsUseCase(
                 localShowSource.upsertShows(shows.map { it.show })
                 localEpisodeSource.upsertEpisodes(shows.flatMap { it.episodes })
             }
+    }
+
+    private suspend fun List<EpisodeItem>.localized(): List<EpisodeItem> {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            showIds = map { it.show.ids.trakt },
+            episodeIds = flatMap { item -> item.episodes.map { it.ids.trakt } },
+        )
+        return map(titles::calendarItem)
     }
 }
 

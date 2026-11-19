@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover.sections.releases.usecases.movies
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesMoviesLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
@@ -16,6 +17,7 @@ internal class GetReleasesMoviesUseCase(
     private val remoteSource: MoviesRemoteSource,
     private val localSource: ReleasesMoviesLocalSource,
     private val localMovieSource: MovieLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun clearLocal() {
         localSource.clear()
@@ -47,6 +49,13 @@ internal class GetReleasesMoviesUseCase(
                 watched = false,
             )
         }
+            .let { movies ->
+                getLocalizedTitlesUseCase.localizeMovies(
+                    items = movies,
+                    movie = { it.movie },
+                    update = { item, movie -> item.copy(movie = movie) },
+                )
+            }
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {

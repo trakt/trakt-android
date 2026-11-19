@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
@@ -15,6 +16,7 @@ import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.Profile
 internal class GetProfileCommentsUseCase(
     private val remoteSource: UserRemoteSource,
     private val localDataSource: ProfileCommentsLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalComments(limit: Int): ImmutableList<ProfileCommentItem> {
         return localDataSource.getItems()
@@ -48,6 +50,7 @@ internal class GetProfileCommentsUseCase(
                     else -> null
                 }
             }
+            .let { getLocalizedTitlesUseCase.localizeCommentItems(it) }
             .also {
                 when (pagination.page) {
                     1 -> localDataSource.setItems(it)
