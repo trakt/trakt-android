@@ -1,10 +1,13 @@
 package tv.trakt.trakt.core.settings.features.preview
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
@@ -50,8 +53,11 @@ private fun PreviewFeaturesContent(
     ) {
         Text(
             text = stringResource(R.string.description_preview_features),
-            style = TraktTheme.typography.paragraphSmaller,
+            style = TraktTheme.typography.paragraph.copy(
+                fontSize = 14.sp,
+            ),
             color = TraktTheme.colors.textSecondary,
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         when {
