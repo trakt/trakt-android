@@ -49,7 +49,6 @@ internal fun SettingsSegmentedGroup(
                 titleStyle = TraktTheme.typography.paragraph.copy(
                     fontSize = 14.sp,
                 ),
-                modifier = Modifier.padding(horizontal = 4.dp),
             )
         }
 

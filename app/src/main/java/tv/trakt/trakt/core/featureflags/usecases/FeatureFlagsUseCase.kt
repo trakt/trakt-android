@@ -38,7 +38,7 @@ internal class FeatureFlagsUseCase(
                     FeatureFlagPreview(
                         flag = flag,
                         audience = audience,
-                        enabled = !locked && previewEnabled(flag = flag, prefs = prefs),
+                        enabled = !locked && previewEnabled(flag = flag, audience = audience, prefs = prefs),
                         locked = locked,
                     )
                 }
@@ -80,7 +80,11 @@ internal class FeatureFlagsUseCase(
             val audience = audience(flag)
             when {
                 audience == FeatureFlagAudience.Public -> true
-                canPreview(audience = audience, user = user) -> previewEnabled(flag = flag, prefs = prefs)
+                canPreview(audience = audience, user = user) -> previewEnabled(
+                    flag = flag,
+                    audience = audience,
+                    prefs = prefs,
+                )
                 else -> false
             }
         }.distinctUntilChanged()
@@ -127,11 +131,13 @@ internal class FeatureFlagsUseCase(
         }
     }
 
+    /** Director previews start switched on; other previews wait for the user to opt in. */
     private fun previewEnabled(
         flag: FeatureFlag,
+        audience: FeatureFlagAudience,
         prefs: Preferences,
     ): Boolean {
-        return prefs[enabledKey(flag)] == true
+        return prefs[enabledKey(flag)] ?: (audience == FeatureFlagAudience.Director)
     }
 
     private fun enabledKey(flag: FeatureFlag): Preferences.Key<Boolean> {

@@ -90,7 +90,7 @@ import tv.trakt.trakt.core.summary.people.ui.HistoryCreditsList
 import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
 import tv.trakt.trakt.core.summary.people.ui.ShowsCreditsList
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.header.PersonDetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
@@ -282,7 +282,7 @@ internal fun PersonDetailsContent(
                 overscrollEffect = null,
             ) {
                 item {
-                    DetailsHeader(
+                    PersonDetailsHeader(
                         person = person,
                         loading = state.loadingDetails.isLoading,
                         onShareClick = {

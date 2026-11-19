@@ -12,7 +12,7 @@ paths:
 
 > **TL;DR**: A feature in preview is one `FeatureFlag` enum entry. The Remote Config string
 > `preview_feature_<id>` sets its audience: `off`, `director`, `vip` or `public`. Users in the
-> audience opt in under Settings, Preview Features (default off). `public` turns it on for everyone
+> audience toggle it under Settings, Preview Features (on by default for `director`, off for `vip`). `public` turns it on for everyone
 > without an app update. Feature code asks `FeatureFlagsUseCase.observeEnabled(flag)` and nothing
 > else. Phone app only.
 
@@ -38,7 +38,8 @@ app/.../ui/components/AttentionIcon.kt    # animated icon for unseen preview fea
 | `vip`                      | VIPs and directors who switched it on | every signed-in user; locked for free users |
 | `public`                   | everyone, signed out included     | no                        |
 
-- Preview toggles default to **off**. The user opts in.
+- `director` toggles default to **on**: directors opt out. `vip` toggles default to **off**: the
+  user opts in. A stored toggle always wins over the default.
 - `public` ignores the stored toggle. A user who never opted in, or opted out, still gets it.
 - Signed-out users only ever get `public` features.
 - VIP means `user.isAnyVip`. Director means `user.isDirector`.

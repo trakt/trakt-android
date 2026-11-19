@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
+import tv.trakt.trakt.common.data.local.LivingPosterLocalSource
 import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.PeopleLocalSource
@@ -77,6 +78,7 @@ val localSourcesModule = module {
     singleOf(::HomeUpcomingLocalSource)
     singleOf(::HomeWatchlistLocalSource)
     singleOf(::LeaderboardLocalSource)
+    singleOf(::LivingPosterLocalSource)
     singleOf(::ListsCollaborationsLocalSource)
     singleOf(::ListsLikedLocalSource)
     singleOf(::ListsPersonalLocalSource)

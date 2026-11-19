@@ -97,6 +97,7 @@ import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
+import tv.trakt.trakt.core.summary.livingposter.LivingPosterView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
@@ -118,7 +119,7 @@ import tv.trakt.trakt.core.summary.soundtrack.SoundtrackView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
-import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.header.ShowDetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.SpoilerBlur
@@ -683,7 +684,7 @@ internal fun ShowDetailsContent(
                 overscrollEffect = null,
             ) {
                 item {
-                    DetailsHeader(
+                    ShowDetailsHeader(
                         show = show,
                         showTranslation = state.showTranslation,
                         ratings = state.showRatings,
@@ -703,6 +704,14 @@ internal fun ShowDetailsContent(
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
+                        posterOverlay = { onReady ->
+                            LivingPosterView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(MediaType.Show, show.ids.trakt) },
+                                ),
+                                onReady = onReady,
+                            )
+                        },
                     )
                 }
 

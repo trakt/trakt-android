@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.summary.ui.DetailsHorizontalPoster
-import tv.trakt.trakt.core.summary.ui.header.PosterChipsGroup
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
