@@ -126,6 +126,7 @@ internal class AddFromListsViewModel(
             try {
                 page = 1
                 itemsState.update { null }
+                errorState.update { null }
                 hasMoreItemsState.update { false }
                 loadingState.update { LoadingState.Loading }
 

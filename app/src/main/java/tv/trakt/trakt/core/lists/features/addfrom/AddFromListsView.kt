@@ -374,8 +374,10 @@ private fun ItemsPlaceholder(state: AddFromListsState) {
             }
             else -> {
                 Text(
-                    text = state.error?.localizedMessage
-                        ?: stringResource(R.string.text_no_titles_to_add),
+                    text = when (state.error) {
+                        null -> stringResource(R.string.text_no_titles_to_add)
+                        else -> stringResource(R.string.error_text_unexpected_error_short)
+                    },
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphSmall,
                 )
