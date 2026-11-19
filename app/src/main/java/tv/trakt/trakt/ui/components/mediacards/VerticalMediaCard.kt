@@ -63,6 +63,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
 private const val PLACEHOLDER_ICON_FRACTION = 0.45F
+private val PlaceholderIconMaxSize = 48.dp
 
 @Composable
 internal fun VerticalMediaCard(
@@ -169,8 +170,7 @@ internal fun VerticalMediaCard(
                                 contentScale = ContentScale.Fit,
                                 colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                                 modifier = Modifier
-                                    .fillMaxWidth(PLACEHOLDER_ICON_FRACTION)
-                                    .aspectRatio(1F)
+                                    .size(minOf(cardWidth * PLACEHOLDER_ICON_FRACTION, PlaceholderIconMaxSize))
                                     .align(Alignment.Center),
                             )
 
