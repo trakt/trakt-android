@@ -2,10 +2,16 @@ package tv.trakt.trakt.common.core.translations.usecase
 
 import android.icu.util.ULocale
 import androidx.appcompat.app.AppCompatDelegate
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import tv.trakt.trakt.common.Config.DEFAULT_LANGUAGE
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.library.LibraryItem
+import tv.trakt.trakt.common.core.today.model.FollowingActivity
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
 import tv.trakt.trakt.common.data.local.LocalizedTitlesLocalSource
 import tv.trakt.trakt.common.data.remote.TranslationsRemoteSource
@@ -26,6 +32,9 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlRequest
 import java.util.Locale
 
 private const val MAX_IDS_PER_TYPE = 100
+
+// Bounds the parallel requests one call can make for very large lists.
+private const val MAX_BATCHES = 5
 
 class GetLocalizedTitlesUseCase(
     private val remoteSource: TranslationsRemoteSource,
@@ -71,25 +80,25 @@ class GetLocalizedTitlesUseCase(
             return cached.toLocalizedTitles()
         }
 
-        val fetched = try {
-            val response = remoteSource.getBulkTitles(
-                V3BulkIntlRequest(
-                    language = language,
-                    country = country,
-                    movieIds = missing.getValue(MediaType.Movie),
-                    showIds = missing.getValue(MediaType.Show),
-                    episodeIds = missing.getValue(MediaType.Episode),
-                ),
-            )
-            val titles = LocalizedTitles.fromDto(response)
-            missing.mapValues { (type, ids) ->
-                val typeTitles = titles.ofType(type)
-                ids.associateWith { typeTitles[it] }
-            }
-        } catch (error: Exception) {
-            error.rethrowCancellation {
-                Timber.recordError(error)
-            }
+        val batches = missing.mapValues { (_, ids) -> ids.chunked(MAX_IDS_PER_TYPE) }
+        val batchCount = batches.values.maxOf { it.size }
+        val fetched = coroutineScope {
+            (0 until batchCount)
+                .map { index ->
+                    async {
+                        fetchBatch(
+                            language = language,
+                            country = country,
+                            ids = batches.mapValues { (_, chunks) -> chunks.getOrElse(index) { emptyList() } },
+                        )
+                    }
+                }
+                .awaitAll()
+        }.fold(emptyMap<MediaType, Map<TraktId, String?>>()) { merged, batch ->
+            requested.keys.associateWith { merged[it].orEmpty() + batch[it].orEmpty() }
+        }
+
+        if (fetched.values.all { it.isEmpty() }) {
             return cached.toLocalizedTitles()
         }
 
@@ -98,6 +107,35 @@ class GetLocalizedTitlesUseCase(
         return requested.keys
             .associateWith { cached[it].orEmpty() + fetched[it].orEmpty() }
             .toLocalizedTitles()
+    }
+
+    /** Titles for one request, or empty when it fails so nothing gets cached for those ids. */
+    private suspend fun fetchBatch(
+        language: String,
+        country: String,
+        ids: Map<MediaType, List<TraktId>>,
+    ): Map<MediaType, Map<TraktId, String?>> {
+        return try {
+            val response = remoteSource.getBulkTitles(
+                V3BulkIntlRequest(
+                    language = language,
+                    country = country,
+                    movieIds = ids.getValue(MediaType.Movie),
+                    showIds = ids.getValue(MediaType.Show),
+                    episodeIds = ids.getValue(MediaType.Episode),
+                ),
+            )
+            val titles = LocalizedTitles.fromDto(response)
+            ids.mapValues { (type, typeIds) ->
+                val typeTitles = titles.ofType(type)
+                typeIds.associateWith { typeTitles[it] }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            emptyMap()
+        }
     }
 
     suspend fun <T> localizeMovies(
@@ -195,6 +233,44 @@ class GetLocalizedTitlesUseCase(
         )
     }
 
+    suspend fun localizeTodayForYouItems(items: List<TodayForYouItem>): List<TodayForYouItem> {
+        return localizeItems(
+            items = items,
+            media = { item ->
+                when (item) {
+                    is TodayForYouItem.UpNext -> MediaRefs(show = item.show, episodes = listOf(item.episode))
+                    is TodayForYouItem.StartWatching -> item.media.toRefs()
+                }
+            },
+            localize = LocalizedTitles::todayForYouItem,
+        )
+    }
+
+    suspend fun localizeFollowingActivities(items: List<FollowingActivity>): List<FollowingActivity> {
+        return localizeItems(
+            items = items,
+            media = { item ->
+                when (val target = item.target) {
+                    is FollowingActivity.Target.MovieTarget -> MediaRefs(movie = target.movie)
+                    is FollowingActivity.Target.ShowTarget -> MediaRefs(show = target.show)
+                    is FollowingActivity.Target.SeasonTarget -> MediaRefs(show = target.show)
+                    is FollowingActivity.Target.EpisodeTarget -> MediaRefs(
+                        show = target.show,
+                        episodes = listOf(target.episode),
+                    )
+                }
+            },
+            localize = LocalizedTitles::followingActivity,
+        )
+    }
+
+    private fun TodayMedia.toRefs(): MediaRefs {
+        return when (this) {
+            is TodayMedia.MovieMedia -> MediaRefs(movie = movie)
+            is TodayMedia.ShowMedia -> MediaRefs(show = show)
+        }
+    }
+
     private suspend fun <T> localizeItems(
         items: List<T>,
         media: (T) -> MediaRefs,
@@ -217,7 +293,7 @@ class GetLocalizedTitlesUseCase(
 
     private fun Collection<TraktId>.capped(): List<TraktId> {
         return sortedBy { it.value }
-            .take(MAX_IDS_PER_TYPE)
+            .take(MAX_IDS_PER_TYPE * MAX_BATCHES)
     }
 
     private fun LocalizedTitles.ofType(type: MediaType): Map<TraktId, String> {

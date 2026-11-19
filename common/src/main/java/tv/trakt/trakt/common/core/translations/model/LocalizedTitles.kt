@@ -3,6 +3,9 @@ package tv.trakt.trakt.common.core.translations.model
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.library.LibraryItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.today.model.FollowingActivity
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -105,6 +108,33 @@ data class LocalizedTitles(
         return when (item) {
             is LibraryItem.MovieItem -> item.copy(movie = movie(item.movie))
             is LibraryItem.EpisodeItem -> item.copy(show = show(item.show), episode = episode(item.episode))
+        }
+    }
+
+    fun todayForYouItem(item: TodayForYouItem): TodayForYouItem {
+        return when (item) {
+            is TodayForYouItem.UpNext -> item.copy(show = show(item.show), episode = episode(item.episode))
+            is TodayForYouItem.StartWatching -> item.copy(media = todayMedia(item.media))
+        }
+    }
+
+    fun followingActivity(activity: FollowingActivity): FollowingActivity {
+        val target = when (val target = activity.target) {
+            is FollowingActivity.Target.MovieTarget -> target.copy(movie = movie(target.movie))
+            is FollowingActivity.Target.ShowTarget -> target.copy(show = show(target.show))
+            is FollowingActivity.Target.SeasonTarget -> target.copy(show = show(target.show))
+            is FollowingActivity.Target.EpisodeTarget -> target.copy(
+                show = show(target.show),
+                episode = episode(target.episode),
+            )
+        }
+        return activity.copy(target = target)
+    }
+
+    private fun todayMedia(media: TodayMedia): TodayMedia {
+        return when (media) {
+            is TodayMedia.MovieMedia -> media.copy(movie = movie(media.movie))
+            is TodayMedia.ShowMedia -> media.copy(show = show(media.show))
         }
     }
 

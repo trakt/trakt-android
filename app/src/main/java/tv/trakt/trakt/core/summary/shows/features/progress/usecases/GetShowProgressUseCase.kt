@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.shows.features.progress.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
@@ -17,6 +18,7 @@ internal class GetShowProgressUseCase(
     private val remoteShowsSource: ShowsRemoteSource,
     private val remoteEpisodesSource: EpisodesRemoteSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getSeasons(showId: TraktId): List<Season> {
         return remoteShowsSource.getSeasons(showId)
@@ -28,9 +30,14 @@ internal class GetShowProgressUseCase(
         showId: TraktId,
         season: Int,
     ): ImmutableList<Episode> {
-        return remoteEpisodesSource.getSeason(showId, season)
+        val episodes = remoteEpisodesSource.getSeason(showId, season)
             .map { Episode.fromDto(it) }
-            .toImmutableList()
+
+        return getLocalizedTitlesUseCase.localizeEpisodes(
+            items = episodes,
+            episode = { it },
+            update = { _, episode -> episode },
+        ).toImmutableList()
     }
 
     suspend fun getUpNext(showId: TraktId): UpNext? {
