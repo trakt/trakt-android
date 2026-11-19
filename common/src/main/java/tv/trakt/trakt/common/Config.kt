@@ -2,6 +2,7 @@ package tv.trakt.trakt.common
 
 object Config {
     const val DEFAULT_COUNTRY_CODE: String = "us"
+    const val DEFAULT_LANGUAGE: String = "en"
 
     const val API_BASE_URL: String = "https://apiz.trakt.tv/"
     const val API_V3_BASE_URL: String = "https://apiz.trakt.tv/v3/"

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.usecases
 
 import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
 import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.CustomListItem
 
 internal class LocalizeListItemsUseCase(
@@ -16,13 +17,14 @@ internal class LocalizeListItemsUseCase(
         return items.map { it.localized(titles) }
     }
 
-    private fun CustomListItem.show() =
-        when (this) {
+    private fun CustomListItem.show(): Show? {
+        return when (this) {
             is CustomListItem.MovieItem -> null
             is CustomListItem.ShowItem -> show
             is CustomListItem.SeasonItem -> show
             is CustomListItem.EpisodeItem -> show
         }
+    }
 
     private fun CustomListItem.localized(titles: LocalizedTitles): CustomListItem {
         return when (this) {

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.translations.usecase
 
 import androidx.appcompat.app.AppCompatDelegate
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.model.fromDto
 import tv.trakt.trakt.common.data.local.TranslationsLocalSource
@@ -10,8 +11,6 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import java.util.Locale
-
-private const val DEFAULT_LANGUAGE = "en"
 
 class GetEpisodeTranslationsUseCase(
     private val remoteSource: TranslationsRemoteSource,
@@ -23,7 +22,7 @@ class GetEpisodeTranslationsUseCase(
         locale: Locale,
     ): MediaTranslation? {
         val currentLocale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-        if (currentLocale.language == DEFAULT_LANGUAGE) {
+        if (currentLocale.language == Config.DEFAULT_LANGUAGE) {
             // The API returns English translations by default.
             return null
         }

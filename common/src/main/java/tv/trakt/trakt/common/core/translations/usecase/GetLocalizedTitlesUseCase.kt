@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.core.translations.usecase
 import android.icu.util.ULocale
 import androidx.appcompat.app.AppCompatDelegate
 import timber.log.Timber
+import tv.trakt.trakt.common.Config.DEFAULT_LANGUAGE
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
 import tv.trakt.trakt.common.data.remote.TranslationsRemoteSource
@@ -15,7 +16,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlRequest
 import java.util.Locale
 
-private const val DEFAULT_LANGUAGE = "en"
 private const val MAX_IDS_PER_TYPE = 100
 
 class GetLocalizedTitlesUseCase(
@@ -28,9 +28,17 @@ class GetLocalizedTitlesUseCase(
         episodeIds: Collection<TraktId> = emptyList(),
     ): LocalizedTitles {
         val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-        if (locale.language == DEFAULT_LANGUAGE) return LocalizedTitles.Empty
-        if (movieIds.isEmpty() && showIds.isEmpty() && episodeIds.isEmpty()) return LocalizedTitles.Empty
-        if (!sessionManager.isAuthenticated()) return LocalizedTitles.Empty
+        if (locale.language == DEFAULT_LANGUAGE) {
+            return LocalizedTitles.Empty
+        }
+
+        if (movieIds.isEmpty() && showIds.isEmpty() && episodeIds.isEmpty()) {
+            return LocalizedTitles.Empty
+        }
+
+        if (!sessionManager.isAuthenticated()) {
+            return LocalizedTitles.Empty
+        }
 
         return try {
             val response = remoteSource.getBulkTitles(

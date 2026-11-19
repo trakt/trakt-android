@@ -50,7 +50,7 @@ internal class GetUpNextUseCase(
         sorting: UpNextSorting = UpNextSorting.Default,
     ): ImmutableList<UpNextItem> {
         val shows = getRemoteShows(page, limit, filters, sorting)
-        val movies = getRemoteMovies(page, limit, filters)
+        val movies = getRemoteMovies(page, limit)
 
         val items = when {
             sorting.isDefault -> when (sorting.order) {
@@ -132,7 +132,6 @@ internal class GetUpNextUseCase(
     private suspend fun getRemoteMovies(
         page: Int,
         limit: Int,
-        filters: GlobalFilter?,
     ): List<UpNextMovie> {
         val remoteItems = remoteMoviesSyncSource.getPlaybackProgress(
             limit = limit,

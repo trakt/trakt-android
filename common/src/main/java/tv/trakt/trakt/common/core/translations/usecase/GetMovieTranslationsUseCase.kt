@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.translations.usecase
 
 import androidx.appcompat.app.AppCompatDelegate
+import tv.trakt.trakt.common.Config.DEFAULT_LANGUAGE
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.model.fromDto
 import tv.trakt.trakt.common.data.local.TranslationsLocalSource
@@ -9,8 +10,6 @@ import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import java.util.Locale
-
-private const val DEFAULT_LANGUAGE = "en"
 
 class GetMovieTranslationsUseCase(
     private val remoteSource: TranslationsRemoteSource,
