@@ -60,6 +60,7 @@ internal val calendarModule = module {
             remoteUserSource = get(),
             getReleasesShowsUseCase = get(named("defaultReleasesShowsUseCase")),
             getReleasesMoviesUseCase = get(named("defaultReleasesMoviesUseCase")),
+            getLocalizedTitlesUseCase = get(),
         )
     }
     factoryOf(::GetCalendarItemsUseCase)

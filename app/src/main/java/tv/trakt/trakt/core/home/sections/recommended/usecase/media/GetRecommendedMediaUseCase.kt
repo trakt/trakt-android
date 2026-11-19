@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.media
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.MediaRemoteSource
@@ -23,6 +24,7 @@ internal class GetRecommendedMediaUseCase(
     private val localRecommendedSource: RecommendedMediaLocalSource,
     private val localShowSource: ShowLocalSource,
     private val localMovieSource: MovieLocalSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalMedia(): ImmutableList<RecommendedItem> {
         return localRecommendedSource.getItems()
@@ -37,6 +39,7 @@ internal class GetRecommendedMediaUseCase(
     ): ImmutableList<RecommendedItem> {
         val items = remoteSource.getRecommended(limit = limit, filters = filters)
             .mapNotNull(::toRecommendedItem)
+            .localized()
             .toImmutableList()
 
         if (!skipLocal) {
@@ -45,6 +48,14 @@ internal class GetRecommendedMediaUseCase(
         upsertMedia(items)
 
         return items
+    }
+
+    private suspend fun List<RecommendedItem>.localized(): List<RecommendedItem> {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            movieIds = filterIsInstance<RecommendedItem.MovieItem>().map { it.movie.ids.trakt },
+            showIds = filterIsInstance<RecommendedItem.ShowItem>().map { it.show.ids.trakt },
+        )
+        return map(titles::recommendedItem)
     }
 
     private suspend fun upsertMedia(items: List<RecommendedItem>) {

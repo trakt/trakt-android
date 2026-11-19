@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.discover.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.MediaRemoteSource
@@ -26,6 +27,7 @@ internal class GetDiscoverMediaUseCase(
     private val localMovieSource: MovieLocalSource,
     private val getRecommendedMediaUseCase: GetRecommendedMediaUseCase,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalMedia(section: DiscoverSection): ImmutableList<DiscoverItem> {
         if (section == Recommended) {
@@ -59,7 +61,7 @@ internal class GetDiscoverMediaUseCase(
                 .mapNotNull { DiscoverItem.fromDto(it) }
 
             Recommended -> error("Recommended is loaded through GetRecommendedMediaUseCase")
-        }.toImmutableList()
+        }.localized().toImmutableList()
 
         if (!skipLocal) {
             localMediaSource.setItems(
@@ -88,6 +90,14 @@ internal class GetDiscoverMediaUseCase(
             skipLocal = skipLocal,
             filters = filters,
         ).toDiscoverItems()
+    }
+
+    private suspend fun List<DiscoverItem>.localized(): List<DiscoverItem> {
+        val titles = getLocalizedTitlesUseCase.getTitles(
+            movieIds = filterIsInstance<DiscoverItem.MovieItem>().map { it.movie.ids.trakt },
+            showIds = filterIsInstance<DiscoverItem.ShowItem>().map { it.show.ids.trakt },
+        )
+        return map(titles::discoverItem)
     }
 
     private suspend fun upsertMedia(items: List<DiscoverItem>) {

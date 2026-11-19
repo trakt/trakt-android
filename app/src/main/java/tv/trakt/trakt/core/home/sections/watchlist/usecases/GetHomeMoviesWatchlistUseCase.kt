@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.data.local.HomeWatchlistLocalSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 internal class GetHomeMoviesWatchlistUseCase(
     private val homeWatchlistLocalSource: HomeWatchlistLocalSource,
     private val userRemoteSource: UserWatchlistRemoteSource,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
 ) {
     suspend fun getLocalWatchlist(limit: Int): ImmutableList<WatchlistItem> {
         return homeWatchlistLocalSource.getMovieItems()
@@ -53,11 +55,20 @@ internal class GetHomeMoviesWatchlistUseCase(
                 it.movie.released != null &&
                     it.movie.released!! <= nowDay
             }
+            .localized()
             .also {
                 if (!skipLocal) {
                     homeWatchlistLocalSource.setMovieItems(items = it)
                 }
             }
             .toImmutableList()
+    }
+
+    private suspend fun List<WatchlistItem.MovieItem>.localized(): List<WatchlistItem.MovieItem> {
+        return getLocalizedTitlesUseCase.localizeMovies(
+            items = this,
+            movie = { it.movie },
+            update = { item, movie -> item.copy(movie = movie) },
+        )
     }
 }

@@ -18,10 +18,12 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.usecases.LocalizeListItemsUseCase
 
 internal class GetListItemsUseCase(
     private val remoteSource: ListsRemoteSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val localizeListItemsUseCase: LocalizeListItemsUseCase,
 ) {
     suspend fun getItems(
         listId: TraktId,
@@ -49,7 +51,7 @@ internal class GetListItemsUseCase(
                     listedAt = it.listedAt.toInstant(),
                     userRating = moviesRatings[movie.ids.trakt],
                 )
-            }
+            }.localized()
         }
 
         if (type.size == 1 && type[0] == MediaType.Show) {
@@ -68,7 +70,7 @@ internal class GetListItemsUseCase(
                     listedAt = it.listedAt.toInstant(),
                     userRating = showsRatings[show.ids.trakt],
                 )
-            }.toImmutableList()
+            }.localized().toImmutableList()
         }
 
         if (type.containsAll(listOf(MediaType.Movie, MediaType.Show))) {
@@ -126,9 +128,13 @@ internal class GetListItemsUseCase(
                         throw IllegalStateException("Invalid media type: ${it.type}")
                     }
                 }
-            }.toImmutableList()
+            }.localized().toImmutableList()
         }
 
         throw IllegalStateException("Invalid media type: $type")
+    }
+
+    private suspend fun List<CustomListItem>.localized(): List<CustomListItem> {
+        return localizeListItemsUseCase.localize(this)
     }
 }

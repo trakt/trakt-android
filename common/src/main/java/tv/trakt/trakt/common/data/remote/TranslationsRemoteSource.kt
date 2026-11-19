@@ -7,12 +7,20 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.EpisodeTranslationDto
 import tv.trakt.trakt.common.networking.TranslationDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlResponse
 import java.util.Locale
 
 class TranslationsRemoteSource(
     private val showsApi: ShowsApi,
     private val moviesApi: MoviesApi,
+    private val v3Api: V3Api,
 ) {
+    suspend fun getBulkTitles(request: V3BulkIntlRequest): V3BulkIntlResponse {
+        return v3Api.getBulkIntl(request)
+    }
+
     suspend fun getShowTranslations(
         showId: TraktId,
         locale: Locale,
