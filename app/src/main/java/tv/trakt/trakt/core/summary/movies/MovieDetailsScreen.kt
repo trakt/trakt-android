@@ -614,12 +614,12 @@ internal fun MovieDetailsContent(
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
-                        posterOverlay = {
+                        posterOverlay = { onReady ->
                             LivingPosterView(
                                 viewModel = koinViewModel(
                                     parameters = { parametersOf(MediaType.Movie, movie.ids.trakt) },
                                 ),
-                                modifier = Modifier.matchParentSize(),
+                                onReady = onReady,
                             )
                         },
                     )

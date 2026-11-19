@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.livingposter
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -7,9 +8,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.core.summary.livingposter.ui.LivingPosterStage
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 
+/** [onReady] reports whether the living poster is loaded and should replace the static poster. */
 @Composable
 internal fun LivingPosterView(
     viewModel: LivingPosterViewModel,
+    onReady: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -18,6 +21,7 @@ internal fun LivingPosterView(
     LivingPosterContent(
         state = state,
         animationsDisabled = animationsDisabled,
+        onReady = onReady,
         modifier = modifier,
     )
 }
@@ -26,6 +30,7 @@ internal fun LivingPosterView(
 private fun LivingPosterContent(
     state: LivingPosterState,
     animationsDisabled: Boolean,
+    onReady: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (!state.enabled || animationsDisabled) return
@@ -33,6 +38,7 @@ private fun LivingPosterContent(
 
     LivingPosterStage(
         poster = poster,
-        modifier = modifier,
+        onReady = onReady,
+        modifier = modifier.fillMaxSize(),
     )
 }

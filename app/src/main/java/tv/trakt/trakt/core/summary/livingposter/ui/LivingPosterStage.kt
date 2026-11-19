@@ -1,10 +1,9 @@
 package tv.trakt.trakt.core.summary.livingposter.ui
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
@@ -12,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
@@ -38,30 +37,19 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.model.livingposter.LivingPoster
 import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterParticle
 import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterStackItem
-import tv.trakt.trakt.core.summary.livingposter.model.Spring
-import tv.trakt.trakt.core.summary.livingposter.model.Tilt
 import tv.trakt.trakt.core.summary.livingposter.model.toStack
-import kotlin.math.PI
-import kotlin.random.Random
 
 private val cardShape = RoundedCornerShape(24.dp)
 
 private const val LAYER_MAX_SIZE_PX = 1000
-private const val REVEAL_MILLIS = 600
-private const val PLANE_SCALE = 1.06F
-private const val LAYER_TRAVEL = 0.019F
-private const val TILT_X_DEGREES = 9F
-private const val TILT_Y_DEGREES = 7F
-private const val TILT_STIFFNESS = 140F
-private const val TILT_DAMPING = 15F
-private const val MAX_FRAME_SECONDS = 1F / 30F
 private const val PARTICLE_BASE_SEED = 42
 private const val PARTICLE_SEED_STEP = 101
 
-/** Draws the layered poster over the static one and fades in once every layer has loaded. */
+/** Draws the layered poster once every layer has loaded, reported through [onReady]. */
 @Composable
 internal fun LivingPosterStage(
     poster: LivingPoster,
+    onReady: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val stack = remember(poster) { poster.toStack() }
@@ -90,43 +78,35 @@ internal fun LivingPosterStage(
     val shadowStates = shadowPainters.mapValues { (_, painter) -> painter.state.collectAsState().value }
     val readyShadows = shadowPainters.filterKeys { shadowStates[it] is AsyncImagePainter.State.Success }
 
-    val revealAlpha by animateFloatAsState(
-        targetValue = if (layersLoaded && masksSettled) 1F else 0F,
-        animationSpec = tween(REVEAL_MILLIS, easing = easeOut),
-    )
+    val ready = layersLoaded && masksSettled
+    val currentOnReady by rememberUpdatedState(onReady)
+    LaunchedEffect(ready) { currentOnReady(ready) }
+    DisposableEffect(Unit) { onDispose { currentOnReady(false) } }
+
     val motion = rememberLivingPosterMotion()
 
     Canvas(
         modifier = modifier.graphicsLayer {
-            alpha = revealAlpha
-            rotationX = motion.tiltY * -TILT_Y_DEGREES
-            rotationY = motion.tiltX * TILT_X_DEGREES
             shape = cardShape
             clip = true
             compositingStrategy = CompositingStrategy.Offscreen
         },
     ) {
-        if (revealAlpha <= 0F) return@Canvas
+        if (!ready) return@Canvas
 
-        val frame = LivingPosterFrame(
-            tiltX = motion.tiltX,
-            tiltY = motion.tiltY,
-            seconds = motion.seconds,
-        )
+        val frame = LivingPosterFrame(seconds = motion.seconds)
 
         drawRect(Color.Black)
-        withTransform({ scale(PLANE_SCALE, PLANE_SCALE, pivot = center) }) {
-            drawStack(
-                stack = stack,
-                frame = frame,
-                layers = layerPainters,
-                shadows = readyShadows,
-                masks = readyMasks,
-                particles = particles,
-            )
-            drawVignette()
-        }
-        drawGlare(frame)
+        drawStack(
+            stack = stack,
+            frame = frame,
+            layers = layerPainters,
+            shadows = readyShadows,
+            masks = readyMasks,
+            particles = particles,
+        )
+        drawVignette()
+        drawGlare()
     }
 }
 
@@ -139,41 +119,30 @@ private fun DrawScope.drawStack(
     particles: Map<String, List<LivingPosterParticle>>,
 ) {
     stack.forEach { item ->
-        translate(
-            left = frame.tiltX * item.shift * -LAYER_TRAVEL * size.width,
-            top = frame.tiltY * item.shift * -LAYER_TRAVEL * size.height,
-        ) {
-            when (item) {
-                is LivingPosterStackItem.Layer -> {
-                    shadows[item.key]?.let { drawCastShadow(it, frame) }
-                    layers[item.key]?.let { drawCover(it) }
-                }
+        when (item) {
+            is LivingPosterStackItem.Layer -> {
+                shadows[item.key]?.let { drawCastShadow(it) }
+                layers[item.key]?.let { drawCover(it) }
+            }
 
-                is LivingPosterStackItem.Effect -> {
-                    if (item.maskUrl != null && masks[item.key] == null) return@translate
-                    drawEffect(item.effect, masks[item.key], frame)
-                }
+            is LivingPosterStackItem.Effect -> {
+                if (item.maskUrl != null && masks[item.key] == null) return@forEach
+                drawEffect(item.effect, masks[item.key], frame)
+            }
 
-                is LivingPosterStackItem.Particles -> {
-                    drawParticles(
-                        particles = particles[item.key].orEmpty(),
-                        isScreen = item.isScreen,
-                        seconds = frame.seconds,
-                    )
-                }
+            is LivingPosterStackItem.Particles -> {
+                drawParticles(
+                    particles = particles[item.key].orEmpty(),
+                    isScreen = item.isScreen,
+                    seconds = frame.seconds,
+                )
             }
         }
     }
 }
 
-private fun DrawScope.drawCastShadow(
-    shadow: Painter,
-    frame: LivingPosterFrame,
-) {
-    translate(
-        left = (frame.tiltX * -10F).dp.toPx(),
-        top = (8F + frame.tiltY * -6F).dp.toPx(),
-    ) {
+private fun DrawScope.drawCastShadow(shadow: Painter) {
+    translate(top = 8.dp.toPx()) {
         drawCover(shadow, alpha = 0.25F)
     }
 }
@@ -224,21 +193,16 @@ private fun rememberLayerPainter(
 
 @Stable
 private class LivingPosterMotion {
-    var tiltX by mutableFloatStateOf(0F)
-    var tiltY by mutableFloatStateOf(0F)
     var seconds by mutableFloatStateOf(0F)
 }
 
-/** Runs the idle drift while the screen is started. Touch screens have no pointer to follow. */
+/** Advances the effect clock while the screen is started. */
 @Composable
 private fun rememberLivingPosterMotion(): LivingPosterMotion {
     val motion = remember { LivingPosterMotion() }
-    val phase = remember { Random.nextFloat() * 2F * PI.toFloat() }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     LaunchedEffect(motion, lifecycle) {
-        var springX = Spring(value = motion.tiltX)
-        var springY = Spring(value = motion.tiltY)
         var elapsedMillis = (motion.seconds * 1000F).toLong()
 
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -246,27 +210,8 @@ private fun rememberLivingPosterMotion(): LivingPosterMotion {
 
             while (true) {
                 withFrameMillis { millis ->
-                    val deltaMillis = millis - (previousMillis ?: millis)
+                    elapsedMillis += millis - (previousMillis ?: millis)
                     previousMillis = millis
-                    elapsedMillis += deltaMillis
-
-                    val seconds = minOf(MAX_FRAME_SECONDS, deltaMillis / 1000F)
-                    val target = Tilt.idle(milliseconds = elapsedMillis, phase = phase)
-                    springX = springX.step(
-                        target = target.x,
-                        seconds = seconds,
-                        stiffness = TILT_STIFFNESS,
-                        damping = TILT_DAMPING,
-                    )
-                    springY = springY.step(
-                        target = target.y,
-                        seconds = seconds,
-                        stiffness = TILT_STIFFNESS,
-                        damping = TILT_DAMPING,
-                    )
-
-                    motion.tiltX = springX.value
-                    motion.tiltY = springY.value
                     motion.seconds = elapsedMillis / 1000F
                 }
             }

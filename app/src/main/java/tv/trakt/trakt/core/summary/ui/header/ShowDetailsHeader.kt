@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.summary.ui.header
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -57,7 +56,7 @@ internal fun DetailsHeader(
     onWatchedClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    posterOverlay: (@Composable BoxScope.() -> Unit)? = null,
+    posterOverlay: (@Composable (onReady: (Boolean) -> Unit) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val isReleased = show.rememberReleased()

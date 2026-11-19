@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.ui.header.poster
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -8,7 +9,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -65,7 +65,7 @@ fun DetailsHeaderPoster(
     topRightContent: (@Composable () -> Unit)? = null,
     extraRightColumn: @Composable () -> Unit = {},
     extraRightColumnAtBottom: Boolean = false,
-    posterOverlay: (@Composable BoxScope.() -> Unit)? = null,
+    posterOverlay: (@Composable (onReady: (Boolean) -> Unit) -> Unit)? = null,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
@@ -132,16 +132,33 @@ fun DetailsHeaderPoster(
                         )
                 }
 
+                var overlayReady by remember { mutableStateOf(false) }
+                val overlayAlpha by animateFloatAsState(
+                    targetValue = if (overlayReady) 1F else 0F,
+                    animationSpec = tween(800, easing = FastOutSlowInEasing),
+                )
+
                 DetailsPoster(
                     imageUrl = imageUrl,
                     imagePlaceholderUrl = imagePlaceholderUrl,
-                    imageAlpha = animatedAlpha.value,
+                    imageAlpha = if (overlayReady && overlayAlpha == 1F) 0F else animatedAlpha.value,
                     imageOffsetY = animatedTranslation,
                     color = accentColor,
                     modifier = posterModifier,
                 )
 
-                posterOverlay?.invoke(this)
+                if (posterOverlay != null) {
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .graphicsLayer {
+                                alpha = animatedAlpha.value * overlayAlpha
+                                translationY = animatedTranslation.toPx()
+                            },
+                    ) {
+                        posterOverlay { overlayReady = it }
+                    }
+                }
 
                 this@Row.AnimatedVisibility(
                     visible = !loading,

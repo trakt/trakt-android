@@ -704,12 +704,12 @@ internal fun ShowDetailsContent(
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
-                        posterOverlay = {
+                        posterOverlay = { onReady ->
                             LivingPosterView(
                                 viewModel = koinViewModel(
                                     parameters = { parametersOf(MediaType.Show, show.ids.trakt) },
                                 ),
-                                modifier = Modifier.matchParentSize(),
+                                onReady = onReady,
                             )
                         },
                     )

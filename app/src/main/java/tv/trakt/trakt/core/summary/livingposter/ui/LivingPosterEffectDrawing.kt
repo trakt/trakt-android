@@ -35,11 +35,10 @@ internal val easeInOut: Easing = CubicBezierEasing(0.42F, 0F, 0.58F, 1F)
 internal val easeOut: Easing = CubicBezierEasing(0F, 0F, 0.58F, 1F)
 
 private const val GLOW_RADIUS_RATIO = 2.5F
+private const val PARTICLES_ALPHA = 0.9F
 
-/** Current tilt (-1..1 per axis) and running time shared by every animated layer. */
+/** Running time shared by every animated layer. */
 internal data class LivingPosterFrame(
-    val tiltX: Float,
-    val tiltY: Float,
     val seconds: Float,
 )
 
@@ -65,8 +64,8 @@ internal fun DrawScope.drawEffect(
         Kind.Flicker -> drawGlow(boxRect, color, flicker(intensity, frame.seconds))
         Kind.Lightning -> drawLightning(boxRect, intensity, frame.seconds)
         Kind.Bulbs -> drawBulbs(boxRect, effect.points, color, intensity, frame.seconds)
-        Kind.Flare -> effect.at?.let { drawFlare(boxRect, it, intensity, frame) }
-        Kind.Foil -> mask?.let { drawFoil(it, intensity, frame) }
+        Kind.Flare -> effect.at?.let { drawFlare(boxRect, it, intensity) }
+        Kind.Foil -> mask?.let { drawFoil(it, intensity) }
         Kind.Shimmer -> mask?.let { drawShimmer(it, intensity, frame.seconds) }
         Kind.Embers, Kind.Rain, Kind.Twinkle, Kind.Snow, Kind.Fireflies, Kind.Dust -> Unit
     }
@@ -79,7 +78,13 @@ internal fun DrawScope.drawParticles(
 ) {
     val bounds = size.toRect()
     drawIntoCanvas { canvas ->
-        canvas.saveLayer(bounds, Paint().apply { if (isScreen) blendMode = BlendMode.Screen })
+        canvas.saveLayer(
+            bounds,
+            Paint().apply {
+                alpha = PARTICLES_ALPHA
+                if (isScreen) blendMode = BlendMode.Screen
+            },
+        )
         particles.forEach { particle -> drawParticle(particle, seconds) }
         canvas.restore()
     }
@@ -98,15 +103,12 @@ internal fun DrawScope.drawVignette() {
     )
 }
 
-internal fun DrawScope.drawGlare(frame: LivingPosterFrame) {
+internal fun DrawScope.drawGlare() {
     if (!BlendMode.Softlight.isSupported()) return
 
     val width = size.width * 1.4F
     val height = size.height * 1.4F
-    val center = Offset(
-        x = size.width / 2F + frame.tiltX * 0.45F * width,
-        y = size.height / 2F + frame.tiltY * 0.45F * height,
-    )
+    val center = Offset(x = size.width / 2F, y = size.height / 2F)
     val radius = sqrt((width / 2F) * (width / 2F) + (height / 2F) * (height / 2F))
 
     drawRect(
@@ -364,7 +366,6 @@ private fun DrawScope.drawFlare(
     box: Rect,
     at: LivingPosterEffect.Point,
     intensity: Float,
-    frame: LivingPosterFrame,
 ) {
     val unit = box.width / 100F
     val center = box.at(at.x / 100F, at.y / 100F)
@@ -385,27 +386,24 @@ private fun DrawScope.drawFlare(
     val streakColor = Color(255, 226, 190)
     val streakWidth = 70F * unit
     val streakHeight = 2.dp.toPx()
-    rotate(degrees = frame.tiltX * 6F, pivot = center) {
-        drawRect(
-            brush = Brush.horizontalGradient(
-                0F to streakColor.copy(alpha = 0F),
-                0.5F to streakColor.copy(alpha = intensity * 0.8F),
-                1F to streakColor.copy(alpha = 0F),
-                startX = center.x - streakWidth / 2F,
-                endX = center.x + streakWidth / 2F,
-            ),
-            topLeft = Offset(center.x - streakWidth / 2F, center.y - streakHeight / 2F),
-            size = Size(streakWidth, streakHeight),
-        )
-    }
+    drawRect(
+        brush = Brush.horizontalGradient(
+            0F to streakColor.copy(alpha = 0F),
+            0.5F to streakColor.copy(alpha = intensity * 0.8F),
+            1F to streakColor.copy(alpha = 0F),
+            startX = center.x - streakWidth / 2F,
+            endX = center.x + streakWidth / 2F,
+        ),
+        topLeft = Offset(center.x - streakWidth / 2F, center.y - streakHeight / 2F),
+        size = Size(streakWidth, streakHeight),
+    )
 
-    val focusX = 50F + frame.tiltX * 20F
-    val focusY = 50F + frame.tiltY * 20F
+    val focus = 50F
     val unitY = box.height / 100F
     flareGhosts.forEach { ghost ->
         val diameter = ghost.size * unit
-        val left = box.left + (at.x + (focusX - at.x) * ghost.k) * unit - 4F * unit
-        val top = box.top + (at.y + (focusY - at.y) * ghost.k) * unitY - 4F * unit
+        val left = box.left + (at.x + (focus - at.x) * ghost.k) * unit - 4F * unit
+        val top = box.top + (at.y + (focus - at.y) * ghost.k) * unitY - 4F * unit
         val ghostCenter = Offset(left + diameter / 2F, top + diameter / 2F)
 
         drawCircle(
@@ -445,16 +443,15 @@ private val foilStops = arrayOf(
 private fun DrawScope.drawFoil(
     mask: Painter,
     intensity: Float,
-    frame: LivingPosterFrame,
 ) {
     val sheetWidth = size.width * 2.2F
     val sheet = Rect(
-        offset = Offset((size.width - sheetWidth) * (0.5F + frame.tiltX * 0.6F), 0F),
+        offset = Offset((size.width - sheetWidth) * 0.5F, 0F),
         size = Size(sheetWidth, size.height),
     )
 
     drawMasked(mask, alpha = intensity * 0.35F) {
-        drawRect(brush = cssLinearGradient(110F + frame.tiltX * 40F, sheet, foilStops))
+        drawRect(brush = cssLinearGradient(110F, sheet, foilStops))
     }
 }
 
