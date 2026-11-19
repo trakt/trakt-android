@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -64,6 +65,7 @@ internal class AddFromListsViewModel(
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val addingState = MutableStateFlow(initialState.adding)
     private val errorState = MutableStateFlow(initialState.error)
+    private val readyState = MutableStateFlow(initialState.ready)
 
     private val resultFlow = MutableSharedFlow<AddFromListsResult>(replay = 0)
     val results = resultFlow.asSharedFlow()
@@ -74,6 +76,27 @@ internal class AddFromListsViewModel(
     init {
         loadSources()
         loadListedKeys()
+        observeReady()
+    }
+
+    private fun observeReady() {
+        viewModelScope.launch {
+            combine(
+                activeSourceState,
+                itemsState,
+                listedKeysState,
+                loadingState,
+                errorState,
+            ) { activeSource, items, listedKeys, loading, error ->
+                val sourceReady = when (activeSource) {
+                    null -> loading == LoadingState.Done
+                    else -> items != null
+                }
+                error != null || (listedKeys != null && sourceReady)
+            }.first { it }
+
+            readyState.update { true }
+        }
     }
 
     private fun loadSources() {
@@ -251,6 +274,7 @@ internal class AddFromListsViewModel(
         loadingMoreState,
         addingState,
         errorState,
+        readyState,
     ) { state ->
         AddFromListsState(
             listName = list.name,
@@ -264,6 +288,7 @@ internal class AddFromListsViewModel(
             loadingMore = state[7] as LoadingState,
             adding = state[8] as LoadingState,
             error = state[9] as Exception?,
+            ready = state[10] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

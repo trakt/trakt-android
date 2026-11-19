@@ -26,6 +26,7 @@ internal data class AddFromListsState(
     val loadingMore: LoadingState = LoadingState.Idle,
     val adding: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
+    val ready: Boolean = false,
 ) {
     private val listed: Set<String> = listedKeys.orEmpty()
 

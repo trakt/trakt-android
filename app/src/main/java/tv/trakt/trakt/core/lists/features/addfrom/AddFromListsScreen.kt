@@ -26,7 +26,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -154,71 +153,85 @@ private fun AddFromListsContent(
                 modifier = Modifier.padding(bottom = 8.dp),
             )
 
-            Box(modifier = Modifier.weight(1F)) {
-                ItemsList(
-                    state = state,
-                    onItemClick = onItemClick,
-                    onToggleAllClick = onToggleAllClick,
-                    onLoadMoreClick = onLoadMoreClick,
-                    contentPadding = PaddingValues(
-                        top = selectorHalfHeight + 12.dp,
-                        bottom = bottomInset + FOOTER_CLEARANCE,
-                    ),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = selectorHalfHeight),
-                )
+            if (state.ready) {
+                Box(modifier = Modifier.weight(1F)) {
+                    ItemsList(
+                        state = state,
+                        onItemClick = onItemClick,
+                        onToggleAllClick = onToggleAllClick,
+                        onLoadMoreClick = onLoadMoreClick,
+                        contentPadding = PaddingValues(
+                            top = selectorHalfHeight + 12.dp,
+                            bottom = bottomInset + FOOTER_CLEARANCE,
+                        ),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = selectorHalfHeight),
+                    )
 
-                val selectorModifier = Modifier.onSizeChanged {
-                    selectorHalfHeight = with(density) { (it.height / 2).toDp() }
+                    val selectorModifier = Modifier.onSizeChanged {
+                        selectorHalfHeight = with(density) { (it.height / 2).toDp() }
+                    }
+
+                    state.activeSource?.let { activeSource ->
+                        SourceSelect(
+                            sources = state.sources,
+                            activeSource = activeSource,
+                            pickedCounts = state.pickedCounts,
+                            alreadyInList = state.alreadyInListCount
+                                .takeIf { it > 0 }
+                                ?.let {
+                                    stringResource(
+                                        R.string.text_add_from_lists_already_in_list,
+                                        it.toString(),
+                                        state.listName,
+                                    )
+                                },
+                            onSourceClick = onSourceClick,
+                            modifier = selectorModifier,
+                        )
+                    }
                 }
-
-                when (val activeSource = state.activeSource) {
-                    null -> SourceSelectPlaceholder(modifier = selectorModifier)
-                    else -> SourceSelect(
-                        sources = state.sources,
-                        activeSource = activeSource,
-                        pickedCounts = state.pickedCounts,
-                        alreadyInList = state.alreadyInListCount
-                            .takeIf { it > 0 }
-                            ?.let {
-                                stringResource(
-                                    R.string.text_add_from_lists_already_in_list,
-                                    it.toString(),
-                                    state.listName,
-                                )
-                            },
-                        onSourceClick = onSourceClick,
-                        modifier = selectorModifier,
+            } else {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .weight(1F)
+                        .fillMaxWidth(),
+                ) {
+                    FilmProgressIndicator(
+                        modifier = Modifier.size(32.dp),
                     )
                 }
             }
         }
 
-        val bottomColor = TraktTheme.colors.backgroundPrimary
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .height(bottomInset + FOOTER_CLEARANCE)
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            bottomColor.copy(alpha = 0.98F),
-                            bottomColor,
+        if (state.ready) {
+            val bottomColor = TraktTheme.colors.backgroundPrimary
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(bottomInset + FOOTER_CLEARANCE)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                bottomColor.copy(alpha = 0.98F),
+                                bottomColor,
+                            ),
                         ),
                     ),
-                ),
-        )
+            )
 
-        Footer(
-            state = state,
-            onAddClick = onAddClick,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = bottomInset + 16.dp),
-        )
+            Footer(
+                state = state,
+                onAddClick = onAddClick,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = bottomInset + 16.dp),
+            )
+        }
     }
 }
 
@@ -338,7 +351,7 @@ private fun SourceSelect(
                                 text = source.name(),
                                 style = TraktTheme.typography.buttonTertiary,
                                 color = when (source.key) {
-                                    activeSource.key -> TraktTheme.colors.accent
+                                    activeSource.key -> TraktTheme.colors.accentPalette.shade400
                                     else -> TraktTheme.colors.textPrimary
                                 },
                                 maxLines = 1,
@@ -360,17 +373,6 @@ private fun SourceSelect(
             }
         }
     }
-}
-
-@Composable
-private fun SourceSelectPlaceholder(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SelectorHeight)
-            .shadow(TraktTheme.colors.shadowSmall, SelectorShape)
-            .background(TraktTheme.colors.panelCardContainer, SelectorShape),
-    )
 }
 
 @Composable
@@ -511,13 +513,7 @@ private fun ItemsPlaceholder(state: AddFromListsState) {
         when {
             state.error == null && (state.loading.isLoading || state.items == null || state.listedKeys == null) -> {
                 FilmProgressIndicator(
-                    color = TraktTheme.colors.accent,
-                    modifier = Modifier.size(24.dp),
-                )
-                CircularProgressIndicator(
-                    color = TraktTheme.colors.accent,
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(32.dp),
                 )
             }
             else -> {
@@ -726,6 +722,7 @@ private fun Preview() {
                 listedKeys = persistentSetOf(items[2].key),
                 picks = persistentListOf(AddFromListsPick.from(items[0], source.key)),
                 loading = LoadingState.Done,
+                ready = true,
             ),
         )
     }
@@ -743,6 +740,7 @@ private fun EmptyPreview() {
                 items = persistentListOf(),
                 listedKeys = persistentSetOf(),
                 loading = LoadingState.Done,
+                ready = true,
             ),
         )
     }
