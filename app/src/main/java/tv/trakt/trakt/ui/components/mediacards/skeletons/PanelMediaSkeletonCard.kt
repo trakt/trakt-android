@@ -67,8 +67,8 @@ internal fun PanelMediaSkeletonCard(
     ) {
         Box(
             modifier = Modifier
-                .padding(start = 8.dp)
-                .padding(vertical = 8.dp)
+                .padding(start = 4.dp)
+                .padding(vertical = 4.dp)
                 .aspectRatio(VerticalImageAspectRatio)
                 .width(imageWidth)
                 .clip(RoundedCornerShape(corner - 2.dp))
@@ -78,7 +78,7 @@ internal fun PanelMediaSkeletonCard(
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(vertical = 12.dp)
+                .padding(vertical = 10.dp)
                 .padding(start = 12.dp)
                 .padding(end = 12.dp)
                 .fillMaxSize(),
