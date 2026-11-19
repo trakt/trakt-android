@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.features.addfrom
 
 import android.content.res.Resources
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -70,14 +71,12 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val LISTED_ALPHA = 0.45F
 private val FOOTER_CLEARANCE = 104.dp
 private val FooterShape = RoundedCornerShape(100)
-private val ChipPadding = PaddingValues(horizontal = 16.dp)
 
 @Composable
 internal fun AddFromListsScreen(
@@ -401,47 +400,51 @@ private fun ItemsList(
                         .padding(vertical = 16.dp),
                 ) {
                     if (state.candidates.isNotEmpty()) {
-                        FilterChip(
-                            selected = false,
+                        OutlineButton(
                             text = stringResource(
                                 when {
                                     state.isAllPicked -> R.string.button_text_deselect_all
                                     else -> R.string.button_text_select_all
                                 },
                             ),
-                            height = 32.dp,
-                            animated = false,
-                            paddingHorizontal = ChipPadding,
                             onClick = onToggleAllClick,
                         )
                     }
 
                     if (state.hasMoreItems) {
-                        FilterChip(
-                            selected = false,
+                        OutlineButton(
                             text = stringResource(R.string.button_text_load_more),
-                            height = 32.dp,
-                            animated = false,
-                            leadingAlwaysVisible = state.loadingMore.isLoading,
-                            leadingContent = {
-                                CircularProgressIndicator(
-                                    color = TraktTheme.colors.textPrimary,
-                                    strokeWidth = 1.5.dp,
-                                    modifier = Modifier.size(12.dp),
-                                )
-                            },
-                            paddingHorizontal = ChipPadding,
-                            onClick = {
-                                if (!state.loadingMore.isLoading) {
-                                    onLoadMoreClick()
-                                }
-                            },
+                            loading = state.loadingMore.isLoading,
+                            onClick = onLoadMoreClick,
                         )
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun OutlineButton(
+    text: String,
+    onClick: () -> Unit,
+    loading: Boolean = false,
+) {
+    PrimaryButton(
+        text = text,
+        textStyle = TraktTheme.typography.buttonTertiary,
+        height = 32.dp,
+        contentPadding = 18.dp,
+        iconSize = 14.dp,
+        loading = loading,
+        enabled = !loading,
+        border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+        containerColor = Color.Transparent,
+        contentColor = TraktTheme.colors.textPrimary,
+        disabledContainerColor = Color.Transparent,
+        disabledContentColor = TraktTheme.colors.textPrimary,
+        onClick = onClick,
+    )
 }
 
 @Composable
