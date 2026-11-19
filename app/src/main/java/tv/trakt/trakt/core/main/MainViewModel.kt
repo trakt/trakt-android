@@ -56,6 +56,8 @@ import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.featureflags.model.FeatureFlag
+import tv.trakt.trakt.core.featureflags.usecases.FeatureFlagsUseCase
 import tv.trakt.trakt.core.home.sections.monthreview.usecases.MonthReviewBannerUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
@@ -65,6 +67,7 @@ import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotifi
 import tv.trakt.trakt.core.notifications.push.data.work.SyncPushTokenWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
+import tv.trakt.trakt.core.summary.livingposter.usecases.GetLivingPosterUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 import java.time.Instant
@@ -96,6 +99,8 @@ internal class MainViewModel(
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
     private val widgetsUpdates: WidgetsUpdater,
+    private val getLivingPosterUseCase: GetLivingPosterUseCase,
+    private val featureFlagsUseCase: FeatureFlagsUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -119,6 +124,7 @@ internal class MainViewModel(
         loadWelcome()
         loadUser()
         loadInstallPrompt()
+        loadLivingPosters()
 
         observeInAppUpdate()
         observeUser()
@@ -274,6 +280,20 @@ internal class MainViewModel(
         viewModelScope.launch {
             installPromptState.update {
                 installPromptUseCase.shouldPromptInstall()
+            }
+        }
+    }
+
+    private fun loadLivingPosters() {
+        viewModelScope.launch {
+            try {
+                if (featureFlagsUseCase.isEnabled(FeatureFlag.LivingPoster)) {
+                    getLivingPosterUseCase.preloadIndex()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error, "Living poster index preload failed")
+                }
             }
         }
     }

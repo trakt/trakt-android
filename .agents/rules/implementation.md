@@ -138,4 +138,24 @@ Before authoring:
 - New DTO mapping — add `companion object { fun fromDto }` to the domain model; search `fun fromDto` for an existing one first.
 - New colour or spacing token — check `TraktTheme.colors` and `TraktTheme.spacing` first.
 - New HTTP call — check if OpenAPI client exposes endpoint, or if `KtorClientFactory` wraps it.
-- New date / number formatter — check `common/.../helpers/formatting/`.
+- Current time, date conversion or date formatter — use `common/.../helpers/extensions/DateExtensions.kt`
+  (see "Dates and time").
+
+## Dates and time
+
+Use the helpers in `common/.../helpers/extensions/DateExtensions.kt` whenever one fits. Add a
+missing one there instead of calling `java.time` directly from feature code.
+
+| Need                          | Use                                   | Not                          |
+| ----------------------------- | ------------------------------------- | ---------------------------- |
+| Current instant               | `nowUtcInstant()`                     | `Instant.now()`              |
+| Current UTC date-time         | `nowUtc()`                            | `ZonedDateTime.now(UTC)`     |
+| Current local date-time / day | `nowLocal()` / `nowLocalDay()`        | `ZonedDateTime.now()` / `LocalDate.now()` |
+| UTC to device time zone       | `toLocal()`, `toLocalDay()`, `toLocalTime()` | `atZone(ZoneId.systemDefault())` |
+| Parse API timestamps          | `String.toInstant()`, `String.toZonedDateTime()` | `Instant.parse(...)` |
+| Display formats               | `mediumDateFormat()`, `longDateFormat()`, `timeFormat()` and the other `*Format()` helpers | `DateTimeFormatter.ofPattern(...)` |
+| Relative labels               | `relativeDateString()`, `relativeDateTimeString()`, `relativePastDateString()` | hand-built "today" / "in 3 days" |
+| Unknown Trakt dates           | `isTraktUnknown()`                    | comparing to a sentinel date |
+
+Pass the current time into code that needs it (`now: Instant`) rather than reading the clock in
+several places, so one operation uses one timestamp.

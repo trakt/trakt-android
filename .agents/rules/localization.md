@@ -74,8 +74,8 @@ Never `if (count == 1) "1 episode" else "${count} episodes"` — breaks every no
 
 ## Formatting (dates, numbers, durations)
 
-- Dates via `kotlinx.datetime` + locale-aware helpers in
-  `common/.../helpers/formatting/`.
+- Dates via the locale-aware formatters in `common/.../helpers/extensions/DateExtensions.kt`
+  (`mediumDateFormat()`, `relativeDateString()`, …). See "Dates and time" in `implementation.md`.
 - Numbers via `NumberFormat.getInstance(locale)` with compact notation for large values.
 - Durations via existing duration helpers; don't hand-code
   `"$hours h $minutes m"`.

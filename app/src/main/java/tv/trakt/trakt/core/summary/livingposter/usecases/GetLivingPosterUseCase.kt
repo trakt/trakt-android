@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.livingposter.usecases
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.data.local.LivingPosterLocalSource
 import tv.trakt.trakt.common.data.remote.MediaImagesRemoteSource
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.livingposter.LivingPoster
@@ -17,7 +18,7 @@ internal class GetLivingPosterUseCase(
         type: MediaType,
         mediaId: TraktId,
     ): LivingPoster? {
-        val now = Instant.now()
+        val now = nowUtcInstant()
         val index = getIndex(now) ?: return null
         if (!index.contains(type, mediaId)) return null
 
@@ -37,6 +38,10 @@ internal class GetLivingPosterUseCase(
 
         localSource.setPoster(baseUrl, poster, now)
         return poster
+    }
+
+    suspend fun preloadIndex() {
+        getIndex(nowUtcInstant())
     }
 
     private suspend fun getIndex(now: Instant): LivingPosterIndex? {

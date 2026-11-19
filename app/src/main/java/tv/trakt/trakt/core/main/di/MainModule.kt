@@ -107,6 +107,8 @@ internal val mainModule = module {
             inAppUpdateManager = get(),
             errorsManager = get(),
             widgetsUpdates = get(),
+            getLivingPosterUseCase = get(),
+            featureFlagsUseCase = get(),
             analytics = get(),
         )
     }
