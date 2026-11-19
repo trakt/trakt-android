@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.livingposter.LivingPoster
 import tv.trakt.trakt.common.model.livingposter.LivingPosterIndex
+import java.time.Instant
 
 internal class GetLivingPosterUseCase(
     private val remoteSource: MediaImagesRemoteSource,
@@ -16,7 +17,8 @@ internal class GetLivingPosterUseCase(
         type: MediaType,
         mediaId: TraktId,
     ): LivingPoster? {
-        val index = getIndex() ?: return null
+        val now = Instant.now()
+        val index = getIndex(now) ?: return null
         if (!index.contains(type, mediaId)) return null
 
         val folder = when (type) {
@@ -26,22 +28,22 @@ internal class GetLivingPosterUseCase(
         }
         val baseUrl = "${Config.MEDIA_BASE_URL}$folder/${mediaId.value}/live"
 
-        localSource.getPoster(baseUrl)?.let { return it }
+        localSource.getPoster(baseUrl, now)?.let { return it }
 
         val poster = LivingPoster.fromDto(
             dto = remoteSource.getLivingPoster(baseUrl),
             baseUrl = baseUrl,
         ) ?: return null
 
-        localSource.setPoster(baseUrl, poster)
+        localSource.setPoster(baseUrl, poster, now)
         return poster
     }
 
-    private suspend fun getIndex(): LivingPosterIndex? {
-        localSource.getIndex()?.let { return it }
+    private suspend fun getIndex(now: Instant): LivingPosterIndex? {
+        localSource.getIndex(now)?.let { return it }
 
         val index = LivingPosterIndex.fromDto(remoteSource.getLivingPosterIndex()) ?: return null
-        localSource.setIndex(index)
+        localSource.setIndex(index, now)
         return index
     }
 }
