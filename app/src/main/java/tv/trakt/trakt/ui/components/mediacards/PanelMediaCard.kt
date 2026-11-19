@@ -54,7 +54,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.resources.R
@@ -71,7 +73,7 @@ internal fun PanelMediaCard(
     subtitle: String,
     subtitleMaxLines: Int = 1,
     contentImageUrl: String?,
-    contentFallbackImageUrl: String? = null,
+    contentFallbackImageUrls: ImmutableList<String> = EmptyImmutableList,
     containerImageUrl: String?,
     corner: Dp = 16.dp,
     imageWidth: Dp = TraktTheme.size.verticalMediumMediaCardSize,
@@ -91,10 +93,10 @@ internal fun PanelMediaCard(
     // graphicsLayer translations are absolute, so they have to be flipped when the layout mirrors.
     val translationDirection = if (mirrored) -1F else 1F
 
-    var failedContentUrls by remember(contentImageUrl, contentFallbackImageUrl) {
+    var failedContentUrls by remember(contentImageUrl, contentFallbackImageUrls) {
         mutableStateOf(emptySet<String>())
     }
-    val displayContentUrl = listOfNotNull(contentImageUrl, contentFallbackImageUrl)
+    val displayContentUrl = (listOfNotNull(contentImageUrl) + contentFallbackImageUrls)
         .firstOrNull { it !in failedContentUrls && it.isNotBlank() }
     var isContainerError by remember { mutableStateOf(false) }
 

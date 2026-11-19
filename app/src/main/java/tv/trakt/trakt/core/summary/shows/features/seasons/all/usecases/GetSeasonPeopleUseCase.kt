@@ -9,7 +9,6 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Images
-import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
@@ -40,9 +39,9 @@ internal class GetSeasonPeopleUseCase(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
                     episodesCount = person.episodeCount ?: 0,
-                    images = Images.forCharacter(
-                        mediaType = MediaType.Show,
-                        mediaId = showId,
+                    images = Images.forSeasonCharacter(
+                        showId = showId,
+                        season = season,
                         personId = person.person.ids.trakt.toTraktId(),
                     ).takeIf { portraits },
                 )
