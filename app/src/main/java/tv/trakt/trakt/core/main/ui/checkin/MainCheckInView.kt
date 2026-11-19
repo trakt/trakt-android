@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.model.endsAt
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.image
 import tv.trakt.trakt.core.checkin.model.startedAt
@@ -65,6 +66,7 @@ internal fun ColumnScope.MainCheckInView(
             image = state.checkIn?.image,
             startedAt = state.checkIn?.startedAt,
             expiresAt = state.checkIn?.expiresAt,
+            endsAt = state.checkIn?.endsAt,
             expanded = isExpanded,
             onMediaClick = onMediaClick,
             onCollapseClick = {

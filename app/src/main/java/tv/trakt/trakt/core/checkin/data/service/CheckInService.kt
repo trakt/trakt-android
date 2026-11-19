@@ -190,12 +190,16 @@ internal class CheckInService : Service() {
             return
         }
 
-        // Check if the check-in has expired
-        if (serviceData.expiresAt <= nowUtcInstant()) {
-            Timber.d("Check-in expired, stopping service")
+        // Check if the check-in has ended
+        val now = nowUtcInstant()
+        if (serviceData.endsAt <= now) {
+            Timber.d("Check-in ended, stopping service")
             scope.launch {
                 try {
-                    checkInManager.stop(context = applicationContext)
+                    when {
+                        serviceData.expiresAt <= now -> checkInManager.stop(context = applicationContext)
+                        else -> checkInManager.finish(context = applicationContext)
+                    }
                 } catch (error: Exception) {
                     error.rethrowCancellation {
                         Timber.recordError(error)

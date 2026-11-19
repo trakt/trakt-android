@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.remote.CheckInRemoteSource
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -32,6 +33,7 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
@@ -39,6 +41,7 @@ import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.checkin.model.afterCredits
+import tv.trakt.trakt.core.checkin.model.endsAt
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
@@ -48,8 +51,13 @@ import kotlin.time.Clock.System.now
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import java.time.Duration as JavaDuration
+import java.time.Instant as JavaInstant
 
 private val ACTIVE_CHECK_COOLDOWN = 10.seconds
+
+private const val CHECK_IN_ACTION = "checkin"
+private const val CHECK_IN_FINISH_PERCENTAGE = 95L
 
 internal class DefaultCheckInManager(
     private val sessionManager: SessionManager,
@@ -131,6 +139,7 @@ internal class DefaultCheckInManager(
                     episode = Episode.fromDto(dto),
                     startedAt = watching.startedAt.toInstant(),
                     expiresAt = watching.expiresAt.toInstant(),
+                    endsAt = watching.endsAt(),
                 )
 
                 state.update { activeState }
@@ -216,6 +225,7 @@ internal class DefaultCheckInManager(
                     movie = Movie.fromDto(dto),
                     startedAt = watching.startedAt.toInstant(),
                     expiresAt = watching.expiresAt.toInstant(),
+                    endsAt = watching.endsAt(),
                 )
 
                 state.update { activeState }
@@ -296,11 +306,18 @@ internal class DefaultCheckInManager(
                 return
             }
 
+            if (response.endsAt() <= nowUtcInstant()) {
+                finishLocked(context)
+                Timber.d("Active check-in already ended, ignoring it.")
+                return
+            }
+
             response.movie?.let { dto ->
                 val newState = ActiveMovie(
                     movie = Movie.fromDto(dto),
                     startedAt = response.startedAt.toInstant(),
                     expiresAt = response.expiresAt.toInstant(),
+                    endsAt = response.endsAt(),
                 )
 
                 // Only update state if it's a different movie than currently stored
@@ -326,6 +343,7 @@ internal class DefaultCheckInManager(
                     episode = Episode.fromDto(dto),
                     startedAt = response.startedAt.toInstant(),
                     expiresAt = response.expiresAt.toInstant(),
+                    endsAt = response.endsAt(),
                 )
 
                 // Only update state if it's a different episode than currently stored
@@ -394,6 +412,28 @@ internal class DefaultCheckInManager(
         }
     }
 
+    override suspend fun finish(context: Context) {
+        mutex.withLock {
+            finishLocked(context)
+        }
+    }
+
+    private suspend fun finishLocked(context: Context) {
+        val currentState = state.value
+        if (!currentState.isActive()) {
+            return
+        }
+
+        state.update { CheckInState.Idle }
+        CheckInService.stop(context.applicationContext)
+        cacheMarkerProvider.invalidate()
+
+        loadProgressIfNeeded(currentState)
+        dataChanges.notify(Kind.CheckIn)
+
+        Timber.d("Finished check-in.")
+    }
+
     private suspend fun loadProgressIfNeeded(state: CheckInState) {
         try {
             when (state) {
@@ -432,8 +472,9 @@ internal class DefaultCheckInManager(
         val type = state.type
         val startedAt = state.startedAt
         val expiresAt = state.expiresAt
+        val endsAt = state.endsAt
 
-        if (type == null || startedAt == null || expiresAt == null) {
+        if (type == null || startedAt == null || expiresAt == null || endsAt == null) {
             Timber.d("Invalid check-in state for starting service, missing required data.")
             return
         }
@@ -471,6 +512,7 @@ internal class DefaultCheckInManager(
             },
             startedAt = startedAt,
             expiresAt = expiresAt,
+            endsAt = endsAt,
             afterCredits = state.afterCredits,
             extraId = episodeState?.show?.ids?.trakt?.value,
             extraValue1 = episodeState?.episode?.season,
@@ -492,6 +534,18 @@ internal class DefaultCheckInManager(
             .putString("checkin_watched_at", checkIn?.watchedAt ?: "none")
             .putString("checkin_device_time", now().toString())
     }
+}
+
+private fun UserWatchingDto.endsAt(): JavaInstant {
+    val startedAt = startedAt.toInstant()
+    val expiresAt = expiresAt.toInstant()
+
+    if (action != CHECK_IN_ACTION) {
+        return expiresAt
+    }
+
+    val runtime = JavaDuration.between(startedAt, expiresAt)
+    return startedAt.plus(runtime.multipliedBy(CHECK_IN_FINISH_PERCENTAGE).dividedBy(100))
 }
 
 private fun CheckInState.analyticsType(): String? {
