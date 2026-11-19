@@ -10,7 +10,6 @@ import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -45,7 +44,7 @@ internal class GetReleasesShowsUseCase(
         days: Int,
         skipLocal: Boolean = false,
         filters: GlobalFilter,
-        type: ReleaseType = ReleaseType.All,
+        type: ReleaseType = All,
     ): ImmutableList<EpisodeItem> {
         val data = when (type) {
             All -> remoteSource.getReleases(
