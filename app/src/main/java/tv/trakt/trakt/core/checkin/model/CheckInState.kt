@@ -23,6 +23,7 @@ sealed interface CheckInState {
         val movie: Movie,
         val startedAt: Instant,
         val expiresAt: Instant,
+        val endsAt: Instant,
     ) : CheckInState
 
     data class ActiveEpisode(
@@ -30,6 +31,7 @@ sealed interface CheckInState {
         val episode: Episode,
         val startedAt: Instant,
         val expiresAt: Instant,
+        val endsAt: Instant,
     ) : CheckInState
 
     fun isActive(): Boolean {
@@ -98,6 +100,15 @@ val CheckInState.expiresAt: Instant?
         return when (this) {
             is ActiveMovie -> this.expiresAt
             is ActiveEpisode -> this.expiresAt
+            else -> null
+        }
+    }
+
+val CheckInState.endsAt: Instant?
+    get() {
+        return when (this) {
+            is ActiveMovie -> this.endsAt
+            is ActiveEpisode -> this.endsAt
             else -> null
         }
     }

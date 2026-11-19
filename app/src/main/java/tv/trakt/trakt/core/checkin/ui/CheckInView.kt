@@ -111,6 +111,7 @@ internal fun CheckInView(
     expanded: Boolean = true,
     startedAt: Instant?,
     expiresAt: Instant?,
+    endsAt: Instant?,
     onMediaClick: () -> Unit = {},
     onCollapseClick: () -> Unit = {},
     onExpire: () -> Unit = {},
@@ -147,8 +148,12 @@ internal fun CheckInView(
         }
     }
 
-    LaunchedEffect(secondsLeft) {
-        if (secondsLeft <= 0L && startedAt != null && expiresAt != null) {
+    val hasEnded = remember(timestamp, endsAt) {
+        endsAt != null && timestamp >= endsAt
+    }
+
+    LaunchedEffect(hasEnded) {
+        if (hasEnded) {
             onExpire()
         }
     }

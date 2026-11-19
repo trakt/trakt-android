@@ -33,4 +33,6 @@ internal interface CheckInManager {
         origin: ChangeOrigin? = null,
         context: Context,
     )
+
+    suspend fun finish(context: Context)
 }
