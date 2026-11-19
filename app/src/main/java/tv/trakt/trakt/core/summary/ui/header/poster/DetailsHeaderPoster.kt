@@ -134,7 +134,7 @@ fun DetailsHeaderPoster(
                 var overlayReady by remember { mutableStateOf(false) }
                 val overlayAlpha by animateFloatAsState(
                     targetValue = if (overlayReady) 1F else 0F,
-                    animationSpec = tween(800, easing = FastOutSlowInEasing),
+                    animationSpec = tween(1000, easing = FastOutSlowInEasing),
                 )
 
                 DetailsPoster(
