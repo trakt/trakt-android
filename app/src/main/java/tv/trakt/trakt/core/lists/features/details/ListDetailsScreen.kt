@@ -85,6 +85,7 @@ import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.lists.features.addfrom.components.ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION
 import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
@@ -744,7 +745,10 @@ private fun ContentList(
         } else if (listItems.isEmpty()) {
             item {
                 if (itemCount == 0 && onAddFromListsClick != null) {
-                    AddFromListsEmpty(onClick = onAddFromListsClick)
+                    AddFromListsEmpty(
+                        onClick = onAddFromListsClick,
+                        modifier = Modifier.fillParentMaxHeight(ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION),
+                    )
                 } else {
                     ContentEmpty(filter = listFilter?.mode)
                 }
