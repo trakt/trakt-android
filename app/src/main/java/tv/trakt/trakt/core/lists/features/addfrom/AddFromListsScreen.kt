@@ -150,7 +150,7 @@ private fun AddFromListsContent(
             TitleBar(
                 title = state.listName,
                 onBackClick = onBackClick,
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier.padding(bottom = 7.dp),
             )
 
             if (state.ready) {
@@ -161,7 +161,7 @@ private fun AddFromListsContent(
                         onToggleAllClick = onToggleAllClick,
                         onLoadMoreClick = onLoadMoreClick,
                         contentPadding = PaddingValues(
-                            top = selectorHalfHeight + 12.dp,
+                            top = selectorHalfHeight + 16.dp,
                             bottom = bottomInset + FOOTER_CLEARANCE,
                         ),
                         modifier = Modifier
@@ -199,7 +199,9 @@ private fun AddFromListsContent(
                         .weight(1F)
                         .fillMaxWidth(),
                 ) {
-                    FilmProgressIndicator()
+                    FilmProgressIndicator(
+                        size = 42.dp,
+                    )
                 }
             }
         }
@@ -360,6 +362,7 @@ private fun SourceSelect(
                             SourceCounts(
                                 source = source,
                                 picked = pickedCounts[source.key] ?: 0,
+                                modifier = Modifier.padding(start = 8.dp),
                             )
                         },
                         onClick = {
@@ -377,10 +380,12 @@ private fun SourceSelect(
 private fun SourceCounts(
     source: AddFromListsSource,
     picked: Int,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(11.dp),
+        modifier = modifier,
     ) {
         if (picked > 0) {
             Box(
