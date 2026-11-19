@@ -3,7 +3,6 @@
 package tv.trakt.trakt.core.summary.movies
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,7 +29,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
-import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -73,7 +72,6 @@ import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.resources.R
-import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class MovieDetailsViewModel(
@@ -82,7 +80,7 @@ internal class MovieDetailsViewModel(
     private val getDetailsUseCase: GetMovieDetailsUseCase,
     private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
     private val getMovieDirectorUseCase: GetMovieDirectorUseCase,
-    private val getMovieTranslationsUseCase: GetMovieTranslationsUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
     private val getMovieSocialsUseCase: GetMovieSocialsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -208,12 +206,8 @@ internal class MovieDetailsViewModel(
     private fun loadTranslations() {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
                 movieTranslationState.update {
-                    getMovieTranslationsUseCase.getMovieTranslations(
-                        movieId = movieId,
-                        locale = locale,
-                    )
+                    getLocalizedTitlesUseCase.getMovieTranslation(movieId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

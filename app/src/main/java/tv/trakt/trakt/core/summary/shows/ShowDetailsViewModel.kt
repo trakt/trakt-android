@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.summary.shows
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +27,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
-import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -71,7 +70,6 @@ import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.resources.R
-import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -81,7 +79,7 @@ internal class ShowDetailsViewModel(
     private val getDetailsUseCase: GetShowDetailsUseCase,
     private val getExternalRatingsUseCase: GetShowRatingsUseCase,
     private val getShowCreatorUseCase: GetShowCreatorUseCase,
-    private val getShowTranslationsUseCase: GetShowTranslationsUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
     private val getShowSocialsUseCase: GetShowSocialsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -303,12 +301,8 @@ internal class ShowDetailsViewModel(
     private fun loadTranslations() {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
                 showTranslationState.update {
-                    getShowTranslationsUseCase.getShowTranslations(
-                        showId = showId,
-                        locale = locale,
-                    )
+                    getLocalizedTitlesUseCase.getShowTranslation(showId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

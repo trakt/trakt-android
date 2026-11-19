@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.movie
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -51,7 +50,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
-import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -75,7 +74,6 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
-import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class MovieDetailsViewModel(
@@ -100,7 +98,7 @@ internal class MovieDetailsViewModel(
     private val isFavoriteUseCase: IsFavoriteUseCase,
     private val changeFavoriteUseCase: ChangeFavoriteUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
-    private val getTranslationsUseCase: GetMovieTranslationsUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
     private val dataChanges: DataChanges,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -193,8 +191,7 @@ internal class MovieDetailsViewModel(
     private fun loadTranslations(movieId: TraktId) {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-                movieTranslationState.value = getTranslationsUseCase.getMovieTranslations(movieId, locale)
+                movieTranslationState.value = getLocalizedTitlesUseCase.getMovieTranslation(movieId)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error, "Error loading translations")

@@ -13,15 +13,19 @@ import tv.trakt.trakt.common.core.today.model.FollowingActivity
 import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.translations.model.LocalizedTitles
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.data.local.LocalizedTitlesLocalSource
 import tv.trakt.trakt.common.data.remote.TranslationsRemoteSource
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
 import tv.trakt.trakt.common.helpers.extensions.apiLanguage
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
@@ -46,10 +50,7 @@ class GetLocalizedTitlesUseCase(
         showIds: Collection<TraktId> = emptyList(),
         episodeIds: Collection<TraktId> = emptyList(),
     ): LocalizedTitles {
-        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-        if (locale.language == DEFAULT_LANGUAGE) {
-            return LocalizedTitles.Empty
-        }
+        val locale = translationLocale() ?: return LocalizedTitles.Empty
 
         if (movieIds.isEmpty() && showIds.isEmpty() && episodeIds.isEmpty()) {
             return LocalizedTitles.Empty
@@ -59,9 +60,6 @@ class GetLocalizedTitlesUseCase(
             return LocalizedTitles.Empty
         }
 
-        val language = locale.apiLanguage
-        val country = locale.apiCountry
-        val cacheLocale = "$language-$country"
         val now = nowUtcInstant()
 
         val requested = mapOf(
@@ -70,7 +68,7 @@ class GetLocalizedTitlesUseCase(
             MediaType.Episode to episodeIds.distinct(),
         )
 
-        val cached = localSource.getTitles(cacheLocale, requested, now)
+        val cached = localSource.getTitles(locale.cacheKey, requested, now)
         val missing = requested.mapValues { (type, ids) ->
             val cachedIds = cached[type].orEmpty()
             ids.filterNot { it in cachedIds }.capped()
@@ -87,8 +85,7 @@ class GetLocalizedTitlesUseCase(
                 .map { index ->
                     async {
                         fetchBatch(
-                            language = language,
-                            country = country,
+                            locale = locale,
                             ids = batches.mapValues { (_, chunks) -> chunks.getOrElse(index) { emptyList() } },
                         )
                     }
@@ -102,24 +99,77 @@ class GetLocalizedTitlesUseCase(
             return cached.toLocalizedTitles()
         }
 
-        localSource.putTitles(cacheLocale, fetched, now)
+        localSource.putTitles(locale.cacheKey, fetched, now)
 
         return requested.keys
             .associateWith { cached[it].orEmpty() + fetched[it].orEmpty() }
             .toLocalizedTitles()
     }
 
+    suspend fun getMovieTranslation(movieId: TraktId): MediaTranslation? {
+        return getTranslation(MediaType.Movie, movieId) { locale ->
+            remoteSource.getMovieTranslations(movieId, locale.language, locale.country)
+                ?.let(MediaTranslation::fromDto)
+        }
+    }
+
+    suspend fun getShowTranslation(showId: TraktId): MediaTranslation? {
+        return getTranslation(MediaType.Show, showId) { locale ->
+            remoteSource.getShowTranslations(showId, locale.language, locale.country)
+                ?.let(MediaTranslation::fromDto)
+        }
+    }
+
+    suspend fun getEpisodeTranslation(
+        episodeId: TraktId,
+        showId: TraktId,
+        seasonEpisode: SeasonEpisode,
+    ): MediaTranslation? {
+        return getTranslation(MediaType.Episode, episodeId) { locale ->
+            remoteSource.getEpisodeTranslations(showId, seasonEpisode, locale.language, locale.country)
+                ?.let(MediaTranslation::fromDto)
+        }
+    }
+
+    /** Title and overview for a details screen. Failures other than a missing translation propagate. */
+    private suspend fun getTranslation(
+        type: MediaType,
+        id: TraktId,
+        fetch: suspend (TranslationLocale) -> MediaTranslation?,
+    ): MediaTranslation? {
+        val locale = translationLocale() ?: return null
+        val now = nowUtcInstant()
+
+        val translation = localSource.getTranslation(locale.cacheKey, type, id, now)
+            ?: fetchTranslation(locale, fetch).also {
+                localSource.putTranslation(locale.cacheKey, type, id, it, now)
+            }
+
+        return translation.takeUnless { it.isEmpty }
+    }
+
+    private suspend fun fetchTranslation(
+        locale: TranslationLocale,
+        fetch: suspend (TranslationLocale) -> MediaTranslation?,
+    ): MediaTranslation {
+        return try {
+            fetch(locale) ?: MediaTranslation.Empty
+        } catch (error: Exception) {
+            if (error.getHttpCode() != HTTP_ERROR_NOT_FOUND) throw error
+            MediaTranslation.Empty
+        }
+    }
+
     /** Titles for one request, or empty when it fails so nothing gets cached for those ids. */
     private suspend fun fetchBatch(
-        language: String,
-        country: String,
+        locale: TranslationLocale,
         ids: Map<MediaType, List<TraktId>>,
     ): Map<MediaType, Map<TraktId, String?>> {
         return try {
             val response = remoteSource.getBulkTitles(
                 V3BulkIntlRequest(
-                    language = language,
-                    country = country,
+                    language = locale.language,
+                    country = locale.country,
                     movieIds = ids.getValue(MediaType.Movie),
                     showIds = ids.getValue(MediaType.Show),
                     episodeIds = ids.getValue(MediaType.Episode),
@@ -319,6 +369,22 @@ class GetLocalizedTitlesUseCase(
         )
     }
 
-    private val Locale.apiCountry: String
-        get() = country.ifBlank { ULocale.addLikelySubtags(ULocale.forLocale(this)).country }
+    /** The app language for API calls, or null when it is English and nothing needs translating. */
+    private fun translationLocale(): TranslationLocale? {
+        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+        if (locale.language == DEFAULT_LANGUAGE) return null
+
+        return TranslationLocale(
+            language = locale.apiLanguage,
+            country = locale.country.ifBlank { ULocale.addLikelySubtags(ULocale.forLocale(locale)).country },
+        )
+    }
+
+    private data class TranslationLocale(
+        val language: String,
+        val country: String,
+    ) {
+        val cacheKey: String
+            get() = "$language-$country"
+    }
 }

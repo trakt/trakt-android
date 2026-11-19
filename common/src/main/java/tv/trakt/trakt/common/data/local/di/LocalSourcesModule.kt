@@ -46,7 +46,6 @@ import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.local.SoundtrackLocalSource
 import tv.trakt.trakt.common.data.local.StreamingLocalSource
 import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
-import tv.trakt.trakt.common.data.local.TranslationsLocalSource
 import tv.trakt.trakt.common.data.local.TrendingMoviesLocalSource
 import tv.trakt.trakt.common.data.local.TrendingShowsLocalSource
 import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
@@ -90,7 +89,6 @@ val localSourcesModule = module {
     singleOf(::ShowLocalSource)
     singleOf(::SoundtrackLocalSource)
     singleOf(::StreamingLocalSource)
-    singleOf(::TranslationsLocalSource)
     singleOf(::UserFavoritesLocalSource)
     singleOf(::UserLibraryLocalSource)
     singleOf(::UserLikedListsLocalSource)

@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.summary.episodes
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +26,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
-import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
+import tv.trakt.trakt.common.core.translations.usecase.GetLocalizedTitlesUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
@@ -63,7 +62,6 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.resources.R
-import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -73,7 +71,7 @@ internal class EpisodeDetailsViewModel(
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val getEpisodeDirectorUseCase: GetEpisodeDirectorUseCase,
-    private val getEpisodeTranslationsUseCase: GetEpisodeTranslationsUseCase,
+    private val getLocalizedTitlesUseCase: GetLocalizedTitlesUseCase,
     private val getEpisodeSocialsUseCase: GetEpisodeSocialsUseCase,
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
@@ -215,12 +213,11 @@ internal class EpisodeDetailsViewModel(
     private fun loadTranslations() {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
                 episodeTranslationState.update {
-                    getEpisodeTranslationsUseCase.getEpisodeTranslations(
+                    getLocalizedTitlesUseCase.getEpisodeTranslation(
+                        episodeId = episodeId,
                         showId = showId,
                         seasonEpisode = seasonEpisode,
-                        locale = locale,
                     )
                 }
             } catch (error: Exception) {
