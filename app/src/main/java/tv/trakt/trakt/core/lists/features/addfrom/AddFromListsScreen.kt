@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.lists.features.addfrom
 
 import android.content.res.Resources
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -28,6 +31,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,6 +80,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -110,9 +115,34 @@ internal fun AddFromListsScreen(
         }
     }
 
+    var confirmExitSheet by remember { mutableStateOf(false) }
+
+    val onExit = {
+        if (!state.adding.isLoading) {
+            if (state.hasChanges) {
+                confirmExitSheet = true
+            } else {
+                onNavigateBack()
+            }
+        }
+    }
+
+    BackHandler(onBack = onExit)
+
+    RemoveConfirmationSheet(
+        active = confirmExitSheet,
+        title = stringResource(R.string.dialog_title_discard_changes),
+        message = stringResource(R.string.warning_prompt_discard_changes),
+        onYes = {
+            confirmExitSheet = false
+            onNavigateBack()
+        },
+        onNo = { confirmExitSheet = false },
+    )
+
     AddFromListsContent(
         state = state,
-        onBackClick = onNavigateBack,
+        onBackClick = onExit,
         onSourceClick = viewModel::selectSource,
         onItemClick = viewModel::togglePick,
         onToggleAllClick = { viewModel.toggleAllPicks(state.candidates) },

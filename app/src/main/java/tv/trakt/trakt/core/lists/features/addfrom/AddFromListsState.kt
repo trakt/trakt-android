@@ -57,6 +57,8 @@ internal data class AddFromListsState(
         !adding.isLoading &&
         listedKeys != null
 
+    val hasChanges: Boolean = effectivePicks.isNotEmpty()
+
     fun isListed(item: AddFromListsItem): Boolean = item.key in listed
 }
 
