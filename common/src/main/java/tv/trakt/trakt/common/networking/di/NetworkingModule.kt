@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.Config.WEB_AUTH_URL
 import tv.trakt.trakt.common.networking.api.klipy.KlipyApi
 import tv.trakt.trakt.common.networking.api.people.PeopleExtrasApi
 import tv.trakt.trakt.common.networking.api.plex.PlexStreamApi
+import tv.trakt.trakt.common.networking.api.portraits.PortraitsApi
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
@@ -139,6 +140,14 @@ val networkingApiModule = module {
             appKey = BuildConfig.KLIPY_API_KEY,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("klipyClientConfig")),
+        )
+    }
+
+    single<PortraitsApi> {
+        PortraitsApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
     }
 
