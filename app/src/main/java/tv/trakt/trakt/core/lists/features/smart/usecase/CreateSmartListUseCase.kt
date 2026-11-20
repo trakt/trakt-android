@@ -1,6 +1,9 @@
 package tv.trakt.trakt.core.lists.features.smart.usecase
 
 import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.GenresOperator
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.KeywordsOperator
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.PeopleOperator
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.PeopleRole
 import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
 import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
@@ -95,6 +98,12 @@ private fun SmartListFilters.toTypedFiltersDto(base: SmartListFiltersDto): Smart
         parentalFrightening = parentalFrightening.orNullIfEmpty(),
         parentalIncludeUnrated = parentalIncludeUnrated.takeIf { it },
         watchnowCountry = watchnowCountry,
+        keywords = keywords.distinctOrNull(),
+        keywordsOperator = KeywordsOperator.AND.takeIf { keywordsMatchAll },
+        people = people.distinctOrNull(),
+        peopleOperator = PeopleOperator.AND.takeIf { peopleMatchAll },
+        peopleRole = peopleRole?.let { role -> PeopleRole.entries.first { it.value == role.value } },
+        studios = studios.distinctOrNull(),
         awards = awards.distinctOrNull(),
         awardYears = awardYears.orNullIfEmpty(),
         awardWon = awardWon.takeIf { it },

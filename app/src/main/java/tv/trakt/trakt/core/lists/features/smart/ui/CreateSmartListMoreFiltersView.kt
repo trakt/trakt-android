@@ -2,16 +2,20 @@ package tv.trakt.trakt.core.lists.features.smart.ui
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderColors
@@ -21,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,16 +43,21 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.globalfilter.EXCLUSION_PREFIX
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
 import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SMART_LIST_OPEN_VOTES_CEILING
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListLanguage
+import tv.trakt.trakt.common.model.lists.SmartListPeopleRole
 import tv.trakt.trakt.core.filters.RowsSpacing
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownMultiView
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownView
 import tv.trakt.trakt.core.filters.views.dropdowns.toFilterValues
+import tv.trakt.trakt.core.lists.features.smart.search.SmartListSearchKind
+import tv.trakt.trakt.core.lists.features.smart.search.SmartListSearchSheet
+import tv.trakt.trakt.core.lists.features.smart.search.toSearchValueLabel
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.FilterChip
@@ -135,6 +145,12 @@ internal fun CreateSmartListMoreFiltersView(
                     .fillMaxWidth()
                     .padding(top = 20.dp),
             ) {
+                SearchFilters(
+                    filters = filters,
+                    onFiltersChange = onFiltersChange,
+                    enabled = enabled,
+                )
+
                 LanguageFilters(
                     filters = filters,
                     languages = languages,
@@ -178,6 +194,156 @@ internal fun CreateSmartListMoreFiltersView(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SearchFilters(
+    filters: SmartListFilters,
+    onFiltersChange: (SmartListFilters) -> Unit,
+    enabled: Boolean,
+) {
+    var searchKind by remember { mutableStateOf<SmartListSearchKind?>(null) }
+    val kinds = SmartListSearchKind.entries.filter {
+        it != SmartListSearchKind.Networks || filters.media != MediaMode.Movies
+    }
+
+    Column(
+        verticalArrangement = spacedBy(RowsSpacing),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        kinds.chunked(2).forEach { row ->
+            Row(
+                horizontalArrangement = spacedBy(RowsSpacing),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                row.forEach { kind ->
+                    SearchFilterField(
+                        header = stringResource(kind.headerRes),
+                        values = filters.searchValues(kind),
+                        enabled = enabled,
+                        onClick = { searchKind = kind },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+                if (row.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
+        }
+
+        SearchSettings(
+            filters = filters,
+            onFiltersChange = onFiltersChange,
+            enabled = enabled,
+        )
+    }
+
+    SmartListSearchSheet(
+        kind = searchKind,
+        values = searchKind?.let { filters.searchValues(it) } ?: persistentListOf(),
+        onValuesChange = { values ->
+            searchKind?.let { onFiltersChange(filters.withSearchValues(it, values)) }
+        },
+        onDismiss = { searchKind = null },
+    )
+}
+
+@Composable
+private fun SearchSettings(
+    filters: SmartListFilters,
+    onFiltersChange: (SmartListFilters) -> Unit,
+    enabled: Boolean,
+) {
+    val matchOptions = persistentListOf(
+        ChipOption(false, stringResource(R.string.option_text_match_any)),
+        ChipOption(true, stringResource(R.string.option_text_match_all)),
+    )
+    val matchLabel = stringResource(R.string.label_smart_list_match)
+    val keywordsHeader = stringResource(R.string.header_smart_list_keywords)
+    val peopleHeader = stringResource(R.string.header_smart_list_people)
+
+    if (filters.keywords.includedCount() > 1) {
+        ChipSelectFilter(
+            title = stringResource(R.string.text_smart_list_recipe_detail, keywordsHeader, matchLabel),
+            options = matchOptions,
+            selected = filters.keywordsMatchAll,
+            enabled = enabled,
+            onSelect = { onFiltersChange(filters.copy(keywordsMatchAll = it)) },
+            modifier = Modifier.padding(top = 8.dp),
+        )
+    }
+
+    if (filters.people.includedCount() > 1) {
+        ChipSelectFilter(
+            title = stringResource(R.string.text_smart_list_recipe_detail, peopleHeader, matchLabel),
+            options = matchOptions,
+            selected = filters.peopleMatchAll,
+            enabled = enabled,
+            onSelect = { onFiltersChange(filters.copy(peopleMatchAll = it)) },
+            modifier = Modifier.padding(top = 8.dp),
+        )
+    }
+
+    if (!filters.people.isNullOrEmpty()) {
+        ChipSelectFilter(
+            title = stringResource(
+                R.string.text_smart_list_recipe_detail,
+                peopleHeader,
+                stringResource(R.string.label_smart_list_people_role),
+            ),
+            options = persistentListOf<ChipOption<SmartListPeopleRole?>>(
+                ChipOption(null, stringResource(R.string.option_text_role_any)),
+            ).addAll(
+                SmartListPeopleRole.entries.map { ChipOption(it, stringResource(it.displayRes)) },
+            ),
+            selected = filters.peopleRole,
+            enabled = enabled,
+            onSelect = { onFiltersChange(filters.copy(peopleRole = it)) },
+            modifier = Modifier.padding(top = 8.dp),
+        )
+    }
+}
+
+@Composable
+private fun SearchFilterField(
+    header: String,
+    values: ImmutableList<String>,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val active = values.isNotEmpty()
+    val labels = values.map { token ->
+        when {
+            token.startsWith(EXCLUSION_PREFIX) -> stringResource(
+                R.string.option_text_excluded,
+                token.removePrefix(EXCLUSION_PREFIX).toSearchValueLabel(),
+            )
+            else -> token.toSearchValueLabel()
+        }
+    }
+
+    Text(
+        text = labels.joinToString(", ").ifEmpty { header },
+        style = TraktTheme.typography.buttonTertiary,
+        color = when (active) {
+            true -> TraktTheme.colors.dropdownContentActive
+            false -> TraktTheme.colors.dropdownContent
+        },
+        maxLines = 1,
+        overflow = Ellipsis,
+        modifier = modifier
+            .background(
+                color = when (active) {
+                    true -> TraktTheme.colors.dropdownContainerActive
+                    false -> TraktTheme.colors.dropdownContainer
+                },
+                shape = RoundedCornerShape(15.dp),
+            )
+            .onClick(enabled = enabled, onClick = onClick)
+            .padding(13.dp),
+    )
 }
 
 @Composable
@@ -662,6 +828,31 @@ internal fun <T> ChipSelectFilter(
     }
 }
 
+private fun SmartListFilters.searchValues(kind: SmartListSearchKind): ImmutableList<String> {
+    val values = when (kind) {
+        SmartListSearchKind.Keywords -> keywords
+        SmartListSearchKind.People -> people
+        SmartListSearchKind.Studios -> studios
+        SmartListSearchKind.Networks -> networks
+    }
+    return values ?: persistentListOf()
+}
+
+private fun SmartListFilters.withSearchValues(
+    kind: SmartListSearchKind,
+    values: ImmutableList<String>,
+): SmartListFilters {
+    val stored = values.takeIf { it.isNotEmpty() }
+    return when (kind) {
+        SmartListSearchKind.Keywords -> copy(keywords = stored)
+        SmartListSearchKind.People -> copy(people = stored, peopleRole = peopleRole.takeIf { stored != null })
+        SmartListSearchKind.Studios -> copy(studios = stored)
+        SmartListSearchKind.Networks -> copy(networks = stored)
+    }
+}
+
+private fun List<String>?.includedCount(): Int = orEmpty().count { !it.startsWith(EXCLUSION_PREFIX) }
+
 private fun SmartListFilters.moreRating(rating: MoreRating): ImmutableList<Float>? {
     return when (rating) {
         MoreRating.Tmdb -> tmdbRatings
@@ -693,6 +884,9 @@ private fun Preview() {
                 tmdbRatings = persistentListOf(6.5f, 10f),
                 ignoreEnded = true,
                 languages = persistentListOf("en"),
+                keywords = persistentListOf("time travel", "${EXCLUSION_PREFIX}dystopia"),
+                people = persistentListOf("christopher-nolan"),
+                peopleRole = SmartListPeopleRole.Directing,
                 watchnowCountry = "us",
                 awards = persistentListOf("best-picture"),
                 awardWon = true,

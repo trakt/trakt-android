@@ -260,7 +260,7 @@ data class GlobalFilter(
             isParentalActive
 }
 
-internal const val EXCLUSION_PREFIX = "-"
+const val EXCLUSION_PREFIX = "-"
 
 internal fun <T> toExclusionTokens(
     included: List<T>?,

@@ -14,6 +14,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.encodeURLPathPart
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.data.dto.ListFeaturedPeopleDto
+import tv.trakt.trakt.common.data.dto.SmartListFilterOptionDto
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -129,6 +130,18 @@ class V3Api(
     suspend fun getListFeaturedPeople(listId: TraktId): ListFeaturedPeopleDto {
         val response = client.get("${baseUrl}lists/${listId.value}") {
             parameter("extended", "featured")
+        }
+        return response.body()
+    }
+
+    suspend fun getSmartListFilterOptions(
+        kind: String,
+        query: String,
+        limit: Int,
+    ): List<SmartListFilterOptionDto> {
+        val response = client.get("${baseUrl}smart-lists/filter-options/$kind") {
+            parameter("query", query)
+            parameter("limit", limit)
         }
         return response.body()
     }

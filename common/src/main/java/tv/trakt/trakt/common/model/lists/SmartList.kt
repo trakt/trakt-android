@@ -14,6 +14,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.GenresOperator
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.KeywordsOperator
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.PeopleOperator
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
@@ -170,6 +172,15 @@ data class SmartListFilters(
     val parentalIncludeUnrated: Boolean = false,
     val watchnowCountry: String? = null,
     @Serializable(with = ImmutableListSerializer::class)
+    val keywords: ImmutableList<String>? = null,
+    val keywordsMatchAll: Boolean = false,
+    @Serializable(with = ImmutableListSerializer::class)
+    val people: ImmutableList<String>? = null,
+    val peopleMatchAll: Boolean = false,
+    val peopleRole: SmartListPeopleRole? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val studios: ImmutableList<String>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
     val awards: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val awardYears: ImmutableList<Int>? = null,
@@ -219,7 +230,10 @@ data class SmartListFilters(
             countries.orEmpty().map { it.uppercase(locale) } +
             excludedCountries.orEmpty().map { excluded(it.uppercase(locale)) } +
             statuses.orEmpty().map { it.toSummaryTitleCase() } +
-            networks.orEmpty().map { it.toSummaryTitleCase() } +
+            networks.orEmpty().map { it.toSearchableLabel(::excluded) } +
+            keywords.orEmpty().map { it.toSearchableLabel(::excluded) } +
+            people.orEmpty().map { it.toSearchableLabel(::excluded) } +
+            studios.orEmpty().map { it.toSearchableLabel(::excluded) } +
             availability.orEmpty().map { resources.getString(it.displayStringRes) } +
             awards.orEmpty().map { it.toSummaryTitleCase() }
 
@@ -264,6 +278,11 @@ data class SmartListFilters(
 
     val moreFiltersCount: Int
         get() = listOf(
+            !keywords.isNullOrEmpty(),
+            !people.isNullOrEmpty(),
+            peopleRole != null,
+            !studios.isNullOrEmpty(),
+            !networks.isNullOrEmpty(),
             !languages.isNullOrEmpty(),
             watchnowCountry != null,
             !awards.isNullOrEmpty(),
@@ -386,6 +405,12 @@ data class SmartListFilters(
                 parentalFrightening = filters.parentalFrightening?.toImmutableList(),
                 parentalIncludeUnrated = filters.parentalIncludeUnrated ?: false,
                 watchnowCountry = filters.watchnowCountry,
+                keywords = filters.keywords?.distinct()?.toImmutableList(),
+                keywordsMatchAll = filters.keywordsOperator == KeywordsOperator.AND,
+                people = filters.people?.distinct()?.toImmutableList(),
+                peopleMatchAll = filters.peopleOperator == PeopleOperator.AND,
+                peopleRole = SmartListPeopleRole.fromValue(filters.peopleRole?.value),
+                studios = filters.studios?.distinct()?.toImmutableList(),
                 awards = filters.awards?.distinct()?.toImmutableList(),
                 awardYears = filters.awardYears?.toImmutableList(),
                 awardWon = filters.awardWon ?: false,
@@ -559,6 +584,11 @@ private fun formatPercentRange(
         )
         else -> null
     }
+}
+
+private fun String.toSearchableLabel(excluded: (String) -> String): String {
+    if (!startsWith(EXCLUSION_PREFIX)) return toSummaryTitleCase()
+    return excluded(removePrefix(EXCLUSION_PREFIX).toSummaryTitleCase())
 }
 
 private fun String.toGenreLabel(resources: Resources): String {

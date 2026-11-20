@@ -266,7 +266,7 @@ private fun <T> ExcludableMenuItem(
 }
 
 @Composable
-private fun ExclusionToggle(
+internal fun ExclusionToggle(
     @DrawableRes icon: Int,
     selected: Boolean,
     selectedColor: Color,

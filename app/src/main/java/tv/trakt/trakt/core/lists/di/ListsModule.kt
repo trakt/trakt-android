@@ -34,6 +34,9 @@ import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
 import tv.trakt.trakt.core.lists.features.reorder.watchlist.WatchlistReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.watchlist.usecase.ReorderWatchlistUseCase
 import tv.trakt.trakt.core.lists.features.smart.CreateSmartListViewModel
+import tv.trakt.trakt.core.lists.features.smart.search.SearchSmartListFilterOptionsUseCase
+import tv.trakt.trakt.core.lists.features.smart.search.SmartListSearchKind
+import tv.trakt.trakt.core.lists.features.smart.search.SmartListSearchViewModel
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListFilterOptionsUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
@@ -83,6 +86,7 @@ internal val listsModule = module {
     factoryOf(::GetSmartListsUseCase)
     factoryOf(::GetSmartListItemsUseCase)
     factoryOf(::GetSmartListFilterOptionsUseCase)
+    factoryOf(::SearchSmartListFilterOptionsUseCase)
     factoryOf(::GetSmartListPreviewUseCase)
     factoryOf(::CreateSmartListUseCase)
     factoryOf(::UpdateSmartListUseCase)
@@ -119,6 +123,12 @@ internal val listsModule = module {
     viewModelOf(::AllPersonalListViewModel)
     viewModelOf(::AllListsViewModel)
     viewModelOf(::CreateSmartListViewModel)
+    viewModel { (kind: SmartListSearchKind) ->
+        SmartListSearchViewModel(
+            kind = kind,
+            searchUseCase = get(),
+        )
+    }
     viewModelOf(::WatchlistShowContextViewModel)
     viewModel { (item: CustomListItem, list: CustomList) ->
         ListItemContextViewModel(
