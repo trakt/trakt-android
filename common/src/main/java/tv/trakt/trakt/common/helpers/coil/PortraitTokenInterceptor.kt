@@ -5,10 +5,12 @@ import coil3.request.ImageResult
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.data.local.PortraitTokenLocalSource
 import tv.trakt.trakt.common.data.remote.PortraitsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.PortraitToken
 import java.time.Instant
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
@@ -31,9 +33,10 @@ internal fun withPortraitToken(
 
 internal class PortraitTokenInterceptor(
     private val remoteSource: PortraitsRemoteSource,
+    private val localSource: PortraitTokenLocalSource,
 ) : Interceptor {
     private val mutex = Mutex()
-    private var cached: CachedToken? = null
+    private var cached: PortraitToken? = null
 
     override suspend fun intercept(chain: Interceptor.Chain): ImageResult {
         val url = chain.request.data as? String ?: return chain.proceed()
@@ -58,9 +61,22 @@ internal class PortraitTokenInterceptor(
             cached?.takeIf { it.isValid(now) }?.let { return@withLock it.token }
 
             try {
+                localSource.getToken()
+                    ?.takeIf { it.isValid(now) }
+                    ?.let { stored ->
+                        cached = stored
+                        return@withLock stored.token
+                    }
+
                 val dto = remoteSource.getToken()
-                CachedToken(dto.token, dto.expiresAt.toInstant())
-                    .also { cached = it }
+                PortraitToken(
+                    token = dto.token,
+                    expiresAt = dto.expiresAt.toInstant(),
+                )
+                    .also {
+                        cached = it
+                        localSource.setToken(it)
+                    }
                     .token
             } catch (error: Exception) {
                 error.rethrowCancellation()
@@ -69,10 +85,7 @@ internal class PortraitTokenInterceptor(
         }
     }
 
-    private data class CachedToken(
-        val token: String,
-        val expiresAt: Instant,
-    ) {
-        fun isValid(now: Instant): Boolean = now.isBefore(expiresAt.minus(EXPIRY_MARGIN))
+    private fun PortraitToken.isValid(now: Instant): Boolean {
+        return now.isBefore(expiresAt.minus(EXPIRY_MARGIN))
     }
 }

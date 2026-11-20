@@ -23,7 +23,12 @@ val coilModule = module {
                         diskCache = { get<ImageLoader>().diskCache },
                     ),
                 )
-                add(PortraitTokenInterceptor(remoteSource = get()))
+                add(
+                    PortraitTokenInterceptor(
+                        remoteSource = get(),
+                        localSource = get(),
+                    ),
+                )
                 add(SvgDecoder.Factory())
                 add(AnimatedImageDecoder.Factory())
             }
