@@ -4,6 +4,7 @@ import coil3.intercept.Interceptor
 import coil3.request.ImageResult
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.data.local.PortraitTokenLocalSource
 import tv.trakt.trakt.common.data.remote.PortraitsRemoteSource
@@ -13,6 +14,8 @@ import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.PortraitToken
 import java.time.Instant
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
 private const val PORTRAITS_PREFIX = "${Config.MEDIA_BASE_URL}portraits/"
@@ -20,6 +23,10 @@ private const val VERIFY_PARAM = "verify"
 
 // Tokens stay valid until expires_at, so one is reused until shortly before that.
 private val EXPIRY_MARGIN = 12.hours.toJavaDuration()
+
+// Kept well below the image request timeout so the image itself still has time to load.
+private val FETCH_TIMEOUT = 5.seconds
+private val FAILURE_BACKOFF = 1.minutes.toJavaDuration()
 
 internal fun withPortraitToken(
     url: String,
@@ -37,6 +44,7 @@ internal class PortraitTokenInterceptor(
 ) : Interceptor {
     private val mutex = Mutex()
     private var cached: PortraitToken? = null
+    private var retryAfter: Instant = Instant.MIN
 
     override suspend fun intercept(chain: Interceptor.Chain): ImageResult {
         val url = chain.request.data as? String ?: return chain.proceed()
@@ -68,7 +76,14 @@ internal class PortraitTokenInterceptor(
                         return@withLock stored.token
                     }
 
-                val dto = remoteSource.getToken()
+                if (now.isBefore(retryAfter)) return@withLock null
+
+                val dto = withTimeoutOrNull(FETCH_TIMEOUT) { remoteSource.getToken() }
+                if (dto == null) {
+                    retryAfter = now.plus(FAILURE_BACKOFF)
+                    return@withLock null
+                }
+
                 PortraitToken(
                     token = dto.token,
                     expiresAt = dto.expiresAt.toInstant(),
@@ -80,6 +95,7 @@ internal class PortraitTokenInterceptor(
                     .token
             } catch (error: Exception) {
                 error.rethrowCancellation()
+                retryAfter = now.plus(FAILURE_BACKOFF)
                 null
             }
         }
