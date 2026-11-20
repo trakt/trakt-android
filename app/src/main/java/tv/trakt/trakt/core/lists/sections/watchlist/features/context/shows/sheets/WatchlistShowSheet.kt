@@ -24,6 +24,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.WatchlistShowContextView
 import tv.trakt.trakt.resources.R
@@ -43,6 +44,7 @@ internal fun WatchlistShowSheet(
     skipSnack: Boolean = false,
     onAddWatched: (Show) -> Unit,
     onRemoveWatchlist: () -> Unit,
+    onListClick: (CustomList) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -142,6 +144,7 @@ internal fun WatchlistShowSheet(
 
     ManageListsSheet(
         target = listsTarget,
+        onListClick = onListClick,
         onDismiss = { listsTarget = null },
     )
 }

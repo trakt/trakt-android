@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistScreen
 
@@ -18,6 +19,7 @@ internal fun NavGraphBuilder.allWatchlistScreen(
     onNavigateToReorder: () -> Unit,
     onNavigateToCreateSmartList: (SmartListFilters) -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<ListsWatchlistDestination> {
         AllWatchlistScreen(
@@ -27,6 +29,7 @@ internal fun NavGraphBuilder.allWatchlistScreen(
             onReorderClick = onNavigateToReorder,
             onCreateSmartListClick = onNavigateToCreateSmartList,
             onNavigateBack = onNavigateBack,
+            onListClick = onNavigateToList,
         )
     }
 }

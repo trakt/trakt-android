@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
@@ -65,6 +66,7 @@ internal fun AllShowSeasonsSheets(
     state: AllShowSeasonsState,
     sheetState: AllShowSeasonsSheetState,
     viewModel: AllShowSeasonsViewModel,
+    onListClick: (CustomList) -> Unit,
 ) {
     EpisodeContextSheet(
         episodeItem = sheetState.episodeContext,
@@ -114,6 +116,7 @@ internal fun AllShowSeasonsSheets(
 
     ManageListsSheet(
         target = sheetState.manageLists,
+        onListClick = onListClick,
         onDismiss = {
             sheetState.manageLists = null
         },

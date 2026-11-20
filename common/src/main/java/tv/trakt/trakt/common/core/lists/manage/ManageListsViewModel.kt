@@ -62,6 +62,12 @@ class ManageListsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private val openListFlow = MutableSharedFlow<CustomList>(replay = 0)
+    val openListEvents = openListFlow.asSharedFlow()
+
+    private val itemLimitFlow = MutableSharedFlow<ListItemLimitException>(replay = 0)
+    val itemLimitEvents = itemLimitFlow.asSharedFlow()
+
     init {
         loadData()
     }
@@ -247,12 +253,6 @@ class ManageListsViewModel(
             }
         }
     }
-
-    private val openListFlow = MutableSharedFlow<CustomList>(replay = 0)
-    val openListEvents = openListFlow.asSharedFlow()
-
-    private val itemLimitFlow = MutableSharedFlow<ListItemLimitException>(replay = 0)
-    val itemLimitEvents = itemLimitFlow.asSharedFlow()
 
     val state = combine(
         userState,

@@ -16,6 +16,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -26,6 +27,7 @@ internal fun AllShowSeasonsScreen(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onPersonClick: (show: Show, person: Person, role: PersonCreditsRole?) -> Unit,
     onUserClick: (User) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -100,6 +102,7 @@ internal fun AllShowSeasonsScreen(
         state = state,
         sheetState = sheetState,
         viewModel = viewModel,
+        onListClick = onListClick,
     )
 
     LaunchedEffect(state.info) {

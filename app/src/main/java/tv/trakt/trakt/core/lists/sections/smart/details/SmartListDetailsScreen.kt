@@ -60,6 +60,7 @@ import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
@@ -84,6 +85,7 @@ internal fun SmartListDetailsScreen(
     viewModel: SmartListDetailsViewModel,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onEditClick: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -148,6 +150,7 @@ internal fun SmartListDetailsScreen(
     )
 
     ShowContextSheet(
+        onListClick = onListClick,
         show = showContextSheet?.show,
         onDismiss = {
             showContextSheet = null
@@ -155,6 +158,7 @@ internal fun SmartListDetailsScreen(
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = movieContextSheet?.movie,
         onDismiss = {
             movieContextSheet = null

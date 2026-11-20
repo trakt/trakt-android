@@ -336,6 +336,7 @@ private fun ListsScreenContent(
                     onShowClick = onShowClick,
                     onMoviesClick = onMoviesClick,
                     onMovieClick = onMovieClick,
+                    onListClick = onCustomListClick,
                     onProfileClick = onProfileClick,
                     onWatchlistClick = onWatchlistClick,
                 )

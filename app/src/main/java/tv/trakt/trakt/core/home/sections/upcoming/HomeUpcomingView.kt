@@ -51,6 +51,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
@@ -75,6 +76,7 @@ internal fun HomeUpcomingView(
     onShowsClick: () -> Unit,
     onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onCalendarClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -133,6 +135,7 @@ internal fun HomeUpcomingView(
     )
 
     CalendarEpisodeContextSheet(
+        onListClick = onListClick,
         item = contextEpisodeSheet,
         showWatchlist = false,
         showDrop = true,
@@ -140,6 +143,7 @@ internal fun HomeUpcomingView(
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = contextMovieSheet,
         onDismiss = { contextMovieSheet = null },
     )

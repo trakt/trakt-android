@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -64,6 +65,7 @@ internal fun MovieRelatedView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onClick: ((Movie) -> Unit)? = null,
+    onListClick: (CustomList) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -80,6 +82,7 @@ internal fun MovieRelatedView(
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = contextSheet,
         onDismiss = { contextSheet = null },
     )

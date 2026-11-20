@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.sections.smart.details.SmartListDetailsScreen
 
@@ -20,6 +21,7 @@ internal fun NavGraphBuilder.smartListDetailsScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEdit: (SmartList) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<SmartListDetailsDestination> {
         SmartListDetailsScreen(
@@ -28,6 +30,7 @@ internal fun NavGraphBuilder.smartListDetailsScreen(
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
             onEditClick = onNavigateToEdit,
+            onListClick = onNavigateToList,
         )
     }
 }

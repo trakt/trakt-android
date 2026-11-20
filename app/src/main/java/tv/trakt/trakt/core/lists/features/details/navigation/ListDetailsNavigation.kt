@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
 
 @Serializable
@@ -40,6 +41,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
     onNavigateToEpisode: (TraktId, Episode) -> Unit,
     onNavigateToPerson: (Person) -> Unit,
     onNavigateToAddFromLists: (CustomList) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<ListsDetailsDestination> {
         ListDetailsScreen(
@@ -50,6 +52,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
             onEpisodeClick = onNavigateToEpisode,
             onPersonClick = onNavigateToPerson,
             onAddFromListsClick = onNavigateToAddFromLists,
+            onListClick = onNavigateToList,
         )
     }
 }
@@ -67,5 +70,14 @@ internal fun NavController.navigateToListDetails(
             mediaType = mediaType.map { it.name },
             mediaImage = mediaImage,
         ),
+    )
+}
+
+internal fun NavController.navigateToListDetails(list: CustomList) {
+    navigateToListDetails(
+        list = list,
+        mediaId = (-1).toTraktId(),
+        mediaType = listOf(Show, Movie),
+        mediaImage = null,
     )
 }

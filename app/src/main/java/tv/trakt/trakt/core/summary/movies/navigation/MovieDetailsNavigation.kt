@@ -45,6 +45,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToCustomList: (CustomList) -> Unit,
 ) {
     composable<MovieDetailsDestination> { entry ->
         val movieId = entry.toRoute<MovieDetailsDestination>().movieId.toTraktId()
@@ -73,6 +74,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
+            onNavigateToList = onNavigateToCustomList,
         )
     }
 }

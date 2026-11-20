@@ -26,6 +26,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.movies.ui.context.MovieContextView
 import tv.trakt.trakt.resources.R
@@ -46,6 +47,7 @@ internal fun MovieContextSheet(
     onHideRecommendation: (Movie) -> Unit = {},
     onWhyThis: () -> Unit = {},
     onWatchedChange: () -> Unit = {},
+    onListClick: (CustomList) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -155,6 +157,7 @@ internal fun MovieContextSheet(
 
     ManageListsSheet(
         target = listsTarget,
+        onListClick = onListClick,
         onDismiss = { listsTarget = null },
     )
 }

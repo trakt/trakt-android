@@ -61,6 +61,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.common.model.recommended.RecommendedItem.MovieItem
 import tv.trakt.trakt.common.model.recommended.RecommendedItem.ShowItem
@@ -84,6 +85,7 @@ internal fun HomeRecommendedView(
     collection: UserCollectionState,
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
+    onListClick: (CustomList) -> Unit,
     onMoreClick: () -> Unit = {},
     onEmptyClick: () -> Unit = {},
 ) {
@@ -138,6 +140,7 @@ internal fun HomeRecommendedView(
     )
 
     ShowContextSheet(
+        onListClick = onListClick,
         show = contextShowSheet?.show,
         showRecommended = true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
@@ -146,6 +149,7 @@ internal fun HomeRecommendedView(
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = contextMovieSheet?.movie,
         showRecommended = true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },

@@ -153,6 +153,7 @@ internal fun ShowDetailsScreen(
     onNavigateToAllSoundtrack: (Show, currentSeason: Int?) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -190,6 +191,7 @@ internal fun ShowDetailsScreen(
     ShowDetailsContent(
         state = state,
         modifier = modifier,
+        onNavigateToList = onNavigateToList,
         onInfoClick = {
             state.show?.let {
                 detailsSheet = it
@@ -587,6 +589,7 @@ internal fun ShowDetailsContent(
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person, PersonCreditsRole) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
+    onNavigateToList: (CustomList) -> Unit = {},
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
@@ -866,6 +869,7 @@ internal fun ShowDetailsContent(
                             user = state.user,
                             onEpisodeClick = onEpisodeClick ?: {},
                             onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
+                            onListClick = onNavigateToList,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
@@ -950,6 +954,7 @@ internal fun ShowDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onShowClick,
+                            onListClick = onNavigateToList,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

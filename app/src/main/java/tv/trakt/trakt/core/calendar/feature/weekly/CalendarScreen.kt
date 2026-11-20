@@ -81,6 +81,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.ui.CalendarChevrons
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
@@ -123,6 +124,7 @@ internal fun CalendarScreen(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onViewClick: (CalendarView) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -250,6 +252,7 @@ internal fun CalendarScreen(
     )
 
     CalendarEpisodeContextSheet(
+        onListClick = onListClick,
         item = contextEpisodeSheet,
         showWatchlist = state.source.showWatchlistAction,
         showDrop = state.source.showDropAction,
@@ -258,6 +261,7 @@ internal fun CalendarScreen(
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = contextMovieSheet,
         onWatchedChange = viewModel::refreshData,
         onDismiss = { contextMovieSheet = null },

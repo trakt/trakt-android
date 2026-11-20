@@ -26,6 +26,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.shows.ui.context.ShowContextView
 import tv.trakt.trakt.resources.R
@@ -45,6 +46,7 @@ internal fun ShowContextSheet(
     showRecommended: Boolean = false,
     onHideRecommendation: (Show) -> Unit = {},
     onWhyThis: () -> Unit = {},
+    onListClick: (CustomList) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -144,6 +146,7 @@ internal fun ShowContextSheet(
 
     ManageListsSheet(
         target = listsTarget,
+        onListClick = onListClick,
         onDismiss = { listsTarget = null },
     )
 }

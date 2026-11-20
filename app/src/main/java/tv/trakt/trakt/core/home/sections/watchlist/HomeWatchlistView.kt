@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
@@ -82,6 +83,7 @@ internal fun HomeWatchlistView(
     onShowClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onMoviesClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
@@ -147,6 +149,7 @@ internal fun HomeWatchlistView(
     )
 
     WatchlistShowSheet(
+        onListClick = onListClick,
         addLocally = false,
         watched = false,
         show = contextShowSheet?.show,
@@ -162,6 +165,7 @@ internal fun HomeWatchlistView(
     )
 
     WatchlistMovieSheet(
+        onListClick = onListClick,
         addLocally = false,
         skipSnack = true,
         watched = false,

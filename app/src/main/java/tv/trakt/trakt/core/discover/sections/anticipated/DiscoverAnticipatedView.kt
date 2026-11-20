@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.discover.DiscoverItem.MovieItem
 import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.discover.sections.DiscoverSectionState
 import tv.trakt.trakt.core.discover.sections.DiscoverSectionViewModel
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
@@ -75,6 +76,7 @@ internal fun DiscoverAnticipatedView(
     collection: UserCollectionState,
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
+    onListClick: (CustomList) -> Unit,
     onMoreClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -112,11 +114,13 @@ internal fun DiscoverAnticipatedView(
     )
 
     ShowContextSheet(
+        onListClick = onListClick,
         show = contextShowSheet,
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = contextMovieSheet,
         onDismiss = { contextMovieSheet = null },
     )

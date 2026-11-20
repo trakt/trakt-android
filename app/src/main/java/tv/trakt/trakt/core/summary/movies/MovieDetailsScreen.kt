@@ -142,6 +142,7 @@ internal fun MovieDetailsScreen(
     onNavigateToAllSoundtrack: (Movie) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -177,6 +178,7 @@ internal fun MovieDetailsScreen(
         state = state,
         modifier = modifier,
         onMovieClick = onMovieClick,
+        onNavigateToList = onNavigateToList,
         onInfoClick = {
             state.movie?.let {
                 detailsSheet = it
@@ -500,6 +502,7 @@ internal fun MovieDetailsContent(
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person, PersonCreditsRole) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
+    onNavigateToList: (CustomList) -> Unit = {},
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
@@ -831,6 +834,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onMovieClick,
+                            onListClick = onNavigateToList,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

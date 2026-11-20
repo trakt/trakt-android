@@ -44,6 +44,7 @@ internal fun ListShowContextSheet(
     show: Show?,
     list: CustomList?,
     onRemoveListItem: (() -> Unit)? = null,
+    onListClick: (CustomList) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -130,6 +131,7 @@ internal fun ListShowContextSheet(
 
     ManageListsSheet(
         target = listsTarget,
+        onListClick = onListClick,
         onDismiss = { listsTarget = null },
     )
 }

@@ -72,6 +72,7 @@ import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -102,6 +103,7 @@ internal fun ShowSeasonsView(
     contentPadding: PaddingValues,
     onEpisodeClick: (episode: Episode) -> Unit,
     onAllSeasonsClick: (Int?) -> Unit,
+    onListClick: (CustomList) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -206,6 +208,7 @@ internal fun ShowSeasonsView(
 
     ManageListsSheet(
         target = listsSheet,
+        onListClick = onListClick,
         onDismiss = {
             listsSheet = null
         },

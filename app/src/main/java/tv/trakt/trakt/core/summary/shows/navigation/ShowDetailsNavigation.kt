@@ -48,6 +48,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToCustomList: (CustomList) -> Unit,
 ) {
     composable<ShowDetailsDestination> { entry ->
         val showId = entry.toRoute<ShowDetailsDestination>().showId.toTraktId()
@@ -78,6 +79,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
+            onNavigateToList = onNavigateToCustomList,
         )
     }
 }

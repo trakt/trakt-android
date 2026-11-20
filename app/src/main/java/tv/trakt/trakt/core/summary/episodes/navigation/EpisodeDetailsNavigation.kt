@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsScreen
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -34,6 +35,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<EpisodeDetailsDestination> {
         EpisodeDetailsScreen(
@@ -49,6 +51,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
             onNavigateToUser = onNavigateToUser,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
+            onNavigateToList = onNavigateToList,
         )
     }
 }

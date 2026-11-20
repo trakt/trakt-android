@@ -69,6 +69,7 @@ import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.sorting.SortType.Added
@@ -101,6 +102,7 @@ internal fun AllWatchlistScreen(
     onNavigateBack: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onReorderClick: () -> Unit,
     onCreateSmartListClick: (SmartListFilters) -> Unit,
 ) {
@@ -181,6 +183,7 @@ internal fun AllWatchlistScreen(
     )
 
     WatchlistMovieSheet(
+        onListClick = onListClick,
         movie = contextMovieSheet?.movie,
         addLocally = true,
         watched = contextMovieSheet?.movie?.ids?.trakt?.let {
@@ -196,6 +199,7 @@ internal fun AllWatchlistScreen(
     )
 
     WatchlistShowSheet(
+        onListClick = onListClick,
         show = contextShowSheet?.show,
         addLocally = true,
         watched = contextShowSheet?.show?.let {

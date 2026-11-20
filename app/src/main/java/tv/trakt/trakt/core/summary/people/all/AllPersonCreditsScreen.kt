@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
@@ -76,6 +77,7 @@ internal fun AllPersonCreditsScreen(
     viewModel: AllPersonCreditsViewModel = koinViewModel(),
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -124,11 +126,13 @@ internal fun AllPersonCreditsScreen(
     )
 
     ShowContextSheet(
+        onListClick = onNavigateToList,
         show = contextShowSheet,
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
+        onListClick = onNavigateToList,
         movie = contextMovieSheet,
         onDismiss = { contextMovieSheet = null },
     )

@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.summary.people.PersonDetailsScreen
 import tv.trakt.trakt.core.summary.people.all.AllPersonCreditsDestination
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -26,6 +27,7 @@ internal fun NavGraphBuilder.personDetailsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToAllCredits: (AllPersonCreditsDestination) -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<PersonDestination> {
         PersonDetailsScreen(
@@ -34,6 +36,7 @@ internal fun NavGraphBuilder.personDetailsScreen(
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToAllCredits = onNavigateToAllCredits,
+            onNavigateToList = onNavigateToList,
         )
     }
 }

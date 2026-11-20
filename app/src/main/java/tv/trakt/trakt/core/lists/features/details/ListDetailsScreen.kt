@@ -120,6 +120,7 @@ internal fun ListDetailsScreen(
     viewModel: ListDetailsViewModel,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onPersonClick: (Person) -> Unit,
     onAddFromListsClick: (CustomList) -> Unit,
@@ -244,6 +245,7 @@ internal fun ListDetailsScreen(
     )
 
     ShowContextSheet(
+        onListClick = onListClick,
         show = showContextSheet?.show,
         onDismiss = {
             showContextSheet = null
@@ -251,6 +253,7 @@ internal fun ListDetailsScreen(
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = movieContextSheet?.movie,
         onDismiss = {
             movieContextSheet = null
@@ -258,6 +261,7 @@ internal fun ListDetailsScreen(
     )
 
     ListItemContextSheet(
+        onListClick = onListClick,
         item = itemContextSheet,
         list = state.list?.list,
         removable = false,

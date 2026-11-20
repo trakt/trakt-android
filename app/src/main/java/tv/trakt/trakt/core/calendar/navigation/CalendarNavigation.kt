@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.calendar.feature.monthly.CalendarMonthlyScreen
 import tv.trakt.trakt.core.calendar.feature.weekly.CalendarScreen
 import tv.trakt.trakt.core.calendar.model.CalendarSource
@@ -29,6 +30,7 @@ internal fun NavGraphBuilder.calendarScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onViewClick: (CalendarView, CalendarSource) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<CalendarDestination> { entry ->
         val source = entry.toRoute<CalendarDestination>().source
@@ -39,6 +41,7 @@ internal fun NavGraphBuilder.calendarScreen(
             onMovieClick = onMovieClick,
             onViewClick = { onViewClick(it, source) },
             onNavigateBack = onNavigateBack,
+            onListClick = onNavigateToList,
         )
     }
 }
@@ -49,6 +52,7 @@ internal fun NavGraphBuilder.calendarMonthlyScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onViewClick: (CalendarView, CalendarSource) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<CalendarMonthlyDestination> { entry ->
         val source = entry.toRoute<CalendarMonthlyDestination>().source
@@ -59,6 +63,7 @@ internal fun NavGraphBuilder.calendarMonthlyScreen(
             onMovieClick = onMovieClick,
             onViewClick = { onViewClick(it, source) },
             onNavigateBack = onNavigateBack,
+            onListClick = onNavigateToList,
         )
     }
 }

@@ -57,6 +57,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
@@ -81,6 +82,7 @@ internal fun AllHomeWatchlistScreen(
     onNavigateBack: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -149,6 +151,7 @@ internal fun AllHomeWatchlistScreen(
     )
 
     WatchlistShowSheet(
+        onListClick = onListClick,
         addLocally = false,
         watched = false,
         show = contextShowSheet?.show,
@@ -162,6 +165,7 @@ internal fun AllHomeWatchlistScreen(
     )
 
     WatchlistMovieSheet(
+        onListClick = onListClick,
         addLocally = false,
         movie = contextMovieSheet?.movie,
         watched = false,

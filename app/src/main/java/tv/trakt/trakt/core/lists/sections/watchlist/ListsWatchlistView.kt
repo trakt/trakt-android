@@ -54,6 +54,7 @@ import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
@@ -74,6 +75,7 @@ internal fun ListsWatchlistView(
     onShowClick: (TraktId) -> Unit,
     onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onWatchlistClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -113,6 +115,7 @@ internal fun ListsWatchlistView(
     )
 
     WatchlistShowSheet(
+        onListClick = onListClick,
         addLocally = true,
         show = showContextSheet,
         watched = showContextSheet?.let {
@@ -128,6 +131,7 @@ internal fun ListsWatchlistView(
     )
 
     WatchlistMovieSheet(
+        onListClick = onListClick,
         addLocally = true,
         movie = movieContextSheet,
         watched = movieContextSheet?.ids?.trakt?.let {

@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverSection
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
@@ -51,6 +52,7 @@ internal fun DiscoverScreen(
     viewModel: DiscoverViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToAllTrending: () -> Unit,
     onNavigateToAllPopular: () -> Unit,
@@ -66,6 +68,7 @@ internal fun DiscoverScreen(
         state = state,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
+        onListClick = onNavigateToList,
         onEpisodeClick = onNavigateToEpisode,
         onMoreTrendingClick = onNavigateToAllTrending,
         onMorePopularClick = onNavigateToAllPopular,
@@ -92,6 +95,7 @@ private fun DiscoverScreen(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit = {},
+    onListClick: (CustomList) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onMoreTrendingClick: () -> Unit = {},
     onMorePopularClick: () -> Unit = {},
@@ -159,6 +163,7 @@ private fun DiscoverScreen(
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
+                    onListClick = onListClick,
                     onMoreClick = onMoreTrendingClick,
                 )
             }
@@ -170,6 +175,7 @@ private fun DiscoverScreen(
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
+                    onListClick = onListClick,
                     onEpisodeClick = onEpisodeClick,
                     onMoreClick = onMoreReleasesClick,
                 )
@@ -186,6 +192,7 @@ private fun DiscoverScreen(
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
+                    onListClick = onListClick,
                     onMoreClick = onMoreAnticipatedClick,
                 )
             }
@@ -201,6 +208,7 @@ private fun DiscoverScreen(
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
+                    onListClick = onListClick,
                     onMoreClick = onMorePopularClick,
                 )
             }

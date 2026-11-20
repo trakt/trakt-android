@@ -74,6 +74,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
@@ -119,6 +120,7 @@ internal fun EpisodeDetailsScreen(
     onNavigateToAllStreamings: (Show, Episode) -> Unit,
     onNavigateToAllCredits: (Show, Episode) -> Unit,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -158,6 +160,7 @@ internal fun EpisodeDetailsScreen(
         modifier = modifier,
         onShowClick = onShowClick,
         onEpisodeClick = viewModel::navigateToEpisode,
+        onNavigateToList = onNavigateToList,
         onTrackClick = {
             if (state.episodeProgress?.watched == true) {
                 confirmRemoveWatchedSheet = true
@@ -295,6 +298,7 @@ internal fun EpisodeDetailsScreen(
 
     ManageListsSheet(
         target = listsSheet,
+        onListClick = onNavigateToList,
         onDismiss = {
             listsSheet = null
         },
@@ -408,6 +412,7 @@ internal fun EpisodeDetailsContent(
     onAllStreamingsClick: (() -> Unit)? = null,
     onAllCreditsClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
+    onNavigateToList: (CustomList) -> Unit = {},
     onVipClick: (() -> Unit)? = null,
     onVipSeen: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -671,6 +676,7 @@ internal fun EpisodeDetailsContent(
                             onAllSeasonsClick = { season ->
                                 onAllSeasonsClick?.invoke(state.show, season)
                             },
+                            onListClick = onNavigateToList,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
@@ -687,6 +693,7 @@ internal fun EpisodeDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onShowClick,
+                            onListClick = onNavigateToList,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

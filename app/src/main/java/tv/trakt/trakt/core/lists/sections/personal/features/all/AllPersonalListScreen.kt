@@ -99,6 +99,7 @@ internal fun AllPersonalListScreen(
     viewModel: AllPersonalListViewModel,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onListClick: (CustomList) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onReorderClick: (CustomList) -> Unit,
     onPersonClick: (Person) -> Unit,
@@ -206,6 +207,7 @@ internal fun AllPersonalListScreen(
     )
 
     ListShowContextSheet(
+        onListClick = onListClick,
         show = showContextSheet?.show,
         list = state.list,
         onRemoveListItem = {
@@ -217,6 +219,7 @@ internal fun AllPersonalListScreen(
     )
 
     ListMovieContextSheet(
+        onListClick = onListClick,
         movie = movieContextSheet?.movie,
         list = state.list,
         onRemoveListItem = {
@@ -228,6 +231,7 @@ internal fun AllPersonalListScreen(
     )
 
     ListItemContextSheet(
+        onListClick = onListClick,
         item = itemContextSheet,
         list = state.list,
         removable = true,

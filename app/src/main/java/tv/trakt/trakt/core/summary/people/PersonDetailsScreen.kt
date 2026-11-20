@@ -75,6 +75,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.SocialIds
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
@@ -102,6 +103,7 @@ internal fun PersonDetailsScreen(
     viewModel: PersonDetailsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateToAllCredits: (AllPersonCreditsDestination) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -175,6 +177,7 @@ internal fun PersonDetailsScreen(
     )
 
     ShowContextSheet(
+        onListClick = onNavigateToList,
         show = contextShowSheet,
         onDismiss = {
             contextShowSheet = null
@@ -182,6 +185,7 @@ internal fun PersonDetailsScreen(
     )
 
     MovieContextSheet(
+        onListClick = onNavigateToList,
         movie = contextMovieSheet,
         onDismiss = {
             contextMovieSheet = null

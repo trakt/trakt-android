@@ -47,6 +47,7 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
 import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.discover.DiscoverSection.Recommended
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
@@ -69,6 +70,7 @@ internal fun AllDiscoverScreen(
     viewModel: AllDiscoverViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateToCreateSmartList: (SmartListFilters) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -124,6 +126,7 @@ internal fun AllDiscoverScreen(
     )
 
     ShowContextSheet(
+        onListClick = onNavigateToList,
         show = contextShowSheet?.show,
         showRecommended = state.type == Recommended,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
@@ -135,6 +138,7 @@ internal fun AllDiscoverScreen(
     )
 
     MovieContextSheet(
+        onListClick = onNavigateToList,
         movie = contextMovieSheet?.movie,
         showRecommended = state.type == Recommended,
         onHideRecommendation = { viewModel.hideRecommendation(it) },

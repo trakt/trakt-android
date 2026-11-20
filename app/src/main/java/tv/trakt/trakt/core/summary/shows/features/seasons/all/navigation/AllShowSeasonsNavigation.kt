@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsScreen
 
@@ -25,6 +26,7 @@ internal fun NavGraphBuilder.allShowSeasonsScreen(
     onNavigateToPerson: (show: Show, person: Person, role: PersonCreditsRole?) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<AllShowSeasonsDestination> {
         AllShowSeasonsScreen(
@@ -33,6 +35,7 @@ internal fun NavGraphBuilder.allShowSeasonsScreen(
             onPersonClick = onNavigateToPerson,
             onUserClick = onNavigateToUser,
             onNavigateBack = onNavigateBack,
+            onListClick = onNavigateToList,
         )
     }
 }

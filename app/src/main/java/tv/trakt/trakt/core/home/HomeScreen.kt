@@ -44,6 +44,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
@@ -72,6 +73,7 @@ internal fun HomeScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToAllUpNext: () -> Unit,
     onNavigateToAllWatchlist: () -> Unit,
@@ -114,6 +116,7 @@ internal fun HomeScreen(
             }
         },
         onMovieClick = onNavigateToMovie,
+        onListClick = onNavigateToList,
         onEpisodeClick = onNavigateToEpisode,
         onMoreUpNextClick = onNavigateToAllUpNext,
         onMoreWatchlistClick = onNavigateToAllWatchlist,
@@ -178,6 +181,7 @@ private fun HomeScreenContent(
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
+    onListClick: (CustomList) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onVipClick: (VipUpsellSource) -> Unit = {},
     onVipSeen: (VipUpsellSource) -> Unit = {},
@@ -315,6 +319,7 @@ private fun HomeScreenContent(
                     onShowsClick = onShowsClick,
                     onMovieClick = onMovieClick,
                     onMoviesClick = onMoviesClick,
+                    onListClick = onListClick,
                     onMoreClick = onMoreWatchlistClick,
                 )
             }
@@ -337,6 +342,7 @@ private fun HomeScreenContent(
                     onMoviesClick = onMoviesClick,
                     onEpisodeClick = onEpisodeClick,
                     onMovieClick = onMovieClick,
+                    onListClick = onListClick,
                     onCalendarClick = onCalendarClick,
                 )
             }
@@ -350,6 +356,7 @@ private fun HomeScreenContent(
                         contentPadding = sectionPadding,
                         onShowClick = onShowClick,
                         onMovieClick = onMovieClick,
+                        onListClick = onListClick,
                         onMoreClick = onMoreRecommendedClick,
                         onEmptyClick = onShowsClick,
                     )

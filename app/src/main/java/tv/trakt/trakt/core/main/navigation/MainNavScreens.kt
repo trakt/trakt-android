@@ -152,6 +152,7 @@ internal fun NavGraphBuilder.homeScreens(
                 )
             },
             onNavigateToToday = ::navigateToTodayStories,
+            onNavigateToList = { navigateToListDetails(it) },
         )
 
         todayStoriesScreen(
@@ -181,6 +182,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
 
         homeActivityPersonalScreen(
@@ -232,12 +234,14 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
             onNavigateToVip = {
                 navigateToBilling(source = VipUpsellSource.NavbarMobile)
             },
+            onNavigateToList = { navigateToListDetails(it) },
         )
         discoverAllScreen(
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList(it) },
+            onNavigateToList = { navigateToListDetails(it) },
         )
     }
 }
@@ -355,6 +359,7 @@ internal fun NavGraphBuilder.showsScreens(
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateVip = { navigateToBilling(source = it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToCustomList = { navigateToListDetails(it) },
         )
     }
 }
@@ -431,6 +436,7 @@ internal fun NavGraphBuilder.episodesScreens(
             },
             onNavigateVip = { navigateToBilling(source = VipUpsellSource.EpisodeDetails) },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
     }
 }
@@ -537,6 +543,7 @@ internal fun NavGraphBuilder.moviesScreens(
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateVip = { navigateToBilling(source = it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToCustomList = { navigateToListDetails(it) },
         )
     }
 }
@@ -624,6 +631,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToReorder = { navigateToWatchlistReorder() },
             onNavigateToCreateSmartList = { navigateToCreateSmartList(it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
         allPersonalListScreen(
             onNavigateToShow = { navigateToShow(it) },
@@ -645,6 +653,7 @@ internal fun NavGraphBuilder.listsScreens(
             },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
         listDetailsScreen(
             onNavigateBack = { popBackStack() },
@@ -661,12 +670,14 @@ internal fun NavGraphBuilder.listsScreens(
                 )
             },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
+            onNavigateToList = { navigateToListDetails(it) },
         )
         smartListDetailsScreen(
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToEdit = { navigateToEditSmartList(it) },
+            onNavigateToList = { navigateToListDetails(it) },
         )
         listReorderScreen(
             onNavigateBack = { popBackStack() },
@@ -807,11 +818,13 @@ internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToAllCredits = { navigateToAllPersonCredits(it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
         allPersonCreditsScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
     }
 }
@@ -857,6 +870,7 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(
                 )
             },
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
     }
 }
@@ -957,6 +971,7 @@ internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
             onMovieClick = { navigateToMovie(it) },
             onViewClick = ::switchCalendarView,
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
 
         calendarMonthlyScreen(
@@ -967,6 +982,7 @@ internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
             onMovieClick = { navigateToMovie(it) },
             onViewClick = ::switchCalendarView,
             onNavigateBack = { popBackStack() },
+            onNavigateToList = { navigateToListDetails(it) },
         )
     }
 }

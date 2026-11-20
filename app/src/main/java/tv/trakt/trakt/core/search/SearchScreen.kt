@@ -156,11 +156,13 @@ internal fun SearchScreen(
     )
 
     ShowContextSheet(
+        onListClick = onListClick,
         show = showContextSheet,
         onDismiss = { showContextSheet = null },
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = movieContextSheet,
         onDismiss = { movieContextSheet = null },
     )

@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -64,6 +65,7 @@ internal fun ShowRelatedView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onClick: ((Show) -> Unit)? = null,
+    onListClick: (CustomList) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -80,6 +82,7 @@ internal fun ShowRelatedView(
     )
 
     ShowContextSheet(
+        onListClick = onListClick,
         show = contextSheet,
         onDismiss = { contextSheet = null },
     )

@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.discover.DiscoverScreen
 
@@ -23,6 +24,7 @@ internal fun NavGraphBuilder.discoverScreen(
     onNavigateToAllAnticipated: () -> Unit = {},
     onNavigateToAllReleases: (CalendarView) -> Unit = {},
     onNavigateToVip: () -> Unit = {},
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<DiscoverDestination> {
         DiscoverScreen(
@@ -35,6 +37,7 @@ internal fun NavGraphBuilder.discoverScreen(
             onNavigateToAllAnticipated = onNavigateToAllAnticipated,
             onNavigateToAllReleases = onNavigateToAllReleases,
             onNavigateToVip = onNavigateToVip,
+            onNavigateToList = onNavigateToList,
         )
     }
 }

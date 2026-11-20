@@ -44,6 +44,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.discover.sections.releases.views.EpisodeReleasesItemView
@@ -65,6 +66,7 @@ internal fun DiscoverReleasesView(
     contentPadding: PaddingValues,
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
+    onListClick: (CustomList) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onMoreClick: () -> Unit = {},
 ) {
@@ -100,11 +102,13 @@ internal fun DiscoverReleasesView(
     )
 
     CalendarEpisodeContextSheet(
+        onListClick = onListClick,
         item = contextEpisodeSheet,
         onDismiss = { contextEpisodeSheet = null },
     )
 
     MovieContextSheet(
+        onListClick = onListClick,
         movie = contextMovieSheet,
         onDismiss = { contextMovieSheet = null },
     )
