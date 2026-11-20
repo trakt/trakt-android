@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.features.smart.ui
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -34,6 +35,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -686,7 +689,10 @@ private fun HideFilters(
 ) {
     val hasShows = filters.media != MediaMode.Movies
 
-    FilterSection(title = stringResource(R.string.header_smart_list_hide)) {
+    FilterSection(
+        title = stringResource(R.string.header_smart_list_hide),
+        spacing = 2.dp,
+    ) {
         if (hasShows) {
             SwitchRow(
                 label = stringResource(R.string.toggle_text_hide_watching),
@@ -733,16 +739,17 @@ private fun HideFilters(
 @Composable
 private fun FilterSection(
     title: String,
+    spacing: Dp = 16.dp,
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(spacing),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Text(
             text = title,
             color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
+            style = TraktTheme.typography.buttonTertiary,
         )
         content()
     }
@@ -756,7 +763,7 @@ private fun SwitchRow(
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
-        horizontalArrangement = spacedBy(8.dp),
+        horizontalArrangement = spacedBy(12.dp),
         verticalAlignment = CenterVertically,
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -869,7 +876,20 @@ private fun SmartListFilters.withMoreRating(
     }
 }
 
-@PreviewTraktLightDark
+@Preview(
+    name = "Dark",
+    showBackground = true,
+    backgroundColor = 0xFF151418,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    heightDp = 2000,
+)
+@Preview(
+    name = "Light",
+    showBackground = true,
+    backgroundColor = 0xFFF1EFF4,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    heightDp = 2000,
+)
 @Composable
 private fun Preview() {
     TraktThemePreview {
@@ -881,8 +901,8 @@ private fun Preview() {
                 tmdbRatings = persistentListOf(6.5f, 10f),
                 ignoreEnded = true,
                 languages = persistentListOf("en"),
-                keywords = persistentListOf("time travel", "${EXCLUSION_PREFIX}dystopia"),
-                people = persistentListOf("christopher-nolan"),
+                keywords = persistentListOf("time travel", "time loop", "${EXCLUSION_PREFIX}dystopia"),
+                people = persistentListOf("christopher-nolan", "hans-zimmer"),
                 peopleRole = SmartListPeopleRole.Directing,
                 watchnowCountry = "us",
                 awards = persistentListOf("best-picture"),
