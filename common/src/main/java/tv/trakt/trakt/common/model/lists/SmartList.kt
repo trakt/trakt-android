@@ -276,6 +276,16 @@ data class SmartListFilters(
     val hasMoreFilters: Boolean
         get() = moreFiltersCount > 0
 
+    val hasAwardFilters: Boolean
+        get() = awardFiltersCount > 0
+
+    val awardFiltersCount: Int
+        get() = listOf(
+            !awards.isNullOrEmpty(),
+            !awardYears.isNullOrEmpty(),
+            awardWon,
+        ).count { it }
+
     val moreFiltersCount: Int
         get() = listOf(
             !keywords.isNullOrEmpty(),
@@ -285,9 +295,6 @@ data class SmartListFilters(
             !networks.isNullOrEmpty(),
             !languages.isNullOrEmpty(),
             watchnowCountry != null,
-            !awards.isNullOrEmpty(),
-            !awardYears.isNullOrEmpty(),
-            awardWon,
             releasedWithinDays != null,
             !votes.isNullOrEmpty(),
             !imdbVotes.isNullOrEmpty(),

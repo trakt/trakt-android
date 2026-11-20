@@ -321,7 +321,7 @@ private fun SmartListFilters.fitsSimpleView(): Boolean {
     ) + ParentalGuideCategory.entries.map(::parentalRange)
 
     if (unsupported.any { !it.isNullOrEmpty() }) return false
-    if (genresMatchAll || hasMoreFilters) return false
+    if (genresMatchAll || hasMoreFilters || hasAwardFilters) return false
     if (genres.orEmpty().size > 1) return false
     if (availability.orEmpty().size > 1) return false
     if (ratings.orEmpty().size > 2) return false

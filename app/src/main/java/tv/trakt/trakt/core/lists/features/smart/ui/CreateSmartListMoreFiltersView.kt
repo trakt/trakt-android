@@ -41,13 +41,11 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.EXCLUSION_PREFIX
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
-import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SMART_LIST_OPEN_VOTES_CEILING
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListLanguage
@@ -82,12 +80,10 @@ private enum class MoreRating(
 }
 
 private const val RATING_STEP = 0.5f
-private const val AWARD_YEARS_MIN = 1930
 
 @Composable
 internal fun CreateSmartListMoreFiltersView(
     filters: SmartListFilters,
-    awardCatalog: ImmutableList<AwardCeremony>,
     languages: ImmutableList<SmartListLanguage>,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
@@ -95,98 +91,54 @@ internal fun CreateSmartListMoreFiltersView(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    val chevronRotation by animateFloatAsState(
-        targetValue = if (expanded) 180F else 0F,
-        label = "chevronRotation",
-    )
-
-    Column(
-        modifier = modifier.fillMaxWidth(),
+    CollapsibleFilterSection(
+        title = stringResource(R.string.header_smart_list_more_filters),
+        count = filters.moreFiltersCount,
+        expanded = expanded,
+        onExpandedChange = onExpandedChange,
+        modifier = modifier,
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
+        Column(
+            verticalArrangement = spacedBy(24.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .onClick { onExpandedChange(!expanded) },
+                .padding(top = 20.dp),
         ) {
-            Row(
-                horizontalArrangement = spacedBy(6.dp),
-                verticalAlignment = CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.header_smart_list_more_filters),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonTertiary,
-                )
-
-                if (filters.moreFiltersCount > 0) {
-                    CountBadge(count = filters.moreFiltersCount)
-                }
-            }
-
-            Icon(
-                painter = painterResource(R.drawable.ic_arrow_dropdown),
-                contentDescription = null,
-                tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .size(16.dp)
-                    .graphicsLayer {
-                        rotationZ = chevronRotation
-                    },
+            SearchFilters(
+                filters = filters,
+                languages = languages,
+                onFiltersChange = onFiltersChange,
+                enabled = enabled,
             )
-        }
 
-        if (expanded) {
-            Column(
-                verticalArrangement = spacedBy(24.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp),
+            ReleaseAndVotesFilters(
+                filters = filters,
+                onFiltersChange = onFiltersChange,
+                enabled = enabled,
+            )
+
+            MoreRatingsFilters(
+                filters = filters,
+                onFiltersChange = onFiltersChange,
+                enabled = enabled,
+            )
+
+            HideFilters(
+                filters = filters,
+                onFiltersChange = onFiltersChange,
+                enabled = enabled,
+            )
+
+            FilterSection(
+                title = stringResource(R.string.option_text_certification_parental_guidance),
+                spacing = 2.dp,
             ) {
-                SearchFilters(
-                    filters = filters,
-                    languages = languages,
-                    onFiltersChange = onFiltersChange,
+                SwitchRow(
+                    label = stringResource(R.string.toggle_text_include_unrated_parental),
+                    checked = filters.parentalIncludeUnrated,
                     enabled = enabled,
+                    onCheckedChange = { onFiltersChange(filters.copy(parentalIncludeUnrated = it)) },
                 )
-
-                AwardsFilters(
-                    filters = filters,
-                    awardCatalog = awardCatalog,
-                    onFiltersChange = onFiltersChange,
-                    enabled = enabled,
-                )
-
-                ReleaseAndVotesFilters(
-                    filters = filters,
-                    onFiltersChange = onFiltersChange,
-                    enabled = enabled,
-                )
-
-                MoreRatingsFilters(
-                    filters = filters,
-                    onFiltersChange = onFiltersChange,
-                    enabled = enabled,
-                )
-
-                HideFilters(
-                    filters = filters,
-                    onFiltersChange = onFiltersChange,
-                    enabled = enabled,
-                )
-
-                FilterSection(
-                    title = stringResource(R.string.option_text_certification_parental_guidance),
-                    spacing = 2.dp,
-                ) {
-                    SwitchRow(
-                        label = stringResource(R.string.toggle_text_include_unrated_parental),
-                        checked = filters.parentalIncludeUnrated,
-                        enabled = enabled,
-                        onCheckedChange = { onFiltersChange(filters.copy(parentalIncludeUnrated = it)) },
-                    )
-                }
             }
         }
     }
@@ -414,118 +366,6 @@ private fun LanguageFilters(
 }
 
 @Composable
-private fun AwardsFilters(
-    filters: SmartListFilters,
-    awardCatalog: ImmutableList<AwardCeremony>,
-    onFiltersChange: (SmartListFilters) -> Unit,
-    enabled: Boolean,
-) {
-    val hasAwards = !filters.awards.isNullOrEmpty()
-
-    val allOption = DropdownOption<String?>(null, stringResource(R.string.option_text_all))
-    val awardOptions = remember(awardCatalog, filters.media, allOption) {
-        val awards = awardCatalog
-            .filter { it.supports(filters.media) }
-            .flatMap { ceremony ->
-                ceremony.awards.map { DropdownOption<String?>(it.slug, it.name, ceremony.name) }
-            }
-        (listOf(allOption) + awards).toImmutableList()
-    }
-    val awardValues = remember(filters.awards, awardOptions, allOption) {
-        when (val selected = filters.awards) {
-            null -> persistentListOf(allOption)
-            else -> selected.map { slug ->
-                awardOptions.firstOrNull { it.raw == slug } ?: DropdownOption<String?>(slug, slug)
-            }.toImmutableList()
-        }
-    }
-
-    FilterSection(title = stringResource(R.string.header_smart_list_awards)) {
-        DropdownMultiView(
-            header = stringResource(R.string.header_smart_list_award_categories),
-            active = hasAwards,
-            values = awardValues,
-            options = awardOptions,
-            onOptionsSelected = { options ->
-                onFiltersChange(filters.withAwards(options.mapNotNull { it.raw }))
-            },
-            enabled = enabled,
-        )
-
-        SwitchRow(
-            label = stringResource(R.string.toggle_text_award_winners_only),
-            checked = filters.awardWon,
-            enabled = enabled && hasAwards,
-            onCheckedChange = { onFiltersChange(filters.copy(awardWon = it)) },
-        )
-
-        AwardYearsFilter(
-            years = filters.awardYears,
-            enabled = enabled && hasAwards,
-            onYearsChange = { onFiltersChange(filters.copy(awardYears = it)) },
-        )
-    }
-}
-
-@Composable
-private fun AwardYearsFilter(
-    years: ImmutableList<Int>?,
-    enabled: Boolean,
-    onYearsChange: (ImmutableList<Int>?) -> Unit,
-) {
-    val maxYear = remember { nowLocalDay().year }
-    val fullRange = AWARD_YEARS_MIN.toFloat()..maxYear.toFloat()
-    val rangeValue = remember(years, maxYear) {
-        mutableStateOf(
-            (years?.getOrNull(0) ?: AWARD_YEARS_MIN).toFloat()..(years?.getOrNull(1) ?: maxYear).toFloat(),
-        )
-    }
-
-    Column(
-        verticalArrangement = spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = stringResource(
-                R.string.text_smart_list_recipe_detail,
-                stringResource(R.string.label_smart_list_ceremony_year),
-                stringResource(
-                    R.string.list_summary_range_between,
-                    rangeValue.value.start.toInt().toString(),
-                    rangeValue.value.endInclusive.toInt().toString(),
-                ),
-            ),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.buttonTertiary,
-            maxLines = 1,
-            overflow = Ellipsis,
-        )
-
-        RangeSlider(
-            value = rangeValue.value,
-            enabled = enabled,
-            valueRange = fullRange,
-            steps = maxYear - AWARD_YEARS_MIN - 1,
-            onValueChange = { rangeValue.value = it },
-            onValueChangeFinished = {
-                val start = rangeValue.value.start.toInt()
-                val end = rangeValue.value.endInclusive.toInt()
-                onYearsChange(
-                    when (start == AWARD_YEARS_MIN && end == maxYear) {
-                        true -> null
-                        false -> persistentListOf(start, end)
-                    },
-                )
-            },
-            colors = traktSliderColors(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(25.dp),
-        )
-    }
-}
-
-@Composable
 private fun ReleaseAndVotesFilters(
     filters: SmartListFilters,
     onFiltersChange: (SmartListFilters) -> Unit,
@@ -670,7 +510,64 @@ private fun RatingRangeFilter(
 }
 
 @Composable
-private fun traktSliderColors(): SliderColors {
+internal fun CollapsibleFilterSection(
+    title: String,
+    count: Int,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    val chevronRotation by animateFloatAsState(
+        targetValue = if (expanded) 180F else 0F,
+        label = "chevronRotation",
+    )
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onClick { onExpandedChange(!expanded) },
+        ) {
+            Row(
+                horizontalArrangement = spacedBy(6.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                Text(
+                    text = title,
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonTertiary,
+                )
+
+                if (count > 0) {
+                    CountBadge(count = count)
+                }
+            }
+
+            Icon(
+                painter = painterResource(R.drawable.ic_arrow_dropdown),
+                contentDescription = null,
+                tint = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .size(16.dp)
+                    .graphicsLayer {
+                        rotationZ = chevronRotation
+                    },
+            )
+        }
+
+        if (expanded) {
+            content()
+        }
+    }
+}
+
+@Composable
+internal fun traktSliderColors(): SliderColors {
     return SliderDefaults.colors(
         activeTrackColor = TraktTheme.colors.accent,
         inactiveTrackColor = Color.White,
@@ -760,7 +657,7 @@ private fun FilterSection(
 }
 
 @Composable
-private fun SwitchRow(
+internal fun SwitchRow(
     label: String,
     checked: Boolean,
     enabled: Boolean,
@@ -909,17 +806,6 @@ private fun Preview() {
                 people = persistentListOf("christopher-nolan"),
                 peopleRole = SmartListPeopleRole.Directing,
                 watchnowCountry = "us",
-                awards = persistentListOf("best-picture"),
-                awardWon = true,
-            ),
-            awardCatalog = persistentListOf(
-                AwardCeremony(
-                    slug = "academy-awards",
-                    name = "Academy Awards",
-                    forMovies = true,
-                    forShows = false,
-                    awards = persistentListOf(AwardCeremony.Award("best-picture", "Best Picture")),
-                ),
             ),
             languages = persistentListOf(SmartListLanguage("en", "English")),
             expanded = true,
@@ -938,8 +824,7 @@ private fun Preview() {
 //                media = MediaMode.Movies,
 //                ignoreUnreleased = true,
 //            ),
-//            awardCatalog = persistentListOf(),
-//            languages = persistentListOf(),
+// //            languages = persistentListOf(),
 //            expanded = false,
 //            onExpandedChange = {},
 //            onFiltersChange = {},

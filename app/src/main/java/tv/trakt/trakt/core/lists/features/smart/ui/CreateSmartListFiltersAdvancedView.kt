@@ -197,13 +197,26 @@ internal fun CreateSmartListFiltersAdvancedView(
                 ),
             )
 
+            var awardsExpanded by rememberSaveable {
+                mutableStateOf(state.filters.hasAwardFilters)
+            }
+
+            CreateSmartListAwardsView(
+                filters = state.filters,
+                awardCatalog = state.awardCatalog,
+                expanded = awardsExpanded,
+                onExpandedChange = { awardsExpanded = it },
+                onFiltersChange = { onFiltersChange(it, true) },
+                enabled = enabled,
+                modifier = Modifier.padding(bottom = 12.dp),
+            )
+
             var moreFiltersExpanded by rememberSaveable {
                 mutableStateOf(state.filters.hasMoreFilters)
             }
 
             CreateSmartListMoreFiltersView(
                 filters = state.filters,
-                awardCatalog = state.awardCatalog,
                 languages = state.languages,
                 expanded = moreFiltersExpanded,
                 onExpandedChange = { moreFiltersExpanded = it },
