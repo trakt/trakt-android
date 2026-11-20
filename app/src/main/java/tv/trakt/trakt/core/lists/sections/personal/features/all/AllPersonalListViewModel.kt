@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
@@ -136,7 +137,9 @@ internal class AllPersonalListViewModel(
             appliedDefaultSorting = sorting
             if (sorting != sortingState.value) {
                 sortingState.update { sorting }
-                loadData()
+                if (dataJob?.isActive != true) {
+                    loadData()
+                }
             }
         }
     }
@@ -176,11 +179,13 @@ internal class AllPersonalListViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { Done }
-                dataJob = null
+                if (isActive) {
+                    loadingState.update { Done }
+                    dataJob = null
 
-                loadingJob?.cancel()
-                loadingJob = null
+                    loadingJob?.cancel()
+                    loadingJob = null
+                }
             }
         }
     }
@@ -217,11 +222,13 @@ internal class AllPersonalListViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { Done }
-                dataJob = null
+                if (isActive) {
+                    loadingState.update { Done }
+                    dataJob = null
 
-                loadingJob?.cancel()
-                loadingJob = null
+                    loadingJob?.cancel()
+                    loadingJob = null
+                }
             }
         }
     }
