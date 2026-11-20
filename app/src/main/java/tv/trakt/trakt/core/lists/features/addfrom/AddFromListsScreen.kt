@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,7 +24,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -45,7 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -78,6 +75,7 @@ import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsPick
 import tv.trakt.trakt.core.lists.features.addfrom.model.AddFromListsSource
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.CountBadge
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -418,20 +416,7 @@ private fun SourceCounts(
         modifier = modifier,
     ) {
         if (picked > 0) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp)
-                    .clip(CircleShape)
-                    .background(TraktTheme.colors.accent)
-                    .padding(horizontal = 4.dp),
-            ) {
-                Text(
-                    text = picked.toString(),
-                    color = TraktTheme.colors.textPrimaryOnAccent,
-                    style = TraktTheme.typography.meta,
-                )
-            }
+            CountBadge(count = picked)
         }
 
         if (source is AddFromListsSource.PersonalList) {

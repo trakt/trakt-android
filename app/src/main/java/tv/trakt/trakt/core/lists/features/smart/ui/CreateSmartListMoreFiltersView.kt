@@ -60,6 +60,7 @@ import tv.trakt.trakt.core.lists.features.smart.search.SmartListSearchSheet
 import tv.trakt.trakt.core.lists.features.smart.search.toSearchValueLabel
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.CountBadge
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.switch.TraktSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -118,11 +119,7 @@ internal fun CreateSmartListMoreFiltersView(
                 )
 
                 if (filters.moreFiltersCount > 0) {
-                    Text(
-                        text = filters.moreFiltersCount.toString(),
-                        color = TraktTheme.colors.accent,
-                        style = TraktTheme.typography.buttonTertiary,
-                    )
+                    CountBadge(count = filters.moreFiltersCount)
                 }
             }
 
