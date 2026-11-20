@@ -29,7 +29,7 @@ import kotlin.math.abs
 /**
  * Formats an integer into a compact string representation using thousands (e.g., 1.2K for 1200).
  */
-private fun Int.thousandsFormat(
+internal fun Int.thousandsFormat(
     locale: Locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
     significantDigits: Int,
 ): String {

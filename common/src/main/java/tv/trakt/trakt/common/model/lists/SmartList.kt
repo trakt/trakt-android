@@ -13,7 +13,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.GenresOperator
 import tv.trakt.trakt.common.helpers.extensions.capitalize
+import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
@@ -31,6 +33,8 @@ import tv.trakt.trakt.common.networking.SmartListDto
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import java.util.Locale
+
+const val SMART_LIST_OPEN_VOTES_CEILING = 999_999_999
 
 @Immutable
 @Serializable
@@ -163,8 +167,27 @@ data class SmartListFilters(
     val parentalAlcohol: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val parentalFrightening: ImmutableList<Int>? = null,
+    val parentalIncludeUnrated: Boolean = false,
+    val genresMatchAll: Boolean = false,
+    val releasedWithinDays: Int? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val votes: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val imdbVotes: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val tmdbRatings: ImmutableList<Float>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val letterboxdRatings: ImmutableList<Float>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val malRatings: ImmutableList<Float>? = null,
     val ignoreWatched: Boolean = false,
     val ignoreWatchlisted: Boolean = false,
+    val ignoreWatching: Boolean = false,
+    val ignoreUnreleased: Boolean = false,
+    val ignoreReleased: Boolean = false,
+    val ignoreEnded: Boolean = false,
+    val ignoreAiring: Boolean = false,
+    val ignoreNoReleaseDate: Boolean = false,
 ) {
     val genreTokens: List<String>
         get() = toExclusionTokens(genres, excludedGenres) { it.slug }
@@ -200,17 +223,74 @@ data class SmartListFilters(
             formatFloatRange(imdbRatings.orEmpty(), resources)?.let { "IMDb $it" },
             formatPercentRange(rtMeters.orEmpty(), "RT", resources, locale),
             formatPercentRange(rtUserMeters.orEmpty(), "RT Audience", resources, locale),
+            formatFloatRange(tmdbRatings.orEmpty(), resources)?.let { "TMDB $it" },
+            formatFloatRange(letterboxdRatings.orEmpty(), resources)?.let { "Letterboxd $it" },
+            formatFloatRange(malRatings.orEmpty(), resources)?.let { "MAL $it" },
+            formatVotesRange(votes.orEmpty(), "Trakt", resources, locale),
+            formatVotesRange(imdbVotes.orEmpty(), "IMDb", resources, locale),
+            releasedWithinDays?.let {
+                resources.getString(R.string.list_summary_released_within_days, it.toString())
+            },
         ) + ParentalGuideCategory.entries.mapNotNull { category ->
             formatParentalRange(category, parentalRange(category).orEmpty(), resources)
         }
 
         val flags = listOfNotNull(
+            resources.getString(R.string.toggle_text_include_unrated_parental).takeIf { parentalIncludeUnrated },
             resources.getString(R.string.header_hide_watched).takeIf { ignoreWatched },
             resources.getString(R.string.header_hide_watchlisted).takeIf { ignoreWatchlisted },
         )
 
         return values + ranges + flags
     }
+
+    val hasMoreFilters: Boolean
+        get() = moreFiltersCount > 0
+
+    val moreFiltersCount: Int
+        get() = listOf(
+            releasedWithinDays != null,
+            !votes.isNullOrEmpty(),
+            !imdbVotes.isNullOrEmpty(),
+            !tmdbRatings.isNullOrEmpty(),
+            !letterboxdRatings.isNullOrEmpty(),
+            !malRatings.isNullOrEmpty(),
+            parentalIncludeUnrated,
+            ignoreWatching,
+            ignoreUnreleased,
+            ignoreReleased,
+            ignoreEnded,
+            ignoreAiring,
+            ignoreNoReleaseDate,
+        ).count { it }
+
+    fun withoutShowOnlyFilters(): SmartListFilters {
+        if (media != MediaMode.Movies) return this
+
+        return copy(
+            networks = null,
+            ignoreWatching = false,
+            ignoreEnded = false,
+            ignoreAiring = false,
+        )
+    }
+
+    fun clearedMoreFilters(): SmartListFilters =
+        copy(
+            releasedWithinDays = null,
+            votes = null,
+            imdbVotes = null,
+            tmdbRatings = null,
+            letterboxdRatings = null,
+            malRatings = null,
+            parentalIncludeUnrated = false,
+            ignoreWatching = false,
+            ignoreUnreleased = false,
+            ignoreReleased = false,
+            ignoreEnded = false,
+            ignoreAiring = false,
+            ignoreNoReleaseDate = false,
+        )
 
     fun parentalRange(category: ParentalGuideCategory): ImmutableList<Int>? {
         return when (category) {
@@ -285,8 +365,22 @@ data class SmartListFilters(
                 parentalProfanity = filters.parentalProfanity?.toImmutableList(),
                 parentalAlcohol = filters.parentalAlcohol?.toImmutableList(),
                 parentalFrightening = filters.parentalFrightening?.toImmutableList(),
+                parentalIncludeUnrated = filters.parentalIncludeUnrated ?: false,
+                genresMatchAll = filters.genresOperator == GenresOperator.AND,
+                releasedWithinDays = filters.releasedWithinDays,
+                votes = filters.votes?.toImmutableList(),
+                imdbVotes = filters.imdbVotes?.toImmutableList(),
+                tmdbRatings = filters.tmdbRatings?.toImmutableList(),
+                letterboxdRatings = filters.letterboxdRatings?.toImmutableList(),
+                malRatings = filters.malRatings?.toImmutableList(),
                 ignoreWatched = filters.ignoreWatched ?: false,
                 ignoreWatchlisted = filters.ignoreWatchlisted ?: false,
+                ignoreWatching = filters.ignoreWatching ?: false,
+                ignoreUnreleased = filters.ignoreUnreleased ?: false,
+                ignoreReleased = filters.ignoreReleased ?: false,
+                ignoreEnded = filters.ignoreEnded ?: false,
+                ignoreAiring = filters.ignoreAiring ?: false,
+                ignoreNoReleaseDate = filters.ignoreNoReleaseDate ?: false,
             )
         }
 
@@ -380,6 +474,30 @@ private fun formatFloatRange(
         )
         min != null -> resources.getString(R.string.list_summary_range_from, min.toString())
         else -> null
+    }
+}
+
+private fun formatVotesRange(
+    range: List<Int>,
+    source: String,
+    resources: Resources,
+    locale: Locale,
+): String? {
+    val min = range.getOrNull(0) ?: return null
+    val max = range.getOrNull(1)
+
+    return when {
+        max == null || max >= SMART_LIST_OPEN_VOTES_CEILING -> resources.getString(
+            R.string.list_summary_votes_from,
+            min.thousandsFormat(locale, significantDigits = 2),
+            source,
+        )
+        else -> resources.getString(
+            R.string.list_summary_votes_between,
+            min.thousandsFormat(locale, significantDigits = 2),
+            max.thousandsFormat(locale, significantDigits = 2),
+            source,
+        )
     }
 }
 

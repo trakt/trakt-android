@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,8 +14,11 @@ import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -24,10 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.MediaGenre
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Availability
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
@@ -52,6 +58,19 @@ private val RuntimeMin = 0
 private val RuntimeMax = 500
 private val RatingMin = 0
 private val RatingMax = 100
+
+private val StatusOptions = listOf(
+    MediaStatus.ReturningSeries,
+    MediaStatus.Released,
+    MediaStatus.Continuing,
+    MediaStatus.Upcoming,
+    MediaStatus.InProduction,
+    MediaStatus.PostProduction,
+    MediaStatus.Planned,
+    MediaStatus.Ended,
+    MediaStatus.Canceled,
+    MediaStatus.Rumored,
+)
 
 @Composable
 internal fun CreateSmartListFiltersAdvancedView(
@@ -89,6 +108,15 @@ internal fun CreateSmartListFiltersAdvancedView(
                 )
             }
 
+            if (state.filters.genres.orEmpty().size > 1) {
+                GenreMatchFilter(
+                    state = state,
+                    onUpdateFilter = onFiltersChange,
+                    enabled = enabled,
+                    modifier = Modifier.padding(vertical = 4.dp),
+                )
+            }
+
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
                 modifier = Modifier.fillMaxWidth(),
@@ -106,6 +134,20 @@ internal fun CreateSmartListFiltersAdvancedView(
                     enabled = enabled,
                     modifier = Modifier.weight(1f),
                 )
+            }
+
+            Row(
+                horizontalArrangement = spacedBy(RowsSpacing),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                StatusFilter(
+                    state = state,
+                    onUpdateFilter = onFiltersChange,
+                    enabled = enabled,
+                    modifier = Modifier.weight(1f),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
             }
 
             YearsFilter(
@@ -153,8 +195,103 @@ internal fun CreateSmartListFiltersAdvancedView(
                 onUpdateFilter = onFiltersChange,
                 enabled = enabled,
             )
+
+            var moreFiltersExpanded by rememberSaveable {
+                mutableStateOf(state.filters.hasMoreFilters)
+            }
+
+            CreateSmartListMoreFiltersView(
+                filters = state.filters,
+                expanded = moreFiltersExpanded,
+                onExpandedChange = { moreFiltersExpanded = it },
+                onFiltersChange = { onFiltersChange(it, true) },
+                enabled = enabled,
+                modifier = Modifier.padding(top = 20.dp),
+            )
         }
     }
+}
+
+@Composable
+private fun GenreMatchFilter(
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    ChipSelectFilter(
+        title = stringResource(R.string.label_smart_list_match),
+        options = persistentListOf(
+            ChipOption(false, stringResource(R.string.option_text_match_any)),
+            ChipOption(true, stringResource(R.string.option_text_match_all)),
+        ),
+        selected = state.filters.genresMatchAll,
+        enabled = enabled,
+        onSelect = {
+            onUpdateFilter(state.filters.copy(genresMatchAll = it), true)
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun StatusFilter(
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val statusValues: List<DropdownOption<MediaStatus?>> =
+        when (val statuses = state.filters.statuses) {
+            null -> listOf(
+                DropdownOption(
+                    raw = null,
+                    displayString = stringResource(R.string.option_text_all),
+                ),
+            )
+            else -> statuses.mapNotNull { slug ->
+                MediaStatus.fromSlug(slug)?.let {
+                    DropdownOption(
+                        raw = it,
+                        displayString = stringResource(it.displayStringRes),
+                    )
+                }
+            }
+        }
+
+    val statusOptions = buildList<DropdownOption<MediaStatus?>> {
+        add(DropdownOption(null, stringResource(R.string.option_text_all)))
+        addAll(
+            StatusOptions.map {
+                DropdownOption(
+                    raw = it,
+                    displayString = stringResource(it.displayStringRes),
+                )
+            },
+        )
+    }.toImmutableList()
+
+    DropdownMultiView(
+        header = stringResource(R.string.header_status),
+        active = !state.filters.statuses.isNullOrEmpty(),
+        values = remember(state.filters.statuses) {
+            statusValues.toImmutableList()
+        },
+        options = statusOptions,
+        onOptionsSelected = { options ->
+            onUpdateFilter(
+                state.filters.copy(
+                    statuses = options
+                        .mapNotNull { it.raw?.slug }
+                        .takeIf { it.isNotEmpty() }
+                        ?.toImmutableList(),
+                ),
+                true,
+            )
+        },
+        enabled = enabled,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -687,8 +824,8 @@ private fun RatingFilter(
                 val start = value.start.toInt()
                 val end = value.endInclusive.toInt()
                 onUpdateFilter(
-                    state.filters.copy(
-                        ratings = if (start == RatingMin && end == RatingMax) {
+                    state.filters.withRatingRange(
+                        if (start == RatingMin && end == RatingMax) {
                             null
                         } else {
                             persistentListOf(start, end)
@@ -859,6 +996,9 @@ private fun Preview2() {
                     ),
                     years = persistentListOf(2000, 2020),
                     ratings = persistentListOf(60, 100),
+                    statuses = persistentListOf(MediaStatus.Ended.slug),
+                    genresMatchAll = true,
+                    releasedWithinDays = 365,
                     ignoreWatched = true,
                 ),
             ),
@@ -892,6 +1032,16 @@ private fun PreviewDisabled() {
             ),
         )
     }
+}
+
+// The advanced rating range applies to the Trakt, IMDb and Rotten Tomatoes scores at once.
+private fun SmartListFilters.withRatingRange(range: ImmutableList<Int>?): SmartListFilters {
+    return copy(
+        ratings = range,
+        imdbRatings = range?.map { it / 10f }?.toImmutableList(),
+        rtMeters = range,
+        rtUserMeters = range,
+    )
 }
 
 private fun List<Int>.toSeverityRange(): Pair<Int, Int>? {

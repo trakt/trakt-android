@@ -98,7 +98,9 @@ class UserSmartListsRemoteSource(
     }
 }
 
-private fun SmartListFilters.toPreviewParams(): Map<String, String> {
+private fun SmartListFilters.toPreviewParams(): Map<String, String> = withoutShowOnlyFilters().toTypedPreviewParams()
+
+private fun SmartListFilters.toTypedPreviewParams(): Map<String, String> {
     val mediaType = when (media) {
         MediaMode.Media -> "media"
         MediaMode.Shows -> "shows"
@@ -109,6 +111,7 @@ private fun SmartListFilters.toPreviewParams(): Map<String, String> {
         "source" to source.value,
         "media_type" to mediaType,
         "genres" to genreTokens.joinToList(),
+        "genres_operator" to "and".takeIf { genresMatchAll },
         "subgenres" to subgenres?.joinToList(),
         "certifications" to certificationTokens.joinToList(),
         "languages" to languages?.joinToList(),
@@ -122,8 +125,21 @@ private fun SmartListFilters.toPreviewParams(): Map<String, String> {
         "imdb_ratings" to imdbRatings?.joinToRange(),
         "rt_meters" to rtMeters?.joinToRange(),
         "rt_user_meters" to rtUserMeters?.joinToRange(),
-        "ignore_watched" to ignoreWatched.takeIf { it }?.toString(),
-        "ignore_watchlisted" to ignoreWatchlisted.takeIf { it }?.toString(),
+        "tmdb_ratings" to tmdbRatings?.joinToRange(),
+        "letterboxd_ratings" to letterboxdRatings?.joinToRange(),
+        "mal_ratings" to malRatings?.joinToRange(),
+        "votes" to votes?.joinToRange(),
+        "imdb_votes" to imdbVotes?.joinToRange(),
+        "released_within_days" to releasedWithinDays?.toString(),
+        "parental_include_unrated" to parentalIncludeUnrated.toFlagParam(),
+        "ignore_watched" to ignoreWatched.toFlagParam(),
+        "ignore_watchlisted" to ignoreWatchlisted.toFlagParam(),
+        "ignore_watching" to ignoreWatching.toFlagParam(),
+        "ignore_unreleased" to ignoreUnreleased.toFlagParam(),
+        "ignore_released" to ignoreReleased.toFlagParam(),
+        "ignore_ended" to ignoreEnded.toFlagParam(),
+        "ignore_airing" to ignoreAiring.toFlagParam(),
+        "ignore_no_release_date" to ignoreNoReleaseDate.toFlagParam(),
     ).plus(
         ParentalGuideCategory.entries.map { it.apiKey to parentalRange(it)?.joinToRange() },
     ).mapNotNull { (key, value) -> value?.let { key to it } }
@@ -132,5 +148,7 @@ private fun SmartListFilters.toPreviewParams(): Map<String, String> {
 
 private fun <T> List<T>.joinToList(transform: (T) -> String = { it.toString() }): String? =
     takeIf { it.isNotEmpty() }?.joinToString(",", transform = transform)
+
+private fun Boolean.toFlagParam(): String? = takeIf { it }?.toString()
 
 private fun <T : Number> List<T>.joinToRange(): String? = takeIf { it.isNotEmpty() }?.joinToString("-")

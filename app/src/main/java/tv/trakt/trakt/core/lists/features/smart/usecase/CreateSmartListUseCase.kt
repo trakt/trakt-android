@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.features.smart.usecase
 
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters.GenresOperator
 import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
 import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
@@ -67,8 +68,13 @@ private fun MediaMode.toMediaType(): PostUsersListsListConvertToSmartListRequest
 }
 
 internal fun SmartListFilters.toFiltersDto(base: SmartListFiltersDto = SmartListFiltersDto()): SmartListFiltersDto {
+    return withoutShowOnlyFilters().toTypedFiltersDto(base)
+}
+
+private fun SmartListFilters.toTypedFiltersDto(base: SmartListFiltersDto): SmartListFiltersDto {
     return base.copy(
         genres = genreTokens.distinctOrNull(),
+        genresOperator = GenresOperator.AND.takeIf { genresMatchAll },
         subgenres = subgenres.distinctOrNull(),
         certifications = certificationTokens.distinctOrNull(),
         languages = languages.distinctOrNull(),
@@ -87,8 +93,21 @@ internal fun SmartListFilters.toFiltersDto(base: SmartListFiltersDto = SmartList
         parentalProfanity = parentalProfanity.orNullIfEmpty(),
         parentalAlcohol = parentalAlcohol.orNullIfEmpty(),
         parentalFrightening = parentalFrightening.orNullIfEmpty(),
+        parentalIncludeUnrated = parentalIncludeUnrated.takeIf { it },
+        releasedWithinDays = releasedWithinDays,
+        votes = votes.orNullIfEmpty(),
+        imdbVotes = imdbVotes.orNullIfEmpty(),
+        tmdbRatings = tmdbRatings.orNullIfEmpty(),
+        letterboxdRatings = letterboxdRatings.orNullIfEmpty(),
+        malRatings = malRatings.orNullIfEmpty(),
         ignoreWatched = ignoreWatched.takeIf { it },
         ignoreWatchlisted = ignoreWatchlisted.takeIf { it },
+        ignoreWatching = ignoreWatching.takeIf { it },
+        ignoreUnreleased = ignoreUnreleased.takeIf { it },
+        ignoreReleased = ignoreReleased.takeIf { it },
+        ignoreEnded = ignoreEnded.takeIf { it },
+        ignoreAiring = ignoreAiring.takeIf { it },
+        ignoreNoReleaseDate = ignoreNoReleaseDate.takeIf { it },
     )
 }
 
