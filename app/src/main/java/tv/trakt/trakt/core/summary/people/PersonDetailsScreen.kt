@@ -80,8 +80,6 @@ import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
-import tv.trakt.trakt.core.report.ReportSheet
-import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.all.AllPersonCreditsDestination
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsSection
@@ -111,7 +109,6 @@ internal fun PersonDetailsScreen(
 
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
-    var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(
@@ -161,9 +158,6 @@ internal fun PersonDetailsScreen(
         onShareClick = viewModel::logShare,
         onLinkClick = viewModel::logLink,
         onEpisodeCountReveal = viewModel::logEpisodeCountReveal,
-        onReportClick = {
-            reportSheet = state.personDetails?.let { ReportTarget.Person(it.ids.trakt) }
-        },
         onFiltersClick = {
             filtersSheet = true
         },
@@ -194,14 +188,6 @@ internal fun PersonDetailsScreen(
         },
     )
 
-    ReportSheet(
-        active = reportSheet != null,
-        target = reportSheet,
-        onDismiss = {
-            reportSheet = null
-        },
-    )
-
     GlobalFiltersSheet(
         active = filtersSheet,
         options = GlobalFiltersOptions(
@@ -229,7 +215,6 @@ internal fun PersonDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onLinkClick: ((PersonLinkType) -> Unit)? = null,
     onEpisodeCountReveal: (() -> Unit)? = null,
-    onReportClick: (() -> Unit)? = null,
     onFiltersClick: (() -> Unit)? = null,
     onMoreClick: ((PersonCreditsSection, String?) -> Unit)? = null,
 ) {
@@ -289,7 +274,6 @@ internal fun PersonDetailsContent(
                             onShareClick?.invoke()
                             sharePerson(person, state.user?.settings?.shareCode, context)
                         },
-                        onReportClick = onReportClick.takeIf { state.user != null },
                         onLinkClick = onLinkClick,
                         topRightContent = onFiltersClick?.let { onClick ->
                             {

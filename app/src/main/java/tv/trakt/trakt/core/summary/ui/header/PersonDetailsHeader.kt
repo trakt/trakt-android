@@ -45,7 +45,6 @@ internal fun PersonDetailsHeader(
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onReportClick: (() -> Unit)? = null,
     onLinkClick: ((PersonLinkType) -> Unit)? = null,
     topRightContent: (@Composable () -> Unit)? = null,
 ) {
@@ -80,7 +79,6 @@ internal fun PersonDetailsHeader(
                     PersonLinksColumn(
                         links = links,
                         onLinkClick = openLink,
-                        onReportClick = onReportClick,
                     )
                 },
                 extraRightColumnAtBottom = true,
@@ -108,7 +106,6 @@ internal fun PersonDetailsHeader(
 private fun PersonLinksColumn(
     links: PersonLinks,
     onLinkClick: (PersonLink) -> Unit,
-    onReportClick: (() -> Unit)?,
 ) {
     Column(
         horizontalAlignment = CenterHorizontally,
@@ -128,11 +125,10 @@ private fun PersonLinksColumn(
             )
         }
 
-        if (links.overflow.isNotEmpty() || onReportClick != null) {
+        if (links.overflow.isNotEmpty()) {
             MoreMenuButton(
                 overflowLinks = links.overflow,
                 onLinkClick = onLinkClick,
-                onReportClick = onReportClick,
             )
         }
     }
@@ -142,7 +138,6 @@ private fun PersonLinksColumn(
 private fun MoreMenuButton(
     overflowLinks: ImmutableList<PersonLink>,
     onLinkClick: (PersonLink) -> Unit,
-    onReportClick: (() -> Unit)?,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -172,17 +167,6 @@ private fun MoreMenuButton(
                     onClick = {
                         showMenu = false
                         onLinkClick(link)
-                    },
-                )
-            }
-
-            if (onReportClick != null) {
-                MenuItem(
-                    text = stringResource(R.string.button_text_report),
-                    iconRes = R.drawable.ic_flag,
-                    onClick = {
-                        showMenu = false
-                        onReportClick()
                     },
                 )
             }

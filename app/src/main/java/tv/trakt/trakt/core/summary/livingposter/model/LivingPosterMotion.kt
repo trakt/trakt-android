@@ -5,7 +5,7 @@ import kotlin.math.exp
 import kotlin.math.max
 
 private const val MAX_SUBSTEP_SECONDS = 1F / 120F
-private const val MAX_TILT_RADIANS = 0.2F
+private const val MAX_TILT_RADIANS = 0.15F
 private const val RECENTER_SECONDS = 1.5F
 
 internal data class Spring(

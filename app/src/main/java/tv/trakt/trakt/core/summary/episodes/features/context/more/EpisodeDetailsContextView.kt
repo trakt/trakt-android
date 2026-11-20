@@ -59,7 +59,6 @@ internal fun EpisodeDetailsContextView(
     onHistoryClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
-    onReportClick: (() -> Unit)? = null,
     onWhereToWatchClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -73,7 +72,6 @@ internal fun EpisodeDetailsContextView(
         onHistoryClick = onHistoryClick,
         onShareClick = onShareClick,
         onCoverClick = onCoverClick,
-        onReportClick = onReportClick,
         onWhereToWatchClick = onWhereToWatchClick,
         onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
@@ -91,7 +89,6 @@ private fun EpisodeDetailsContextViewContent(
     onHistoryClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
-    onReportClick: (() -> Unit)? = null,
     onWhereToWatchClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
 ) {
@@ -178,7 +175,6 @@ private fun EpisodeDetailsContextViewContent(
             onHistoryClick = onHistoryClick ?: {},
             onShareClick = onShareClick ?: {},
             onCoverClick = onCoverClick ?: {},
-            onReportClick = onReportClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -237,7 +233,6 @@ private fun ActionButtons(
     onHistoryClick: () -> Unit,
     onShareClick: () -> Unit,
     onCoverClick: () -> Unit,
-    onReportClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -310,18 +305,6 @@ private fun ActionButtons(
                 onClick = onCoverClick,
             )
         }
-
-        GhostButton(
-            text = stringResource(R.string.button_text_report),
-            icon = painterResource(R.drawable.ic_flag),
-            iconSize = 22.dp,
-            iconSpace = 15.dp,
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = -5.dp.toPx()
-                },
-            onClick = onReportClick,
-        )
 
 //        GhostButton(
 //            text = stringResource(R.string.button_text_share),

@@ -88,8 +88,6 @@ import tv.trakt.trakt.core.notes.NotesViewModel
 import tv.trakt.trakt.core.notes.ui.NoteEditorSheet
 import tv.trakt.trakt.core.notes.ui.NotesSheet
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
-import tv.trakt.trakt.core.report.ReportSheet
-import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.livingposter.LivingPosterView
@@ -165,7 +163,6 @@ internal fun MovieDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Movie?>(null) }
-    var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
     var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
     DisposableEffect(Unit) {
@@ -375,9 +372,6 @@ internal fun MovieDetailsScreen(
         onCoverClick = {
             coverImageSheet = state.movie
         },
-        onReportClick = {
-            reportSheet = state.movie?.let { ReportTarget.Movie(it.ids.trakt) }
-        },
         onWhereToWatchClick = {
             state.movie?.let(onNavigateToAllStreamings)
         },
@@ -394,14 +388,6 @@ internal fun MovieDetailsScreen(
         onResult = viewModel::addToWatched,
         onDismiss = {
             dateSheet = false
-        },
-    )
-
-    ReportSheet(
-        active = reportSheet != null,
-        target = reportSheet,
-        onDismiss = {
-            reportSheet = null
         },
     )
 

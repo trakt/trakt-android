@@ -1,7 +1,6 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.PeopleApi
-import org.openapitools.client.models.PostPeopleReportRequest
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -87,19 +86,5 @@ class PeopleRemoteSource(
             extended = "full,markdown",
         )
         return response.body()
-    }
-
-    suspend fun postReport(
-        personId: TraktId,
-        reason: String,
-        message: String,
-    ) {
-        authorizedPeopleApi.postPeopleReport(
-            id = personId.value.toString(),
-            postPeopleReportRequest = PostPeopleReportRequest(
-                reason = PostPeopleReportRequest.Reason.entries.first { it.value == reason },
-                message = message.ifBlank { null },
-            ),
-        )
     }
 }
