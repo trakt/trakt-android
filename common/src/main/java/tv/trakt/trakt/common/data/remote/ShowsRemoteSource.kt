@@ -439,15 +439,4 @@ class ShowsRemoteSource(
         )
         return response.body()
     }
-
-    suspend fun postReport(
-        showId: TraktId,
-        reason: String,
-        message: String,
-    ) {
-        showsApi.postShowsReport(
-            id = showId.value.toString(),
-            postMoviesReportRequest = createReportRequest(reason, message),
-        )
-    }
 }

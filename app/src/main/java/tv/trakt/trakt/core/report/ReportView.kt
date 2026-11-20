@@ -39,7 +39,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.report.model.ReportReason
 import tv.trakt.trakt.core.report.model.ReportTarget
@@ -243,7 +242,7 @@ private fun Preview() {
     TraktTheme {
         ViewContent(
             state = ReportState(),
-            reasons = ReportTarget.Movie(TraktId(1)).reasons,
+            reasons = ReportTarget.Comment(1).reasons,
             modifier = Modifier.padding(24.dp),
         )
     }

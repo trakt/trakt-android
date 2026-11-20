@@ -35,7 +35,6 @@ internal fun ShowDetailsContextSheet(
     onListsClick: (() -> Unit)? = null,
     onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
-    onReportClick: (() -> Unit)? = null,
     onWhereToWatchClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
@@ -93,15 +92,6 @@ internal fun ShowDetailsContextSheet(
                 },
                 onCoverClick = {
                     onCoverClick?.invoke()
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
-                },
-                onReportClick = {
-                    onReportClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

@@ -61,7 +61,6 @@ internal fun ShowDetailsContextView(
     onListsClick: (() -> Unit)? = null,
     onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
-    onReportClick: (() -> Unit)? = null,
     onWhereToWatchClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -76,7 +75,6 @@ internal fun ShowDetailsContextView(
         onListsClick = onListsClick,
         onNotesClick = onNotesClick,
         onCoverClick = onCoverClick,
-        onReportClick = onReportClick,
         onWhereToWatchClick = onWhereToWatchClick,
         onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
@@ -95,7 +93,6 @@ private fun ShowDetailsContextViewContent(
     onListsClick: (() -> Unit)? = null,
     onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
-    onReportClick: (() -> Unit)? = null,
     onWhereToWatchClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
 ) {
@@ -188,7 +185,6 @@ private fun ShowDetailsContextViewContent(
             onListsClick = onListsClick ?: {},
             onNotesClick = onNotesClick ?: {},
             onCoverClick = onCoverClick ?: {},
-            onReportClick = onReportClick ?: {},
             modifier = Modifier.padding(top = 14.dp),
         )
     }
@@ -244,7 +240,6 @@ private fun ActionButtons(
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onCoverClick: () -> Unit,
-    onReportClick: () -> Unit,
     onHistoryClick: () -> Unit,
     onListsClick: () -> Unit,
     onNotesClick: () -> Unit,
@@ -334,18 +329,6 @@ private fun ActionButtons(
                 onClick = onCoverClick,
             )
         }
-
-        GhostButton(
-            text = stringResource(R.string.button_text_report),
-            icon = painterResource(R.drawable.ic_flag),
-            iconSize = 22.dp,
-            iconSpace = 15.dp,
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = -5.dp.toPx()
-                },
-            onClick = onReportClick,
-        )
     }
 }
 
