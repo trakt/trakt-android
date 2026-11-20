@@ -534,7 +534,7 @@ internal fun CollapsibleFilterSection(
                 .onClick { onExpandedChange(!expanded) },
         ) {
             Row(
-                horizontalArrangement = spacedBy(6.dp),
+                horizontalArrangement = spacedBy(8.dp),
                 verticalAlignment = CenterVertically,
             ) {
                 Text(

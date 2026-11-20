@@ -102,18 +102,20 @@ private fun AwardsFilters(
             enabled = enabled,
         )
 
-        SwitchRow(
-            label = stringResource(R.string.toggle_text_award_winners_only),
-            checked = filters.awardWon,
-            enabled = enabled && hasAwards,
-            onCheckedChange = { onFiltersChange(filters.copy(awardWon = it)) },
-        )
+        if (hasAwards) {
+            SwitchRow(
+                label = stringResource(R.string.toggle_text_award_winners_only),
+                checked = filters.awardWon,
+                enabled = enabled,
+                onCheckedChange = { onFiltersChange(filters.copy(awardWon = it)) },
+            )
 
-        AwardYearsFilter(
-            years = filters.awardYears,
-            enabled = enabled && hasAwards,
-            onYearsChange = { onFiltersChange(filters.copy(awardYears = it)) },
-        )
+            AwardYearsFilter(
+                years = filters.awardYears,
+                enabled = enabled,
+                onYearsChange = { onFiltersChange(filters.copy(awardYears = it)) },
+            )
+        }
     }
 }
 
@@ -212,6 +214,20 @@ private fun Preview() {
                 awardYears = persistentListOf(1990, 2010),
                 awardWon = true,
             ),
+            awardCatalog = PreviewCatalog,
+            expanded = true,
+            onExpandedChange = {},
+            onFiltersChange = {},
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewNoAwardsSelected() {
+    TraktThemePreview {
+        CreateSmartListAwardsView(
+            filters = SmartListFilters.Default.copy(media = MediaMode.Movies),
             awardCatalog = PreviewCatalog,
             expanded = true,
             onExpandedChange = {},

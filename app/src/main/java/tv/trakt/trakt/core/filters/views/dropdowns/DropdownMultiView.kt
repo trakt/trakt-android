@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.filters.views.dropdowns
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,8 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.CountBadge
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val GroupedItemIndent = 12.dp
 
 @Composable
 internal fun <T> DropdownMultiView(
@@ -145,9 +148,15 @@ internal fun <T> DropdownMultiView(
                     return@forEachIndexed
                 }
 
+                val itemModifier = when (group) {
+                    null -> Modifier
+                    else -> Modifier.padding(start = GroupedItemIndent)
+                }
+
                 if (exclusion != null && option.raw != null) {
                     ExcludableMenuItem(
                         option = option,
+                        modifier = itemModifier,
                         state = when (option) {
                             in included -> DropdownOptionState.Included
                             in excluded -> DropdownOptionState.Excluded
@@ -168,6 +177,7 @@ internal fun <T> DropdownMultiView(
                 val checked = option in values && (option.raw != null || excluded.isEmpty())
 
                 DropdownMenuItem(
+                    modifier = itemModifier,
                     text = {
                         Row(
                             horizontalArrangement = spacedBy(8.dp),
@@ -224,7 +234,7 @@ private fun DropdownGroupHeader(
     onClick: () -> Unit,
 ) {
     Row(
-        horizontalArrangement = spacedBy(6.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
@@ -232,19 +242,25 @@ private fun DropdownGroupHeader(
             .padding(
                 start = 12.dp,
                 end = 12.dp,
-                top = 12.dp,
-                bottom = 8.dp,
+                top = 14.dp,
+                bottom = 10.dp,
             ),
     ) {
-        Text(
-            text = title,
-            style = TraktTheme.typography.meta,
-            color = TraktTheme.colors.textSecondary,
+        Row(
+            horizontalArrangement = spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.weight(1f, fill = false),
-        )
+        ) {
+            Text(
+                text = title,
+                style = TraktTheme.typography.buttonTertiary,
+                color = TraktTheme.colors.textSecondary,
+                modifier = Modifier.weight(1f, fill = false),
+            )
 
-        if (selectedCount > 0) {
-            CountBadge(count = selectedCount)
+            if (selectedCount > 0) {
+                CountBadge(count = selectedCount)
+            }
         }
 
         Icon(
@@ -252,7 +268,8 @@ private fun DropdownGroupHeader(
             contentDescription = null,
             tint = TraktTheme.colors.textSecondary,
             modifier = Modifier
-                .size(12.dp)
+                .padding(start = 16.dp)
+                .size(16.dp)
                 .graphicsLayer {
                     rotationZ = if (expanded) 180F else 0F
                 },
@@ -276,8 +293,10 @@ private fun <T> ExcludableMenuItem(
     option: DropdownOption<T>,
     state: DropdownOptionState?,
     onStateChange: (DropdownOptionState?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     DropdownMenuItem(
+        modifier = modifier,
         leadingIcon = {
             ExclusionToggle(
                 icon = R.drawable.ic_plus,
@@ -457,6 +476,56 @@ private fun PreviewExcludableMenuItems() {
                     option = DropdownOption(raw = "be", displayString = "Belgium"),
                     state = state,
                     onStateChange = {},
+                )
+            }
+        }
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownViewGrouped() {
+    TraktThemePreview {
+        DropdownMultiView(
+            header = "Awards",
+            active = true,
+            values = persistentListOf(
+                DropdownOption(raw = "oscar-best-picture", displayString = "Best Picture", group = "Oscars"),
+            ),
+            options = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+                DropdownOption(raw = "oscar-best-picture", displayString = "Best Picture", group = "Oscars"),
+                DropdownOption(raw = "oscar-best-actor", displayString = "Best Actor", group = "Oscars"),
+                DropdownOption(raw = "emmy-best-drama", displayString = "Best Drama", group = "Emmys"),
+            ),
+            exclusion = DropdownExclusion(
+                values = persistentListOf(
+                    DropdownOption(raw = "emmy-best-drama", displayString = "Best Drama", group = "Emmys"),
+                ),
+                onSelectionChange = { _, _ -> },
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownGroupHeader() {
+    TraktThemePreview {
+        Column(
+            modifier = Modifier.background(TraktTheme.colors.dropdownMenuContainer),
+        ) {
+            listOf(
+                Triple("Oscars", 0, false),
+                Triple("Oscars", 0, true),
+                Triple("Emmys", 2, false),
+                Triple("Emmys", 2, true),
+            ).forEach { (title, count, expanded) ->
+                DropdownGroupHeader(
+                    title = title,
+                    selectedCount = count,
+                    expanded = expanded,
+                    onClick = {},
                 )
             }
         }

@@ -208,7 +208,10 @@ internal fun CreateSmartListFiltersAdvancedView(
                 onExpandedChange = { awardsExpanded = it },
                 onFiltersChange = { onFiltersChange(it, true) },
                 enabled = enabled,
-                modifier = Modifier.padding(bottom = 12.dp),
+                modifier = Modifier.padding(
+                    top = 8.dp,
+                    bottom = 12.dp,
+                ),
             )
 
             var moreFiltersExpanded by rememberSaveable {
