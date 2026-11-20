@@ -275,23 +275,6 @@ data class SmartListFilters(
         )
     }
 
-    fun clearedMoreFilters(): SmartListFilters =
-        copy(
-            releasedWithinDays = null,
-            votes = null,
-            imdbVotes = null,
-            tmdbRatings = null,
-            letterboxdRatings = null,
-            malRatings = null,
-            parentalIncludeUnrated = false,
-            ignoreWatching = false,
-            ignoreUnreleased = false,
-            ignoreReleased = false,
-            ignoreEnded = false,
-            ignoreAiring = false,
-            ignoreNoReleaseDate = false,
-        )
-
     fun parentalRange(category: ParentalGuideCategory): ImmutableList<Int>? {
         return when (category) {
             ParentalGuideCategory.Nudity -> parentalNudity
