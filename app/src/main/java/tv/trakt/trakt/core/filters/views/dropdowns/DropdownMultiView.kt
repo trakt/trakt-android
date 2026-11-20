@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -40,6 +41,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.CountBadge
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -58,6 +60,10 @@ internal fun <T> DropdownMultiView(
     val included = values.filter { it.raw != null }
     val excluded = exclusion?.values.orEmpty()
     val selected = included.isNotEmpty() || excluded.isNotEmpty()
+
+    var expandedGroups by remember(showMenu) {
+        mutableStateOf((included + excluded).mapNotNull { it.group }.toSet())
+    }
 
     val excludedLabels = excluded.map {
         stringResource(R.string.option_text_excluded, it.displayString)
@@ -121,17 +127,22 @@ internal fun <T> DropdownMultiView(
             options.forEachIndexed { index, option ->
                 val group = option.group
                 if (group != null && group != options.getOrNull(index - 1)?.group) {
-                    Text(
-                        text = group,
-                        style = TraktTheme.typography.meta,
-                        color = TraktTheme.colors.textSecondary,
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            end = 12.dp,
-                            top = 12.dp,
-                            bottom = 4.dp,
-                        ),
+                    val groupExpanded = group in expandedGroups
+                    DropdownGroupHeader(
+                        title = group,
+                        selectedCount = (included + excluded).count { it.group == group },
+                        expanded = groupExpanded,
+                        onClick = {
+                            expandedGroups = when {
+                                groupExpanded -> expandedGroups - group
+                                else -> expandedGroups + group
+                            }
+                        },
                     )
+                }
+
+                if (group != null && group !in expandedGroups) {
+                    return@forEachIndexed
                 }
 
                 if (exclusion != null && option.raw != null) {
@@ -202,6 +213,50 @@ internal fun <T> DropdownMultiView(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun DropdownGroupHeader(
+    title: String,
+    selectedCount: Int,
+    expanded: Boolean,
+    onClick: () -> Unit,
+) {
+    Row(
+        horizontalArrangement = spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .onClick(throttle = false, onClick = onClick)
+            .padding(
+                start = 12.dp,
+                end = 12.dp,
+                top = 12.dp,
+                bottom = 8.dp,
+            ),
+    ) {
+        Text(
+            text = title,
+            style = TraktTheme.typography.meta,
+            color = TraktTheme.colors.textSecondary,
+            modifier = Modifier.weight(1f, fill = false),
+        )
+
+        if (selectedCount > 0) {
+            CountBadge(count = selectedCount)
+        }
+
+        Icon(
+            painter = painterResource(R.drawable.ic_arrow_dropdown),
+            contentDescription = null,
+            tint = TraktTheme.colors.textSecondary,
+            modifier = Modifier
+                .size(12.dp)
+                .graphicsLayer {
+                    rotationZ = if (expanded) 180F else 0F
+                },
+        )
     }
 }
 
