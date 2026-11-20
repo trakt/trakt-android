@@ -168,6 +168,13 @@ internal fun CreateSmartListFiltersAdvancedView(
                 enabled = enabled,
             )
 
+            SwitchesFilter(
+                state = state,
+                onUpdateFilter = onFiltersChange,
+                enabled = enabled,
+                modifier = Modifier.padding(top = 13.dp),
+            )
+
             ParentalGuideFilters(
                 expanded = state.parentalGuideExpanded,
                 onExpandedChange = onParentalGuideExpandedChange,
@@ -185,15 +192,9 @@ internal fun CreateSmartListFiltersAdvancedView(
                 },
                 enabled = enabled,
                 modifier = Modifier.padding(
-                    top = 20.dp,
+                    top = 12.dp,
                     bottom = 12.dp,
                 ),
-            )
-
-            SwitchesFilter(
-                state = state,
-                onUpdateFilter = onFiltersChange,
-                enabled = enabled,
             )
 
             var moreFiltersExpanded by rememberSaveable {
@@ -208,7 +209,7 @@ internal fun CreateSmartListFiltersAdvancedView(
                 onExpandedChange = { moreFiltersExpanded = it },
                 onFiltersChange = { onFiltersChange(it, true) },
                 enabled = enabled,
-                modifier = Modifier.padding(top = 20.dp),
+                modifier = Modifier.padding(top = 8.dp),
             )
         }
     }
@@ -893,10 +894,11 @@ private fun SwitchesFilter(
     state: CreateSmartListState,
     onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
     enabled: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = spacedBy(RowsSpacing),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             horizontalArrangement = spacedBy(8.dp),

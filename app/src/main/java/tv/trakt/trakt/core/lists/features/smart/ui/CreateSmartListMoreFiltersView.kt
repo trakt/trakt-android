@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -183,7 +182,10 @@ internal fun CreateSmartListMoreFiltersView(
                     enabled = enabled,
                 )
 
-                FilterSection(title = stringResource(R.string.option_text_certification_parental_guidance)) {
+                FilterSection(
+                    title = stringResource(R.string.option_text_certification_parental_guidance),
+                    spacing = 2.dp,
+                ) {
                     SwitchRow(
                         label = stringResource(R.string.toggle_text_include_unrated_parental),
                         checked = filters.parentalIncludeUnrated,
@@ -883,13 +885,13 @@ private fun SmartListFilters.withMoreRating(
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     heightDp = 2000,
 )
-@Preview(
-    name = "Light",
-    showBackground = true,
-    backgroundColor = 0xFFF1EFF4,
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    heightDp = 2000,
-)
+// @Preview(
+//    name = "Light",
+//    showBackground = true,
+//    backgroundColor = 0xFFF1EFF4,
+//    uiMode = Configuration.UI_MODE_NIGHT_NO,
+//    heightDp = 2000,
+// )
 @Composable
 private fun Preview() {
     TraktThemePreview {
@@ -901,8 +903,8 @@ private fun Preview() {
                 tmdbRatings = persistentListOf(6.5f, 10f),
                 ignoreEnded = true,
                 languages = persistentListOf("en"),
-                keywords = persistentListOf("time travel", "time loop", "${EXCLUSION_PREFIX}dystopia"),
-                people = persistentListOf("christopher-nolan", "hans-zimmer"),
+                keywords = persistentListOf("time travel", "${EXCLUSION_PREFIX}dystopia"),
+                people = persistentListOf("christopher-nolan"),
                 peopleRole = SmartListPeopleRole.Directing,
                 watchnowCountry = "us",
                 awards = persistentListOf("best-picture"),
@@ -925,20 +927,20 @@ private fun Preview() {
     }
 }
 
-@PreviewTraktLightDark
-@Composable
-private fun PreviewCollapsed() {
-    TraktThemePreview {
-        CreateSmartListMoreFiltersView(
-            filters = SmartListFilters.Default.copy(
-                media = MediaMode.Movies,
-                ignoreUnreleased = true,
-            ),
-            awardCatalog = persistentListOf(),
-            languages = persistentListOf(),
-            expanded = false,
-            onExpandedChange = {},
-            onFiltersChange = {},
-        )
-    }
-}
+// @PreviewTraktLightDark
+// @Composable
+// private fun PreviewCollapsed() {
+//    TraktThemePreview {
+//        CreateSmartListMoreFiltersView(
+//            filters = SmartListFilters.Default.copy(
+//                media = MediaMode.Movies,
+//                ignoreUnreleased = true,
+//            ),
+//            awardCatalog = persistentListOf(),
+//            languages = persistentListOf(),
+//            expanded = false,
+//            onExpandedChange = {},
+//            onFiltersChange = {},
+//        )
+//    }
+// }

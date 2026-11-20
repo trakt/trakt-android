@@ -149,11 +149,11 @@ internal fun SmartListSearchView(
                         },
                     ),
                     color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
+                    style = TraktTheme.typography.paragraphSmall,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .align(Alignment.TopCenter)
-                        .padding(top = 24.dp, start = 24.dp, end = 24.dp),
+                        .padding(top = 2.dp, start = 24.dp, end = 24.dp),
                 )
             }
         }

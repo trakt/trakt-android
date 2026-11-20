@@ -93,8 +93,8 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val SHEET_PEEK_FRACTION = 0.2f
-private const val SHEET_EXPANDED_FRACTION = 0.75f
+private const val SHEET_PEEK_FRACTION = 0.25f
+private const val SHEET_EXPANDED_FRACTION = 0.8f
 private const val SHEET_SCRIM_ALPHA = 0.66f
 
 @Composable
