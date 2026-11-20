@@ -1,5 +1,27 @@
 [
   {
+    "id": 34,
+    "version": "3.30.0",
+    "notes": [
+      {
+        "title": "Social Notifications",
+        "text": "Get notified about replies, mentions, reactions and new followers!"
+      },
+      {
+        "title": "Add From Lists",
+        "text": "Fill your custom lists with titles from your watchlist or other lists."
+      },
+      {
+        "title": "More Smart Lists Filters",
+        "text": "Smart lists now filter by keywords, people, studios, languages, awards, ratings and more."
+      },
+      {
+        "title": "Android TV Updates",
+        "text": "Revamped Search and Discover screens, more sorting options for lists, plus new ways to manage your lists, rate titles and add favorites."
+      }
+    ]
+  },
+  {
     "id": 33,
     "version": "3.29.0",
     "notes": [
@@ -98,24 +120,6 @@
       {
         "title": "Month in Review",
         "text": "VIP members get a recap of last month on Home during the first week of each month. Tap it to see your stats."
-      }
-    ]
-  },
-  {
-    "id": 28,
-    "version": "3.24.1",
-    "notes": [
-      {
-        "title": "Today",
-        "text": "See what your friends watched, rated and commented on in the last 24 hours. Tap Today on Home and flip through it story by story."
-      },
-      {
-        "title": "Smart Lists",
-        "text": "Smart lists can now pull from All titles, your Watchlist or your Library, and mix shows and movies in one list."
-      },
-      {
-        "title": "Linked Details",
-        "text": "Person bios, trivia and sentiment summaries now link straight to the cast and crew they mention. Tap a name to jump to their page."
       }
     ]
   }
