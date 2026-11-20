@@ -1426,7 +1426,7 @@
   <string name="link_label_ios_app">App iOS</string>
   <string name="link_label_open_preview_feature">Abrir %s</string>
   <string name="link_label_open_review">Abrir crítica de %s</string>
-  <string name="link_label_promotion_vip">%1$s: obtém VIP por %2$s</string>
+  <string name="link_label_promotion_vip">%1$s: adere ao VIP por %2$s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Estado do Trakt</string>
   <string name="link_label_view_social_activities">Ver atividades sociais de %s</string>
@@ -2414,7 +2414,7 @@
   <string name="text_private_profile_description">Como se já não houvesse mistério suficiente, os segredos de %s continuam bem guardados.</string>
   <string name="text_promotion_chip_price">por apenas <b>%s</b></string>
   <string name="text_promotion_chip_term">%s de <b>VIP</b></string>
-  <string name="text_promotion_ends_on">Termina a %s</string>
+  <string name="text_promotion_ends_on">Termina %s</string>
   <string name="text_promotion_ends_today">Termina hoje, às %s</string>
   <string name="text_promotion_offer_headline">%1$s de VIP por apenas %2$s</string>
   <string name="text_promotion_offer_pitch">São apenas %s por mês!</string>
@@ -2596,7 +2596,7 @@
   <string name="text_theme">Tema</string>
   <string name="text_this_month">Este mês</string>
   <string name="text_this_year">Este ano</string>
-  <string name="text_ticket_admit_one">Admite um</string>
+  <string name="text_ticket_admit_one">Vale uma entrada</string>
   <string name="text_ticket_brand">Trakt VIP</string>
   <string name="text_ticket_year">Ano %s</string>
   <string name="text_titles_selected">%s selecionados</string>
@@ -2657,9 +2657,9 @@
   <string name="text_vip_anniversary_title_one">1 ano de VIP</string>
   <string name="text_vip_anniversary_title_other">%s anos de VIP</string>
   <string name="text_vip_billed_biyearly">Cobrado a cada 2 anos</string>
-  <string name="text_vip_billed_deal_first_month">%1$s pelo teu primeiro mês, depois %2$s mensalmente</string>
+  <string name="text_vip_billed_deal_first_month">%1$s no primeiro mês e, depois, %2$s por mês</string>
   <string name="text_vip_billed_deal_first_term">%1$s pelos primeiros 2 anos, depois %2$s a cada 2 anos</string>
-  <string name="text_vip_billed_deal_first_year">%1$s pelo teu primeiro ano, depois %2$s anualmente</string>
+  <string name="text_vip_billed_deal_first_year">%1$s no primeiro ano e, depois, %2$s por ano</string>
   <string name="text_vip_billing_cycle_monthly">1 mês</string>
   <string name="text_vip_billing_cycle_year">%s ano</string>
   <string name="text_vip_built_to_last">Feito para durar</string>
@@ -2706,7 +2706,7 @@
   <string name="text_vip_costs_infrastructure">Infraestrutura de API personalizada para suportar uma enorme comunidade global de utilizadores.</string>
   <string name="text_vip_costs_metadata">Metadados, imagens e legendas sempre atualizados</string>
   <string name="text_vip_costs_team">A equipa que mantém tudo a funcionar</string>
-  <string name="text_vip_deal_limited_offer">%1$s hoje pelos teus primeiros 2 anos, depois %2$s a cada 2 anos. Desconto aplicado no pagamento.</string>
+  <string name="text_vip_deal_limited_offer">%1$s hoje pelos primeiros 2 anos e, depois, %2$s a cada 2 anos. Desconto aplicado no momento do pagamento.</string>
   <string name="text_vip_deal_or_standard_plan">Comparar todos os planos</string>
   <string name="text_vip_deal_paypal_switch">%1$s a pagar de imediato por 2 anos. Depois, a subscrição renova-se automaticamente por %2$s a cada 2 anos. O desconto é aplicado no pagamento. Manténs o tempo de VIP que te resta; cancelamos automaticamente a subscrição do PayPal após o pagamento.</string>
   <string name="text_vip_deal_term">2 anos de VIP</string>
@@ -2720,7 +2720,7 @@
   <string name="text_vip_limits_dashed_potential">As áreas a tracejado mostram o que podes alcançar com o VIP.</string>
   <string name="text_vip_make_it_official">É oficial, conseguiste!</string>
   <string name="text_vip_manage_failed_title">Não foi possível abrir as definições da tua subscrição</string>
-  <string name="text_vip_offer_ended_message">Os preços foram atualizados. Verifica novamente antes de continuar.</string>
+  <string name="text_vip_offer_ended_message">Os preços foram atualizados. Volta a verificá-los antes de continuares.</string>
   <string name="text_vip_offer_ended_title">Esta oferta terminou</string>
   <string name="text_vip_payment_method_apple">App Store</string>
   <string name="text_vip_payment_method_card">Cartão de crédito</string>
