@@ -30,7 +30,6 @@ import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListLanguage
 import tv.trakt.trakt.common.model.lists.toApiParams
-import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.features.smart.navigation.CreateSmartListDestination
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListFilterOptionsUseCase
@@ -46,7 +45,6 @@ internal class CreateSmartListViewModel(
     private val createSmartListUseCase: CreateSmartListUseCase,
     private val updateSmartListUseCase: UpdateSmartListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
-    private val filterManager: GlobalFilterManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<CreateSmartListDestination>()
@@ -59,7 +57,6 @@ internal class CreateSmartListViewModel(
         editList = editList,
         initialFilters = initialFilters,
         filters = initialFilters,
-        parentalGuideExpanded = filterManager.isParentalGuideExpanded(),
     )
 
     private val itemsState = MutableStateFlow(initialState.items)
@@ -68,7 +65,6 @@ internal class CreateSmartListViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val successState = MutableStateFlow(initialState.success)
-    private val parentalGuideExpandedState = MutableStateFlow(initialState.parentalGuideExpanded)
     private val awardCatalogState = MutableStateFlow(initialState.awardCatalog)
     private val languagesState = MutableStateFlow(initialState.languages)
 
@@ -217,13 +213,6 @@ internal class CreateSmartListViewModel(
             }
     }
 
-    fun setParentalGuideExpanded(expanded: Boolean) {
-        parentalGuideExpandedState.update { expanded }
-        viewModelScope.launch {
-            filterManager.setParentalGuideExpanded(expanded)
-        }
-    }
-
     fun clearError() {
         errorState.update { null }
     }
@@ -236,7 +225,6 @@ internal class CreateSmartListViewModel(
         errorState,
         successState,
         collectionStateProvider.stateFlow,
-        parentalGuideExpandedState,
         awardCatalogState,
         languagesState,
     ) { state ->
@@ -250,9 +238,8 @@ internal class CreateSmartListViewModel(
             error = state[4] as? Exception,
             success = state[5] as Boolean,
             collection = state[6] as UserCollectionState,
-            parentalGuideExpanded = state[7] as Boolean,
-            awardCatalog = state[8] as ImmutableList<AwardCeremony>,
-            languages = state[9] as ImmutableList<SmartListLanguage>,
+            awardCatalog = state[7] as ImmutableList<AwardCeremony>,
+            languages = state[8] as ImmutableList<SmartListLanguage>,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -261,9 +248,9 @@ internal class CreateSmartListViewModel(
     )
 }
 
-// The API stores certification groups as separate tokens, while the editor selects whole groups.
 private val UNTRACKED_PARAMS = setOf("source", "media_type")
 
+// The API stores certification groups as separate tokens, while the editor selects whole groups.
 private fun SmartListFilters.withGroupedCertifications(): SmartListFilters {
     return copy(
         certifications = certifications?.toCertificationGroups(),

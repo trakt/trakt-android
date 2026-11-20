@@ -279,6 +279,9 @@ data class SmartListFilters(
     val hasAwardFilters: Boolean
         get() = awardFiltersCount > 0
 
+    val hasParentalFilters: Boolean
+        get() = ParentalGuideCategory.entries.any { parentalRange(it) != null }
+
     val awardFiltersCount: Int
         get() = listOf(
             !awards.isNullOrEmpty(),

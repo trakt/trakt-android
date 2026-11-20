@@ -18,7 +18,6 @@ internal data class CreateSmartListState(
     val editList: SmartList? = null,
     val initialFilters: SmartListFilters = SmartListFilters.Default,
     val filters: SmartListFilters = SmartListFilters.Default,
-    val parentalGuideExpanded: Boolean = true,
     val awardCatalog: ImmutableList<AwardCeremony> = persistentListOf(),
     val languages: ImmutableList<SmartListLanguage> = persistentListOf(),
     val creating: LoadingState = LoadingState.Idle,

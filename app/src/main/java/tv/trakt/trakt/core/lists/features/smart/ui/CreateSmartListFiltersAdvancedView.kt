@@ -76,7 +76,6 @@ private val StatusOptions = listOf(
 internal fun CreateSmartListFiltersAdvancedView(
     state: CreateSmartListState,
     onFiltersChange: (SmartListFilters, Boolean) -> Unit = { _, _ -> },
-    onParentalGuideExpandedChange: (Boolean) -> Unit = {},
 ) {
     val enabled = !state.creating.isLoading
 
@@ -175,9 +174,13 @@ internal fun CreateSmartListFiltersAdvancedView(
                 modifier = Modifier.padding(top = 13.dp),
             )
 
+            var parentalGuideExpanded by rememberSaveable {
+                mutableStateOf(state.filters.hasParentalFilters)
+            }
+
             ParentalGuideFilters(
-                expanded = state.parentalGuideExpanded,
-                onExpandedChange = onParentalGuideExpandedChange,
+                expanded = parentalGuideExpanded,
+                onExpandedChange = { parentalGuideExpanded = it },
                 rangeOf = { category ->
                     state.filters.parentalRange(category)?.toSeverityRange()
                 },

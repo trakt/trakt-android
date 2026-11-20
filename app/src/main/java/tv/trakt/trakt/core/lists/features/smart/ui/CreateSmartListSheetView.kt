@@ -67,7 +67,6 @@ internal fun CreateSmartListSheetView(
     modifier: Modifier = Modifier,
     onCreateClick: (String) -> Unit = {},
     onFiltersChange: (filter: SmartListFilters) -> Unit = {},
-    onParentalGuideExpandedChange: (Boolean) -> Unit = {},
 ) {
     val inputValid by remember {
         derivedStateOf {
@@ -229,7 +228,6 @@ internal fun CreateSmartListSheetView(
                     )
                     GlobalFilterMode.Advanced -> CreateSmartListFiltersAdvancedView(
                         state = state,
-                        onParentalGuideExpandedChange = onParentalGuideExpandedChange,
                         onFiltersChange = { filters, _ ->
                             onFiltersChange(filters)
                         },
