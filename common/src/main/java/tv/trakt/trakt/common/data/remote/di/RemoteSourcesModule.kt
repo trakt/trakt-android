@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.data.remote.RealityCheckRemoteSource
 import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.SmartListFilterOptionsRemoteSource
 import tv.trakt.trakt.common.data.remote.SoundtrackRemoteSource
 import tv.trakt.trakt.common.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.data.remote.TodayRemoteSource
@@ -64,6 +65,7 @@ val remoteSourcesModule = module {
     singleOf(::RealityCheckRemoteSource)
     singleOf(::ShowsRemoteSource)
     singleOf(::ShowsSyncRemoteSource)
+    singleOf(::SmartListFilterOptionsRemoteSource)
     singleOf(::SoundtrackRemoteSource)
     singleOf(::StreamingRemoteSource)
     singleOf(::TodayRemoteSource)

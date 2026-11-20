@@ -93,8 +93,8 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val SHEET_PEEK_FRACTION = 0.2f
-private const val SHEET_EXPANDED_FRACTION = 0.75f
+private const val SHEET_PEEK_FRACTION = 0.25f
+private const val SHEET_EXPANDED_FRACTION = 0.8f
 private const val SHEET_SCRIM_ALPHA = 0.66f
 
 @Composable
@@ -153,7 +153,6 @@ internal fun CreateSmartListScreen(
         nameInputState = nameInputState,
         onCreateClick = { viewModel.saveList(nameInputState.text.toString()) },
         onFiltersChange = viewModel::setFilters,
-        onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
         onExit = onExit,
     )
 
@@ -202,7 +201,6 @@ private fun CreateSmartListSheetContent(
     nameInputState: TextFieldState,
     onCreateClick: (String) -> Unit,
     onFiltersChange: (filter: SmartListFilters) -> Unit,
-    onParentalGuideExpandedChange: (Boolean) -> Unit,
     onExit: () -> Unit,
 ) {
     val screenHeight = LocalWindowInfo.current.containerDpSize.height
@@ -237,7 +235,6 @@ private fun CreateSmartListSheetContent(
                 nameState = nameInputState,
                 onCreateClick = onCreateClick,
                 onFiltersChange = onFiltersChange,
-                onParentalGuideExpandedChange = onParentalGuideExpandedChange,
                 modifier = Modifier
                     .heightIn(max = expandedHeight)
                     .padding(

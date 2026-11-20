@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesMoviesLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
+import tv.trakt.trakt.common.data.local.SmartListFilterOptionsLocalSource
 import tv.trakt.trakt.common.data.local.SoundtrackLocalSource
 import tv.trakt.trakt.common.data.local.StreamingLocalSource
 import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
@@ -87,6 +88,7 @@ val localSourcesModule = module {
     singleOf(::MovieLocalSource)
     singleOf(::PeopleLocalSource)
     singleOf(::ShowLocalSource)
+    singleOf(::SmartListFilterOptionsLocalSource)
     singleOf(::SoundtrackLocalSource)
     singleOf(::StreamingLocalSource)
     singleOf(::UserFavoritesLocalSource)

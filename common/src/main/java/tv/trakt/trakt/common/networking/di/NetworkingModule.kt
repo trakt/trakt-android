@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.openapitools.client.apis.AwardsApi
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.CheckinApi
 import org.openapitools.client.apis.CollectionApi
@@ -15,6 +16,7 @@ import org.openapitools.client.apis.CommentsApi
 import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.EpisodesApi
 import org.openapitools.client.apis.HistoryApi
+import org.openapitools.client.apis.LanguagesApi
 import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.MediaApi
 import org.openapitools.client.apis.MoviesApi
@@ -249,6 +251,22 @@ val networkingApiModule = module {
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<AwardsApi> {
+        AwardsApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
+    single<LanguagesApi> {
+        LanguagesApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
     }
 

@@ -25,12 +25,14 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
-import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
+import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
-import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.common.model.lists.SmartListLanguage
+import tv.trakt.trakt.common.model.lists.toApiParams
 import tv.trakt.trakt.core.lists.features.smart.navigation.CreateSmartListDestination
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
+import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListFilterOptionsUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.UpdateSmartListUseCase
 import tv.trakt.trakt.core.lists.model.SmartListItem
@@ -39,10 +41,10 @@ import tv.trakt.trakt.core.lists.model.SmartListItem
 internal class CreateSmartListViewModel(
     savedStateHandle: SavedStateHandle,
     private val getSmartListPreviewUseCase: GetSmartListPreviewUseCase,
+    private val getSmartListFilterOptionsUseCase: GetSmartListFilterOptionsUseCase,
     private val createSmartListUseCase: CreateSmartListUseCase,
     private val updateSmartListUseCase: UpdateSmartListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
-    private val filterManager: GlobalFilterManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<CreateSmartListDestination>()
@@ -55,7 +57,6 @@ internal class CreateSmartListViewModel(
         editList = editList,
         initialFilters = initialFilters,
         filters = initialFilters,
-        parentalGuideExpanded = filterManager.isParentalGuideExpanded(),
     )
 
     private val itemsState = MutableStateFlow(initialState.items)
@@ -64,13 +65,49 @@ internal class CreateSmartListViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val successState = MutableStateFlow(initialState.success)
-    private val parentalGuideExpandedState = MutableStateFlow(initialState.parentalGuideExpanded)
+    private val awardCatalogState = MutableStateFlow(initialState.awardCatalog)
+    private val languagesState = MutableStateFlow(initialState.languages)
 
     private var dataJob: Job? = null
+    private var languagesJob: Job? = null
+    private val awardCatalogJob = loadAwardCatalog()
 
     init {
         loadData()
+        loadLanguages()
         observeCollection()
+    }
+
+    private fun loadAwardCatalog(): Job {
+        return viewModelScope.launch {
+            try {
+                awardCatalogState.update { getSmartListFilterOptionsUseCase.getAwardCatalog() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadLanguages() {
+        languagesJob?.cancel()
+        languagesJob = viewModelScope.launch {
+            try {
+                languagesState.update {
+                    getSmartListFilterOptionsUseCase.getLanguages(filtersState.value.media)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private suspend fun typedFilters(): SmartListFilters {
+        awardCatalogJob.join()
+        return filtersState.value.withAwardsFor(awardCatalogState.value)
     }
 
     private fun observeCollection() {
@@ -85,7 +122,7 @@ internal class CreateSmartListViewModel(
 
             try {
                 itemsState.update {
-                    getSmartListPreviewUseCase.getPreviewItems(filtersState.value)
+                    getSmartListPreviewUseCase.getPreviewItems(typedFilters())
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -127,7 +164,7 @@ internal class CreateSmartListViewModel(
     private suspend fun createList(name: String) {
         createSmartListUseCase.createList(
             name = name,
-            filters = filtersState.value,
+            filters = typedFilters(),
         )
         analytics.lists.logSmartListCreate()
     }
@@ -139,7 +176,7 @@ internal class CreateSmartListViewModel(
         updateSmartListUseCase.updateList(
             listId = list.ids.trakt,
             name = name,
-            filters = filtersState.value,
+            filters = typedFilters(),
         )
         analytics.lists.logSmartListUpdate()
     }
@@ -148,31 +185,32 @@ internal class CreateSmartListViewModel(
         if (newFilters == filtersState.value) {
             return
         }
-        logParentalChanges(previous = filtersState.value, current = newFilters)
+        val mediaChanged = newFilters.media != filtersState.value.media
+        logFilterChanges(previous = filtersState.value, current = newFilters)
         filtersState.update { newFilters }
         loadData()
+
+        if (mediaChanged) {
+            loadLanguages()
+        }
     }
 
-    private fun logParentalChanges(
+    private fun logFilterChanges(
         previous: SmartListFilters,
         current: SmartListFilters,
     ) {
-        ParentalGuideCategory.entries
-            .filter { previous.parentalRange(it) != current.parentalRange(it) }
-            .forEach { category ->
+        val previousParams = previous.toApiParams()
+        val currentParams = current.toApiParams()
+
+        (previousParams.keys + currentParams.keys)
+            .filter { it !in UNTRACKED_PARAMS && previousParams[it] != currentParams[it] }
+            .forEach { key ->
                 analytics.logFilter(
-                    id = category.apiKey,
-                    set = current.parentalRange(category) != null,
+                    id = key,
+                    set = key in currentParams,
                     mode = GlobalFilterMode.Advanced.name,
                 )
             }
-    }
-
-    fun setParentalGuideExpanded(expanded: Boolean) {
-        parentalGuideExpandedState.update { expanded }
-        viewModelScope.launch {
-            filterManager.setParentalGuideExpanded(expanded)
-        }
     }
 
     fun clearError() {
@@ -187,7 +225,8 @@ internal class CreateSmartListViewModel(
         errorState,
         successState,
         collectionStateProvider.stateFlow,
-        parentalGuideExpandedState,
+        awardCatalogState,
+        languagesState,
     ) { state ->
         CreateSmartListState(
             editList = editList,
@@ -199,7 +238,8 @@ internal class CreateSmartListViewModel(
             error = state[4] as? Exception,
             success = state[5] as Boolean,
             collection = state[6] as UserCollectionState,
-            parentalGuideExpanded = state[7] as Boolean,
+            awardCatalog = state[7] as ImmutableList<AwardCeremony>,
+            languages = state[8] as ImmutableList<SmartListLanguage>,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -207,6 +247,8 @@ internal class CreateSmartListViewModel(
         initialValue = initialState,
     )
 }
+
+private val UNTRACKED_PARAMS = setOf("source", "media_type")
 
 // The API stores certification groups as separate tokens, while the editor selects whole groups.
 private fun SmartListFilters.withGroupedCertifications(): SmartListFilters {

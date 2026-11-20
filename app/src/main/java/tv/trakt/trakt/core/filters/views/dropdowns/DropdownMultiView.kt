@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.filters.views.dropdowns
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -40,7 +42,10 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.CountBadge
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val GroupedItemIndent = 12.dp
 
 @Composable
 internal fun <T> DropdownMultiView(
@@ -58,6 +63,10 @@ internal fun <T> DropdownMultiView(
     val included = values.filter { it.raw != null }
     val excluded = exclusion?.values.orEmpty()
     val selected = included.isNotEmpty() || excluded.isNotEmpty()
+
+    var expandedGroups by remember(showMenu) {
+        mutableStateOf((included + excluded).mapNotNull { it.group }.toSet())
+    }
 
     val excludedLabels = excluded.map {
         stringResource(R.string.option_text_excluded, it.displayString)
@@ -118,10 +127,36 @@ internal fun <T> DropdownMultiView(
             modifier = Modifier
                 .align(Alignment.BottomEnd),
         ) {
-            for (option in options) {
+            options.forEachIndexed { index, option ->
+                val group = option.group
+                if (group != null && group != options.getOrNull(index - 1)?.group) {
+                    val groupExpanded = group in expandedGroups
+                    DropdownGroupHeader(
+                        title = group,
+                        selectedCount = (included + excluded).count { it.group == group },
+                        expanded = groupExpanded,
+                        onClick = {
+                            expandedGroups = when {
+                                groupExpanded -> expandedGroups - group
+                                else -> expandedGroups + group
+                            }
+                        },
+                    )
+                }
+
+                if (group != null && group !in expandedGroups) {
+                    return@forEachIndexed
+                }
+
+                val itemModifier = when (group) {
+                    null -> Modifier
+                    else -> Modifier.padding(start = GroupedItemIndent)
+                }
+
                 if (exclusion != null && option.raw != null) {
                     ExcludableMenuItem(
                         option = option,
+                        modifier = itemModifier,
                         state = when (option) {
                             in included -> DropdownOptionState.Included
                             in excluded -> DropdownOptionState.Excluded
@@ -136,12 +171,13 @@ internal fun <T> DropdownMultiView(
                             )
                         },
                     )
-                    continue
+                    return@forEachIndexed
                 }
 
                 val checked = option in values && (option.raw != null || excluded.isEmpty())
 
                 DropdownMenuItem(
+                    modifier = itemModifier,
                     text = {
                         Row(
                             horizontalArrangement = spacedBy(8.dp),
@@ -190,6 +226,57 @@ internal fun <T> DropdownMultiView(
     }
 }
 
+@Composable
+private fun DropdownGroupHeader(
+    title: String,
+    selectedCount: Int,
+    expanded: Boolean,
+    onClick: () -> Unit,
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .onClick(throttle = false, onClick = onClick)
+            .padding(
+                start = 12.dp,
+                end = 12.dp,
+                top = 14.dp,
+                bottom = 10.dp,
+            ),
+    ) {
+        Row(
+            horizontalArrangement = spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f, fill = false),
+        ) {
+            Text(
+                text = title,
+                style = TraktTheme.typography.buttonTertiary,
+                color = TraktTheme.colors.textSecondary,
+                modifier = Modifier.weight(1f, fill = false),
+            )
+
+            if (selectedCount > 0) {
+                CountBadge(count = selectedCount)
+            }
+        }
+
+        Icon(
+            painter = painterResource(R.drawable.ic_arrow_dropdown),
+            contentDescription = null,
+            tint = TraktTheme.colors.textSecondary,
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .size(16.dp)
+                .graphicsLayer {
+                    rotationZ = if (expanded) 180F else 0F
+                },
+        )
+    }
+}
+
 @Immutable
 internal class DropdownExclusion<T>(
     val values: ImmutableList<DropdownOption<T>>,
@@ -206,8 +293,10 @@ private fun <T> ExcludableMenuItem(
     option: DropdownOption<T>,
     state: DropdownOptionState?,
     onStateChange: (DropdownOptionState?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     DropdownMenuItem(
+        modifier = modifier,
         leadingIcon = {
             ExclusionToggle(
                 icon = R.drawable.ic_plus,
@@ -251,7 +340,7 @@ private fun <T> ExcludableMenuItem(
 }
 
 @Composable
-private fun ExclusionToggle(
+internal fun ExclusionToggle(
     @DrawableRes icon: Int,
     selected: Boolean,
     selectedColor: Color,
@@ -387,6 +476,56 @@ private fun PreviewExcludableMenuItems() {
                     option = DropdownOption(raw = "be", displayString = "Belgium"),
                     state = state,
                     onStateChange = {},
+                )
+            }
+        }
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownViewGrouped() {
+    TraktThemePreview {
+        DropdownMultiView(
+            header = "Awards",
+            active = true,
+            values = persistentListOf(
+                DropdownOption(raw = "oscar-best-picture", displayString = "Best Picture", group = "Oscars"),
+            ),
+            options = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+                DropdownOption(raw = "oscar-best-picture", displayString = "Best Picture", group = "Oscars"),
+                DropdownOption(raw = "oscar-best-actor", displayString = "Best Actor", group = "Oscars"),
+                DropdownOption(raw = "emmy-best-drama", displayString = "Best Drama", group = "Emmys"),
+            ),
+            exclusion = DropdownExclusion(
+                values = persistentListOf(
+                    DropdownOption(raw = "emmy-best-drama", displayString = "Best Drama", group = "Emmys"),
+                ),
+                onSelectionChange = { _, _ -> },
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownGroupHeader() {
+    TraktThemePreview {
+        Column(
+            modifier = Modifier.background(TraktTheme.colors.dropdownMenuContainer),
+        ) {
+            listOf(
+                Triple("Oscars", 0, false),
+                Triple("Oscars", 0, true),
+                Triple("Emmys", 2, false),
+                Triple("Emmys", 2, true),
+            ).forEach { (title, count, expanded) ->
+                DropdownGroupHeader(
+                    title = title,
+                    selectedCount = count,
+                    expanded = expanded,
+                    onClick = {},
                 )
             }
         }

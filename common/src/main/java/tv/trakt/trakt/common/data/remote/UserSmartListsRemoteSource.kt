@@ -1,10 +1,9 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.SmartListsApi
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.toApiParams
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CreateSmartListRequestDto
 import tv.trakt.trakt.common.networking.SmartListDto
@@ -98,39 +97,4 @@ class UserSmartListsRemoteSource(
     }
 }
 
-private fun SmartListFilters.toPreviewParams(): Map<String, String> {
-    val mediaType = when (media) {
-        MediaMode.Media -> "media"
-        MediaMode.Shows -> "shows"
-        MediaMode.Movies -> "movies"
-    }
-
-    return listOf(
-        "source" to source.value,
-        "media_type" to mediaType,
-        "genres" to genreTokens.joinToList(),
-        "subgenres" to subgenres?.joinToList(),
-        "certifications" to certificationTokens.joinToList(),
-        "languages" to languages?.joinToList(),
-        "countries" to countryTokens.joinToList(),
-        "statuses" to statuses?.joinToList(),
-        "networks" to networks?.joinToList(),
-        "watchnow" to availability?.joinToList { it.slug },
-        "years" to years?.joinToRange(),
-        "ratings" to ratings?.joinToRange(),
-        "runtimes" to runtimes?.joinToRange(),
-        "imdb_ratings" to imdbRatings?.joinToRange(),
-        "rt_meters" to rtMeters?.joinToRange(),
-        "rt_user_meters" to rtUserMeters?.joinToRange(),
-        "ignore_watched" to ignoreWatched.takeIf { it }?.toString(),
-        "ignore_watchlisted" to ignoreWatchlisted.takeIf { it }?.toString(),
-    ).plus(
-        ParentalGuideCategory.entries.map { it.apiKey to parentalRange(it)?.joinToRange() },
-    ).mapNotNull { (key, value) -> value?.let { key to it } }
-        .toMap()
-}
-
-private fun <T> List<T>.joinToList(transform: (T) -> String = { it.toString() }): String? =
-    takeIf { it.isNotEmpty() }?.joinToString(",", transform = transform)
-
-private fun <T : Number> List<T>.joinToRange(): String? = takeIf { it.isNotEmpty() }?.joinToString("-")
+private fun SmartListFilters.toPreviewParams(): Map<String, String> = withoutShowOnlyFilters().toApiParams()
