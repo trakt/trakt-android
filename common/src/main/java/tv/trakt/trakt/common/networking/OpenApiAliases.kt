@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.networking
 
+import org.openapitools.client.models.GetAwardsCatalog200ResponseInner
 import org.openapitools.client.models.GetCalendarsMedia200ResponseInner
 import org.openapitools.client.models.GetCalendarsMedia200ResponseInnerEpisode
 import org.openapitools.client.models.GetCalendarsMedia200ResponseInnerMovie
@@ -16,6 +17,7 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowAirs
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImages
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowSocialIds
+import org.openapitools.client.models.GetCountriesList200ResponseInner
 import org.openapitools.client.models.GetMediaAnticipated200ResponseInner
 import org.openapitools.client.models.GetMediaPopular200ResponseInner
 import org.openapitools.client.models.GetMediaTrending200ResponseInner
@@ -87,6 +89,7 @@ import org.openapitools.client.models.PutUsersSmartListsSmartListUpdateRequest
  * Type aliases for OpenAPI models used in the app.
  */
 typealias AnticipatedMediaDto = GetMediaAnticipated200ResponseInner
+typealias AwardCeremonyDto = GetAwardsCatalog200ResponseInner
 typealias CalendarMediaDto = GetCalendarsMedia200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
@@ -109,6 +112,7 @@ typealias ExternalSeasonRatingsDto = GetShowsSeasonRatings200Response
 typealias ExternalShowRatingsDto = GetShowsRatings200Response
 typealias ExtraVideoDto = GetMoviesVideos200ResponseInner
 typealias ImagesDto = GetCalendarsShows200ResponseInnerShowImages
+typealias LanguageDto = GetCountriesList200ResponseInner
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressNextEpisode
 typealias LikedListDto = GetUsersLikes200ResponseInner
 typealias ListDto = GetUsersListsPersonal200ResponseInner

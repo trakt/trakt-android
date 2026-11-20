@@ -168,6 +168,12 @@ data class SmartListFilters(
     @Serializable(with = ImmutableListSerializer::class)
     val parentalFrightening: ImmutableList<Int>? = null,
     val parentalIncludeUnrated: Boolean = false,
+    val watchnowCountry: String? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val awards: ImmutableList<String>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val awardYears: ImmutableList<Int>? = null,
+    val awardWon: Boolean = false,
     val genresMatchAll: Boolean = false,
     val releasedWithinDays: Int? = null,
     @Serializable(with = ImmutableListSerializer::class)
@@ -209,12 +215,13 @@ data class SmartListFilters(
             subgenres.orEmpty().map { it.toGenreLabel(resources) } +
             certifications.orEmpty().map { it.uppercase(locale) } +
             excludedCertifications.orEmpty().map { excluded(it.uppercase(locale)) } +
-            languages.orEmpty().map { it.toSummaryTitleCase() } +
+            languages.orEmpty().map { Locale.forLanguageTag(it).getDisplayLanguage(locale) } +
             countries.orEmpty().map { it.uppercase(locale) } +
             excludedCountries.orEmpty().map { excluded(it.uppercase(locale)) } +
             statuses.orEmpty().map { it.toSummaryTitleCase() } +
             networks.orEmpty().map { it.toSummaryTitleCase() } +
-            availability.orEmpty().map { resources.getString(it.displayStringRes) }
+            availability.orEmpty().map { resources.getString(it.displayStringRes) } +
+            awards.orEmpty().map { it.toSummaryTitleCase() }
 
         val ranges = listOfNotNull(
             formatNumberRange(years.orEmpty(), R.string.advanced_filter_label_release_year, resources),
@@ -231,11 +238,19 @@ data class SmartListFilters(
             releasedWithinDays?.let {
                 resources.getString(R.string.list_summary_released_within_days, it.toString())
             },
+            formatPlainRange(awardYears.orEmpty(), resources)?.let {
+                resources.getString(
+                    R.string.text_smart_list_recipe_detail,
+                    resources.getString(R.string.label_smart_list_ceremony_year),
+                    it,
+                )
+            },
         ) + ParentalGuideCategory.entries.mapNotNull { category ->
             formatParentalRange(category, parentalRange(category).orEmpty(), resources)
         }
 
         val flags = listOfNotNull(
+            resources.getString(R.string.toggle_text_award_winners_only).takeIf { awardWon },
             resources.getString(R.string.toggle_text_include_unrated_parental).takeIf { parentalIncludeUnrated },
             resources.getString(R.string.header_hide_watched).takeIf { ignoreWatched },
             resources.getString(R.string.header_hide_watchlisted).takeIf { ignoreWatchlisted },
@@ -249,6 +264,11 @@ data class SmartListFilters(
 
     val moreFiltersCount: Int
         get() = listOf(
+            !languages.isNullOrEmpty(),
+            watchnowCountry != null,
+            !awards.isNullOrEmpty(),
+            !awardYears.isNullOrEmpty(),
+            awardWon,
             releasedWithinDays != null,
             !votes.isNullOrEmpty(),
             !imdbVotes.isNullOrEmpty(),
@@ -273,6 +293,22 @@ data class SmartListFilters(
             ignoreEnded = false,
             ignoreAiring = false,
         )
+    }
+
+    fun withAwards(values: List<String>): SmartListFilters {
+        if (values.isEmpty()) return copy(awards = null, awardYears = null, awardWon = false)
+        return copy(awards = values.toImmutableList())
+    }
+
+    /** Drops awards whose ceremony does not cover the list's media type. */
+    fun withAwardsFor(catalog: List<AwardCeremony>): SmartListFilters {
+        val current = awards ?: return this
+        val fitting = current.filter { raw ->
+            val slug = raw.removePrefix(EXCLUSION_PREFIX)
+            val ceremony = catalog.firstOrNull { ceremony -> ceremony.awards.any { it.slug == slug } }
+            ceremony == null || ceremony.supports(media)
+        }
+        return withAwards(fitting)
     }
 
     fun parentalRange(category: ParentalGuideCategory): ImmutableList<Int>? {
@@ -349,6 +385,10 @@ data class SmartListFilters(
                 parentalAlcohol = filters.parentalAlcohol?.toImmutableList(),
                 parentalFrightening = filters.parentalFrightening?.toImmutableList(),
                 parentalIncludeUnrated = filters.parentalIncludeUnrated ?: false,
+                watchnowCountry = filters.watchnowCountry,
+                awards = filters.awards?.distinct()?.toImmutableList(),
+                awardYears = filters.awardYears?.toImmutableList(),
+                awardWon = filters.awardWon ?: false,
                 genresMatchAll = filters.genresOperator == GenresOperator.AND,
                 releasedWithinDays = filters.releasedWithinDays,
                 votes = filters.votes?.toImmutableList(),
@@ -440,6 +480,17 @@ private fun formatNumberRange(
         min != null -> resources.getString(R.string.list_summary_range_from, min.toString())
         else -> null
     }
+}
+
+private fun formatPlainRange(
+    range: List<Int>,
+    resources: Resources,
+): String? {
+    val min = range.getOrNull(0) ?: return null
+    val max = range.getOrNull(1)
+        ?: return resources.getString(R.string.list_summary_range_from, min.toString())
+
+    return resources.getString(R.string.list_summary_range_between, min.toString(), max.toString())
 }
 
 private fun formatFloatRange(

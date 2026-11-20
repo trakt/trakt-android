@@ -138,6 +138,7 @@ internal fun <T> DropdownView(
 internal data class DropdownOption<T>(
     val raw: T,
     val displayString: String,
+    val group: String? = null,
 )
 
 internal fun <T> List<DropdownOption<T?>>.toFilterValues(): ImmutableList<T>? {

@@ -118,7 +118,22 @@ internal fun <T> DropdownMultiView(
             modifier = Modifier
                 .align(Alignment.BottomEnd),
         ) {
-            for (option in options) {
+            options.forEachIndexed { index, option ->
+                val group = option.group
+                if (group != null && group != options.getOrNull(index - 1)?.group) {
+                    Text(
+                        text = group,
+                        style = TraktTheme.typography.meta,
+                        color = TraktTheme.colors.textSecondary,
+                        modifier = Modifier.padding(
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 4.dp,
+                        ),
+                    )
+                }
+
                 if (exclusion != null && option.raw != null) {
                     ExcludableMenuItem(
                         option = option,
@@ -136,7 +151,7 @@ internal fun <T> DropdownMultiView(
                             )
                         },
                     )
-                    continue
+                    return@forEachIndexed
                 }
 
                 val checked = option in values && (option.raw != null || excluded.isEmpty())

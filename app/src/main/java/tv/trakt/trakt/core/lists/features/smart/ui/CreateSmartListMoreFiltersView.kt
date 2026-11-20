@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RangeSlider
+import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,12 +32,22 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
+import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SMART_LIST_OPEN_VOTES_CEILING
 import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListLanguage
+import tv.trakt.trakt.core.filters.RowsSpacing
+import tv.trakt.trakt.core.filters.views.dropdowns.DropdownMultiView
+import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
+import tv.trakt.trakt.core.filters.views.dropdowns.DropdownView
+import tv.trakt.trakt.core.filters.views.dropdowns.toFilterValues
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.FilterChip
@@ -58,10 +69,13 @@ private enum class MoreRating(
 }
 
 private const val RATING_STEP = 0.5f
+private const val AWARD_YEARS_MIN = 1930
 
 @Composable
 internal fun CreateSmartListMoreFiltersView(
     filters: SmartListFilters,
+    awardCatalog: ImmutableList<AwardCeremony>,
+    languages: ImmutableList<SmartListLanguage>,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     onFiltersChange: (SmartListFilters) -> Unit,
@@ -121,6 +135,20 @@ internal fun CreateSmartListMoreFiltersView(
                     .fillMaxWidth()
                     .padding(top = 20.dp),
             ) {
+                LanguageFilters(
+                    filters = filters,
+                    languages = languages,
+                    onFiltersChange = onFiltersChange,
+                    enabled = enabled,
+                )
+
+                AwardsFilters(
+                    filters = filters,
+                    awardCatalog = awardCatalog,
+                    onFiltersChange = onFiltersChange,
+                    enabled = enabled,
+                )
+
                 ReleaseAndVotesFilters(
                     filters = filters,
                     onFiltersChange = onFiltersChange,
@@ -149,6 +177,181 @@ internal fun CreateSmartListMoreFiltersView(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LanguageFilters(
+    filters: SmartListFilters,
+    languages: ImmutableList<SmartListLanguage>,
+    onFiltersChange: (SmartListFilters) -> Unit,
+    enabled: Boolean,
+) {
+    val allOption = DropdownOption<String?>(null, stringResource(R.string.option_text_all))
+    val languageOptions = remember(languages, allOption) {
+        (listOf(allOption) + languages.map { DropdownOption<String?>(it.code, it.name) })
+            .toImmutableList()
+    }
+    val languageValues = remember(filters.languages, languages, allOption) {
+        when (val selected = filters.languages) {
+            null -> persistentListOf(allOption)
+            else -> selected.map { code ->
+                DropdownOption<String?>(code, languages.firstOrNull { it.code == code }?.name ?: code)
+            }.toImmutableList()
+        }
+    }
+
+    val countryAny = DropdownOption<String?>(null, stringResource(R.string.option_text_any_country))
+    val countryOptions = remember(countryAny) {
+        (
+            listOf(countryAny) +
+                Region.AllLocales.map { DropdownOption<String?>(it.country.lowercase(), it.displayCountry) }
+        )
+            .toImmutableList()
+    }
+    val countryValue = filters.watchnowCountry
+        ?.let { code -> DropdownOption<String?>(code, Locale("", code).displayCountry) }
+        ?: countryAny
+
+    Row(
+        horizontalArrangement = spacedBy(RowsSpacing),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        DropdownMultiView(
+            header = stringResource(R.string.header_smart_list_languages),
+            active = !filters.languages.isNullOrEmpty(),
+            values = languageValues,
+            options = languageOptions,
+            onOptionsSelected = { options ->
+                onFiltersChange(filters.copy(languages = options.toFilterValues()))
+            },
+            enabled = enabled,
+            modifier = Modifier.weight(1f),
+        )
+
+        DropdownView(
+            header = stringResource(R.string.header_smart_list_streaming_country),
+            value = countryValue,
+            active = filters.watchnowCountry != null,
+            options = countryOptions,
+            onOptionSelected = { option ->
+                onFiltersChange(filters.copy(watchnowCountry = option.raw))
+            },
+            enabled = enabled,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+private fun AwardsFilters(
+    filters: SmartListFilters,
+    awardCatalog: ImmutableList<AwardCeremony>,
+    onFiltersChange: (SmartListFilters) -> Unit,
+    enabled: Boolean,
+) {
+    val hasAwards = !filters.awards.isNullOrEmpty()
+
+    val allOption = DropdownOption<String?>(null, stringResource(R.string.option_text_all))
+    val awardOptions = remember(awardCatalog, filters.media, allOption) {
+        val awards = awardCatalog
+            .filter { it.supports(filters.media) }
+            .flatMap { ceremony ->
+                ceremony.awards.map { DropdownOption<String?>(it.slug, it.name, ceremony.name) }
+            }
+        (listOf(allOption) + awards).toImmutableList()
+    }
+    val awardValues = remember(filters.awards, awardOptions, allOption) {
+        when (val selected = filters.awards) {
+            null -> persistentListOf(allOption)
+            else -> selected.map { slug ->
+                awardOptions.firstOrNull { it.raw == slug } ?: DropdownOption<String?>(slug, slug)
+            }.toImmutableList()
+        }
+    }
+
+    FilterSection(title = stringResource(R.string.header_smart_list_awards)) {
+        DropdownMultiView(
+            header = stringResource(R.string.header_smart_list_award_categories),
+            active = hasAwards,
+            values = awardValues,
+            options = awardOptions,
+            onOptionsSelected = { options ->
+                onFiltersChange(filters.withAwards(options.mapNotNull { it.raw }))
+            },
+            enabled = enabled,
+        )
+
+        SwitchRow(
+            label = stringResource(R.string.toggle_text_award_winners_only),
+            checked = filters.awardWon,
+            enabled = enabled && hasAwards,
+            onCheckedChange = { onFiltersChange(filters.copy(awardWon = it)) },
+        )
+
+        AwardYearsFilter(
+            years = filters.awardYears,
+            enabled = enabled && hasAwards,
+            onYearsChange = { onFiltersChange(filters.copy(awardYears = it)) },
+        )
+    }
+}
+
+@Composable
+private fun AwardYearsFilter(
+    years: ImmutableList<Int>?,
+    enabled: Boolean,
+    onYearsChange: (ImmutableList<Int>?) -> Unit,
+) {
+    val maxYear = remember { nowLocalDay().year }
+    val fullRange = AWARD_YEARS_MIN.toFloat()..maxYear.toFloat()
+    val rangeValue = remember(years, maxYear) {
+        mutableStateOf(
+            (years?.getOrNull(0) ?: AWARD_YEARS_MIN).toFloat()..(years?.getOrNull(1) ?: maxYear).toFloat(),
+        )
+    }
+
+    Column(
+        verticalArrangement = spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = stringResource(
+                R.string.text_smart_list_recipe_detail,
+                stringResource(R.string.label_smart_list_ceremony_year),
+                stringResource(
+                    R.string.list_summary_range_between,
+                    rangeValue.value.start.toInt().toString(),
+                    rangeValue.value.endInclusive.toInt().toString(),
+                ),
+            ),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.buttonTertiary,
+            maxLines = 1,
+            overflow = Ellipsis,
+        )
+
+        RangeSlider(
+            value = rangeValue.value,
+            enabled = enabled,
+            valueRange = fullRange,
+            steps = maxYear - AWARD_YEARS_MIN - 1,
+            onValueChange = { rangeValue.value = it },
+            onValueChangeFinished = {
+                val start = rangeValue.value.start.toInt()
+                val end = rangeValue.value.endInclusive.toInt()
+                onYearsChange(
+                    when (start == AWARD_YEARS_MIN && end == maxYear) {
+                        true -> null
+                        false -> persistentListOf(start, end)
+                    },
+                )
+            },
+            colors = traktSliderColors(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(25.dp),
+        )
     }
 }
 
@@ -288,23 +491,28 @@ private fun RatingRangeFilter(
                     },
                 )
             },
-            colors = SliderDefaults.colors(
-                activeTrackColor = TraktTheme.colors.accent,
-                inactiveTrackColor = Color.White,
-                thumbColor = TraktTheme.colors.accent,
-                activeTickColor = Color.Transparent,
-                inactiveTickColor = Color.Transparent,
-                disabledActiveTrackColor = TraktTheme.colors.dialogOnContainer,
-                disabledActiveTickColor = TraktTheme.colors.dialogOnContainer,
-                disabledThumbColor = TraktTheme.colors.dialogOnContainer,
-                disabledInactiveTrackColor = TraktTheme.colors.dialogOnContainer,
-                disabledInactiveTickColor = TraktTheme.colors.dialogOnContainer,
-            ),
+            colors = traktSliderColors(),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(25.dp),
         )
     }
+}
+
+@Composable
+private fun traktSliderColors(): SliderColors {
+    return SliderDefaults.colors(
+        activeTrackColor = TraktTheme.colors.accent,
+        inactiveTrackColor = Color.White,
+        thumbColor = TraktTheme.colors.accent,
+        activeTickColor = Color.Transparent,
+        inactiveTickColor = Color.Transparent,
+        disabledActiveTrackColor = TraktTheme.colors.dialogOnContainer,
+        disabledActiveTickColor = TraktTheme.colors.dialogOnContainer,
+        disabledThumbColor = TraktTheme.colors.dialogOnContainer,
+        disabledInactiveTrackColor = TraktTheme.colors.dialogOnContainer,
+        disabledInactiveTickColor = TraktTheme.colors.dialogOnContainer,
+    )
 }
 
 @Composable
@@ -484,7 +692,21 @@ private fun Preview() {
                 votes = persistentListOf(1_000, SMART_LIST_OPEN_VOTES_CEILING),
                 tmdbRatings = persistentListOf(6.5f, 10f),
                 ignoreEnded = true,
+                languages = persistentListOf("en"),
+                watchnowCountry = "us",
+                awards = persistentListOf("best-picture"),
+                awardWon = true,
             ),
+            awardCatalog = persistentListOf(
+                AwardCeremony(
+                    slug = "academy-awards",
+                    name = "Academy Awards",
+                    forMovies = true,
+                    forShows = false,
+                    awards = persistentListOf(AwardCeremony.Award("best-picture", "Best Picture")),
+                ),
+            ),
+            languages = persistentListOf(SmartListLanguage("en", "English")),
             expanded = true,
             onExpandedChange = {},
             onFiltersChange = {},
@@ -501,6 +723,8 @@ private fun PreviewCollapsed() {
                 media = MediaMode.Movies,
                 ignoreUnreleased = true,
             ),
+            awardCatalog = persistentListOf(),
+            languages = persistentListOf(),
             expanded = false,
             onExpandedChange = {},
             onFiltersChange = {},

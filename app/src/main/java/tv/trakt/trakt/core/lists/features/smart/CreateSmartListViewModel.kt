@@ -25,12 +25,15 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
+import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListLanguage
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.features.smart.navigation.CreateSmartListDestination
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
+import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListFilterOptionsUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.UpdateSmartListUseCase
 import tv.trakt.trakt.core.lists.model.SmartListItem
@@ -39,6 +42,7 @@ import tv.trakt.trakt.core.lists.model.SmartListItem
 internal class CreateSmartListViewModel(
     savedStateHandle: SavedStateHandle,
     private val getSmartListPreviewUseCase: GetSmartListPreviewUseCase,
+    private val getSmartListFilterOptionsUseCase: GetSmartListFilterOptionsUseCase,
     private val createSmartListUseCase: CreateSmartListUseCase,
     private val updateSmartListUseCase: UpdateSmartListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
@@ -65,12 +69,48 @@ internal class CreateSmartListViewModel(
     private val errorState = MutableStateFlow(initialState.error)
     private val successState = MutableStateFlow(initialState.success)
     private val parentalGuideExpandedState = MutableStateFlow(initialState.parentalGuideExpanded)
+    private val awardCatalogState = MutableStateFlow(initialState.awardCatalog)
+    private val languagesState = MutableStateFlow(initialState.languages)
 
     private var dataJob: Job? = null
+    private var languagesJob: Job? = null
 
     init {
         loadData()
+        loadAwardCatalog()
+        loadLanguages()
         observeCollection()
+    }
+
+    private fun loadAwardCatalog() {
+        viewModelScope.launch {
+            try {
+                awardCatalogState.update { getSmartListFilterOptionsUseCase.getAwardCatalog() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadLanguages() {
+        languagesJob?.cancel()
+        languagesJob = viewModelScope.launch {
+            try {
+                languagesState.update {
+                    getSmartListFilterOptionsUseCase.getLanguages(filtersState.value.media)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun typedFilters(): SmartListFilters {
+        return filtersState.value.withAwardsFor(awardCatalogState.value)
     }
 
     private fun observeCollection() {
@@ -85,7 +125,7 @@ internal class CreateSmartListViewModel(
 
             try {
                 itemsState.update {
-                    getSmartListPreviewUseCase.getPreviewItems(filtersState.value)
+                    getSmartListPreviewUseCase.getPreviewItems(typedFilters())
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -127,7 +167,7 @@ internal class CreateSmartListViewModel(
     private suspend fun createList(name: String) {
         createSmartListUseCase.createList(
             name = name,
-            filters = filtersState.value,
+            filters = typedFilters(),
         )
         analytics.lists.logSmartListCreate()
     }
@@ -139,7 +179,7 @@ internal class CreateSmartListViewModel(
         updateSmartListUseCase.updateList(
             listId = list.ids.trakt,
             name = name,
-            filters = filtersState.value,
+            filters = typedFilters(),
         )
         analytics.lists.logSmartListUpdate()
     }
@@ -148,9 +188,14 @@ internal class CreateSmartListViewModel(
         if (newFilters == filtersState.value) {
             return
         }
+        val mediaChanged = newFilters.media != filtersState.value.media
         logParentalChanges(previous = filtersState.value, current = newFilters)
         filtersState.update { newFilters }
         loadData()
+
+        if (mediaChanged) {
+            loadLanguages()
+        }
     }
 
     private fun logParentalChanges(
@@ -188,6 +233,8 @@ internal class CreateSmartListViewModel(
         successState,
         collectionStateProvider.stateFlow,
         parentalGuideExpandedState,
+        awardCatalogState,
+        languagesState,
     ) { state ->
         CreateSmartListState(
             editList = editList,
@@ -200,6 +247,8 @@ internal class CreateSmartListViewModel(
             success = state[5] as Boolean,
             collection = state[6] as UserCollectionState,
             parentalGuideExpanded = state[7] as Boolean,
+            awardCatalog = state[8] as ImmutableList<AwardCeremony>,
+            languages = state[9] as ImmutableList<SmartListLanguage>,
         )
     }.stateIn(
         scope = viewModelScope,

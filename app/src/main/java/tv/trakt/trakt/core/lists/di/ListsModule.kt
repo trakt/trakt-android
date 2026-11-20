@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.lists.features.reorder.watchlist.WatchlistReorderView
 import tv.trakt.trakt.core.lists.features.reorder.watchlist.usecase.ReorderWatchlistUseCase
 import tv.trakt.trakt.core.lists.features.smart.CreateSmartListViewModel
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
+import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListFilterOptionsUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.UpdateSmartListUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -81,6 +82,7 @@ internal val listsModule = module {
     factoryOf(::GetLikedListsUseCase)
     factoryOf(::GetSmartListsUseCase)
     factoryOf(::GetSmartListItemsUseCase)
+    factoryOf(::GetSmartListFilterOptionsUseCase)
     factoryOf(::GetSmartListPreviewUseCase)
     factoryOf(::CreateSmartListUseCase)
     factoryOf(::UpdateSmartListUseCase)

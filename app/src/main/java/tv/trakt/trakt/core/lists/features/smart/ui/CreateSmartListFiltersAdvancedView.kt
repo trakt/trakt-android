@@ -202,6 +202,8 @@ internal fun CreateSmartListFiltersAdvancedView(
 
             CreateSmartListMoreFiltersView(
                 filters = state.filters,
+                awardCatalog = state.awardCatalog,
+                languages = state.languages,
                 expanded = moreFiltersExpanded,
                 onExpandedChange = { moreFiltersExpanded = it },
                 onFiltersChange = { onFiltersChange(it, true) },

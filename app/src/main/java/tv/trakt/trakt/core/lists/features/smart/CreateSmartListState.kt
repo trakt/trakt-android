@@ -2,10 +2,13 @@ package tv.trakt.trakt.core.lists.features.smart
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListLanguage
 import tv.trakt.trakt.core.lists.model.SmartListItem
 
 @Immutable
@@ -16,6 +19,8 @@ internal data class CreateSmartListState(
     val initialFilters: SmartListFilters = SmartListFilters.Default,
     val filters: SmartListFilters = SmartListFilters.Default,
     val parentalGuideExpanded: Boolean = true,
+    val awardCatalog: ImmutableList<AwardCeremony> = persistentListOf(),
+    val languages: ImmutableList<SmartListLanguage> = persistentListOf(),
     val creating: LoadingState = LoadingState.Idle,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
