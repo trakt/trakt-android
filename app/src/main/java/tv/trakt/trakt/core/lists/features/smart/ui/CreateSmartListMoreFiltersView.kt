@@ -146,12 +146,6 @@ internal fun CreateSmartListMoreFiltersView(
             ) {
                 SearchFilters(
                     filters = filters,
-                    onFiltersChange = onFiltersChange,
-                    enabled = enabled,
-                )
-
-                LanguageFilters(
-                    filters = filters,
                     languages = languages,
                     onFiltersChange = onFiltersChange,
                     enabled = enabled,
@@ -202,6 +196,7 @@ internal fun CreateSmartListMoreFiltersView(
 @Composable
 private fun SearchFilters(
     filters: SmartListFilters,
+    languages: ImmutableList<SmartListLanguage>,
     onFiltersChange: (SmartListFilters) -> Unit,
     enabled: Boolean,
 ) {
@@ -233,6 +228,13 @@ private fun SearchFilters(
                 }
             }
         }
+
+        LanguageFilters(
+            filters = filters,
+            languages = languages,
+            onFiltersChange = onFiltersChange,
+            enabled = enabled,
+        )
 
         SearchSettings(
             filters = filters,
