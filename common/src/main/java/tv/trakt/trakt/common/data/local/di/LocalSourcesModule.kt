@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.local.PopularMoviesLocalSource
 import tv.trakt.trakt.common.data.local.PopularShowsLocalSource
+import tv.trakt.trakt.common.data.local.PortraitTokenLocalSource
 import tv.trakt.trakt.common.data.local.PosterLanguagesLocalSource
 import tv.trakt.trakt.common.data.local.PushTokenLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
@@ -71,6 +72,7 @@ private const val SEARCH_PREFERENCES = "search_preferences"
 private const val PUSH_PREFERENCES = "push_preferences"
 private const val MEDIA_MODE_PREFERENCES = "media_mode_preferences"
 private const val LOCALIZED_TITLES_PREFERENCES = "localized_titles"
+private const val PORTRAIT_TOKEN_PREFERENCES = "portrait_token"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -257,6 +259,19 @@ val localSourcesModule = module {
         createCacheStore(
             context = androidApplication(),
             name = LOCALIZED_TITLES_PREFERENCES,
+        )
+    }
+
+    single {
+        PortraitTokenLocalSource(
+            dataStore = get(named(PORTRAIT_TOKEN_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(PORTRAIT_TOKEN_PREFERENCES)) {
+        createCacheStore(
+            context = androidApplication(),
+            name = PORTRAIT_TOKEN_PREFERENCES,
         )
     }
 }

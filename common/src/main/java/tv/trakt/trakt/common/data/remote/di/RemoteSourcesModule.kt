@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.data.remote.NotesRemoteSource
 import tv.trakt.trakt.common.data.remote.ParentalGuideRemoteSource
 import tv.trakt.trakt.common.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.data.remote.PlexRemoteSource
+import tv.trakt.trakt.common.data.remote.PortraitsRemoteSource
 import tv.trakt.trakt.common.data.remote.RatingsRemoteSource
 import tv.trakt.trakt.common.data.remote.ReactionsRemoteSource
 import tv.trakt.trakt.common.data.remote.RealityCheckRemoteSource
@@ -60,6 +61,7 @@ val remoteSourcesModule = module {
     singleOf(::NotesRemoteSource)
     singleOf(::ParentalGuideRemoteSource)
     singleOf(::PlexRemoteSource)
+    singleOf(::PortraitsRemoteSource)
     singleOf(::RatingsRemoteSource)
     singleOf(::ReactionsRemoteSource)
     singleOf(::RealityCheckRemoteSource)
