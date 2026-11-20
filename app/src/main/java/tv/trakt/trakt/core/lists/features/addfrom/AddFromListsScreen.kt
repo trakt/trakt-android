@@ -456,7 +456,7 @@ private fun ItemsList(
     val items = state.items.takeIf { state.listedKeys != null }.orEmpty()
 
     LazyColumn(
-        verticalArrangement = spacedBy(4.dp),
+        verticalArrangement = spacedBy(2.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,
         modifier = modifier,
@@ -588,8 +588,8 @@ private fun ItemRow(
             VerticalMediaCard(
                 title = "",
                 imageUrl = item.posterUrl,
-                width = 48.dp,
-                corner = 10.dp,
+                width = 40.dp,
+                corner = 8.dp,
                 more = false,
             )
 
