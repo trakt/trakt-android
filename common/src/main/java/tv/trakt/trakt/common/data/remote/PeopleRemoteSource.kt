@@ -14,7 +14,6 @@ import tv.trakt.trakt.common.networking.api.people.PeopleExtrasApi
 class PeopleRemoteSource(
     private val peopleExtrasApi: PeopleExtrasApi,
     private val peopleApi: PeopleApi,
-    private val authorizedPeopleApi: PeopleApi,
 ) {
     suspend fun getPersonDetails(
         personId: TraktId,

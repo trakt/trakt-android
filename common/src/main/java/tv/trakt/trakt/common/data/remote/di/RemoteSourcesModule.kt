@@ -105,13 +105,7 @@ val remoteSourcesModule = module {
             calendarsApi = get(named("authorizedCalendarsApi")),
         )
     }
-    single {
-        PeopleRemoteSource(
-            peopleExtrasApi = get(),
-            peopleApi = get(),
-            authorizedPeopleApi = get(named("authorizedPeopleApi")),
-        )
-    }
+    singleOf(::PeopleRemoteSource)
     single {
         CommentsRemoteSource(
             api = get(),
