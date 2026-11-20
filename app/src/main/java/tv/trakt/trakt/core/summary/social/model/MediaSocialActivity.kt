@@ -31,7 +31,7 @@ internal data class MediaSocialActivity(
 
     @Immutable
     data class Watched(
-        val lastWatchedAt: Instant,
+        val lastWatchedAt: Instant?,
         val lastUpdatedAt: Instant?,
         val plays: Int,
         val duration: Duration?,
@@ -70,7 +70,7 @@ internal data class MediaSocialActivity(
                 user = User.fromDto(dto.user),
                 watched = dto.watched?.let { watched ->
                     Watched(
-                        lastWatchedAt = watched.lastWatchedAt.toInstant(),
+                        lastWatchedAt = watched.lastWatchedAt?.toInstant(),
                         lastUpdatedAt = watched.lastUpdatedAt?.toInstant(),
                         plays = watched.plays,
                         duration = watched.minutesWatched?.toDuration(MINUTES),

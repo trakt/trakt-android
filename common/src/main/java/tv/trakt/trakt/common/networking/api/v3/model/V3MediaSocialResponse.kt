@@ -18,7 +18,7 @@ data class V3MediaSocialResponse(
     @Serializable
     data class Watched(
         @SerialName("last_watched_at")
-        val lastWatchedAt: String,
+        val lastWatchedAt: String?,
         @SerialName("last_updated_at")
         val lastUpdatedAt: String?,
         val plays: Int,
