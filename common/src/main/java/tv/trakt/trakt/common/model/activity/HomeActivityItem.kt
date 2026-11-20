@@ -1,13 +1,18 @@
 package tv.trakt.trakt.common.model.activity
 
 import androidx.compose.runtime.Immutable
+import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.EPISODE
+import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.MOVIE
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import java.time.Instant
 import kotlin.time.Duration
 
@@ -75,4 +80,40 @@ sealed class HomeActivityItem(
             is MovieItem -> movie.released?.toEpochDay()
             is EpisodeItem -> episode.seasonEpisode.id
         }
+
+    companion object {
+        fun fromDto(dto: SyncHistoryItemDto): HomeActivityItem {
+            return when (dto.type) {
+                EPISODE -> EpisodeItem(
+                    id = dto.id,
+                    user = null,
+                    userRating = null,
+                    activity = dto.action.value,
+                    activityAt = dto.watchedAt.toInstant(),
+                    episode = Episode.fromDto(
+                        checkNotNull(dto.episode) {
+                            "Episode should not be null if type is EPISODE"
+                        },
+                    ),
+                    show = Show.fromDto(
+                        checkNotNull(dto.show) {
+                            "Show should not be null if type is EPISODE"
+                        },
+                    ),
+                )
+                MOVIE -> MovieItem(
+                    id = dto.id,
+                    user = null,
+                    userRating = null,
+                    activity = dto.action.value,
+                    activityAt = dto.watchedAt.toInstant(),
+                    movie = Movie.fromDto(
+                        checkNotNull(dto.movie) {
+                            "Movie should not be null if type is MOVIE"
+                        },
+                    ),
+                )
+            }
+        }
+    }
 }
