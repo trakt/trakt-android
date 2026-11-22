@@ -34,6 +34,8 @@ import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
@@ -51,6 +53,7 @@ private const val ASPECTS_LIMIT = 4
 private const val HEADER_RATIO = 2F
 
 private val AspectIconSize = 14.dp
+private val TitleChevronSize = 16.dp
 private val VerdictShape = RoundedCornerShape(50)
 
 @Composable
@@ -58,12 +61,14 @@ internal fun TodayPosterDetails(
     media: TodayMedia,
     viewModel: TodayPosterDetailsViewModel,
     modifier: Modifier = Modifier,
+    onTitleClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     TodayPosterDetailsContent(
         media = media,
         state = state,
+        onTitleClick = onTitleClick,
         modifier = modifier,
     )
 }
@@ -73,13 +78,17 @@ private fun TodayPosterDetailsContent(
     media: TodayMedia,
     state: TodayPosterDetailsState,
     modifier: Modifier = Modifier,
+    onTitleClick: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
             .background(TraktTheme.colors.commentContainer)
             .verticalScroll(rememberScrollState()),
     ) {
-        TodayDetailsHeader(media = media)
+        TodayDetailsHeader(
+            media = media,
+            onTitleClick = onTitleClick,
+        )
 
         Column(
             verticalArrangement = spacedBy(16.dp),
@@ -114,7 +123,10 @@ private fun TodayPosterDetailsContent(
 }
 
 @Composable
-private fun TodayDetailsHeader(media: TodayMedia) {
+private fun TodayDetailsHeader(
+    media: TodayMedia,
+    onTitleClick: (() -> Unit)?,
+) {
     val cardBackground = TraktTheme.colors.commentContainer
 
     Box(
@@ -144,13 +156,31 @@ private fun TodayDetailsHeader(media: TodayMedia) {
                 .align(Alignment.BottomStart)
                 .padding(horizontal = 16.dp, vertical = 4.dp),
         ) {
-            Text(
-                text = media.title,
-                style = TraktTheme.typography.heading5,
-                color = TraktTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
+                modifier = Modifier.ifOrElse(
+                    condition = onTitleClick != null,
+                    isTrue = Modifier.onClick { onTitleClick?.invoke() },
+                ),
+            ) {
+                Text(
+                    text = media.title,
+                    style = TraktTheme.typography.heading5,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1F, fill = false),
+                )
+                if (onTitleClick != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_chevron_right),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(TitleChevronSize),
+                    )
+                }
+            }
             Text(
                 text = mediaMeta(media),
                 style = TraktTheme.typography.cardSubtitle,
@@ -354,6 +384,7 @@ private fun PreviewCard(
         TodayPosterDetailsContent(
             media = media,
             state = state,
+            onTitleClick = {},
             modifier = Modifier
                 .padding(16.dp)
                 .width(350.dp)

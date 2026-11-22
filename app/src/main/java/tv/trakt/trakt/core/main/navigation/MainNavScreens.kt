@@ -162,6 +162,8 @@ internal fun NavGraphBuilder.homeScreens(
                     currentUserId = userId,
                 )
             },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToShow = { navigateToShow(it) },
             onNavigateToSocial = {
                 popBackStack()
                 navigateToAllActivitySocial()

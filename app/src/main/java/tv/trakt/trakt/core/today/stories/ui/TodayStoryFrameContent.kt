@@ -86,6 +86,7 @@ internal fun TodayStoryFrameContent(
     onPrevious: () -> Unit,
     onHeldChange: (Boolean) -> Unit,
     onUserClick: (User) -> Unit,
+    onMediaClick: (TodayMedia) -> Unit,
     onConfirmVisibleChange: (Boolean) -> Unit,
     onRevealSpoiler: () -> Unit,
 ) {
@@ -98,6 +99,7 @@ internal fun TodayStoryFrameContent(
                 onNext = onNext,
                 onPrevious = onPrevious,
                 onHeldChange = onHeldChange,
+                onMediaClick = onMediaClick,
             )
 
             Column(
@@ -155,6 +157,7 @@ private fun TodayStoryPoster(
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onHeldChange: (Boolean) -> Unit,
+    onMediaClick: (TodayMedia) -> Unit,
 ) {
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val flip by rememberUpdatedState(onFlip)
@@ -206,6 +209,7 @@ private fun TodayStoryPoster(
             TodayFlipPoster(
                 frame = frame,
                 isFlipped = isFlipped,
+                onMediaClick = onMediaClick,
                 modifier = Modifier.width(posterWidth),
             )
         }
@@ -217,6 +221,7 @@ private fun TodayFlipPoster(
     frame: TodayStoryFrame,
     isFlipped: Boolean,
     modifier: Modifier = Modifier,
+    onMediaClick: (TodayMedia) -> Unit,
 ) {
     val context = LocalContext.current
     val media = frame.media
@@ -270,6 +275,7 @@ private fun TodayFlipPoster(
         TodayPosterDetails(
             media = media,
             viewModel = detailsViewModel,
+            onTitleClick = { onMediaClick(media) }.takeIf { isBackVisible },
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
@@ -432,6 +438,7 @@ private fun Preview() {
             onPrevious = {},
             onHeldChange = {},
             onUserClick = {},
+            onMediaClick = {},
             onConfirmVisibleChange = {},
             onRevealSpoiler = {},
             modifier = Modifier
