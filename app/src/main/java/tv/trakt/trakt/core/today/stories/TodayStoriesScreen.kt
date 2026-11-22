@@ -148,6 +148,20 @@ internal fun TodayStoriesScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+    ) {
+        state.navigateShow?.let {
+            onNavigateToShow(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateMovie?.let {
+            onNavigateToMovie(it)
+            viewModel.clearNavigation()
+        }
+    }
+
     TodayStoriesContent(
         state = state,
         onNext = viewModel::next,
@@ -159,13 +173,7 @@ internal fun TodayStoriesScreen(
             viewModel.leave()
             onNavigateToUser(user)
         },
-        onMediaClick = { media ->
-            viewModel.leave()
-            when (media) {
-                is TodayMedia.MovieMedia -> onNavigateToMovie(media.ids.trakt)
-                is TodayMedia.ShowMedia -> onNavigateToShow(media.ids.trakt)
-            }
-        },
+        onMediaClick = viewModel::navigateToMedia,
         onSocialClick = {
             viewModel.leave()
             onNavigateToSocial()

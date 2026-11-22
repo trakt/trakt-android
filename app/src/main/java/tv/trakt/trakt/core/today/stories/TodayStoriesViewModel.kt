@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -24,10 +25,12 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.analyticsType
 import tv.trakt.trakt.core.today.stories.navigation.TodayStoriesDestination
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import java.time.Duration
 import java.time.Instant
 
@@ -47,6 +50,7 @@ internal class TodayStoriesViewModel(
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
     private val seenSource: TodaySeenLocalSource,
     private val analytics: Analytics,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<TodayStoriesDestination>()
     private val initialState = TodayStoriesState(
@@ -56,6 +60,7 @@ internal class TodayStoriesViewModel(
     private val groupsState = MutableStateFlow(initialState.groups)
     private val positionState = MutableStateFlow(initialState.position)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val navigation = navigationFactory.create(viewModelScope)
 
     private var openedAt: Instant? = null
     private var shownFrames = emptySet<String>()
@@ -161,6 +166,18 @@ internal class TodayStoriesViewModel(
         finishTracking(CLOSE_REASON_LEAVE)
     }
 
+    fun navigateToMedia(media: TodayMedia) {
+        leave()
+        when (media) {
+            is TodayMedia.MovieMedia -> navigation.toMovie(media.movie)
+            is TodayMedia.ShowMedia -> navigation.toShow(media.show)
+        }
+    }
+
+    fun clearNavigation() {
+        navigation.clear()
+    }
+
     private fun close(reason: String) {
         finishTracking(reason)
         viewModelScope.launch { events.emit(TodayStoriesEvent.Close) }
@@ -250,11 +267,15 @@ internal class TodayStoriesViewModel(
         groupsState,
         positionState,
         loadingState,
+        navigation.show,
+        navigation.movie,
     ) { state ->
         TodayStoriesState(
             groups = state[0] as ImmutableList<TodayStoryGroup>,
             position = state[1] as TodayStoryPosition,
             loading = state[2] as LoadingState,
+            navigateShow = state[3] as TraktId?,
+            navigateMovie = state[4] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,
