@@ -152,6 +152,9 @@ Use `staticCompositionLocalOf` when value constant for provider lifetime; `compo
 - `SideEffect { … }` — sync side effect after every successful composition. Rare; usually want `LaunchedEffect`.
 - **Never** start coroutine from inside `body { }` directly.
 - **Never** read `mutableStateOf` from outside composition without `snapshotFlow`.
+- Need the hosting `Activity` (finish, window, permissions)? Use `LocalActivity.current`
+  (`androidx.activity.compose`). Never cast `LocalContext.current as Activity`: the context can be
+  a `ContextWrapper`, so the cast fails or returns null.
 
 ## Compose stability
 
