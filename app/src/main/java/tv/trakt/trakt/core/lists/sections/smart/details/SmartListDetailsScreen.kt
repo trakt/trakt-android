@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -59,12 +60,14 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
@@ -80,6 +83,7 @@ import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeSh
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -526,13 +530,51 @@ private fun Preview() {
                         filters = SmartListFilters(
                             source = SmartListSource.Popular,
                             media = MediaMode.Movies,
-                            genres = persistentListOf(MediaGenre.ScienceFiction),
+                            genres = persistentListOf(MediaGenre.ScienceFiction, MediaGenre.Thriller),
+                            genresMatchAll = true,
+                            excludedGenres = persistentListOf(MediaGenre.Horror),
+                            keywords = persistentListOf("time-travel", "-zombie"),
                             countries = persistentListOf("gb", "fr"),
+                            availability = persistentListOf(GlobalFilter.Availability.StreamingNow),
+                            watchnowCountry = "us",
                             years = persistentListOf(2010, 2019),
+                            ratings = persistentListOf(70, 100),
+                            runtimes = persistentListOf(90, 150),
                             ignoreWatched = true,
+                            ignoreWatchlisted = true,
                         ),
                     ),
                 ),
+            )
+        }
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun RecipeLinkPreview() {
+    TraktThemePreview {
+        Column {
+            RecipeLink(
+                preview = SmartListRecipePreview(
+                    summary = "Popular, Science Fiction, Thriller",
+                    remaining = 6,
+                ),
+                onClick = {},
+            )
+            RecipeLink(
+                preview = SmartListRecipePreview(
+                    summary = "Trending, Comedy",
+                    remaining = 0,
+                ),
+                onClick = {},
+            )
+            RecipeLink(
+                preview = SmartListRecipePreview(
+                    summary = "Anticipated, Science Fiction, Fantasy, Adventure, Animation, Documentary",
+                    remaining = 12,
+                ),
+                onClick = {},
             )
         }
     }
