@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -77,6 +78,7 @@ private fun HomeStreaksContent(
     onClick: () -> Unit = {},
 ) {
     val season = LocalSeasonalTheme.current
+    val celebration = rememberStreakCelebration(data?.currentStreakTotal)
 
     Box(
         modifier = modifier
@@ -116,24 +118,38 @@ private fun HomeStreaksContent(
                             .weight(1f)
                             .padding(end = 16.dp),
                     ) {
-                        Image(
-                            painter = painterResource(
-                                when {
-                                    data.currentStreakTotal <= 1 -> when {
-                                        TraktTheme.colors.isLight -> R.drawable.ic_flame_1_light
-                                        else -> R.drawable.ic_flame_1
-                                    }
-                                    data.currentStreakTotal <= 7 -> season?.streakFlameMedium ?: R.drawable.ic_flame_2
-                                    else -> season?.streakFlameLarge ?: R.drawable.ic_flame_3
-                                },
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(48.dp)
-                                .graphicsLayer {
-                                    translationY = -1.dp.toPx()
-                                },
-                        )
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.size(48.dp),
+                        ) {
+                            Image(
+                                painter = painterResource(
+                                    when {
+                                        data.currentStreakTotal <= 1 -> {
+                                            when {
+                                                TraktTheme.colors.isLight -> R.drawable.ic_flame_1_light
+                                                else -> R.drawable.ic_flame_1
+                                            }
+                                        }
+                                        data.currentStreakTotal <= 7 -> {
+                                            season?.streakFlameMedium
+                                                ?: R.drawable.ic_flame_2
+                                        }
+                                        else -> {
+                                            season?.streakFlameLarge ?: R.drawable.ic_flame_3
+                                        }
+                                    },
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .streakFlare(celebration)
+                                    .graphicsLayer {
+                                        translationY = -1.dp.toPx()
+                                    },
+                            )
+                            StreakEmbers(celebration = celebration)
+                        }
 
                         Text(
                             maxLines = 1,
@@ -149,6 +165,7 @@ private fun HomeStreaksContent(
                                 )
                             } ${stringResource(R.string.text_stats_watching_streak)}",
                             overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.streakCountFlip(celebration),
                         )
                     }
 
@@ -156,7 +173,10 @@ private fun HomeStreaksContent(
                         verticalAlignment = CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        WeekActivityPills(activeDays = data.weekActiveDays)
+                        WeekActivityPills(
+                            activeDays = data.weekActiveDays,
+                            celebration = celebration,
+                        )
                         Icon(
                             painter = painterResource(R.drawable.ic_chevron_right),
                             tint = TraktTheme.colors.textSecondary,
@@ -179,6 +199,7 @@ private fun HomeStreaksContent(
 @Composable
 private fun WeekActivityPills(
     activeDays: ImmutableSet<LocalDate>,
+    celebration: Int,
     modifier: Modifier = Modifier,
 ) {
     val today = nowLocalDay()
@@ -231,7 +252,8 @@ private fun WeekActivityPills(
                             border,
                             RoundedCornerShape(100),
                         )
-                        .background(background, RoundedCornerShape(100)),
+                        .background(background, RoundedCornerShape(100))
+                        .streakTodayGlow(if (date == today) celebration else 0),
                 )
             }
         }

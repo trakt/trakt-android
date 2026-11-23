@@ -81,6 +81,7 @@ internal fun HomeUpNextShowView(
                         ?.let {
                             EpisodeStatusChip(
                                 status = it,
+                                pingKey = item.progress.nextEpisode?.ids?.trakt,
                                 contentTextStyle = TraktTheme.typography.meta.copy(
                                     fontSize = 10.sp,
                                 ),

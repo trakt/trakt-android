@@ -67,6 +67,12 @@ internal fun SeasonProgressRow(
         label = "caretRotation",
     )
 
+    val completions = rememberSeasonCompleteCount(
+        seasonNumber = season.number,
+        complete = season.isComplete,
+        loading = loading,
+    )
+
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -142,9 +148,15 @@ internal fun SeasonProgressRow(
                 }
             }
 
-            WatchProgressLine(
-                progress = season.progress,
-            )
+            Box {
+                WatchProgressLine(
+                    progress = season.progress,
+                )
+                SeasonCompleteSweep(
+                    completions = completions,
+                    modifier = Modifier.matchParentSize(),
+                )
+            }
         }
 
         if (expanded && episodes != null) {
