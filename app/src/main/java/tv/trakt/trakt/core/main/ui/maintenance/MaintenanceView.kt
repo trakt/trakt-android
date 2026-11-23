@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.main.ui.maintenance
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -9,7 +10,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -33,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.main.model.MaintenanceMode
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
@@ -42,6 +46,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private val VerticalPadding = 48.dp
 private val MarkSize = 48.dp
 private val ContentSpace = 16.dp
+private val TouchTargetSize = 48.dp
+private val SocialIconSize = 24.dp
 
 @Composable
 internal fun MaintenanceView(
@@ -60,9 +66,7 @@ internal fun MaintenanceView(
     MaintenanceContent(
         maintenance = state.maintenance,
         modifier = modifier,
-        onStatusClick = {
-            uriHandler.openUri(Config.WEB_STATUS_URL)
-        },
+        onUrlClick = uriHandler::openUri,
     )
 }
 
@@ -70,7 +74,7 @@ internal fun MaintenanceView(
 private fun MaintenanceContent(
     maintenance: MaintenanceMode?,
     modifier: Modifier = Modifier,
-    onStatusClick: () -> Unit = {},
+    onUrlClick: (String) -> Unit = {},
 ) {
     AnimatedVisibility(
         visible = maintenance != null,
@@ -123,10 +127,41 @@ private fun MaintenanceContent(
 
             PrimaryButton(
                 text = stringResource(R.string.link_text_service_status),
-                onClick = onStatusClick,
+                onClick = { onUrlClick(Config.WEB_STATUS_URL) },
                 modifier = Modifier.padding(top = ContentSpace),
             )
+
+            Row {
+                MaintenanceSocialLink(
+                    icon = R.drawable.ic_reddit,
+                    onClick = { onUrlClick(Config.WEB_SOCIAL_REDDIT_URL) },
+                )
+                MaintenanceSocialLink(
+                    icon = R.drawable.ic_x_twitter,
+                    onClick = { onUrlClick(Config.WEB_SOCIAL_X_URL) },
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun MaintenanceSocialLink(
+    @DrawableRes icon: Int,
+    onClick: () -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(TouchTargetSize)
+            .onClick(onClick = onClick),
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier.size(SocialIconSize),
+        )
     }
 }
 
