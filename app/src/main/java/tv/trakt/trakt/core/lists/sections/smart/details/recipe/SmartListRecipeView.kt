@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -63,7 +64,6 @@ internal fun SmartListRecipeView(
         item(key = "source") {
             RecipeSection(
                 title = stringResource(R.string.text_source),
-                modifier = Modifier.padding(top = 8.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -80,7 +80,9 @@ internal fun SmartListRecipeView(
                     Text(
                         text = recipe.mediaType,
                         color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta,
+                        style = TraktTheme.typography.meta.copy(
+                            fontSize = 12.sp,
+                        ),
                     )
                 }
             }
@@ -137,8 +139,8 @@ private fun RecipeSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-        modifier = modifier.padding(top = 12.dp),
+        verticalArrangement = spacedBy(8.dp),
+        modifier = modifier.padding(top = 8.dp),
     ) {
         Text(
             text = title,
@@ -149,7 +151,7 @@ private fun RecipeSection(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(elevation = TraktTheme.colors.shadowSmall, shape = CardShape)
+                .shadow(elevation = TraktTheme.colors.shadowDynamicSmall, shape = CardShape)
                 .background(TraktTheme.colors.dialogOnContainer, CardShape)
                 .padding(16.dp),
         ) {
@@ -164,13 +166,15 @@ private fun IncludeRow(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = spacedBy(6.dp),
+        verticalArrangement = spacedBy(8.dp),
         modifier = modifier,
     ) {
         Text(
             text = row.label,
             color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
+            style = TraktTheme.typography.meta.copy(
+                fontSize = 12.sp,
+            ),
         )
 
         FlowRow(
@@ -189,7 +193,9 @@ private fun IncludeRow(
             Text(
                 text = row.details.joinToString(" · "),
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta,
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 12.sp,
+                ),
             )
         }
     }
@@ -228,11 +234,13 @@ private fun RecipeChip(
             excluded -> TraktTheme.colors.textSecondary
             else -> TraktTheme.colors.textPrimary
         },
-        style = TraktTheme.typography.meta,
+        style = TraktTheme.typography.meta.copy(
+            fontSize = 12.sp,
+        ),
         textDecoration = TextDecoration.LineThrough.takeIf { excluded },
         maxLines = 1,
         overflow = Ellipsis,
-        modifier = chipModifier.padding(horizontal = 8.dp, vertical = 4.dp),
+        modifier = chipModifier.padding(horizontal = 10.dp, vertical = 5.dp),
     )
 }
 

@@ -31,6 +31,7 @@ internal fun SmartListDropdown(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
     onEditClick: (() -> Unit)? = null,
+    onRecipeClick: (() -> Unit)? = null,
     containerColor: Color = TraktTheme.colors.dialogContainer,
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -50,6 +51,30 @@ internal fun SmartListDropdown(
             containerColor = containerColor,
             shape = RoundedCornerShape(16.dp),
         ) {
+            if (onRecipeClick != null) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.header_smart_list_recipe),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_info),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onRecipeClick()
+                    },
+                )
+            }
+
             if (onEditClick != null) {
                 DropdownMenuItem(
                     text = {
@@ -106,6 +131,7 @@ private fun SmartListDropdownPreview() {
         SmartListDropdown(
             onDeleteClick = {},
             onEditClick = {},
+            onRecipeClick = {},
         )
     }
 }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,6 +48,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -169,7 +169,6 @@ internal fun SmartListDetailsScreen(
 
     SmartListRecipeSheet(
         list = state.list.takeIf { recipeSheet },
-        awardCeremonies = state.awardCeremonies,
         onDismiss = {
             recipeSheet = false
         },
@@ -278,6 +277,7 @@ private fun TitleBar(
     modifier: Modifier = Modifier,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onRecipeClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     Row(
@@ -319,6 +319,7 @@ private fun TitleBar(
         SmartListDropdown(
             onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
+            onRecipeClick = onRecipeClick,
             modifier = Modifier
                 .padding(start = 12.dp),
         )
@@ -371,6 +372,7 @@ private fun ContentList(
                 subtitleVisible = false,
                 onEditClick = onEditClick,
                 onDeleteClick = onDeleteClick,
+                onRecipeClick = onRecipeClick,
                 onBackClick = onBackClick,
             )
         }
@@ -379,7 +381,10 @@ private fun ContentList(
             RecipeLink(
                 preview = recipePreview,
                 onClick = onRecipeClick,
-                modifier = Modifier.padding(bottom = 2.dp),
+                modifier = Modifier
+                    .padding(
+                        bottom = 22.dp,
+                    ),
             )
         }
 
@@ -471,24 +476,28 @@ private fun RecipeLink(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(4.dp),
         modifier = modifier
-            .heightIn(min = 48.dp)
+            .fillMaxWidth()
             .onClick(enabled = preview != null, onClick = onClick),
     ) {
+        val fontStyle = TraktTheme.typography.meta.copy(
+            fontSize = 12.sp,
+        )
         Text(
             text = preview?.summary.orEmpty(),
             color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
+            style = fontStyle,
             maxLines = 1,
             overflow = Ellipsis,
-            modifier = Modifier.weight(1F, fill = false),
+            modifier = Modifier.weight(1F),
         )
 
         if (preview != null && preview.remaining > 0) {
             Text(
                 text = stringResource(R.string.text_smart_list_recipe_more, preview.remaining),
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta,
+                style = fontStyle,
                 maxLines = 1,
+                modifier = Modifier.padding(start = 16.dp),
             )
         }
 
@@ -497,7 +506,7 @@ private fun RecipeLink(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(14.dp),
             )
         }
     }

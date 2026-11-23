@@ -8,12 +8,16 @@ import androidx.compose.material3.SheetValue.Expanded
 import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.model.lists.AwardCeremony
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.ui.components.TraktBottomSheet
+import kotlin.random.Random.Default.nextInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,17 +27,24 @@ internal fun SmartListRecipeSheet(
         enabledValues = setOf(Hidden, Expanded),
     ),
     list: SmartList?,
-    awardCeremonies: ImmutableList<AwardCeremony>,
     onDismiss: () -> Unit,
 ) {
+    val viewModelKey = remember(list) { nextInt().toString() }
+
     if (list != null) {
+        val viewModel: SmartListRecipeViewModel = koinViewModel(
+            key = viewModelKey,
+            parameters = { parametersOf(list) },
+        )
+        val recipeState by viewModel.state.collectAsStateWithLifecycle()
+
         TraktBottomSheet(
             sheetState = state,
             contentWindowInsets = { WindowInsets() },
             onDismiss = onDismiss,
         ) {
             SmartListRecipeView(
-                recipe = list.rememberRecipe(awardCeremonies),
+                recipe = list.rememberRecipe(recipeState.awardCeremonies),
                 listName = list.name,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
