@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.core.summary.shows.features.progress.ui.SeasonCompleteSweep
+import tv.trakt.trakt.core.summary.shows.features.progress.ui.rememberSeasonCompleteCount
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
@@ -39,6 +41,12 @@ internal fun SeasonProgressSummary(
     progressPercent: Float,
     modifier: Modifier = Modifier,
 ) {
+    val completions = rememberSeasonCompleteCount(
+        seasonNumber = season,
+        complete = progressPercent >= 1F,
+        loading = false,
+    )
+
     Column(
         verticalArrangement = Arrangement.Absolute.spacedBy(6.dp),
         modifier = modifier,
@@ -67,15 +75,21 @@ internal fun SeasonProgressSummary(
                 color = TraktTheme.colors.textSecondary,
             )
         }
-        EpisodeProgressBar(
-            startText = startText,
-            endText = endText,
-            progress = progressPercent,
-            containerColor = when (TraktTheme.colors.isLight) {
-                true -> TraktTheme.colors.chipContainer
-                false -> TraktTheme.colors.panelCardContainer
-            },
-        )
+        Box {
+            EpisodeProgressBar(
+                startText = startText,
+                endText = endText,
+                progress = progressPercent,
+                containerColor = when (TraktTheme.colors.isLight) {
+                    true -> TraktTheme.colors.chipContainer
+                    false -> TraktTheme.colors.panelCardContainer
+                },
+            )
+            SeasonCompleteSweep(
+                completions = completions,
+                modifier = Modifier.matchParentSize(),
+            )
+        }
     }
 }
 
