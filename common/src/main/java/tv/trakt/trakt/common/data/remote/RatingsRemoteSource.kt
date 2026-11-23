@@ -9,10 +9,10 @@ import org.openapitools.client.models.PostSyncRatingsAddRequestMoviesInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestSeasonsInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestShowsInner
 import org.openapitools.client.models.PostSyncRatingsRemoveRequest
+import org.openapitools.client.models.PostSyncRatingsRemoveRequestEpisodesInner
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
+import org.openapitools.client.models.PostSyncRatingsRemoveRequestSeasonsInner
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
-import org.openapitools.client.models.PostUsersListsListAdd201ResponseNotFoundEpisodesInner
-import org.openapitools.client.models.PostUsersListsListAdd201ResponseNotFoundSeasonsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import tv.trakt.trakt.common.model.TraktId
@@ -128,7 +128,7 @@ class RatingsRemoteSource(
         ratingsApi.postSyncRatingsRemove(
             PostSyncRatingsRemoveRequest(
                 episodes = listOf(
-                    PostUsersListsListAdd201ResponseNotFoundEpisodesInner(
+                    PostSyncRatingsRemoveRequestEpisodesInner(
                         ids = PostUsersListsListAddRequestEpisodesInnerIds(
                             trakt = id.value,
                             tvdb = -1,
@@ -146,7 +146,7 @@ class RatingsRemoteSource(
         ratingsApi.postSyncRatingsRemove(
             PostSyncRatingsRemoveRequest(
                 seasons = listOf(
-                    PostUsersListsListAdd201ResponseNotFoundSeasonsInner(
+                    PostSyncRatingsRemoveRequestSeasonsInner(
                         ids = PostUsersListsListAddRequestSeasonsInnerIds(
                             trakt = id.value,
                             tmdb = null,

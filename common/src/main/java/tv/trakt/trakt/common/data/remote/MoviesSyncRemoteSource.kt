@@ -8,10 +8,10 @@ import org.openapitools.client.apis.WatchedApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
+import org.openapitools.client.models.PostSyncHistoryAddRequest
+import org.openapitools.client.models.PostSyncHistoryAddRequestMoviesInner
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
-import org.openapitools.client.models.PostUsersHiddenAddRequest
-import org.openapitools.client.models.PostUsersHiddenAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInnerIds
@@ -48,9 +48,9 @@ class MoviesSyncRemoteSource(
         movieId: TraktId,
         watchedAt: String,
     ): PostSyncHistoryAdd200Response {
-        val request = PostUsersHiddenAddRequest(
+        val request = PostSyncHistoryAddRequest(
             movies = listOf(
-                PostUsersHiddenAddRequestMoviesInner(
+                PostSyncHistoryAddRequestMoviesInner(
                     ids = PostUsersListsListAddRequestMoviesInnerIds(
                         trakt = movieId.value,
                         slug = null,
@@ -80,7 +80,7 @@ class MoviesSyncRemoteSource(
     suspend fun removeAllFromHistory(movieId: TraktId) {
         val request = PostSyncHistoryRemoveRequest(
             movies = listOf(
-                PostUsersHiddenAddRequestMoviesInner(
+                PostSyncHistoryAddRequestMoviesInner(
                     ids = PostUsersListsListAddRequestMoviesInnerIds(
                         trakt = movieId.value,
                         slug = null,

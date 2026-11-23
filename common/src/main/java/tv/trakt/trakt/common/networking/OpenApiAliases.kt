@@ -15,7 +15,6 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerEpisodeId
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShow
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowAirs
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowIds
-import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImages
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowSocialIds
 import org.openapitools.client.models.GetCountriesList200ResponseInner
 import org.openapitools.client.models.GetMediaAnticipated200ResponseInner
@@ -24,7 +23,6 @@ import org.openapitools.client.models.GetMediaTrending200ResponseInner
 import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInner
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
-import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPersonSocialIds
 import org.openapitools.client.models.GetMoviesPeople200ResponseCrewValueInner
 import org.openapitools.client.models.GetMoviesRatings200Response
 import org.openapitools.client.models.GetMoviesRatings200ResponseTrakt
@@ -39,7 +37,6 @@ import org.openapitools.client.models.GetRecommendationsMoviesRecommend200Respon
 import org.openapitools.client.models.GetRecommendationsShowsRecommend200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerList
-import org.openapitools.client.models.GetSearchQuery200ResponseInnerPerson
 import org.openapitools.client.models.GetSearchTrending200ResponseInner
 import org.openapitools.client.models.GetShowsEpisodeTranslations200ResponseInner
 import org.openapitools.client.models.GetShowsProgressWatched200Response
@@ -58,7 +55,7 @@ import org.openapitools.client.models.GetUsersComments200ResponseInner
 import org.openapitools.client.models.GetUsersComments200ResponseInnerComment
 import org.openapitools.client.models.GetUsersFavoritesMedia200ResponseInnerOneOf
 import org.openapitools.client.models.GetUsersFavoritesMedia200ResponseInnerOneOf1
-import org.openapitools.client.models.GetUsersHiddenGetBySection200ResponseInner
+import org.openapitools.client.models.GetUsersHiddenGet200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryMovies200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryShows200ResponseInner
@@ -68,6 +65,8 @@ import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOfAllOfOne
 import org.openapitools.client.models.GetUsersListsListItemsAll200ResponseInner
 import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
+import org.openapitools.client.models.GetUsersNotes200ResponseInnerPerson
+import org.openapitools.client.models.GetUsersNotes200ResponseInnerPersonSocialIds
 import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInner
 import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInnerOneOf3Season
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInner
@@ -99,7 +98,7 @@ typealias CastCrewDto = GetMoviesPeople200Response
 typealias CastMemberDto = GetMoviesPeople200ResponseCastInner
 typealias CommentAllDto = GetUsersComments200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerComment
-typealias DroppedItemDto = GetUsersHiddenGetBySection200ResponseInner
+typealias DroppedItemDto = GetUsersHiddenGet200ResponseInner
 typealias EpisodeCalendarDto = GetCalendarsShows200ResponseInnerEpisode
 typealias EpisodeCalendarsDto = GetCalendarsShows200ResponseInnerEpisodeEpisodesInner
 typealias EpisodeDto = GetCalendarsMedia200ResponseInnerEpisode
@@ -111,7 +110,6 @@ typealias ExternalMovieRatingsDto = GetMoviesRatings200Response
 typealias ExternalSeasonRatingsDto = GetShowsSeasonRatings200Response
 typealias ExternalShowRatingsDto = GetShowsRatings200Response
 typealias ExtraVideoDto = GetMoviesVideos200ResponseInner
-typealias ImagesDto = GetCalendarsShows200ResponseInnerShowImages
 typealias LanguageDto = GetCountriesList200ResponseInner
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressNextEpisode
 typealias LikedListDto = GetUsersLikes200ResponseInner
@@ -127,7 +125,7 @@ typealias MovieStatsDto = GetMoviesStats200Response
 typealias PersonDto = GetMoviesPeople200ResponseCastInnerPerson
 typealias PersonMoviesDto = GetPeopleMovies200Response
 typealias PersonShowsDto = GetPeopleShows200Response
-typealias PersonSearchDto = GetSearchQuery200ResponseInnerPerson
+typealias PersonSearchDto = GetUsersNotes200ResponseInnerPerson
 typealias PopularMediaDto = GetMediaPopular200ResponseInner
 typealias ProgressEpisodeDto = GetSyncProgressEpisodesResponse
 typealias ProgressMovieDto = GetSyncProgressMovies200ResponseInner
@@ -150,7 +148,7 @@ typealias SmartListFiltersDto = GetUsersListsListSmartListDraft200ResponseFilter
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias SocialIdsDto = GetCalendarsShows200ResponseInnerShowSocialIds
-typealias PersonSocialIdsDto = GetMoviesPeople200ResponseCastInnerPersonSocialIds
+typealias PersonSocialIdsDto = GetUsersNotes200ResponseInnerPersonSocialIds
 typealias StreamingDto = GetMoviesWatchnow200ResponseValue
 typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias StreamingSourceDto = GetWatchnowSourcesAll200ResponseInnerValueInner

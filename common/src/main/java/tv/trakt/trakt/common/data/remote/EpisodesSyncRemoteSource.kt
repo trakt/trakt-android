@@ -2,13 +2,13 @@ package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
+import org.openapitools.client.models.PostSyncHistoryAddRequest
+import org.openapitools.client.models.PostSyncHistoryAddRequestEpisodesInner
+import org.openapitools.client.models.PostSyncHistoryAddRequestSeasonsInner
+import org.openapitools.client.models.PostSyncHistoryAddRequestShowsInner
+import org.openapitools.client.models.PostSyncHistoryAddRequestShowsInnerSeasonsInner
+import org.openapitools.client.models.PostSyncHistoryAddRequestShowsInnerSeasonsInnerEpisodesInner
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
-import org.openapitools.client.models.PostUsersHiddenAddRequest
-import org.openapitools.client.models.PostUsersHiddenAddRequestEpisodesInner
-import org.openapitools.client.models.PostUsersHiddenAddRequestSeasonsInner
-import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInner
-import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInnerSeasonsInner
-import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInnerSeasonsInnerEpisodesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerIds
@@ -26,9 +26,9 @@ class EpisodesSyncRemoteSource(
         episodeId: TraktId,
         watchedAt: String,
     ): PostSyncHistoryAdd200Response {
-        val request = PostUsersHiddenAddRequest(
+        val request = PostSyncHistoryAddRequest(
             episodes = listOf(
-                PostUsersHiddenAddRequestEpisodesInner(
+                PostSyncHistoryAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId.value,
                         tvdb = -1,
@@ -52,13 +52,13 @@ class EpisodesSyncRemoteSource(
         episode: Int,
         watchedAt: String,
     ): PostSyncHistoryAdd200Response {
-        val request = PostUsersHiddenAddRequest(
+        val request = PostSyncHistoryAddRequest(
             shows = listOf(
-                PostUsersHiddenAddRequestShowsInner(
+                PostSyncHistoryAddRequestShowsInner(
                     seasons = listOf(
-                        PostUsersHiddenAddRequestShowsInnerSeasonsInner(
+                        PostSyncHistoryAddRequestShowsInnerSeasonsInner(
                             episodes = listOf(
-                                PostUsersHiddenAddRequestShowsInnerSeasonsInnerEpisodesInner(
+                                PostSyncHistoryAddRequestShowsInnerSeasonsInnerEpisodesInner(
                                     number = episode,
                                     watchedAt = watchedAt,
                                 ),
@@ -91,9 +91,9 @@ class EpisodesSyncRemoteSource(
         episodeIds: List<TraktId>,
         watchedAt: String,
     ) {
-        val request = PostUsersHiddenAddRequest(
+        val request = PostSyncHistoryAddRequest(
             episodes = episodeIds.map {
-                PostUsersHiddenAddRequestEpisodesInner(
+                PostSyncHistoryAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = it.value,
                         tvdb = -1,
@@ -109,9 +109,9 @@ class EpisodesSyncRemoteSource(
     }
 
     suspend fun addToHistory(episodes: List<Pair<TraktId, String>>) {
-        val request = PostUsersHiddenAddRequest(
+        val request = PostSyncHistoryAddRequest(
             episodes = episodes.map { (episodeId, watchedAt) ->
-                PostUsersHiddenAddRequestEpisodesInner(
+                PostSyncHistoryAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId.value,
                         tvdb = -1,
@@ -137,7 +137,7 @@ class EpisodesSyncRemoteSource(
     suspend fun removeEpisodeFromHistory(episodeId: Int) {
         val request = PostSyncHistoryRemoveRequest(
             episodes = listOf(
-                PostUsersHiddenAddRequestEpisodesInner(
+                PostSyncHistoryAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId,
                         tvdb = -1,
@@ -154,7 +154,7 @@ class EpisodesSyncRemoteSource(
     suspend fun removeSeasonFromHistory(seasonId: Int) {
         val request = PostSyncHistoryRemoveRequest(
             seasons = listOf(
-                PostUsersHiddenAddRequestSeasonsInner(
+                PostSyncHistoryAddRequestSeasonsInner(
                     ids = PostUsersListsListAddRequestSeasonsInnerIds(
                         trakt = seasonId,
                         tmdb = null,

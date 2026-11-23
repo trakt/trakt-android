@@ -8,6 +8,8 @@ import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
+import org.openapitools.client.models.PostSyncHistoryAddRequest
+import org.openapitools.client.models.PostSyncHistoryAddRequestShowsInner
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
 import org.openapitools.client.models.PostUsersHiddenAddRequest
@@ -70,9 +72,9 @@ class ShowsSyncRemoteSource(
         showId: TraktId,
         watchedAt: String,
     ): SyncAddHistoryResponseDto {
-        val request = PostUsersHiddenAddRequest(
+        val request = PostSyncHistoryAddRequest(
             shows = listOf(
-                PostUsersHiddenAddRequestShowsInner(
+                PostSyncHistoryAddRequestShowsInner(
                     ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
@@ -94,7 +96,7 @@ class ShowsSyncRemoteSource(
     suspend fun removeAllFromHistory(showId: TraktId) {
         val request = PostSyncHistoryRemoveRequest(
             shows = listOf(
-                PostUsersHiddenAddRequestShowsInner(
+                PostSyncHistoryAddRequestShowsInner(
                     ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,

@@ -4,7 +4,11 @@ plugins {
 
 android {
     namespace = "tv.trakt.trakt.resources"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk {
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = libs.versions.compileSdkMinor.get().toInt()
+        }
+    }
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
