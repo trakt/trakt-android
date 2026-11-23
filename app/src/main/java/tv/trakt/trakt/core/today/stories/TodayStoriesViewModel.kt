@@ -66,6 +66,7 @@ internal class TodayStoriesViewModel(
     private var openedAt: Instant? = null
     private var shownFrames = emptySet<String>()
     private var shownGroups = emptySet<String>()
+    private var detailsFrameType: String? = null
 
     val events: Flow<TodayStoriesEvent>
         field = MutableSharedFlow<TodayStoriesEvent>(replay = 0)
@@ -168,6 +169,7 @@ internal class TodayStoriesViewModel(
     }
 
     fun navigateToMedia(media: TodayMedia) {
+        detailsFrameType = current().frame?.analyticsType
         when (media) {
             is TodayMedia.MovieMedia -> navigation.toMovie(media.movie)
             is TodayMedia.ShowMedia -> navigation.toShow(media.show)
@@ -176,9 +178,10 @@ internal class TodayStoriesViewModel(
 
     /** Called once the media is cached, right before opening its details. */
     fun leaveToDetails() {
-        current().frame?.let {
-            analytics.today.logAction(action = ACTION_DETAILS, frame = it.analyticsType)
+        detailsFrameType?.let {
+            analytics.today.logAction(action = ACTION_DETAILS, frame = it)
         }
+        detailsFrameType = null
         leave()
     }
 
