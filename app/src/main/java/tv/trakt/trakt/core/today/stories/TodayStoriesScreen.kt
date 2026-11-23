@@ -84,8 +84,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
@@ -122,6 +124,8 @@ private val PosterTopGap = 24.dp
 internal fun TodayStoriesScreen(
     viewModel: TodayStoriesViewModel,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToSocial: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -144,6 +148,22 @@ internal fun TodayStoriesScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+    ) {
+        state.navigateShow?.let {
+            viewModel.leaveToDetails()
+            onNavigateToShow(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateMovie?.let {
+            viewModel.leaveToDetails()
+            onNavigateToMovie(it)
+            viewModel.clearNavigation()
+        }
+    }
+
     TodayStoriesContent(
         state = state,
         onNext = viewModel::next,
@@ -155,6 +175,7 @@ internal fun TodayStoriesScreen(
             viewModel.leave()
             onNavigateToUser(user)
         },
+        onMediaClick = viewModel::navigateToMedia,
         onSocialClick = {
             viewModel.leave()
             onNavigateToSocial()
@@ -174,6 +195,7 @@ private fun TodayStoriesContent(
     onNextGroup: () -> Unit = {},
     onPreviousGroup: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
+    onMediaClick: (TodayMedia) -> Unit = {},
     onSocialClick: () -> Unit = {},
     onRevealSpoiler: () -> Unit = {},
     onClose: () -> Unit = {},
@@ -271,6 +293,7 @@ private fun TodayStoriesContent(
                     onPrevious = { if (isActive) onPrevious() },
                     onHeldChange = { if (isActive) isHeld = it },
                     onUserClick = onUserClick,
+                    onMediaClick = onMediaClick,
                     onConfirmVisibleChange = { if (isActive) isConfirming = it },
                     onRevealSpoiler = onRevealSpoiler,
                     modifier = Modifier

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 
@@ -18,6 +19,8 @@ internal data class TodayStoriesState(
     val groups: ImmutableList<TodayStoryGroup> = EmptyImmutableList,
     val position: TodayStoryPosition = TodayStoryPosition(),
     val loading: LoadingState = LoadingState.Idle,
+    val navigateShow: TraktId? = null,
+    val navigateMovie: TraktId? = null,
 ) {
     /** Unknown keys fall back to the first group, matching web. */
     val groupIndex: Int = groups
