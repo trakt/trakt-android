@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Αφαιρέστε τον εαυτό σας ως συνεργάτη στη λίστα %s</string>
   <string name="button_label_library">Βιβλιοθήκη</string>
   <string name="button_label_like_list">Μου αρέσει %s</string>
+  <string name="button_label_living_poster_tilt">Γείρετε το τηλέφωνό σας για να μετακινήσετε την αφίσα</string>
   <string name="button_label_login">Σύνδεση</string>
   <string name="button_label_logout">Αποσύνδεση</string>
   <string name="button_label_manage_collaborators">Διαχείριση συνεργατών για %s</string>

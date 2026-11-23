@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">%sのコラボレーターから自分を削除</string>
   <string name="button_label_library">ライブラリ</string>
   <string name="button_label_like_list">%sを「いいね」する</string>
+  <string name="button_label_living_poster_tilt">スマートフォンを傾けてポスターを動かす</string>
   <string name="button_label_login">ログイン</string>
   <string name="button_label_logout">ログアウト</string>
   <string name="button_label_manage_collaborators">%sのコラボレーターを管理</string>

@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Видалити себе зі співавторів для %s</string>
   <string name="button_label_library">Бібліотека</string>
   <string name="button_label_like_list">Сподобалася %s</string>
+  <string name="button_label_living_poster_tilt">Нахиліть телефон, щоб рухати постер</string>
   <string name="button_label_login">Увійти</string>
   <string name="button_label_logout">Вийти</string>
   <string name="button_label_manage_collaborators">Керувати співавторами для %s</string>

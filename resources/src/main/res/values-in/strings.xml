@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Hapus diri Anda sebagai kolaborator di %s</string>
   <string name="button_label_library">Pustaka</string>
   <string name="button_label_like_list">Sukai %s</string>
+  <string name="button_label_living_poster_tilt">Miringkan ponsel Anda untuk menggerakkan poster</string>
   <string name="button_label_login">Masuk</string>
   <string name="button_label_logout">Keluar</string>
   <string name="button_label_manage_collaborators">Kelola kolaborator untuk %s</string>

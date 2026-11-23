@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Fjern deg selv som samarbeidspartner på %s</string>
   <string name="button_label_library">Bibliotek</string>
   <string name="button_label_like_list">Lik %s</string>
+  <string name="button_label_living_poster_tilt">Vipp telefonen for å bevege plakaten</string>
   <string name="button_label_login">Logg inn</string>
   <string name="button_label_logout">Logg ut</string>
   <string name="button_label_manage_collaborators">Administrer samarbeidspartnere for %s</string>

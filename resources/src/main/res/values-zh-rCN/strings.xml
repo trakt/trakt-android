@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">将您自己从“%s”的协作者中移除</string>
   <string name="button_label_library">媒体库</string>
   <string name="button_label_like_list">赞 %s</string>
+  <string name="button_label_living_poster_tilt">倾斜手机以移动海报</string>
   <string name="button_label_login">登录</string>
   <string name="button_label_logout">退出</string>
   <string name="button_label_manage_collaborators">管理“%s”的协作者</string>

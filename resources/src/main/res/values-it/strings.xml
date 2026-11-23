@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Rimuoviti come collaboratore da %s</string>
   <string name="button_label_library">Libreria</string>
   <string name="button_label_like_list">Mi piace %s</string>
+  <string name="button_label_living_poster_tilt">Inclina il telefono per muovere la locandina</string>
   <string name="button_label_login">Accedi</string>
   <string name="button_label_logout">Esci</string>
   <string name="button_label_manage_collaborators">Gestisci i collaboratori per %s</string>

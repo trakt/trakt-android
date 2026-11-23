@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Ta bort dig själv som samarbetspartner på %s</string>
   <string name="button_label_library">Bibliotek</string>
   <string name="button_label_like_list">Gilla %s</string>
+  <string name="button_label_living_poster_tilt">Luta telefonen för att flytta affischen</string>
   <string name="button_label_login">Logga in</string>
   <string name="button_label_logout">Logga ut</string>
   <string name="button_label_manage_collaborators">Hantera samarbetspartners för %s</string>

@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">%s üzerinde kendinizi iş birlikçisi olarak kaldırın</string>
   <string name="button_label_library">Kütüphane</string>
   <string name="button_label_like_list">%s listesini beğen</string>
+  <string name="button_label_living_poster_tilt">Afişi hareket ettirmek için telefonunuzu eğin</string>
   <string name="button_label_login">Giriş Yap</string>
   <string name="button_label_logout">Çıkış Yap</string>
   <string name="button_label_manage_collaborators">%s için iş birlikçilerini yönet</string>

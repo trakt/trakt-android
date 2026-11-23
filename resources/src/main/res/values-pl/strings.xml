@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Usuń się ze współpracy nad %s</string>
   <string name="button_label_library">Biblioteka</string>
   <string name="button_label_like_list">Polub %s</string>
+  <string name="button_label_living_poster_tilt">Przechyl telefon, aby poruszać plakatem</string>
   <string name="button_label_login">Zaloguj</string>
   <string name="button_label_logout">Wyloguj</string>
   <string name="button_label_manage_collaborators">Zarządzaj współpracownikami dla %s</string>

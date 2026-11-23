@@ -175,6 +175,7 @@
   <string name="button_label_leave_collaboration">Remove yourself as a collaborator on %s</string>
   <string name="button_label_library">Library</string>
   <string name="button_label_like_list">Like %s</string>
+  <string name="button_label_living_poster_tilt">Tilt your phone to move the poster</string>
   <string name="button_label_login">Login</string>
   <string name="button_label_logout">Logout</string>
   <string name="button_label_manage_collaborators">Manage collaborators for %s</string>
