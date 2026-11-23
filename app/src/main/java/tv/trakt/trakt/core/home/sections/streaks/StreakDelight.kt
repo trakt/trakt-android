@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -151,12 +151,16 @@ internal fun Modifier.streakTodayGlow(celebration: Int): Modifier {
                 else -> lerp(1.2F, 1F, (t - PILL_GLOW_PEAK) / (1F - PILL_GLOW_PEAK))
             }
         }
-        .drawBehind {
+        .drawWithContent {
             val t = segment(clock.value, PILL_GLOW_DELAY_MS, PILL_GLOW_MS)
-            if (t <= 0F) return@drawBehind
+            if (t <= 0F || t >= 1F) {
+                drawContent()
+                return@drawWithContent
+            }
 
             val litFraction = (t / PILL_GLOW_PEAK).coerceAtMost(1F)
-            val haloAlpha = PILL_HALO_ALPHA * litFraction * (1F - segment(t, PILL_GLOW_PEAK, 1F - PILL_GLOW_PEAK))
+            val glowAlpha = litFraction * (1F - segment(t, PILL_GLOW_PEAK, 1F - PILL_GLOW_PEAK))
+            val haloAlpha = PILL_HALO_ALPHA * glowAlpha
             if (haloAlpha > 0F) {
                 val spread = PILL_HALO_SPREAD.toPx()
                 drawRoundRect(
@@ -166,8 +170,9 @@ internal fun Modifier.streakTodayGlow(celebration: Int): Modifier {
                     cornerRadius = CornerRadius(size.width / 2F + spread),
                 )
             }
+            drawContent()
             drawRoundRect(
-                color = Orange400.copy(alpha = litFraction),
+                color = Orange400.copy(alpha = glowAlpha),
                 cornerRadius = CornerRadius(size.width / 2F),
             )
         }

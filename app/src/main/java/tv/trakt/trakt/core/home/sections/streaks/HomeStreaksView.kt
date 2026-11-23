@@ -247,13 +247,13 @@ private fun WeekActivityPills(
                         .padding(2.dp)
                         .width(width)
                         .height(height)
+                        .streakTodayGlow(if (date == today) celebration else 0)
                         .border(
                             0.5.dp,
                             border,
                             RoundedCornerShape(100),
                         )
-                        .background(background, RoundedCornerShape(100))
-                        .streakTodayGlow(if (date == today) celebration else 0),
+                        .background(background, RoundedCornerShape(100)),
                 )
             }
         }
