@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.ui.header.poster
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -132,15 +133,31 @@ fun DetailsHeaderPoster(
                 }
 
                 var overlayReady by remember { mutableStateOf(false) }
-                val overlayAlpha by animateFloatAsState(
-                    targetValue = if (overlayReady) 1F else 0F,
-                    animationSpec = tween(1000, easing = FastOutSlowInEasing),
-                )
+                var overlayRevealed by rememberSaveable { mutableStateOf(false) }
+                val overlayAlpha = remember { Animatable(0F) }
+
+                LaunchedEffect(overlayReady) {
+                    val overlaySpec = tween<Float>(1000, easing = FastOutSlowInEasing)
+                    when {
+                        !overlayReady -> {
+                            overlayAlpha.animateTo(0F, overlaySpec)
+                        }
+
+                        overlayRevealed -> {
+                            overlayAlpha.snapTo(1F)
+                        }
+
+                        else -> {
+                            overlayRevealed = true
+                            overlayAlpha.animateTo(1F, overlaySpec)
+                        }
+                    }
+                }
 
                 DetailsPoster(
                     imageUrl = imageUrl,
                     imagePlaceholderUrl = imagePlaceholderUrl,
-                    imageAlpha = if (overlayReady && overlayAlpha == 1F) 0F else animatedAlpha.value,
+                    imageAlpha = if (overlayReady && overlayAlpha.value == 1F) 0F else animatedAlpha.value,
                     imageOffsetY = animatedTranslation,
                     color = accentColor,
                     modifier = posterModifier,
@@ -151,7 +168,7 @@ fun DetailsHeaderPoster(
                         modifier = Modifier
                             .matchParentSize()
                             .graphicsLayer {
-                                alpha = animatedAlpha.value * overlayAlpha
+                                alpha = animatedAlpha.value * overlayAlpha.value
                                 translationY = animatedTranslation.toPx()
                             },
                     ) {
