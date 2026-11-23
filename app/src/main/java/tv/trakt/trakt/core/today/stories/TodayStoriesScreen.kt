@@ -153,10 +153,12 @@ internal fun TodayStoriesScreen(
         state.navigateMovie,
     ) {
         state.navigateShow?.let {
+            viewModel.leaveToDetails()
             onNavigateToShow(it)
             viewModel.clearNavigation()
         }
         state.navigateMovie?.let {
+            viewModel.leaveToDetails()
             onNavigateToMovie(it)
             viewModel.clearNavigation()
         }

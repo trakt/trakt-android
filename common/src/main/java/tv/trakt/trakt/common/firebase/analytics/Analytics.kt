@@ -580,7 +580,7 @@ interface Analytics {
 
         /**
          * Logs an action taken on a story frame.
-         * @param action The action (watchlist, mark-as-watched, view-all).
+         * @param action The action (watchlist, mark-as-watched, view-all, details).
          * @param frame The frame type (for-you, summary, friend).
          */
         fun logAction(

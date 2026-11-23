@@ -39,6 +39,7 @@ private const val OPEN_SOURCE = "navbar"
 private const val CLOSE_REASON_CLOSE = "close"
 private const val CLOSE_REASON_END = "end"
 private const val CLOSE_REASON_LEAVE = "leave"
+private const val ACTION_DETAILS = "details"
 
 internal sealed interface TodayStoriesEvent {
     data object Close : TodayStoriesEvent
@@ -167,11 +168,18 @@ internal class TodayStoriesViewModel(
     }
 
     fun navigateToMedia(media: TodayMedia) {
-        leave()
         when (media) {
             is TodayMedia.MovieMedia -> navigation.toMovie(media.movie)
             is TodayMedia.ShowMedia -> navigation.toShow(media.show)
         }
+    }
+
+    /** Called once the media is cached, right before opening its details. */
+    fun leaveToDetails() {
+        current().frame?.let {
+            analytics.today.logAction(action = ACTION_DETAILS, frame = it.analyticsType)
+        }
+        leave()
     }
 
     fun clearNavigation() {
