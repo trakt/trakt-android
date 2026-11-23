@@ -8,9 +8,8 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.crashlytics
-import com.google.firebase.remoteconfig.remoteConfig
-import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -29,6 +28,8 @@ import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.data.local.di.localSourcesModule
 import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
+import tv.trakt.trakt.common.firebase.config.RemoteConfigManager
+import tv.trakt.trakt.common.firebase.config.di.remoteConfigModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
 import tv.trakt.trakt.common.helpers.coil.registerCoilImageLoader
@@ -95,8 +96,6 @@ import tv.trakt.trakt.core.userprofile.di.userProfileModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
 import tv.trakt.trakt.ui.components.dateselection.otherdatepicker.di.otherDatePickerModule
 import tv.trakt.trakt.widgets.di.widgetsModule
-import java.util.concurrent.TimeUnit.MINUTES
-import tv.trakt.trakt.common.R as RCommon
 
 internal class TraktApplication : Application() {
     private val appLifecycleProvider by lazy {
@@ -126,17 +125,7 @@ internal class TraktApplication : Application() {
     }
 
     fun setupFirebaseConfig() {
-        with(Firebase.remoteConfig) {
-            setDefaultsAsync(RCommon.xml.remote_config_defaults)
-            setConfigSettingsAsync(
-                remoteConfigSettings {
-                    minimumFetchIntervalInSeconds = when {
-                        BuildConfig.DEBUG -> 0
-                        else -> MINUTES.toSeconds(5)
-                    }
-                },
-            )
-        }
+        get<RemoteConfigManager>().setup()
     }
 
     fun setupKoin() {
@@ -208,6 +197,7 @@ internal class TraktApplication : Application() {
                 checkInModule,
                 inAppReviewModule,
                 analyticsModule,
+                remoteConfigModule,
                 translationsModule,
                 gifPickerModule,
                 userProfileModule,

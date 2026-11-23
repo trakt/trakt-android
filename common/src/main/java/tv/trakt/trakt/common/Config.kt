@@ -17,6 +17,7 @@ object Config {
     const val WEB_PRIVACY_URL: String = "https://app.trakt.tv/privacy?native_app_mode=true"
     const val WEB_SUPPORT_URL: String = "https://support.trakt.tv"
     const val WEB_ROADMAP_URL: String = "https://roadmap.trakt.tv/"
+    const val WEB_STATUS_URL: String = "https://status.trakt.tv"
     const val WEB_SETTINGS_URL: String = "https://app.trakt.tv/settings?native_app_mode=true"
     const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
     const val WEB_TRANSLATE_URL: String = "https://crwd.in/trakt-poc/3857d5ea667dd425fbd0cb2e4e80dc192749600"

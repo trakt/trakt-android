@@ -4,6 +4,11 @@
   <!-- Mobile -->
 
   <entry>
+    <key>mobile_maintenance_enabled</key>
+    <value>false</value>
+  </entry>
+
+  <entry>
     <key>mobile_background_vip_image_url</key>
     <value>https://image.tmdb.org/t/p/w1280/cNsdbWfcyv7vkatH2NVktYBOmR2.jpg</value>
   </entry>

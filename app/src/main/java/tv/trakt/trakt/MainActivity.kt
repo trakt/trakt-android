@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.core.user.SpoilerState
 import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HTTPS_AUTH_CALLBACK_ENABLED
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.firebase.config.RemoteConfigManager
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType
@@ -97,6 +98,10 @@ internal class MainActivity : AppCompatActivity() {
 
     private val analytics: Analytics by lazy {
         inject<Analytics>().value
+    }
+
+    private val remoteConfigManager: RemoteConfigManager by lazy {
+        inject<RemoteConfigManager>().value
     }
 
     private val getSpoilerStateUseCase: GetSpoilerStateUseCase by lazy {
@@ -220,7 +225,7 @@ internal class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        updateRemoteConfig()
+        remoteConfigManager.refresh()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -253,18 +258,6 @@ internal class MainActivity : AppCompatActivity() {
                 else -> LightColors.backgroundPrimary
             }.toArgb().toDrawable(),
         )
-    }
-
-    private fun updateRemoteConfig() {
-        Firebase.remoteConfig
-            .fetchAndActivate()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Timber.d("Remote Config updated: ${it.result}")
-                } else {
-                    Timber.e("Remote Config update failed!")
-                }
-            }
     }
 
     private fun startAuthorization(source: LoginSource) {

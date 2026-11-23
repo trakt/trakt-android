@@ -9,14 +9,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
-import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.di.authModule
 import tv.trakt.trakt.app.core.comments.di.commentsModule
 import tv.trakt.trakt.app.core.details.episode.di.episodeDetailsModule
@@ -48,6 +46,8 @@ import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.data.local.di.localSourcesModule
 import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
+import tv.trakt.trakt.common.firebase.config.RemoteConfigManager
+import tv.trakt.trakt.common.firebase.config.di.remoteConfigModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
 import tv.trakt.trakt.common.helpers.coil.registerCoilImageLoader
@@ -59,6 +59,8 @@ internal val LocalDrawerVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 class TvActivity : ComponentActivity() {
+    private val remoteConfigManager: RemoteConfigManager by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -80,18 +82,7 @@ class TvActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        updateRemoteConfig()
-    }
-
-    private fun updateRemoteConfig() {
-        Firebase.remoteConfig.fetchAndActivate()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Timber.d("Remote Config params updated: ${task.result}")
-                } else {
-                    Timber.e("Remote Config fetch failed!")
-                }
-            }
+        remoteConfigManager.refresh()
     }
 
     companion object {
@@ -139,6 +130,7 @@ class TvActivity : ComponentActivity() {
                     syncModule,
                     inAppReviewModule,
                     analyticsModule,
+                    remoteConfigModule,
                     translationsModule,
                 )
             }
