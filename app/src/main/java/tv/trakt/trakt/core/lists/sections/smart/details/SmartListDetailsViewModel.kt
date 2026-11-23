@@ -34,9 +34,11 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
+import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListFilterOptionsUseCase
 import tv.trakt.trakt.core.lists.model.SmartListItem
 import tv.trakt.trakt.core.lists.sections.smart.details.navigation.SmartListDetailsDestination
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
@@ -51,6 +53,7 @@ internal class SmartListDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getSmartListItemsUseCase: GetSmartListItemsUseCase,
     private val deleteSmartListUseCase: DeleteSmartListUseCase,
+    private val getFilterOptionsUseCase: GetSmartListFilterOptionsUseCase,
     private val localSource: ListsSmartLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
@@ -63,6 +66,7 @@ internal class SmartListDetailsViewModel(
 
     private val listState = MutableStateFlow<SmartList?>(destinationList)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val awardCeremoniesState = MutableStateFlow(initialState.awardCeremonies)
     private val navigation = navigationFactory.create(
         scope = viewModelScope,
         isBusy = { processingJob?.isActive == true },
@@ -81,6 +85,7 @@ internal class SmartListDetailsViewModel(
 
     init {
         loadInitialData()
+        loadAwardCeremonies(destinationList)
         observeCollection()
         observeListUpdates()
     }
@@ -107,6 +112,7 @@ internal class SmartListDetailsViewModel(
                 listState.update { updated }
                 if (updated.filters != current?.filters) {
                     loadInitialData()
+                    loadAwardCeremonies(updated)
                 }
             }
             .launchIn(viewModelScope)
@@ -137,6 +143,22 @@ internal class SmartListDetailsViewModel(
             } finally {
                 loadingState.update { Done }
                 dataJob = null
+            }
+        }
+    }
+
+    private fun loadAwardCeremonies(list: SmartList) {
+        if (list.filters.awards.isNullOrEmpty() || awardCeremoniesState.value.isNotEmpty()) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                awardCeremoniesState.update { getFilterOptionsUseCase.getAwardCatalog() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error, "Failed to load award catalog")
+                }
             }
         }
     }
@@ -235,6 +257,7 @@ internal class SmartListDetailsViewModel(
         deletingState,
         deletedState,
         errorState,
+        awardCeremoniesState,
     ) { state ->
         SmartListDetailsState(
             loading = state[0] as LoadingState,
@@ -247,6 +270,7 @@ internal class SmartListDetailsViewModel(
             deleting = state[7] as LoadingState,
             deleted = state[8] as Boolean,
             error = state[9] as Exception?,
+            awardCeremonies = state[10] as ImmutableList<AwardCeremony>,
         )
     }.stateIn(
         scope = viewModelScope,

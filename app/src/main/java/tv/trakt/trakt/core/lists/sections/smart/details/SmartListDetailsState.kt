@@ -4,7 +4,9 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.AwardCeremony
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.model.SmartListItem
 
@@ -20,4 +22,5 @@ internal data class SmartListDetailsState(
     val deleting: LoadingState = LoadingState.Idle,
     val deleted: Boolean = false,
     val error: Exception? = null,
+    val awardCeremonies: ImmutableList<AwardCeremony> = EmptyImmutableList,
 )
