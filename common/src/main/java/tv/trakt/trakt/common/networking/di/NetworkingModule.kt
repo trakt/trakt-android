@@ -123,6 +123,7 @@ val networkingApiModule = module {
             get<WatchedApi>(),
             get<V3Api>(),
             get<ScrobbleExtrasApi>(),
+            get<SmartListDraftsApi>(),
         )
     }
 
