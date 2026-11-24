@@ -50,7 +50,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -140,31 +139,19 @@ private fun SmartListConvertContent(
             }
 
             item(key = "actions") {
-                Row(
-                    verticalAlignment = CenterVertically,
-                    horizontalArrangement = spacedBy(8.dp),
+                PrimaryButton(
+                    text = stringResource(R.string.button_text_smart_list_convert),
+                    height = ButtonHeight,
+                    textStyle = TraktTheme.typography.buttonTertiary,
+                    containerColor = TraktTheme.colors.accent,
+                    contentColor = Color.White,
+                    enabled = state.list != null && state.draft != null,
+                    loading = state.converting.isLoading,
+                    onClick = onConvertClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
-                ) {
-                    TertiaryButton(
-                        text = stringResource(R.string.button_text_cancel),
-                        height = ButtonHeight,
-                        enabled = !state.converting.isLoading,
-                        onClick = onCancelClick,
-                    )
-                    PrimaryButton(
-                        text = stringResource(R.string.button_text_smart_list_convert),
-                        height = ButtonHeight,
-                        textStyle = TraktTheme.typography.buttonTertiary,
-                        containerColor = TraktTheme.colors.accent,
-                        contentColor = Color.White,
-                        enabled = state.list != null && state.draft != null,
-                        loading = state.converting.isLoading,
-                        onClick = onConvertClick,
-                        modifier = Modifier.weight(1F),
-                    )
-                }
+                )
             }
 
             item(key = "toggle") {
