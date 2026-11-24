@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -115,6 +116,7 @@ private fun SmartListUpgradeContent(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
+            .shadow(8.dp, DefaultCardShape)
             .background(TraktTheme.colors.panelCardContainer, DefaultCardShape)
             .padding(16.dp),
     ) {
@@ -122,15 +124,6 @@ private fun SmartListUpgradeContent(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = spacedBy(12.dp),
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_smart),
-                tint = TraktTheme.colors.accent,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(top = 2.dp)
-                    .size(18.dp),
-            )
-
             Column(
                 verticalArrangement = spacedBy(4.dp),
                 modifier = Modifier.weight(1F),
@@ -174,6 +167,7 @@ private fun SmartListUpgradeContent(
 
         PrimaryButton(
             text = actionText,
+            icon = painterResource(R.drawable.ic_smart),
             height = 40.dp,
             containerColor = TraktTheme.colors.accent,
             contentColor = Color.White,

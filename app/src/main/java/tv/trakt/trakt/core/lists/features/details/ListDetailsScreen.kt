@@ -55,6 +55,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.LocalBottomBarVisibility
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
@@ -198,7 +199,6 @@ internal fun ListDetailsScreen(
                     onConvertClick = onConvertToSmartListClick,
                     onCreateSmartListClick = onCreateSmartListClick,
                     onSmartListRedirect = onSmartListRedirect,
-                    modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
                 )
             }
         },
@@ -425,8 +425,30 @@ internal fun ListDetailsContent(
             onLikeClick = onLikeClick,
             onAddFromListsClick = onAddFromListsClick.takeIf { state.canAddFromLists },
             onBackClick = onBackClick,
-            upgradeContent = upgradeContent,
         )
+
+        upgradeContent?.let {
+            val bottomBarVisible = LocalBottomBarVisibility.current.value
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(
+                                when {
+                                    bottomBarVisible -> TraktTheme.size.navigationBarHeight
+                                    else -> 0.dp
+                                },
+                            )
+                            .plus(8.dp),
+                    ),
+            ) {
+                it()
+            }
+        }
     }
 }
 
@@ -596,7 +618,6 @@ private fun ContentList(
     onAddFromListsClick: (() -> Unit)?,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
-    upgradeContent: (@Composable () -> Unit)?,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -642,12 +663,6 @@ private fun ContentList(
                 onInfoClick = onInfoClick,
                 onAddFromListsClick = onAddFromListsClick,
             )
-        }
-
-        upgradeContent?.let {
-            item(key = "smart_list_upgrade") {
-                it()
-            }
         }
 
         item {
