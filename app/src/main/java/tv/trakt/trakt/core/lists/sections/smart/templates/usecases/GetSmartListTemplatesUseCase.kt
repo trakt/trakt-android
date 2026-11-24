@@ -6,6 +6,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.data.local.SmartListTemplatesLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.lists.SmartList
@@ -20,7 +21,7 @@ internal class GetSmartListTemplatesUseCase(
     private val localSource: SmartListTemplatesLocalSource,
 ) {
     suspend fun getLocalTemplates(): ImmutableList<SmartListTemplate>? {
-        return localSource.getTemplates()
+        return localSource.getTemplates(now = nowUtcInstant())
     }
 
     suspend fun getTemplates(): ImmutableList<SmartListTemplate> {
@@ -30,7 +31,10 @@ internal class GetSmartListTemplatesUseCase(
             .asyncMap { it.withPersonalPreview() }
             .toImmutableList()
 
-        localSource.setTemplates(templates)
+        localSource.setTemplates(
+            templates = templates,
+            now = nowUtcInstant(),
+        )
         return templates
     }
 
