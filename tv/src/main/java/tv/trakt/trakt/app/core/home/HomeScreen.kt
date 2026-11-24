@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +45,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
@@ -162,12 +162,8 @@ private fun HomeScreenContent(
         )
 
         LazyColumn(
-            state = rememberLazyListState(
-                cacheWindow = LazyLayoutCacheWindow(
-                    aheadFraction = 1F,
-                    behindFraction = 1F,
-                ),
-            ),
+            state = rememberLazyListState(),
+            cacheWindow = rememberCacheWindow(1F),
             verticalArrangement = spacedBy(TraktTheme.spacing.mainRowVerticalSpace),
             contentPadding = PaddingValues(
                 vertical = TraktTheme.spacing.mainContentVerticalSpace + 8.dp,

@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
@@ -83,6 +82,7 @@ import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
 import tv.trakt.trakt.core.summary.history.model.MediaHistoryType
@@ -271,12 +271,7 @@ internal fun MediaHistoryContent(
     onRemoveClick: (HomeActivityItem) -> Unit = {},
     onRemoveAllClick: () -> Unit = {},
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -356,6 +351,7 @@ private fun ContentList(
 
     LazyColumn(
         state = listState,
+        cacheWindow = rememberCacheWindow(0.5F),
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,

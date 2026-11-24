@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +43,7 @@ import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.summary.people.ListEmptyView
 import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.helpers.resolveSelectedCreditsFilter
@@ -68,12 +68,7 @@ internal fun MoviesCreditsList(
     onMoreClick: ((String?) -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     var selectedFilter by rememberSaveable(listItems.keys) {
         mutableStateOf(
@@ -134,6 +129,7 @@ internal fun MoviesCreditsList(
 
                             LazyRow(
                                 state = listState,
+                                cacheWindow = rememberCacheWindow(1F),
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
                                 contentPadding = contentPadding,

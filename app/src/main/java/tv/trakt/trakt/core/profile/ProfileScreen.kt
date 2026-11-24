@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -66,6 +65,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityView
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
@@ -204,12 +204,7 @@ private fun ProfileScreen(
         end = TraktTheme.spacing.mainPageHorizontalSpace,
     )
 
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val backdropScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -242,6 +237,7 @@ private fun ProfileScreen(
 
         LazyColumn(
             state = listState,
+            cacheWindow = rememberCacheWindow(0.5F),
             verticalArrangement = spacedBy(0.dp),
             contentPadding = listPadding,
             overscrollEffect = null,

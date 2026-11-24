@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -76,6 +75,7 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.SocialIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
@@ -224,12 +224,7 @@ internal fun PersonDetailsContent(
 ) {
     val context = LocalContext.current
 
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(
         saver = SimpleScrollConnection.Saver,
@@ -266,6 +261,7 @@ internal fun PersonDetailsContent(
         state.personDetails?.let { person ->
             LazyColumn(
                 state = listState,
+                cacheWindow = rememberCacheWindow(1F),
                 verticalArrangement = spacedBy(0.dp),
                 contentPadding = contentPadding,
                 overscrollEffect = null,

@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.discover.DiscoverItem.MovieItem
 import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
@@ -79,6 +80,7 @@ internal fun AllDiscoverListView(
 
     LazyColumn(
         state = state,
+        cacheWindow = rememberCacheWindow(0.5F),
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,

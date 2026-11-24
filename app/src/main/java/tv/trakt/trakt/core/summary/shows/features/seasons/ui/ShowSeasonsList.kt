@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.material3.Text
@@ -28,6 +27,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -47,12 +47,7 @@ internal fun ShowSeasonsList(
     onSeasonClick: (SeasonItem) -> Unit,
     onSeasonLongClick: (SeasonItem) -> Unit,
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.75F,
-            behindFraction = 0.75F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     var initialScrolled by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(selectedSeason) {
@@ -72,6 +67,7 @@ internal fun ShowSeasonsList(
 
     LazyRow(
         state = listState,
+        cacheWindow = rememberCacheWindow(0.75F),
         horizontalArrangement = spacedBy(itemSpacing),
         contentPadding = contentPadding,
         overscrollEffect = overscrollEffect,

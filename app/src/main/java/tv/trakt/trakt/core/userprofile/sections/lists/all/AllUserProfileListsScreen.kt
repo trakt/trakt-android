@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,6 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
@@ -90,12 +90,7 @@ private fun AllUserProfileListsContent(
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -142,6 +137,7 @@ private fun AllUserProfileListsContent(
 
         LazyColumn(
             state = listState,
+            cacheWindow = rememberCacheWindow(0.5F),
             verticalArrangement = spacedBy(0.dp),
             contentPadding = contentVerticalPadding,
             overscrollEffect = null,

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -43,6 +42,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.SpoilerBlur
@@ -67,12 +67,7 @@ internal fun ShowEpisodesList(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     var currentSeason by remember { mutableIntStateOf(season ?: 0) }
     LaunchedEffect(season) {
@@ -116,6 +111,7 @@ internal fun ShowEpisodesList(
         } else {
             LazyRow(
                 state = listState,
+                cacheWindow = rememberCacheWindow(1F),
                 horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
                 contentPadding = contentPadding,
                 modifier = modifier.fillMaxWidth(),

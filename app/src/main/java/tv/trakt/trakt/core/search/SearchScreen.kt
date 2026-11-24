@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +53,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.search.features.game.showGameCard
 import tv.trakt.trakt.core.search.features.game.ui.GameSearchCard
@@ -86,12 +86,7 @@ internal fun SearchScreen(
     val localCheckInVisibility = LocalCheckInVisibility.current
     val localRateVisibility = LocalRatePromptVisibility.current
 
-    val contentGridState = rememberLazyGridState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val contentGridState = rememberLazyGridState()
 
     var showContextSheet by remember { mutableStateOf<Show?>(null) }
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
@@ -240,6 +235,7 @@ private fun ContentList(
 
     LazyVerticalGrid(
         state = listState,
+        cacheWindow = rememberCacheWindow(0.5F),
         columns = GridCells.Fixed(TraktTheme.size.mainGridColumns),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
