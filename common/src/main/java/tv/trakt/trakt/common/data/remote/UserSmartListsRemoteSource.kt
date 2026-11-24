@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.networking.SmartListDraftDto
 import tv.trakt.trakt.common.networking.SmartListDraftsSummaryDto
 import tv.trakt.trakt.common.networking.SmartListDto
 import tv.trakt.trakt.common.networking.SmartListItemDto
+import tv.trakt.trakt.common.networking.SmartListTemplateDto
 import tv.trakt.trakt.common.networking.UpdateSmartListRequestDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 
@@ -136,6 +137,10 @@ class UserSmartListsRemoteSource(
 
     suspend fun getSmartListDraftsSummary(userId: String = "me"): SmartListDraftsSummaryDto {
         return smartListDraftsApi.getUsersSmartListDraftsSummary(id = userId).body()
+    }
+
+    suspend fun getSmartListTemplates(): List<SmartListTemplateDto> {
+        return smartListsApi.getSmartListsTemplates().body()
     }
 
     suspend fun deleteSmartList(

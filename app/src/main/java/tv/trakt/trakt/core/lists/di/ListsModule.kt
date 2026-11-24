@@ -62,6 +62,9 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.smart.details.SmartListDetailsViewModel
 import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeViewModel
+import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesViewModel
+import tv.trakt.trakt.core.lists.sections.smart.templates.usecases.GetSmartListTemplatesUseCase
+import tv.trakt.trakt.core.lists.sections.smart.templates.usecases.SmartListTemplatesHiddenUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListsUseCase
@@ -103,6 +106,7 @@ internal val listsModule = module {
     factoryOf(::CreateSmartListUseCase)
     factoryOf(::UpdateSmartListUseCase)
     factoryOf(::DeleteSmartListUseCase)
+    factoryOf(::GetSmartListTemplatesUseCase)
     factoryOf(::GetPersonalListItemsUseCase)
     factoryOf(::GetListItemsUseCase)
     factoryOf(::LocalizeListItemsUseCase)
@@ -134,10 +138,17 @@ internal val listsModule = module {
         )
     }
 
+    factory {
+        SmartListTemplatesHiddenUseCase(
+            dataStore = get(named(LISTS_PREFERENCES)),
+        )
+    }
+
     viewModelOf(::ListsViewModel)
     viewModelOf(::ListsWatchlistViewModel)
     viewModelOf(::ListDetailsViewModel)
     viewModelOf(::SmartListDetailsViewModel)
+    viewModelOf(::SmartListTemplatesViewModel)
     viewModelOf(::ListReorderViewModel)
     viewModelOf(::ListsReorderViewModel)
     viewModelOf(::WatchlistReorderViewModel)

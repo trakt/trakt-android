@@ -52,9 +52,11 @@ internal class CreateSmartListViewModel(
     private val initialFilters = editList?.filters?.withGroupedCertifications()
         ?: destination.filtersJson?.let { Json.decodeFromString<SmartListFilters>(it) }
         ?: SmartListFilters.Default
+    private val initialName = editList?.name ?: destination.name.orEmpty()
 
     private val initialState = CreateSmartListState(
         editList = editList,
+        initialName = initialName,
         initialFilters = initialFilters,
         filters = initialFilters,
     )
@@ -230,6 +232,7 @@ internal class CreateSmartListViewModel(
     ) { state ->
         CreateSmartListState(
             editList = editList,
+            initialName = initialName,
             initialFilters = initialFilters,
             items = state[0] as? ImmutableList<SmartListItem>,
             filters = state[1] as SmartListFilters,

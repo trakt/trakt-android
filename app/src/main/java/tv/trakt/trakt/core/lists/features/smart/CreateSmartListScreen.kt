@@ -132,7 +132,7 @@ internal fun CreateSmartListScreen(
     )
 
     val nameInputState = rememberTextFieldState(
-        initialText = state.editList?.name.orEmpty(),
+        initialText = state.initialName,
     )
     var confirmExitSheet by remember { mutableStateOf(false) }
 

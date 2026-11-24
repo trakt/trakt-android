@@ -16,6 +16,7 @@ internal data class CreateSmartListState(
     val items: ImmutableList<SmartListItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val editList: SmartList? = null,
+    val initialName: String = "",
     val initialFilters: SmartListFilters = SmartListFilters.Default,
     val filters: SmartListFilters = SmartListFilters.Default,
     val awardCatalog: ImmutableList<AwardCeremony> = persistentListOf(),
@@ -26,6 +27,6 @@ internal data class CreateSmartListState(
     val success: Boolean = false,
 ) {
     fun hasChanges(name: String): Boolean {
-        return filters != initialFilters || name.trim() != editList?.name.orEmpty()
+        return filters != initialFilters || name.trim() != initialName
     }
 }

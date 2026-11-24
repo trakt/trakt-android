@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.lists.ListsScreen
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
@@ -28,6 +29,8 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToSmartList: (SmartList) -> Unit,
     onNavigateToCreateSmartList: () -> Unit,
     onNavigateToEditSmartList: (SmartList) -> Unit,
+    onNavigateToSmartListTemplate: (SmartListFilters, String) -> Unit,
+    onNavigateToSmartListTemplates: () -> Unit,
     onNavigateToListReorder: (CustomList) -> Unit,
     onNavigateToAddFromLists: (CustomList) -> Unit,
     onNavigateToConvertSmartList: (TraktId) -> Unit,
@@ -38,6 +41,7 @@ internal fun NavGraphBuilder.listsScreen(
     composable<ListsDestination> {
         ListsScreen(
             viewModel = koinViewModel(),
+            templatesViewModel = koinViewModel(),
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShow = onNavigateToShow,
             onNavigateToDiscover = onNavigateToDiscover,
@@ -49,6 +53,8 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToSmartList = onNavigateToSmartList,
             onNavigateToCreateSmartList = onNavigateToCreateSmartList,
             onNavigateToEditSmartList = onNavigateToEditSmartList,
+            onNavigateToSmartListTemplate = onNavigateToSmartListTemplate,
+            onNavigateToSmartListTemplates = onNavigateToSmartListTemplates,
             onNavigateToListReorder = onNavigateToListReorder,
             onNavigateToAddFromLists = onNavigateToAddFromLists,
             onNavigateToConvertSmartList = onNavigateToConvertSmartList,

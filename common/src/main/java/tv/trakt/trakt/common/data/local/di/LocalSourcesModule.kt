@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.data.local.ReleasesMoviesLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.local.SmartListFilterOptionsLocalSource
+import tv.trakt.trakt.common.data.local.SmartListTemplatesLocalSource
 import tv.trakt.trakt.common.data.local.SoundtrackLocalSource
 import tv.trakt.trakt.common.data.local.StreamingLocalSource
 import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
@@ -73,6 +74,7 @@ private const val PUSH_PREFERENCES = "push_preferences"
 private const val MEDIA_MODE_PREFERENCES = "media_mode_preferences"
 private const val LOCALIZED_TITLES_PREFERENCES = "localized_titles"
 private const val PORTRAIT_TOKEN_PREFERENCES = "portrait_token"
+private const val SMART_LIST_TEMPLATES_PREFERENCES = "smart_list_templates"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -272,6 +274,19 @@ val localSourcesModule = module {
         createCacheStore(
             context = androidApplication(),
             name = PORTRAIT_TOKEN_PREFERENCES,
+        )
+    }
+
+    single {
+        SmartListTemplatesLocalSource(
+            dataStore = get(named(SMART_LIST_TEMPLATES_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(SMART_LIST_TEMPLATES_PREFERENCES)) {
+        createCacheStore(
+            context = androidApplication(),
+            name = SMART_LIST_TEMPLATES_PREFERENCES,
         )
     }
 }

@@ -58,6 +58,7 @@ import tv.trakt.trakt.core.lists.features.smart.navigation.navigateToEditSmartLi
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.allPersonalListScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.smart.details.navigation.navigateToSmartListDetails
 import tv.trakt.trakt.core.lists.sections.smart.details.navigation.smartListDetailsScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
@@ -585,6 +586,8 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
+            onNavigateToSmartListTemplate = { filters, name -> navigateToCreateSmartList(filters, name) },
+            onNavigateToSmartListTemplates = { navigateToAllLists(PersonalListType.Smart, templates = true) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateToConvertSmartList = { navigateToSmartListConvert(it) },
@@ -620,6 +623,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
+            onNavigateToSmartListTemplate = { filters, name -> navigateToCreateSmartList(filters, name) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
             onNavigateToListsReorder = { navigateToListsReorder() },

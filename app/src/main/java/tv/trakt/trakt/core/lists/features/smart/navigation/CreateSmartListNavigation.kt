@@ -14,6 +14,7 @@ import tv.trakt.trakt.core.lists.features.smart.CreateSmartListScreen
 internal data class CreateSmartListDestination(
     val listJson: String? = null,
     val filtersJson: String? = null,
+    val name: String? = null,
 )
 
 internal fun NavGraphBuilder.createSmartListScreen(onNavigateBack: () -> Unit) {
@@ -25,10 +26,14 @@ internal fun NavGraphBuilder.createSmartListScreen(onNavigateBack: () -> Unit) {
     }
 }
 
-internal fun NavController.navigateToCreateSmartList(filters: SmartListFilters? = null) {
+internal fun NavController.navigateToCreateSmartList(
+    filters: SmartListFilters? = null,
+    name: String? = null,
+) {
     navigate(
         route = CreateSmartListDestination(
             filtersJson = filters?.let { Json.encodeToString(it) },
+            name = name,
         ),
     )
 }

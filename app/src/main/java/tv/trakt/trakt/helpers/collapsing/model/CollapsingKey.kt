@@ -58,6 +58,8 @@ internal enum class CollapsingKey(
     LISTS_SHOWS_COLLABORATIONS("key_lists_shows_collaborations"),
     LISTS_MOVIES_COLLABORATIONS("key_lists_movies_collaborations"),
 
+    LISTS_SMART_TEMPLATES("key_lists_smart_templates"),
+
     // Movie Details Screen
     MOVIE_WHERE_TO_WATCH("key_movie_where_to_watch"),
     MOVIE_SENTIMENT("key_movie_sentiment"),
