@@ -386,8 +386,8 @@ internal fun AllPersonalListContent(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(
-                        start = TraktTheme.spacing.mainPageHorizontalSpace,
-                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        start = TraktTheme.spacing.mainPageHorizontalSpace / 2,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace / 2,
                         bottom = WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding()
                             .plus(
@@ -396,7 +396,7 @@ internal fun AllPersonalListContent(
                                     else -> 0.dp
                                 },
                             )
-                            .plus(8.dp),
+                            .plus(4.dp),
                     ),
             ) {
                 it()

@@ -59,7 +59,7 @@ internal val Typography: TraktTypography = TraktTypography(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
         fontSize = 11.sp,
-        lineHeight = 0.9.em,
+        lineHeight = 1.em,
         letterSpacing = 0.04.em,
     ),
     buttonPrimary = TextStyle(
