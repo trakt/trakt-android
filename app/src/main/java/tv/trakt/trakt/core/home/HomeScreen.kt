@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -45,6 +44,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
@@ -196,12 +196,7 @@ private fun HomeScreenContent(
 ) {
     val uriHandler = LocalUriHandler.current
     val headerState = rememberHeaderState()
-    val lazyListState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val lazyListState = rememberLazyListState()
 
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
@@ -248,6 +243,7 @@ private fun HomeScreenContent(
 
         LazyColumn(
             state = lazyListState,
+            cacheWindow = rememberCacheWindow(0.5F),
             overscrollEffect = null,
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,

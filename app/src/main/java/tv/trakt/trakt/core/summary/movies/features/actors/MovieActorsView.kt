@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -47,6 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -149,15 +149,11 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onPersonClick: ((Person) -> Unit)? = null,
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     LazyRow(
         state = listState,
+        cacheWindow = rememberCacheWindow(1F),
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,

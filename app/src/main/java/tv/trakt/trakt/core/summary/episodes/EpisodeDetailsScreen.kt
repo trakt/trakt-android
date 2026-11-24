@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -76,6 +75,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
@@ -435,12 +435,7 @@ internal fun EpisodeDetailsContent(
         horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
     )
 
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.75F,
-            behindFraction = 0.75F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -482,6 +477,7 @@ internal fun EpisodeDetailsContent(
 
             LazyColumn(
                 state = listState,
+                cacheWindow = rememberCacheWindow(0.75F),
                 horizontalAlignment = CenterHorizontally,
                 verticalArrangement = spacedBy(0.dp),
                 contentPadding = contentPadding,

@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -64,6 +63,7 @@ import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
@@ -214,12 +214,7 @@ internal fun AllActivitySocialContent(
     onMovieClick: (Movie) -> Unit = {},
     onUserClick: (User) -> Unit = {},
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -300,6 +295,7 @@ private fun ContentList(
 
     LazyColumn(
         state = listState,
+        cacheWindow = rememberCacheWindow(0.5F),
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,6 +28,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.summary.people.ListEmptyView
 import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.helpers.historyPersonCredits
@@ -52,12 +52,7 @@ internal fun HistoryCreditsList(
     onMovieLongClick: ((Movie) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listItems = remember(personShowCredits, personMovieCredits, userCollection) {
         historyPersonCredits(
@@ -103,6 +98,7 @@ internal fun HistoryCreditsList(
                     } else {
                         LazyRow(
                             state = listState,
+                            cacheWindow = rememberCacheWindow(1F),
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
                             contentPadding = contentPadding,

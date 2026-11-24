@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -63,6 +62,7 @@ import tv.trakt.trakt.common.model.sorting.SortType.Rank
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovieView
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesShowView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
@@ -167,12 +167,7 @@ internal fun AllFavoritesContent(
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -267,6 +262,7 @@ private fun ContentList(
 
     LazyColumn(
         state = listState,
+        cacheWindow = rememberCacheWindow(0.5F),
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,

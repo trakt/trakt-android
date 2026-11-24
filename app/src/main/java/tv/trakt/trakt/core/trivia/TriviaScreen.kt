@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -43,6 +42,7 @@ import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.ui.composables.LocalSpoilerReveal
+import tv.trakt.trakt.common.ui.composables.rememberCacheWindow
 import tv.trakt.trakt.core.trivia.model.TriviaCategory
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
 import tv.trakt.trakt.core.trivia.ui.TriviaCategoryDropdown
@@ -80,12 +80,7 @@ private fun TriviaContent(
     onBackClick: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
+    val listState = rememberLazyListState()
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -114,6 +109,7 @@ private fun TriviaContent(
 
         LazyColumn(
             state = listState,
+            cacheWindow = rememberCacheWindow(0.5F),
             verticalArrangement = spacedBy(0.dp),
             contentPadding = contentPadding,
             overscrollEffect = null,
