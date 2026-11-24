@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.features.convert.upgrade
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -19,14 +20,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,14 +44,6 @@ import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val TouchTargetSize = 32.dp
-
-private val CardShadow = Shadow(
-    radius = 1.dp,
-    color = Color.Black,
-    spread = 0.75.dp,
-    alpha = 0.1F,
-    offset = DpOffset(x = 0.dp, y = 0.75.dp),
-)
 
 @Composable
 internal fun SmartListUpgradeView(
@@ -78,7 +69,7 @@ internal fun SmartListUpgradeView(
     AnimatedVisibility(
         visible = state.visible && !state.loading.isLoading,
         enter = fadeIn() + slideInVertically { it / 20 },
-        exit = fadeOut(),
+        exit = fadeOut(tween(100)),
         modifier = modifier,
     ) {
         SmartListUpgradeCard(
@@ -149,7 +140,7 @@ private fun SmartListUpgradeContent(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
-            .dropShadow(shape = DefaultCardShape, shadow = CardShadow)
+            .shadow(TraktTheme.colors.shadowDefault)
             .background(TraktTheme.colors.panelCardContainer, DefaultCardShape)
             .padding(16.dp),
     ) {

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
@@ -42,7 +43,7 @@ import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val TouchTargetSize = 32.dp
-private val SmallButtonHeight = 30.dp
+private val SmallButtonHeight = 28.dp
 
 @Composable
 internal fun SmartListNudgeView(
@@ -77,7 +78,7 @@ private fun SmartListNudgeContent(
     }
 
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(0.dp),
         modifier = modifier
             .fillMaxWidth()
             .background(TraktTheme.colors.panelCardContainer, DefaultCardShape)
@@ -85,11 +86,11 @@ private fun SmartListNudgeContent(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(10.dp),
+            horizontalArrangement = spacedBy(6.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_smart),
-                tint = TraktTheme.colors.accent,
+                tint = TraktTheme.colors.accentPalette.shade400,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
             )
@@ -112,6 +113,7 @@ private fun SmartListNudgeContent(
                 ),
                 height = SmallButtonHeight,
                 onClick = { expanded = !expanded },
+                modifier = Modifier.padding(start = 8.dp),
             )
 
             Box(
@@ -131,7 +133,10 @@ private fun SmartListNudgeContent(
 
         AnimatedVisibility(visible = expanded) {
             Column(
-                verticalArrangement = spacedBy(12.dp),
+                verticalArrangement = spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
             ) {
                 summary.lists.forEach { entry ->
                     NudgeRow(
@@ -165,7 +170,7 @@ private fun NudgeRow(
             Text(
                 text = entry.name,
                 color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = FontWeight.Bold),
+                style = TraktTheme.typography.cardTitle.copy(fontSize = 14.sp),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -173,7 +178,7 @@ private fun NudgeRow(
                 Text(
                     text = stringResource(R.string.smart_list_nudge_row_overlap, it.kept, it.total),
                     color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
+                    style = TraktTheme.typography.cardSubtitle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -188,7 +193,7 @@ private fun NudgeRow(
             containerColor = TraktTheme.colors.accent,
             contentColor = Color.White,
             onClick = onConvertClick,
-            modifier = Modifier.padding(start = 4.dp),
+            modifier = Modifier.padding(start = 8.dp),
         )
     }
 }

@@ -21,13 +21,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
@@ -35,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -54,7 +58,7 @@ import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val ButtonHeight = 36.dp
+private val FooterClearance = 132.dp
 
 @Composable
 internal fun SmartListConvertScreen(
@@ -64,7 +68,15 @@ internal fun SmartListConvertScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snack = LocalSnackbarState.current
+    val bottomBarVisibility = LocalBottomBarVisibility.current
     val errorMessage = stringResource(R.string.action_toast_action_failed)
+
+    DisposableEffect(Unit) {
+        bottomBarVisibility.value = false
+        onDispose {
+            bottomBarVisibility.value = true
+        }
+    }
 
     LaunchedEffect(state.missing) {
         if (state.missing) {
@@ -103,14 +115,13 @@ private fun SmartListConvertContent(
     var showProposed by rememberSaveable { mutableStateOf(true) }
     val listState = rememberLazyListState()
 
+    val bottomInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding(),
-        bottom = WindowInsets.navigationBars.asPaddingValues()
-            .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight * 2),
+        bottom = bottomInset + FooterClearance,
     )
 
     val items = when {
@@ -134,41 +145,28 @@ private fun SmartListConvertContent(
                 TitleBar(
                     title = state.list?.name.orEmpty(),
                     subtitle = state.draft?.rememberSummary(),
-                    onBackClick = onCancelClick,
-                )
-            }
-
-            item(key = "actions") {
-                PrimaryButton(
-                    text = stringResource(R.string.button_text_smart_list_convert),
-                    height = ButtonHeight,
-                    textStyle = TraktTheme.typography.buttonTertiary,
-                    containerColor = TraktTheme.colors.accent,
-                    contentColor = Color.White,
-                    enabled = state.list != null && state.draft != null,
-                    loading = state.converting.isLoading,
-                    onClick = onConvertClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
+                    onClick = onCancelClick,
                 )
             }
 
             item(key = "toggle") {
                 Row(
-                    horizontalArrangement = spacedBy(8.dp),
-                    modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
+                    modifier = Modifier.padding(
+                        top = 2.dp,
+                        bottom = TraktTheme.spacing.mainListVerticalSpace,
+                    ),
                 ) {
                     FilterChip(
                         selected = !showProposed,
                         text = stringResource(R.string.header_smart_list_compare_current),
-                        height = 32.dp,
+                        height = 30.dp,
                         onClick = { showProposed = false },
                     )
                     FilterChip(
                         selected = showProposed,
                         text = stringResource(R.string.header_smart_list_compare_proposed),
-                        height = 32.dp,
+                        height = 30.dp,
                         onClick = { showProposed = true },
                     )
                 }
@@ -179,6 +177,41 @@ private fun SmartListConvertContent(
                 loading = state.loading.isLoading || items == null,
             )
         }
+
+        val bottomColor = TraktTheme.colors.backgroundPrimary
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(bottomInset + FooterClearance)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            bottomColor.copy(alpha = 0.98F),
+                            bottomColor,
+                        ),
+                    ),
+                ),
+        )
+
+        PrimaryButton(
+            text = stringResource(R.string.button_text_smart_list_convert),
+            icon = painterResource(R.drawable.ic_smart),
+            containerColor = TraktTheme.colors.accent,
+            contentColor = Color.White,
+            enabled = state.list != null && state.draft != null,
+            loading = state.converting.isLoading,
+            onClick = onConvertClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(
+                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                    bottom = bottomInset + 24.dp,
+                ),
+        )
     }
 }
 
@@ -238,14 +271,14 @@ private fun LazyListScope.compareItems(
 private fun TitleBar(
     title: String,
     subtitle: String?,
-    onBackClick: () -> Unit,
+    onClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
         modifier = Modifier
-            .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight)
+            .onClick(onClick = onClick)
             .graphicsLayer {
                 translationX = -2.dp.toPx()
             },
@@ -254,7 +287,6 @@ private fun TitleBar(
             painter = painterResource(R.drawable.ic_back_arrow),
             tint = TraktTheme.colors.textPrimary,
             contentDescription = null,
-            modifier = Modifier.onClick(onClick = onBackClick),
         )
 
         TraktHeader(

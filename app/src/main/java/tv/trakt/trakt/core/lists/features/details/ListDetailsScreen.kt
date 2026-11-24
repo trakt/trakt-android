@@ -433,8 +433,8 @@ internal fun ListDetailsContent(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(
-                        start = TraktTheme.spacing.mainPageHorizontalSpace / 2,
-                        end = TraktTheme.spacing.mainPageHorizontalSpace / 2,
+                        start = TraktTheme.spacing.mainPageHorizontalSpace * 1.5F,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace * 1.5F,
                         bottom = WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding()
                             .plus(

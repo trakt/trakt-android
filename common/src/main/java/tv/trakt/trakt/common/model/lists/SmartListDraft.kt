@@ -23,7 +23,7 @@ data class SmartListDraft(
                 resources.getString(filters.media.recipeLabelRes),
             ) + filters.toSummaryParts(resources, appLocale())
 
-            labels.joinToString(" · ")
+            labels.joinToString("  •  ")
         }
     }
 
