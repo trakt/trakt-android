@@ -84,6 +84,8 @@ internal class SmartListTemplatesViewModel(
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                templatesState.update { it ?: getTemplatesUseCase.getLocalTemplates() }
+
                 coroutineScope {
                     val lists = async { getTemplatesUseCase.getUserSmartLists() }
                     val templates = async { getTemplatesUseCase.getTemplates() }
@@ -93,7 +95,7 @@ internal class SmartListTemplatesViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    templatesState.update { EmptyImmutableList }
+                    templatesState.update { it ?: EmptyImmutableList }
                     Timber.recordError(error)
                 }
             }

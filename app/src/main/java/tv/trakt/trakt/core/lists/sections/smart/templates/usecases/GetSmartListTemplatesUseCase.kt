@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.lists.sections.smart.templates.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
+import tv.trakt.trakt.common.data.local.SmartListTemplatesLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -16,13 +17,21 @@ private const val PERSONAL_PREVIEW_LIMIT = 3
 
 internal class GetSmartListTemplatesUseCase(
     private val remoteSource: UserSmartListsRemoteSource,
+    private val localSource: SmartListTemplatesLocalSource,
 ) {
+    suspend fun getLocalTemplates(): ImmutableList<SmartListTemplate>? {
+        return localSource.getTemplates()
+    }
+
     suspend fun getTemplates(): ImmutableList<SmartListTemplate> {
-        return remoteSource.getSmartListTemplates()
+        val templates = remoteSource.getSmartListTemplates()
             .map(SmartListTemplate::fromDto)
             .filter { SmartListTemplateCopy.fromId(it.id) != null }
             .asyncMap { it.withPersonalPreview() }
             .toImmutableList()
+
+        localSource.setTemplates(templates)
+        return templates
     }
 
     suspend fun getUserSmartLists(): ImmutableList<SmartList> {
@@ -32,7 +41,9 @@ internal class GetSmartListTemplatesUseCase(
     }
 
     private suspend fun SmartListTemplate.withPersonalPreview(): SmartListTemplate {
-        if (!personal) return this
+        if (!personal) {
+            return this
+        }
 
         return try {
             val items = remoteSource.getSmartListPreviewItems(

@@ -2,12 +2,14 @@ package tv.trakt.trakt.common.model.lists
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.SmartListItemDto
 import tv.trakt.trakt.common.networking.SmartListTemplateDto
 
 @Immutable
+@Serializable
 data class SmartListTemplate(
     val id: String,
     val filters: SmartListFilters,
