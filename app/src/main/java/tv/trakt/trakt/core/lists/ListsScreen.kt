@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -92,8 +93,9 @@ import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeSheet
 import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesState
 import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesViewModel
+import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplateCard
+import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplatesIntro
 import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplatesLink
-import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplatesStrip
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
@@ -515,12 +517,28 @@ private fun ListsScreenContent(
             if (state.lists.isNullOrEmpty() && state.listsLoading == Done) {
                 if (templatesStrip) {
                     item(key = "smart_templates") {
-                        SmartListTemplatesStrip(
-                            templates = templates,
-                            contentPadding = sectionPadding,
-                            onTemplateClick = onSmartListTemplateClick,
+                        SmartListTemplatesIntro(
                             onHideClick = onSmartListTemplatesHideClick,
-                            modifier = Modifier.padding(top = 8.dp),
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .padding(sectionPadding),
+                        )
+                    }
+
+                    items(
+                        items = templates,
+                        key = { "smart_template_${it.id}" },
+                    ) { template ->
+                        SmartListTemplateCard(
+                            template = template,
+                            onClick = { name -> onSmartListTemplateClick(template, name) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = 16.dp,
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                ),
                         )
                     }
                 } else if (!templatesLoading) {
