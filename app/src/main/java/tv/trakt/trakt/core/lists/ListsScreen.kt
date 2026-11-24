@@ -513,7 +513,7 @@ private fun ListsScreenContent(
             }
 
             if (state.lists.isNullOrEmpty() && state.listsLoading == Done) {
-                if (templatesStrip && templates != null) {
+                if (templatesStrip) {
                     item(key = "smart_templates") {
                         SmartListTemplatesStrip(
                             templates = templates,
@@ -561,13 +561,13 @@ private fun ListsScreenContent(
                 }
             }
 
-            if (templatesLink && templates != null) {
+            if (templatesLink) {
                 item(key = "smart_templates_link") {
                     SmartListTemplatesLink(
                         templates = templates,
                         onClick = onSmartListTemplatesClick,
                         modifier = Modifier
-                            .padding(top = 24.dp)
+                            .padding(top = 16.dp)
                             .padding(sectionPadding),
                     )
                 }

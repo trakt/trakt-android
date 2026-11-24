@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -70,24 +70,25 @@ internal fun SmartListTemplatesLink(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = spacedBy(0.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(vertical = 12.dp)
+                .padding(start = 20.dp, end = 16.dp),
         ) {
             if (posters.isNotEmpty()) {
                 SmartListTemplatePosters(
                     posters = posters,
                     posterWidth = 28.dp,
                     modifier = Modifier
-                        .width(56.dp)
+                        .padding(end = 14.dp)
                         .height(42.dp),
                 )
             }
 
             Text(
                 text = label,
-                style = TraktTheme.typography.buttonPrimary,
+                style = TraktTheme.typography.cardTitle.copy(fontSize = 15.sp, letterSpacing = 0.1.sp),
                 color = TraktTheme.colors.textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
