@@ -47,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -57,6 +58,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -65,6 +67,7 @@ import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.features.addfrom.components.ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION
 import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
+import tv.trakt.trakt.core.lists.features.convert.upgrade.SmartListUpgradeView
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
@@ -104,6 +107,9 @@ internal fun AllPersonalListScreen(
     onReorderClick: (CustomList) -> Unit,
     onPersonClick: (Person) -> Unit,
     onAddFromListsClick: (CustomList) -> Unit,
+    onConvertToSmartListClick: (CustomList) -> Unit,
+    onCreateSmartListClick: () -> Unit,
+    onSmartListRedirect: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -132,9 +138,23 @@ internal fun AllPersonalListScreen(
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
 
+    val upgradeList = state.list?.takeIf {
+        it.staleOrigin != null || it.convertedTo != null
+    }
+
     AllPersonalListContent(
         state = state,
         modifier = modifier,
+        upgradeContent = upgradeList?.let { list ->
+            {
+                SmartListUpgradeView(
+                    list = list,
+                    onConvertClick = onConvertToSmartListClick,
+                    onCreateSmartListClick = onCreateSmartListClick,
+                    onSmartListRedirect = onSmartListRedirect,
+                )
+            }
+        },
         onLoadMoreData = viewModel::loadMoreData,
         onClick = {
             when (it) {
@@ -284,6 +304,7 @@ internal fun AllPersonalListScreen(
 internal fun AllPersonalListContent(
     state: AllPersonalListState,
     modifier: Modifier = Modifier,
+    upgradeContent: (@Composable () -> Unit)? = null,
     onLoadMoreData: () -> Unit = {},
     onClick: (CustomListItem) -> Unit = {},
     onLongClick: (CustomListItem) -> Unit = {},
@@ -358,6 +379,29 @@ internal fun AllPersonalListContent(
             onAddFromListsClick = onAddFromListsClick,
             onEndOfList = onLoadMoreData,
         )
+
+        upgradeContent?.let {
+            val bottomBarVisible = LocalBottomBarVisibility.current.value
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace * 1.5F,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace * 1.5F,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(
+                                when {
+                                    bottomBarVisible -> TraktTheme.size.navigationBarHeight
+                                    else -> 0.dp
+                                },
+                            )
+                            .plus(4.dp),
+                    ),
+            ) {
+                it()
+            }
+        }
     }
 }
 

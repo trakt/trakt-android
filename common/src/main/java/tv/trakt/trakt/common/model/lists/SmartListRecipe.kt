@@ -71,7 +71,7 @@ data class SmartListRecipe(
     }
 }
 
-private val MediaMode.recipeLabelRes: Int
+internal val MediaMode.recipeLabelRes: Int
     get() = when (this) {
         MediaMode.Movies -> R.string.button_text_movies
         MediaMode.Shows -> R.string.button_text_shows

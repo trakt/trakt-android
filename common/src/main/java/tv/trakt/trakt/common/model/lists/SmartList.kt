@@ -32,11 +32,16 @@ import tv.trakt.trakt.common.model.globalfilter.EXCLUSION_PREFIX
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.toExclusionTokens
 import tv.trakt.trakt.common.networking.SmartListDto
+import tv.trakt.trakt.common.networking.SmartListFiltersDto
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import java.util.Locale
 
 const val SMART_LIST_OPEN_VOTES_CEILING = 999_999_999
+
+internal fun appLocale(): Locale {
+    return AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+}
 
 @Immutable
 @Serializable
@@ -92,10 +97,6 @@ data class SmartList(
     ): List<String> {
         return listOf(resources.getString(filters.source.displayRes)) +
             filters.toSummaryParts(resources, locale)
-    }
-
-    private fun appLocale(): Locale {
-        return AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
     }
 
     companion object {
@@ -408,10 +409,21 @@ data class SmartListFilters(
         )
 
         fun fromDto(dto: SmartListDto): SmartListFilters {
-            val filters = dto.filters
+            return fromDto(
+                source = dto.source,
+                mediaType = dto.mediaType,
+                filters = dto.filters,
+            )
+        }
+
+        fun fromDto(
+            source: String,
+            mediaType: String,
+            filters: SmartListFiltersDto,
+        ): SmartListFilters {
             return SmartListFilters(
-                source = SmartListSource.fromApiValue(dto.source),
-                media = when (dto.mediaType) {
+                source = SmartListSource.fromApiValue(source),
+                media = when (mediaType) {
                     "movies" -> MediaMode.Movies
                     "media" -> MediaMode.Media
                     else -> MediaMode.Shows

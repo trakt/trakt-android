@@ -64,6 +64,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -79,6 +80,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -87,6 +89,7 @@ import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.features.addfrom.components.ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION
 import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
+import tv.trakt.trakt.core.lists.features.convert.upgrade.SmartListUpgradeView
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
@@ -124,6 +127,9 @@ internal fun ListDetailsScreen(
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onPersonClick: (Person) -> Unit,
     onAddFromListsClick: (CustomList) -> Unit,
+    onConvertToSmartListClick: (CustomList) -> Unit,
+    onCreateSmartListClick: () -> Unit,
+    onSmartListRedirect: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -178,9 +184,24 @@ internal fun ListDetailsScreen(
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
 
+    val upgradeList = state.list?.list?.takeIf {
+        it.user.ids.trakt == state.user?.ids?.trakt &&
+            (it.staleOrigin != null || it.convertedTo != null)
+    }
+
     ListDetailsContent(
         state = state,
         modifier = modifier,
+        upgradeContent = upgradeList?.let { list ->
+            {
+                SmartListUpgradeView(
+                    list = list,
+                    onConvertClick = onConvertToSmartListClick,
+                    onCreateSmartListClick = onCreateSmartListClick,
+                    onSmartListRedirect = onSmartListRedirect,
+                )
+            }
+        },
         onLoadMoreData = viewModel::loadMoreData,
         onClick = {
             if (it.id == state.list?.mediaId) {
@@ -328,6 +349,7 @@ internal fun ListDetailsScreen(
 internal fun ListDetailsContent(
     state: ListDetailsState,
     modifier: Modifier = Modifier,
+    upgradeContent: (@Composable () -> Unit)? = null,
     onClick: (CustomListItem) -> Unit = {},
     onLongClick: (CustomListItem) -> Unit = {},
     onModeClick: (MediaMode) -> Unit = {},
@@ -404,6 +426,29 @@ internal fun ListDetailsContent(
             onAddFromListsClick = onAddFromListsClick.takeIf { state.canAddFromLists },
             onBackClick = onBackClick,
         )
+
+        upgradeContent?.let {
+            val bottomBarVisible = LocalBottomBarVisibility.current.value
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace * 1.5F,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace * 1.5F,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(
+                                when {
+                                    bottomBarVisible -> TraktTheme.size.navigationBarHeight
+                                    else -> 0.dp
+                                },
+                            )
+                            .plus(4.dp),
+                    ),
+            ) {
+                it()
+            }
+        }
     }
 }
 

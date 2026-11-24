@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListScreen
 
 @Serializable
@@ -27,6 +28,9 @@ internal fun NavGraphBuilder.allPersonalListScreen(
     onNavigateToReorder: (CustomList) -> Unit,
     onNavigateToPerson: (Person) -> Unit,
     onNavigateToAddFromLists: (CustomList) -> Unit,
+    onNavigateToConvertSmartList: (CustomList) -> Unit,
+    onNavigateToCreateSmartList: () -> Unit,
+    onNavigateToSmartListRedirect: (SmartList) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<ListsPersonalDestination> {
@@ -39,6 +43,9 @@ internal fun NavGraphBuilder.allPersonalListScreen(
             onReorderClick = onNavigateToReorder,
             onPersonClick = onNavigateToPerson,
             onAddFromListsClick = onNavigateToAddFromLists,
+            onConvertToSmartListClick = onNavigateToConvertSmartList,
+            onCreateSmartListClick = onNavigateToCreateSmartList,
+            onSmartListRedirect = onNavigateToSmartListRedirect,
             onListClick = onNavigateToList,
         )
     }

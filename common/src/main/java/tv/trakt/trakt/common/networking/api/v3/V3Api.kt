@@ -158,6 +158,19 @@ class V3Api(
         return response.body()
     }
 
+    suspend fun getSmartListDraftItems(
+        listId: TraktId,
+        extended: String,
+        pagination: Pagination,
+    ): List<SmartListItemDto> {
+        val response = client.get("${baseUrl}users/me/lists/${listId.value}/smart-list-draft/items") {
+            parameter("extended", extended)
+            parameter("page", pagination.page)
+            parameter("limit", pagination.limit)
+        }
+        return response.body()
+    }
+
     // Notes
 
     suspend fun getUserNotes(

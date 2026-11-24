@@ -21,6 +21,10 @@ import tv.trakt.trakt.common.networking.SearchListDto
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 
+private val KNOWN_ORIGIN_NAMES = mapOf(
+    "mdblist" to "MDBList",
+)
+
 @Immutable
 @Serializable
 data class CustomList(
@@ -41,7 +45,19 @@ data class CustomList(
     val images: Images?,
     val user: User,
     val sorting: Sorting? = null,
+    val staleOrigin: StaleOrigin? = null,
+    val convertedTo: Ids? = null,
 ) {
+    @Immutable
+    @Serializable
+    data class StaleOrigin(
+        val name: String,
+        val url: String?,
+    ) {
+        val displayName: String
+            get() = KNOWN_ORIGIN_NAMES[name.lowercase()] ?: name
+    }
+
     @Serializable
     enum class Type(
         val value: String,
@@ -108,6 +124,8 @@ data class CustomList(
                     sortBy = dto.sortBy,
                     sortHow = dto.sortHow.value,
                 ),
+                staleOrigin = dto.staleOrigin?.let { StaleOrigin(name = it.name, url = it.url) },
+                convertedTo = dto.convertedTo?.let { Ids(trakt = TraktId(it.ids.trakt), slug = SlugId(it.ids.slug)) },
             )
         }
 
@@ -136,6 +154,8 @@ data class CustomList(
                     )
                 },
                 user = User.fromDto(dto.user),
+                staleOrigin = dto.staleOrigin?.let { StaleOrigin(name = it.name, url = it.url) },
+                convertedTo = dto.convertedTo?.let { Ids(trakt = TraktId(it.ids.trakt), slug = SlugId(it.ids.slug)) },
             )
         }
 
@@ -165,6 +185,8 @@ data class CustomList(
                     )
                 },
                 user = User.fromDto(list.user!!),
+                staleOrigin = list.staleOrigin?.let { StaleOrigin(name = it.name, url = it.url) },
+                convertedTo = list.convertedTo?.let { Ids(trakt = TraktId(it.ids.trakt), slug = SlugId(it.ids.slug)) },
             )
         }
     }

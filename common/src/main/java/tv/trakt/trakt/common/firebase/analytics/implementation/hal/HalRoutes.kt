@@ -16,6 +16,7 @@ private val WEB_ROUTES = mapOf(
     "lists" to "/users/[user]/lists",
     "all_lists" to "/users/[user]/lists",
     "all_personal_list" to "/users/[user]/lists/[list]",
+    "smart_list_convert" to "/lists/smart/convert/[list]",
     "all_activity_personal" to "/history",
     "all_activity_social" to "/social/activity",
     "all_favorites" to "/profile/[slug]/favorites",
