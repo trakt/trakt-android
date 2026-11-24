@@ -60,9 +60,11 @@ import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryMovies200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryShows200ResponseInner
 import org.openapitools.client.models.GetUsersLikes200ResponseInner
+import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOf1ListOneOfIds
 import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOfAllOfOneOf2Episode
 import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOfAllOfOneOf3Season
 import org.openapitools.client.models.GetUsersListsListItemsAll200ResponseInner
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200Response
 import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
 import org.openapitools.client.models.GetUsersNotes200ResponseInnerPerson
@@ -73,6 +75,7 @@ import org.openapitools.client.models.GetUsersReactionsComments200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentUser
 import org.openapitools.client.models.GetUsersRequestsFollow200ResponseInner
 import org.openapitools.client.models.GetUsersSettings200Response
+import org.openapitools.client.models.GetUsersSmartListDraftsSummary200Response
 import org.openapitools.client.models.GetUsersSmartListsPersonal200ResponseInner
 import org.openapitools.client.models.GetUsersStats200Response
 import org.openapitools.client.models.GetUsersWatching200Response
@@ -114,6 +117,7 @@ typealias LanguageDto = GetCountriesList200ResponseInner
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressNextEpisode
 typealias LikedListDto = GetUsersLikes200ResponseInner
 typealias ListDto = GetUsersListsPersonal200ResponseInner
+typealias ListIdsDto = GetUsersLikes200ResponseInnerOneOf1ListOneOfIds
 typealias ListItemDto = GetUsersListsListItemsAll200ResponseInner
 typealias ListMediaItemDto = GetUsersWatchlistAll200ResponseInner
 typealias ListMovieItemDto = GetUsersWatchlistMovies200ResponseInner
@@ -143,6 +147,8 @@ typealias ShowDto = GetCalendarsMedia200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds
 typealias ShowStatsDto = GetMoviesStats200Response
 typealias ShowWatchedProgressDto = GetShowsProgressWatched200Response
+typealias SmartListDraftDto = GetUsersListsListSmartListDraft200Response
+typealias SmartListDraftsSummaryDto = GetUsersSmartListDraftsSummary200Response
 typealias SmartListDto = GetUsersSmartListsPersonal200ResponseInner
 typealias SmartListFiltersDto = GetUsersListsListSmartListDraft200ResponseFilters
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner

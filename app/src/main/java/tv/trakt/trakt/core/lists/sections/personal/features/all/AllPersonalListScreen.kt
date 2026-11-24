@@ -57,6 +57,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -65,6 +66,7 @@ import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.features.addfrom.components.ADD_FROM_LISTS_EMPTY_HEIGHT_FRACTION
 import tv.trakt.trakt.core.lists.features.addfrom.components.AddFromListsEmpty
+import tv.trakt.trakt.core.lists.features.convert.upgrade.SmartListUpgradeView
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
@@ -104,6 +106,9 @@ internal fun AllPersonalListScreen(
     onReorderClick: (CustomList) -> Unit,
     onPersonClick: (Person) -> Unit,
     onAddFromListsClick: (CustomList) -> Unit,
+    onConvertToSmartListClick: (CustomList) -> Unit,
+    onCreateSmartListClick: () -> Unit,
+    onSmartListRedirect: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -132,9 +137,24 @@ internal fun AllPersonalListScreen(
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
 
+    val upgradeList = state.list?.takeIf {
+        it.staleOrigin != null || it.convertedTo != null
+    }
+
     AllPersonalListContent(
         state = state,
         modifier = modifier,
+        upgradeContent = upgradeList?.let { list ->
+            {
+                SmartListUpgradeView(
+                    list = list,
+                    onConvertClick = onConvertToSmartListClick,
+                    onCreateSmartListClick = onCreateSmartListClick,
+                    onSmartListRedirect = onSmartListRedirect,
+                    modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+                )
+            }
+        },
         onLoadMoreData = viewModel::loadMoreData,
         onClick = {
             when (it) {
@@ -284,6 +304,7 @@ internal fun AllPersonalListScreen(
 internal fun AllPersonalListContent(
     state: AllPersonalListState,
     modifier: Modifier = Modifier,
+    upgradeContent: (@Composable () -> Unit)? = null,
     onLoadMoreData: () -> Unit = {},
     onClick: (CustomListItem) -> Unit = {},
     onLongClick: (CustomListItem) -> Unit = {},
@@ -357,6 +378,7 @@ internal fun AllPersonalListContent(
             onInfoClick = onInfoClick,
             onAddFromListsClick = onAddFromListsClick,
             onEndOfList = onLoadMoreData,
+            upgradeContent = upgradeContent,
         )
     }
 }
@@ -523,6 +545,7 @@ private fun ContentList(
     onInfoClick: () -> Unit,
     onAddFromListsClick: () -> Unit,
     onEndOfList: () -> Unit,
+    upgradeContent: (@Composable () -> Unit)?,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -569,6 +592,12 @@ private fun ContentList(
                 onInfoClick = onInfoClick,
                 onAddFromListsClick = onAddFromListsClick,
             )
+        }
+
+        upgradeContent?.let {
+            item(key = "smart_list_upgrade") {
+                it()
+            }
         }
 
         if (listFilter != null) {

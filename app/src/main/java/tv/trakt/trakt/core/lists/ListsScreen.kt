@@ -75,6 +75,7 @@ import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.lists.features.convert.nudge.SmartListNudgeView
 import tv.trakt.trakt.core.lists.helpers.shareList
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
@@ -119,6 +120,7 @@ internal fun ListsScreen(
     onNavigateToEditSmartList: (SmartList) -> Unit,
     onNavigateToListReorder: (CustomList) -> Unit,
     onNavigateToAddFromLists: (CustomList) -> Unit,
+    onNavigateToConvertSmartList: (TraktId) -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
     onNavigateToUser: (User) -> Unit,
@@ -174,6 +176,7 @@ internal fun ListsScreen(
         onEditListClick = { editListSheet = it },
         onReorderListClick = onNavigateToListReorder,
         onAddFromListsClick = onNavigateToAddFromLists,
+        onConvertSmartListClick = onNavigateToConvertSmartList,
         onShareListClick = { list ->
             viewModel.logListShare()
             shareList(
@@ -261,6 +264,7 @@ private fun ListsScreenContent(
     onEditListClick: (CustomList) -> Unit = {},
     onReorderListClick: (CustomList) -> Unit = {},
     onAddFromListsClick: (CustomList) -> Unit = {},
+    onConvertSmartListClick: (TraktId) -> Unit = {},
     onShareListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onPersonalListClick: (CustomList) -> Unit = { _ -> },
@@ -364,6 +368,17 @@ private fun ListsScreenContent(
                         top = TraktTheme.spacing.mainSectionVerticalSpace,
                     ),
                 )
+            }
+
+            if (!preview && state.filter == Personal && state.user.isAuthenticated) {
+                item(key = "smart_list_nudge") {
+                    SmartListNudgeView(
+                        onConvertClick = onConvertSmartListClick,
+                        modifier = Modifier
+                            .padding(top = 18.dp)
+                            .padding(sectionPadding),
+                    )
+                }
             }
 
             val topVerticalPadding = 18.dp

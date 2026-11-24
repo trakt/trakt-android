@@ -41,6 +41,8 @@ import tv.trakt.trakt.core.lists.features.addfrom.navigation.addFromListsScreen
 import tv.trakt.trakt.core.lists.features.addfrom.navigation.navigateToAddFromLists
 import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
+import tv.trakt.trakt.core.lists.features.convert.navigation.navigateToSmartListConvert
+import tv.trakt.trakt.core.lists.features.convert.navigation.smartListConvertScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
 import tv.trakt.trakt.core.lists.features.reorder.lists.navigation.listsReorderScreen
@@ -584,6 +586,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToEditSmartList = { navigateToEditSmartList(it) },
             onNavigateToListReorder = { navigateToListReorder(list = it) },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
+            onNavigateToConvertSmartList = { navigateToSmartListConvert(it) },
             onNavigateToAllLists = { navigateToAllLists(it) },
             onNavigateToVip = { navigateToBilling(source = VipUpsellSource.NavbarMobile) },
             onNavigateToUser = {
@@ -654,6 +657,12 @@ internal fun NavGraphBuilder.listsScreens(
                 )
             },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
+            onNavigateToConvertSmartList = { navigateToSmartListConvert(it.ids.trakt) },
+            onNavigateToCreateSmartList = { navigateToCreateSmartList() },
+            onNavigateToSmartListRedirect = {
+                popBackStack()
+                navigateToSmartListDetails(it)
+            },
             onNavigateBack = { popBackStack() },
             onNavigateToList = { navigateToListDetails(it) },
         )
@@ -672,8 +681,22 @@ internal fun NavGraphBuilder.listsScreens(
                 )
             },
             onNavigateToAddFromLists = { navigateToAddFromLists(it) },
+            onNavigateToConvertSmartList = { navigateToSmartListConvert(it.ids.trakt) },
+            onNavigateToCreateSmartList = { navigateToCreateSmartList() },
+            onNavigateToSmartListRedirect = {
+                popBackStack()
+                navigateToSmartListDetails(it)
+            },
             onNavigateToList = { navigateToListDetails(it) },
         )
+        smartListConvertScreen(
+            onNavigateBack = { popBackStack() },
+            onNavigateToSmartList = {
+                popBackStack()
+                navigateToSmartListDetails(it)
+            },
+        )
+
         smartListDetailsScreen(
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },

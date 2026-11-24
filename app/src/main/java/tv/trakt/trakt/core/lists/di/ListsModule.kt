@@ -24,6 +24,16 @@ import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.addfrom.AddFromListsViewModel
 import tv.trakt.trakt.core.lists.features.addfrom.usecases.GetAddFromListsUseCase
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
+import tv.trakt.trakt.core.lists.features.convert.SmartListConvertViewModel
+import tv.trakt.trakt.core.lists.features.convert.nudge.SmartListNudgeViewModel
+import tv.trakt.trakt.core.lists.features.convert.upgrade.SmartListUpgradeViewModel
+import tv.trakt.trakt.core.lists.features.convert.usecases.ConvertToSmartListUseCase
+import tv.trakt.trakt.core.lists.features.convert.usecases.GetConvertedSmartListUseCase
+import tv.trakt.trakt.core.lists.features.convert.usecases.GetPersonalListUseCase
+import tv.trakt.trakt.core.lists.features.convert.usecases.GetSmartListDraftItemsUseCase
+import tv.trakt.trakt.core.lists.features.convert.usecases.GetSmartListDraftUseCase
+import tv.trakt.trakt.core.lists.features.convert.usecases.GetSmartListDraftsSummaryUseCase
+import tv.trakt.trakt.core.lists.features.convert.usecases.SmartListDismissalsUseCase
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoViewModel
 import tv.trakt.trakt.core.lists.features.details.info.usecases.GetListFeaturedPeopleUseCase
@@ -105,9 +115,21 @@ internal val listsModule = module {
     factoryOf(::ReorderPersonalListsUseCase)
     factoryOf(::ReorderWatchlistUseCase)
     factoryOf(::GetAddFromListsUseCase)
+    factoryOf(::GetPersonalListUseCase)
+    factoryOf(::GetSmartListDraftUseCase)
+    factoryOf(::GetSmartListDraftItemsUseCase)
+    factoryOf(::GetSmartListDraftsSummaryUseCase)
+    factoryOf(::GetConvertedSmartListUseCase)
+    factoryOf(::ConvertToSmartListUseCase)
 
     factory {
         GetListsFilterUseCase(
+            dataStore = get(named(LISTS_PREFERENCES)),
+        )
+    }
+
+    factory {
+        SmartListDismissalsUseCase(
             dataStore = get(named(LISTS_PREFERENCES)),
         )
     }
@@ -145,6 +167,17 @@ internal val listsModule = module {
         )
     }
     viewModelOf(::AddFromListsViewModel)
+    viewModelOf(::SmartListConvertViewModel)
+    viewModelOf(::SmartListNudgeViewModel)
+    viewModel { (list: CustomList) ->
+        SmartListUpgradeViewModel(
+            list = list,
+            getSmartListDraftUseCase = get(),
+            getConvertedSmartListUseCase = get(),
+            dismissalsUseCase = get(),
+            analytics = get(),
+        )
+    }
     viewModel { (list: SmartList) ->
         SmartListRecipeViewModel(
             list = list,
