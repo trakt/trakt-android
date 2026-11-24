@@ -105,7 +105,7 @@ internal class SmartListConvertViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
-                    missingState.update { true }
+                    errorState.update { error }
                 }
             } finally {
                 loadingState.update { Done }
