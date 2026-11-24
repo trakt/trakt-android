@@ -5,11 +5,10 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,10 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -53,10 +53,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 import java.util.Locale
 
-internal val SmartListTemplateCardHeight = 180.dp
+private val PosterWidth = 52.dp
 
 private const val POSTER_SLOTS = 3
-private const val VISIBLE_CHIPS = 2
+private const val CHIP_ROWS = 2
+private const val CHIPS_SLOT = "chips"
+private const val MORE_SLOT = "more_"
+private val ChipSpacing = 4.dp
 
 @Composable
 internal fun SmartListTemplateCard(
@@ -69,7 +72,7 @@ internal fun SmartListTemplateCard(
 
     Card(
         onClick = { onClick(name) },
-        modifier = modifier.height(SmartListTemplateCardHeight),
+        modifier = modifier,
         shape = DefaultCardShape,
         elevation = CardDefaults.cardElevation(
             defaultElevation = TraktTheme.colors.shadowDynamicDefault,
@@ -81,28 +84,29 @@ internal fun SmartListTemplateCard(
         ),
     ) {
         Row(
-            horizontalArrangement = spacedBy(12.dp),
+            horizontalArrangement = spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 18.dp),
         ) {
             val posters = remember(template.images) {
                 template.images.getPostersUrl()
             }
             SmartListTemplatePosters(
                 posters = List(POSTER_SLOTS) { posters.getOrNull(it) },
-                posterWidth = 62.dp,
-                modifier = Modifier
-                    .weight(0.4F)
-                    .fillMaxHeight(),
+                posterWidth = PosterWidth,
+                modifier = Modifier.size(
+                    width = PosterWidth * (POSTER_SLOTS + 1) / 2,
+                    height = PosterWidth / VerticalImageAspectRatio,
+                ),
             )
 
             SmartListTemplateText(
                 template = template,
                 copy = copy,
                 name = name,
-                modifier = Modifier.weight(0.6F),
+                modifier = Modifier.weight(1F),
             )
         }
     }
@@ -123,67 +127,112 @@ private fun SmartListTemplateText(
     }
 
     Column(
-        verticalArrangement = spacedBy(6.dp),
+        verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        Row(horizontalArrangement = spacedBy(4.dp)) {
+        if (template.personal) {
             InfoChip(
-                text = stringResource(R.string.tag_text_smart_list_template_official),
-                containerColor = TraktTheme.colors.chipContainer,
-                contentColor = TraktTheme.colors.textSecondary,
+                text = stringResource(R.string.tag_text_smart_list_template_personal),
+                containerColor = TraktTheme.colors.accent,
+                contentColor = TraktTheme.colors.textPrimaryOnAccent,
+                modifier = Modifier.padding(bottom = 6.dp),
             )
-            if (template.personal) {
-                InfoChip(
-                    text = stringResource(R.string.tag_text_smart_list_template_personal),
-                    containerColor = TraktTheme.colors.accent,
-                    contentColor = TraktTheme.colors.textPrimaryOnAccent,
-                )
-            }
         }
 
         Text(
             text = name,
-            style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+            style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp, letterSpacing = 0.1.sp),
             color = TraktTheme.colors.textPrimary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(bottom = 1.dp),
         )
 
         Text(
             text = stringResource(copy.pitchRes),
             style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
-            color = TraktTheme.colors.textPrimary,
+            color = TraktTheme.colors.textSecondary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
 
-        SmartListTemplateChips(chips = chips)
+        SmartListTemplateChips(
+            chips = chips,
+            modifier = Modifier.padding(vertical = 10.dp),
+        )
 
         SmartListTemplateFooter(template = template)
     }
 }
 
 @Composable
-private fun SmartListTemplateChips(chips: List<String>) {
+private fun SmartListTemplateChips(
+    chips: List<String>,
+    modifier: Modifier = Modifier,
+) {
     if (chips.isEmpty()) return
 
-    Row(horizontalArrangement = spacedBy(4.dp)) {
-        chips.take(VISIBLE_CHIPS).forEach { label ->
-            InfoChip(
-                text = label,
-                containerColor = TraktTheme.colors.chipContainer,
-                contentColor = TraktTheme.colors.textPrimary,
-                modifier = Modifier.weight(1F, fill = false),
-            )
+    SubcomposeLayout(modifier = modifier) { constraints ->
+        val spacing = ChipSpacing.roundToPx()
+        val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
+
+        val chipPlaceables = subcompose(CHIPS_SLOT) {
+            chips.forEach { SmartListTemplateChip(text = it) }
+        }.map { it.measure(looseConstraints) }
+
+        fun fits(items: List<Placeable>): Boolean {
+            return chipRows(items, constraints.maxWidth, spacing).size <= CHIP_ROWS
         }
-        val remaining = chips.size - VISIBLE_CHIPS
-        if (remaining > 0) {
-            InfoChip(
-                text = "+$remaining",
-                containerColor = TraktTheme.colors.chipContainer,
-                contentColor = TraktTheme.colors.textPrimary,
-            )
+
+        val visible = chipPlaceables.takeIf(::fits)
+            ?: (chipPlaceables.lastIndex downTo 0).firstNotNullOf { count ->
+                val hidden = chipPlaceables.size - count
+                val more = subcompose("$MORE_SLOT$hidden") {
+                    SmartListTemplateChip(text = "+$hidden")
+                }.first().measure(looseConstraints)
+
+                (chipPlaceables.take(count) + more).takeIf { count == 0 || fits(it) }
+            }
+
+        val rows = chipRows(visible, constraints.maxWidth, spacing)
+        val rowHeight = visible.maxOf { it.height }
+        val width = rows.maxOf { row -> row.sumOf { it.width } + spacing * (row.size - 1) }
+        val height = rowHeight * rows.size + spacing * (rows.size - 1)
+
+        layout(width, height) {
+            rows.forEachIndexed { rowIndex, row ->
+                var x = 0
+                row.forEach { placeable ->
+                    placeable.placeRelative(x, rowIndex * (rowHeight + spacing))
+                    x += placeable.width + spacing
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun SmartListTemplateChip(text: String) {
+    InfoChip(
+        text = text,
+        contentColor = TraktTheme.colors.textPrimary,
+    )
+}
+
+private fun chipRows(
+    items: List<Placeable>,
+    maxWidth: Int,
+    spacing: Int,
+): List<List<Placeable>> {
+    return items.fold(mutableListOf<MutableList<Placeable>>()) { rows, item ->
+        val row = rows.lastOrNull()
+        val rowWidth = row?.sumOf { it.width + spacing } ?: 0
+        if (row == null || rowWidth + item.width > maxWidth) {
+            rows.add(mutableListOf(item))
+        } else {
+            row.add(item)
+        }
+        rows
     }
 }
 

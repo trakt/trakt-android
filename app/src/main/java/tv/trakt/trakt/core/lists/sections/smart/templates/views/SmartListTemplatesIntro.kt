@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,7 @@ internal fun SmartListTemplatesIntro(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = spacedBy(16.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
         Text(
@@ -44,6 +45,7 @@ internal fun SmartListTemplatesIntro(
             uppercase = false,
             horizontalPadding = 14.dp,
             corner = 64.dp,
+            containerColor = Color.Transparent,
             border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
             onClick = onHideClick,
         )

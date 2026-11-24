@@ -8,4 +8,5 @@ import tv.trakt.trakt.common.model.lists.SmartListTemplate
 internal data class SmartListTemplatesState(
     val templates: ImmutableList<SmartListTemplate>? = null,
     val hidden: Boolean = false,
+    val collapsed: Boolean = false,
 )

@@ -159,6 +159,7 @@ internal fun AllListsScreen(
         onSmartListEditClick = onNavigateEditSmartList,
         onSmartListRecipeClick = { smartListRecipe = it },
         onSmartListTemplateClick = { template, name -> onNavigateSmartListTemplate(template.filters, name) },
+        onSmartListTemplatesCollapse = templatesViewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
         onSortClick = {
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
@@ -241,6 +242,7 @@ private fun AllListsScreen(
     onSmartListEditClick: (SmartList) -> Unit = {},
     onSmartListRecipeClick: (SmartList) -> Unit = {},
     onSmartListTemplateClick: (SmartListTemplate, String) -> Unit = { _, _ -> },
+    onSmartListTemplatesCollapse: (Boolean) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
     onSortClick: () -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -311,6 +313,7 @@ private fun AllListsScreen(
         LaunchedEffect(templates.isNotEmpty()) {
             if (templatesScrolled || templates.isEmpty()) return@LaunchedEffect
             templatesScrolled = true
+            if (templatesState.collapsed) onSmartListTemplatesCollapse(false)
             val headerIndex = 2 + (state.items?.size ?: 0) + (if (emptyVisible) 1 else 0)
             listState.animateScrollToItem(headerIndex)
         }
@@ -474,16 +477,21 @@ private fun AllListsScreen(
                 item(key = "smart_templates_header") {
                     TraktSectionHeader(
                         title = stringResource(R.string.list_title_smart_list_templates),
+                        subtitle = stringResource(R.string.smart_list_templates_intro),
                         chevron = false,
-                        collapsable = false,
+                        collapsed = templatesState.collapsed,
+                        onCollapseClick = { onSmartListTemplatesCollapse(!templatesState.collapsed) },
                         modifier = Modifier
                             .padding(contentHorizontalPadding)
-                            .padding(top = 32.dp, bottom = 16.dp),
+                            .padding(
+                                top = if (state.items.isNullOrEmpty()) 0.dp else 32.dp,
+                                bottom = 16.dp,
+                            ),
                     )
                 }
 
                 items(
-                    items = templates,
+                    items = if (templatesState.collapsed) EmptyImmutableList else templates,
                     key = { "smart_template_${it.id}" },
                 ) { template ->
                     SmartListTemplateCard(
@@ -492,7 +500,8 @@ private fun AllListsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(contentHorizontalPadding)
-                            .padding(bottom = 18.dp),
+                            .padding(bottom = 18.dp)
+                            .animateItem(),
                     )
                 }
             }

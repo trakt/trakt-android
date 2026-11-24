@@ -33,6 +33,9 @@ import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.sections.smart.templates.model.visibleSmartListTemplates
 import tv.trakt.trakt.core.lists.sections.smart.templates.usecases.GetSmartListTemplatesUseCase
 import tv.trakt.trakt.core.lists.sections.smart.templates.usecases.SmartListTemplatesHiddenUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -43,11 +46,18 @@ internal class SmartListTemplatesViewModel(
     private val hiddenUseCase: SmartListTemplatesHiddenUseCase,
     private val localSmartListsSource: ListsSmartLocalSource,
     private val filterManager: GlobalFilterManager,
+    collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = SmartListTemplatesState()
 
     private val templatesState = MutableStateFlow(initialState.templates)
     private val listsState = MutableStateFlow<ImmutableList<SmartList>>(EmptyImmutableList)
+
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.LISTS_SMART_TEMPLATES,
+    )
 
     private var dataJob: Job? = null
     private var listsJob: Job? = null
@@ -128,6 +138,10 @@ internal class SmartListTemplatesViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapse.set(collapsed)
+    }
+
     val state = combine(
         templatesState,
         listsState,
@@ -136,6 +150,7 @@ internal class SmartListTemplatesViewModel(
             .onStart { emit(filterManager.getFilter().mode) }
             .distinctUntilChanged(),
         hiddenUseCase.observeHidden(),
+        collapse.state,
     ) { state ->
         val templates = state[0] as ImmutableList<SmartListTemplate>?
         SmartListTemplatesState(
@@ -147,6 +162,7 @@ internal class SmartListTemplatesViewModel(
                 )
             },
             hidden = state[3] as Boolean,
+            collapsed = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
