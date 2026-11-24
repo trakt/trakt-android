@@ -47,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -151,7 +152,6 @@ internal fun AllPersonalListScreen(
                     onConvertClick = onConvertToSmartListClick,
                     onCreateSmartListClick = onCreateSmartListClick,
                     onSmartListRedirect = onSmartListRedirect,
-                    modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
                 )
             }
         },
@@ -378,8 +378,30 @@ internal fun AllPersonalListContent(
             onInfoClick = onInfoClick,
             onAddFromListsClick = onAddFromListsClick,
             onEndOfList = onLoadMoreData,
-            upgradeContent = upgradeContent,
         )
+
+        upgradeContent?.let {
+            val bottomBarVisible = LocalBottomBarVisibility.current.value
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(
+                                when {
+                                    bottomBarVisible -> TraktTheme.size.navigationBarHeight
+                                    else -> 0.dp
+                                },
+                            )
+                            .plus(8.dp),
+                    ),
+            ) {
+                it()
+            }
+        }
     }
 }
 
@@ -545,7 +567,6 @@ private fun ContentList(
     onInfoClick: () -> Unit,
     onAddFromListsClick: () -> Unit,
     onEndOfList: () -> Unit,
-    upgradeContent: (@Composable () -> Unit)?,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -592,12 +613,6 @@ private fun ContentList(
                 onInfoClick = onInfoClick,
                 onAddFromListsClick = onAddFromListsClick,
             )
-        }
-
-        upgradeContent?.let {
-            item(key = "smart_list_upgrade") {
-                it()
-            }
         }
 
         if (listFilter != null) {
