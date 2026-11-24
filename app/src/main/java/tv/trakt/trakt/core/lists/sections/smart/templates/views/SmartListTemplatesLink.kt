@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.sections.smart.templates.views
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.Images
@@ -106,20 +108,54 @@ internal fun SmartListTemplatesLink(
 @Composable
 private fun Preview() {
     TraktThemePreview {
-        SmartListTemplatesLink(
-            templates = persistentListOf(
-                SmartListTemplate(
-                    id = "hidden-gems",
-                    filters = SmartListFilters(
-                        media = MediaMode.Movies,
-                        source = SmartListSource.Discover,
-                    ),
-                    personal = false,
-                    total = 941,
-                    images = Images(),
-                ),
-            ),
-            onClick = {},
-        )
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            SmartListTemplatesLink(
+                templates = previewTemplates(count = 1, withPosters = false),
+                onClick = {},
+            )
+            SmartListTemplatesLink(
+                templates = previewTemplates(count = 1, withPosters = true),
+                onClick = {},
+            )
+            SmartListTemplatesLink(
+                templates = previewTemplates(count = 2, withPosters = true),
+                onClick = {},
+            )
+            SmartListTemplatesLink(
+                templates = previewTemplates(count = 12, withPosters = true),
+                onClick = {},
+            )
+            SmartListTemplatesLink(
+                templates = previewTemplates(count = 1200, withPosters = false),
+                onClick = {},
+            )
+        }
     }
+}
+
+private fun previewTemplates(
+    count: Int,
+    withPosters: Boolean,
+): ImmutableList<SmartListTemplate> {
+    val images = when {
+        withPosters -> Images(
+            posters = persistentListOf("https://trakt.tv/images/posters/000/000/001/thumb/1.jpg"),
+        )
+        else -> Images()
+    }
+    return List(count) { index ->
+        SmartListTemplate(
+            id = "template-$index",
+            filters = SmartListFilters(
+                media = MediaMode.Movies,
+                source = SmartListSource.Discover,
+            ),
+            personal = false,
+            total = 941,
+            images = images,
+        )
+    }.toImmutableList()
 }
