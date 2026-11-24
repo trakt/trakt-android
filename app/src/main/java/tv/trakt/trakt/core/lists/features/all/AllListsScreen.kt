@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -60,6 +61,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListTemplate
 import tv.trakt.trakt.common.model.sorting.ListsSortType
 import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.core.lists.helpers.shareList
@@ -67,8 +70,12 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeSheet
+import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesState
+import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesViewModel
+import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplateCard
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -76,6 +83,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
 import tv.trakt.trakt.ui.components.mediacards.list.PersonalListDropdown
@@ -88,12 +96,15 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllListsScreen(
     viewModel: AllListsViewModel,
+    templatesViewModel: SmartListTemplatesViewModel,
+    scrollToTemplates: Boolean,
     modifier: Modifier = Modifier,
     onNavigateList: (CustomList) -> Unit,
     onNavigatePersonalList: (CustomList) -> Unit,
     onNavigateSmartList: (SmartList) -> Unit,
     onNavigateCreateSmartList: () -> Unit,
     onNavigateEditSmartList: (SmartList) -> Unit,
+    onNavigateSmartListTemplate: (SmartListFilters, String) -> Unit,
     onNavigateListReorder: (CustomList) -> Unit,
     onNavigateAddFromLists: (CustomList) -> Unit,
     onNavigateListsReorder: () -> Unit,
@@ -101,6 +112,7 @@ internal fun AllListsScreen(
     onNavigateUser: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val templatesState by templatesViewModel.state.collectAsStateWithLifecycle()
 
     var createListTypeSheet by remember { mutableStateOf(false) }
     var createListSheet by remember { mutableStateOf(false) }
@@ -124,6 +136,8 @@ internal fun AllListsScreen(
 
     AllListsScreen(
         state = state,
+        templatesState = templatesState,
+        scrollToTemplates = scrollToTemplates,
         modifier = modifier,
         onListClick = onNavigateList,
         onListPersonalClick = onNavigatePersonalList,
@@ -144,6 +158,7 @@ internal fun AllListsScreen(
         onSmartListDeleteClick = { smartListToDelete = it },
         onSmartListEditClick = onNavigateEditSmartList,
         onSmartListRecipeClick = { smartListRecipe = it },
+        onSmartListTemplateClick = { template, name -> onNavigateSmartListTemplate(template.filters, name) },
         onFilterClick = viewModel::setFilter,
         onSortClick = {
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
@@ -211,6 +226,8 @@ internal fun AllListsScreen(
 private fun AllListsScreen(
     state: AllListsState,
     modifier: Modifier = Modifier,
+    templatesState: SmartListTemplatesState = SmartListTemplatesState(),
+    scrollToTemplates: Boolean = false,
     onListClick: (CustomList) -> Unit = {},
     onListPersonalClick: (CustomList) -> Unit = {},
     onSmartListClick: (SmartList) -> Unit = {},
@@ -223,6 +240,7 @@ private fun AllListsScreen(
     onSmartListDeleteClick: (SmartList) -> Unit = {},
     onSmartListEditClick: (SmartList) -> Unit = {},
     onSmartListRecipeClick: (SmartList) -> Unit = {},
+    onSmartListTemplateClick: (SmartListTemplate, String) -> Unit = { _, _ -> },
     onFilterClick: (PersonalListType) -> Unit = {},
     onSortClick: () -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -277,6 +295,19 @@ private fun AllListsScreen(
 
         val listVisible = remember(state.items?.size, state.loading) {
             !state.items.isNullOrEmpty() && state.loading == Done
+        }
+
+        val emptyVisible = state.items?.isEmpty() == true && state.loading == Done
+        val templates = templatesState.templates
+            ?.takeIf { state.filter == Smart && state.user != null && state.loading == Done }
+            .orEmpty()
+        var templatesScrolled by rememberSaveable { mutableStateOf(!scrollToTemplates) }
+
+        LaunchedEffect(templates.isNotEmpty()) {
+            if (templatesScrolled || templates.isEmpty()) return@LaunchedEffect
+            templatesScrolled = true
+            val headerIndex = 2 + (state.items?.size ?: 0) + (if (emptyVisible) 1 else 0)
+            listState.animateScrollToItem(headerIndex)
         }
 
         LazyColumn(
@@ -421,7 +452,7 @@ private fun AllListsScreen(
                 )
             }
 
-            if (state.items?.isEmpty() == true && state.loading == Done) {
+            if (emptyVisible) {
                 item {
                     ContentEmptyView(
                         modifier = Modifier
@@ -430,6 +461,33 @@ private fun AllListsScreen(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
                             ),
+                    )
+                }
+            }
+
+            if (templates.isNotEmpty()) {
+                item(key = "smart_templates_header") {
+                    TraktSectionHeader(
+                        title = stringResource(R.string.list_title_smart_list_templates),
+                        chevron = false,
+                        collapsable = false,
+                        modifier = Modifier
+                            .padding(contentHorizontalPadding)
+                            .padding(top = 32.dp, bottom = 16.dp),
+                    )
+                }
+
+                items(
+                    items = templates,
+                    key = { "smart_template_${it.id}" },
+                ) { template ->
+                    SmartListTemplateCard(
+                        template = template,
+                        onClick = { name -> onSmartListTemplateClick(template, name) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(contentHorizontalPadding)
+                            .padding(bottom = 18.dp),
                     )
                 }
             }

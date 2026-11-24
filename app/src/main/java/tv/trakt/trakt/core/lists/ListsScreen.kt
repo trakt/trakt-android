@@ -53,6 +53,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
@@ -67,11 +68,16 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListSource
+import tv.trakt.trakt.common.model.lists.SmartListTemplate
 import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -84,6 +90,10 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Person
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeSheet
+import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesState
+import tv.trakt.trakt.core.lists.sections.smart.templates.SmartListTemplatesViewModel
+import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplatesLink
+import tv.trakt.trakt.core.lists.sections.smart.templates.views.SmartListTemplatesStrip
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
@@ -107,6 +117,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ListsScreen(
     viewModel: ListsViewModel,
+    templatesViewModel: SmartListTemplatesViewModel,
     onNavigateToProfile: () -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToSearch: () -> Unit,
@@ -118,6 +129,8 @@ internal fun ListsScreen(
     onNavigateToSmartList: (SmartList) -> Unit,
     onNavigateToCreateSmartList: () -> Unit,
     onNavigateToEditSmartList: (SmartList) -> Unit,
+    onNavigateToSmartListTemplate: (SmartListFilters, String) -> Unit,
+    onNavigateToSmartListTemplates: () -> Unit,
     onNavigateToListReorder: (CustomList) -> Unit,
     onNavigateToAddFromLists: (CustomList) -> Unit,
     onNavigateToConvertSmartList: (TraktId) -> Unit,
@@ -127,6 +140,7 @@ internal fun ListsScreen(
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val templatesState by templatesViewModel.state.collectAsStateWithLifecycle()
 
     var createListTypeSheet by remember { mutableStateOf(false) }
     var createListSheet by remember { mutableStateOf(false) }
@@ -150,6 +164,7 @@ internal fun ListsScreen(
 
     ListsScreenContent(
         state = state,
+        templatesState = templatesState,
         onFilterClick = {
             if (state.filter == it) {
                 onNavigateToAllLists(it)
@@ -191,6 +206,9 @@ internal fun ListsScreen(
         onSmartListDeleteClick = { smartListToDelete = it },
         onSmartListEditClick = onNavigateToEditSmartList,
         onSmartListRecipeClick = { smartListRecipe = it },
+        onSmartListTemplateClick = { template, name -> onNavigateToSmartListTemplate(template.filters, name) },
+        onSmartListTemplatesClick = onNavigateToSmartListTemplates,
+        onSmartListTemplatesHideClick = templatesViewModel::hide,
         onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
         onVipSeen = viewModel::onVipUpsellSeen,
@@ -251,6 +269,7 @@ internal fun ListsScreen(
 private fun ListsScreenContent(
     state: ListsState,
     modifier: Modifier = Modifier,
+    templatesState: SmartListTemplatesState = SmartListTemplatesState(),
     onFilterClick: (PersonalListType) -> Unit = {},
     onProfileClick: () -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
@@ -273,6 +292,9 @@ private fun ListsScreenContent(
     onSmartListDeleteClick: (SmartList) -> Unit = { _ -> },
     onSmartListEditClick: (SmartList) -> Unit = { _ -> },
     onSmartListRecipeClick: (SmartList) -> Unit = {},
+    onSmartListTemplateClick: (SmartListTemplate, String) -> Unit = { _, _ -> },
+    onSmartListTemplatesClick: () -> Unit = {},
+    onSmartListTemplatesHideClick: () -> Unit = {},
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
     onVipSeen: () -> Unit = {},
@@ -311,6 +333,17 @@ private fun ListsScreenContent(
         val listVisible = remember(state.lists?.size, state.listsLoading) {
             !state.lists.isNullOrEmpty() && state.listsLoading == Done
         }
+
+        val templatesActive = state.filter == Smart &&
+            state.user.isAuthenticated &&
+            state.listsLoading == Done
+        val templates = templatesState.templates
+        val templatesLoading = templatesActive && templates == null
+        val templatesStrip = templatesActive &&
+            !templates.isNullOrEmpty() &&
+            state.lists.isNullOrEmpty() &&
+            !templatesState.hidden
+        val templatesLink = templatesActive && !templates.isNullOrEmpty() && !templatesStrip
 
         val listPadding = PaddingValues(
             top = WindowInsets.statusBars.asPaddingValues()
@@ -480,22 +513,34 @@ private fun ListsScreenContent(
             }
 
             if (state.lists.isNullOrEmpty() && state.listsLoading == Done) {
-                item(key = "empty") {
-                    ContentEmptyView(
-                        authenticated = state.user.user != null,
-                        filter = state.filter,
-                        onActionClick = when (state.user.user) {
-                            null -> onProfileClick
-                            else -> when (state.filter) {
-                                Smart -> onCreateSmartListClick
-                                Personal -> onCreateListClick
-                                Liked, Collaborations -> onSearchListClick
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(top = topVerticalPadding)
-                            .padding(sectionPadding),
-                    )
+                if (templatesStrip && templates != null) {
+                    item(key = "smart_templates") {
+                        SmartListTemplatesStrip(
+                            templates = templates,
+                            contentPadding = sectionPadding,
+                            onTemplateClick = onSmartListTemplateClick,
+                            onHideClick = onSmartListTemplatesHideClick,
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
+                    }
+                } else if (!templatesLoading) {
+                    item(key = "empty") {
+                        ContentEmptyView(
+                            authenticated = state.user.user != null,
+                            filter = state.filter,
+                            onActionClick = when (state.user.user) {
+                                null -> onProfileClick
+                                else -> when (state.filter) {
+                                    Smart -> onCreateSmartListClick
+                                    Personal -> onCreateListClick
+                                    Liked, Collaborations -> onSearchListClick
+                                }
+                            },
+                            modifier = Modifier
+                                .padding(top = topVerticalPadding)
+                                .padding(sectionPadding),
+                        )
+                    }
                 }
             } else if (state.lists.isNullOrEmpty() && state.listsLoading == Loading) {
                 item(key = "list_loading") {
@@ -513,6 +558,18 @@ private fun ListsScreenContent(
                             )
                         }
                     }
+                }
+            }
+
+            if (templatesLink && templates != null) {
+                item(key = "smart_templates_link") {
+                    SmartListTemplatesLink(
+                        templates = templates,
+                        onClick = onSmartListTemplatesClick,
+                        modifier = Modifier
+                            .padding(top = 24.dp)
+                            .padding(sectionPadding),
+                    )
                 }
             }
         }
@@ -734,6 +791,40 @@ private fun PreviewEmpty() {
                 filter = Smart,
                 lists = EmptyImmutableList,
                 listsLoading = Done,
+            ),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewSmartTemplates() {
+    TraktTheme {
+        ListsScreenContent(
+            state = ListsState(
+                user = ListsState.UserState(
+                    user = PreviewData.user1,
+                    loading = Done,
+                ),
+                filter = Smart,
+                lists = EmptyImmutableList,
+                listsLoading = Done,
+            ),
+            templatesState = SmartListTemplatesState(
+                templates = persistentListOf(
+                    SmartListTemplate(
+                        id = "hidden-gems",
+                        filters = SmartListFilters(
+                            media = MediaMode.Movies,
+                            source = SmartListSource.Discover,
+                            ratings = persistentListOf(78),
+                            votes = persistentListOf(300, 3000),
+                        ),
+                        personal = false,
+                        total = 941,
+                        images = Images(),
+                    ),
+                ),
             ),
         )
     }

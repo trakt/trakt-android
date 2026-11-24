@@ -45,6 +45,7 @@ import org.openapitools.client.models.GetShowsSeasonRatings200Response
 import org.openapitools.client.models.GetShowsSeasonStats200Response
 import org.openapitools.client.models.GetShowsSeasons200ResponseInner
 import org.openapitools.client.models.GetSmartListsItems200ResponseInner
+import org.openapitools.client.models.GetSmartListsTemplates200ResponseInner
 import org.openapitools.client.models.GetSyncCollectionAll200ResponseInner
 import org.openapitools.client.models.GetSyncProgressEpisodesResponse
 import org.openapitools.client.models.GetSyncProgressMovies200ResponseInner
@@ -152,6 +153,7 @@ typealias SmartListDraftsSummaryDto = GetUsersSmartListDraftsSummary200Response
 typealias SmartListDto = GetUsersSmartListsPersonal200ResponseInner
 typealias SmartListFiltersDto = GetUsersListsListSmartListDraft200ResponseFilters
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner
+typealias SmartListTemplateDto = GetSmartListsTemplates200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias SocialIdsDto = GetCalendarsShows200ResponseInnerShowSocialIds
 typealias PersonSocialIdsDto = GetUsersNotes200ResponseInnerPersonSocialIds
