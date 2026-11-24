@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.smart.templates.views
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,9 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -36,13 +37,15 @@ internal fun SmartListTemplatesIntro(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1F),
         )
-        Text(
+        GhostButton(
             text = stringResource(R.string.button_text_hide),
-            style = TraktTheme.typography.buttonTertiary,
-            color = TraktTheme.colors.textSecondary,
-            modifier = Modifier
-                .onClick(onClick = onHideClick)
-                .padding(vertical = 12.dp),
+            iconSize = 16.dp,
+            fillWidth = false,
+            uppercase = false,
+            horizontalPadding = 14.dp,
+            corner = 64.dp,
+            border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+            onClick = onHideClick,
         )
     }
 }
