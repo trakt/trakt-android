@@ -381,10 +381,6 @@ private fun ContentList(
             RecipeLink(
                 preview = recipePreview,
                 onClick = onRecipeClick,
-                modifier = Modifier
-                    .padding(
-                        bottom = 22.dp,
-                    ),
             )
         }
 
@@ -477,7 +473,8 @@ private fun RecipeLink(
         horizontalArrangement = spacedBy(4.dp),
         modifier = modifier
             .fillMaxWidth()
-            .onClick(enabled = preview != null, onClick = onClick),
+            .onClick(enabled = preview != null, onClick = onClick)
+            .padding(bottom = 22.dp),
     ) {
         val fontStyle = TraktTheme.typography.meta.copy(
             fontSize = 12.sp,
