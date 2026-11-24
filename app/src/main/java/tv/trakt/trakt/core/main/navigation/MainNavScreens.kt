@@ -41,6 +41,7 @@ import tv.trakt.trakt.core.lists.features.addfrom.navigation.addFromListsScreen
 import tv.trakt.trakt.core.lists.features.addfrom.navigation.navigateToAddFromLists
 import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
+import tv.trakt.trakt.core.lists.features.convert.navigation.navigateToConvertedSmartList
 import tv.trakt.trakt.core.lists.features.convert.navigation.navigateToSmartListConvert
 import tv.trakt.trakt.core.lists.features.convert.navigation.smartListConvertScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
@@ -691,10 +692,7 @@ internal fun NavGraphBuilder.listsScreens(
         )
         smartListConvertScreen(
             onNavigateBack = { popBackStack() },
-            onNavigateToSmartList = {
-                popBackStack()
-                navigateToSmartListDetails(it)
-            },
+            onNavigateToSmartList = { navigateToConvertedSmartList(it) },
         )
 
         smartListDetailsScreen(

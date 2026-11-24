@@ -137,9 +137,9 @@ internal class SmartListConvertViewModel(
         viewModelScope.launch {
             try {
                 convertingState.update { Loading }
-                analytics.lists.logSmartListCreate()
 
                 val smartList = convertToSmartListUseCase.convert(list)
+                analytics.lists.logSmartListCreate()
 
                 dataChanges.notify(Kind.Lists, targetId = list.ids.trakt.value)
                 convertedListState.update { smartList }
