@@ -27,10 +27,12 @@ import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.ui.locked.LockedAccountViewModel
+import tv.trakt.trakt.core.main.ui.maintenance.MaintenanceViewModel
 import tv.trakt.trakt.core.main.ui.seasonal.SeasonalSplashViewModel
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
+import tv.trakt.trakt.core.main.usecases.MaintenanceModeUseCase
 import tv.trakt.trakt.core.main.usecases.YearInReviewBannerUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.DefaultCollapsingManager
@@ -84,6 +86,9 @@ internal val mainModule = module {
 
     viewModelOf(::SeasonalSplashViewModel)
     viewModelOf(::LockedAccountViewModel)
+    viewModelOf(::MaintenanceViewModel)
+
+    factoryOf(::MaintenanceModeUseCase)
 
     viewModel {
         MainViewModel(

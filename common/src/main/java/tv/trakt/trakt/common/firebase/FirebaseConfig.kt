@@ -14,6 +14,10 @@ class FirebaseConfig {
         const val MOBILE_WELCOME_BANNER_ENABLED = "mobile_welcome_banner_enabled"
         const val MOBILE_HTTPS_AUTH_CALLBACK_ENABLED = "mobile_https_auth_callback_enabled_2"
 
+        const val MOBILE_MAINTENANCE_ENABLED = "mobile_maintenance_enabled"
+        const val MOBILE_MAINTENANCE_TITLE = "mobile_maintenance_title"
+        const val MOBILE_MAINTENANCE_MESSAGE = "mobile_maintenance_message"
+
         const val YIR_2026_BANNER_ENABLED = "yir_2026_banner_enabled"
         const val YIR_2026_URL = "yir_2026_url"
 

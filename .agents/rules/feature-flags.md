@@ -53,11 +53,25 @@ app/.../ui/components/AttentionIcon.kt    # animated icon for unseen preview fea
   resolve to `off`.
 - Values are read when a flag flow emits (profile or settings change, new collector). There is no
   live Remote Config listener: an open screen keeps its value until it is re-collected.
-- Agents never create or change Remote Config parameters. Tell the user which key and value to set
-  in the Firebase console.
+- Agents never create or change Remote Config parameters unless the user explicitly asks. Otherwise
+  tell the user which key and value to set in the Firebase console.
 - Plain Remote Config switches in `FirebaseConfig.RemoteKey` (`PLEX_PLAY_ENABLED`,
   `MOBILE_WELCOME_BANNER_ENABLED`) are not preview features. Use a `FeatureFlag` when a
   user-facing feature needs a staged audience; keep a plain key for images, URLs and kill switches.
+
+### RemoteConfigManager
+
+`common/.../firebase/config/RemoteConfigManager` (Koin `single`, `remoteConfigModule`) owns the
+Remote Config lifecycle on phone and TV.
+
+- `setup()` applies defaults and fetch settings once, from `TraktApplication`.
+- `refresh()` fetches and activates. Only `MainActivity` / `TvActivity` call it, in `onStart`.
+  Never call `fetchAndActivate()` or `activate()` anywhere else.
+- A value that must react while a screen is open (kill switch, maintenance) goes through
+  `observe(keys) { read }` in a use case. It emits now, after each `refresh()`, and on realtime
+  updates to `keys`. See `MaintenanceModeUseCase`.
+- One-shot reads (`Firebase.remoteConfig.getString(...)`) stay fine for values that may lag until
+  the next collection.
 
 ## Adding a preview feature
 

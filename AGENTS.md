@@ -39,7 +39,9 @@ areas such as `analytics.*` calls, so still read by area:
   (`common/.../firebase/analytics/`, any `analytics.*` call): `analytics.md`
 - Preview features and feature flags (`core/featureflags/`, `FeatureFlag`,
   `FeatureFlagsUseCase`, `preview_feature_*` Remote Config keys, gating a
-  feature for directors, VIPs or everyone): `feature-flags.md`
+  feature for directors, VIPs or everyone), and any Remote Config read,
+  refresh or new key (`RemoteConfigManager`, `FirebaseConfig.RemoteKey`):
+  `feature-flags.md`
 
 Re-read a domain file after a long gap if the context was compacted.
 
