@@ -82,6 +82,7 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
+import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
@@ -130,6 +131,7 @@ internal fun ListsScreen(
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
     var smartListToDelete by remember { mutableStateOf<SmartList?>(null) }
+    var smartListRecipe by remember { mutableStateOf<SmartList?>(null) }
 
     val context = LocalContext.current
     val snackbar = LocalSnackbarState.current
@@ -185,6 +187,7 @@ internal fun ListsScreen(
         onSmartListClick = onNavigateToSmartList,
         onSmartListDeleteClick = { smartListToDelete = it },
         onSmartListEditClick = onNavigateToEditSmartList,
+        onSmartListRecipeClick = { smartListRecipe = it },
         onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
         onVipSeen = viewModel::onVipUpsellSeen,
@@ -218,6 +221,11 @@ internal fun ListsScreen(
         onDismiss = {
             filtersSheet = false
         },
+    )
+
+    SmartListRecipeSheet(
+        list = smartListRecipe,
+        onDismiss = { smartListRecipe = null },
     )
 
     RemoveConfirmationSheet(
@@ -260,6 +268,7 @@ private fun ListsScreenContent(
     onSmartListClick: (SmartList) -> Unit = { _ -> },
     onSmartListDeleteClick: (SmartList) -> Unit = { _ -> },
     onSmartListEditClick: (SmartList) -> Unit = { _ -> },
+    onSmartListRecipeClick: (SmartList) -> Unit = {},
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
     onVipSeen: () -> Unit = {},
@@ -382,6 +391,7 @@ private fun ListsScreenContent(
                                 onClick = { onSmartListClick(item.list) },
                                 onDeleteClick = { onSmartListDeleteClick(item.list) },
                                 onEditClick = { onSmartListEditClick(item.list) },
+                                onRecipeClick = { onSmartListRecipeClick(item.list) },
                                 modifier = cardModifier,
                             )
                         }

@@ -19,6 +19,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.addfrom.AddFromListsViewModel
 import tv.trakt.trakt.core.lists.features.addfrom.usecases.GetAddFromListsUseCase
@@ -50,6 +51,7 @@ import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListIte
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.smart.details.SmartListDetailsViewModel
+import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeViewModel
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListsUseCase
@@ -143,6 +145,12 @@ internal val listsModule = module {
         )
     }
     viewModelOf(::AddFromListsViewModel)
+    viewModel { (list: SmartList) ->
+        SmartListRecipeViewModel(
+            list = list,
+            getFilterOptionsUseCase = get(),
+        )
+    }
     viewModel { (listId: TraktId) ->
         ListInfoViewModel(
             listId = listId,

@@ -68,6 +68,7 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collab
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
+import tv.trakt.trakt.core.lists.sections.smart.details.recipe.SmartListRecipeSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -105,6 +106,7 @@ internal fun AllListsScreen(
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var smartListToDelete by remember { mutableStateOf<SmartList?>(null) }
+    var smartListRecipe by remember { mutableStateOf<SmartList?>(null) }
     var sortSheet by remember { mutableStateOf<ListsSorting?>(null) }
 
     val scope = rememberCoroutineScope()
@@ -141,6 +143,7 @@ internal fun AllListsScreen(
         },
         onSmartListDeleteClick = { smartListToDelete = it },
         onSmartListEditClick = onNavigateEditSmartList,
+        onSmartListRecipeClick = { smartListRecipe = it },
         onFilterClick = viewModel::setFilter,
         onSortClick = {
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
@@ -171,6 +174,11 @@ internal fun AllListsScreen(
         active = editListSheet != null,
         list = editListSheet,
         onDismiss = { editListSheet = null },
+    )
+
+    SmartListRecipeSheet(
+        list = smartListRecipe,
+        onDismiss = { smartListRecipe = null },
     )
 
     RemoveConfirmationSheet(
@@ -214,6 +222,7 @@ private fun AllListsScreen(
     onListShareClick: (CustomList) -> Unit = {},
     onSmartListDeleteClick: (SmartList) -> Unit = {},
     onSmartListEditClick: (SmartList) -> Unit = {},
+    onSmartListRecipeClick: (SmartList) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
     onSortClick: () -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -336,6 +345,7 @@ private fun AllListsScreen(
                                 onClick = { onSmartListClick(item.list) },
                                 onDeleteClick = { onSmartListDeleteClick(item.list) },
                                 onEditClick = { onSmartListEditClick(item.list) },
+                                onRecipeClick = { onSmartListRecipeClick(item.list) },
                                 modifier = cardModifier,
                             )
                         }

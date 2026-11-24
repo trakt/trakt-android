@@ -57,13 +57,45 @@ data class SmartList(
         val configuration = LocalConfiguration.current
 
         return remember(this, configuration) {
-            val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-
-            val sourcePart = resources.getString(filters.source.displayRes)
-            val filtersPart = filters.toSummaryParts(resources, locale)
-
-            (listOfNotNull(sourcePart) + filtersPart).joinToString(", ")
+            toSummaryLabels(resources, appLocale()).joinToString(", ")
         }
+    }
+
+    @Composable
+    fun rememberRecipePreview(): SmartListRecipePreview {
+        val resources = LocalResources.current
+        val configuration = LocalConfiguration.current
+
+        return remember(this, configuration) {
+            SmartListRecipePreview.fromLabels(toSummaryLabels(resources, appLocale()))
+        }
+    }
+
+    @Composable
+    fun rememberRecipe(awardCeremonies: List<AwardCeremony>): SmartListRecipe {
+        val resources = LocalResources.current
+        val configuration = LocalConfiguration.current
+
+        return remember(this, awardCeremonies, configuration) {
+            SmartListRecipe.from(
+                filters = filters,
+                awardCeremonies = awardCeremonies,
+                resources = resources,
+                locale = appLocale(),
+            )
+        }
+    }
+
+    private fun toSummaryLabels(
+        resources: Resources,
+        locale: Locale,
+    ): List<String> {
+        return listOf(resources.getString(filters.source.displayRes)) +
+            filters.toSummaryParts(resources, locale)
+    }
+
+    private fun appLocale(): Locale {
+        return AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
     }
 
     companion object {
@@ -486,7 +518,7 @@ private fun List<String>?.excluded(): List<String> =
 
 private fun Pair<Int, Int>.toRange(): ImmutableList<Int> = persistentListOf(first, second)
 
-private fun formatParentalRange(
+internal fun formatParentalRange(
     category: ParentalGuideCategory,
     range: List<Int>,
     resources: Resources,
@@ -502,7 +534,7 @@ private fun formatParentalRange(
     )
 }
 
-private fun formatNumberRange(
+internal fun formatNumberRange(
     range: List<Int>,
     @StringRes labelRes: Int,
     resources: Resources,
@@ -517,7 +549,7 @@ private fun formatNumberRange(
     }
 }
 
-private fun formatPlainRange(
+internal fun formatPlainRange(
     range: List<Int>,
     resources: Resources,
 ): String? {
@@ -528,7 +560,7 @@ private fun formatPlainRange(
     return resources.getString(R.string.list_summary_range_between, min.toString(), max.toString())
 }
 
-private fun formatFloatRange(
+internal fun formatFloatRange(
     range: List<Float>,
     resources: Resources,
 ): String? {
@@ -546,7 +578,7 @@ private fun formatFloatRange(
     }
 }
 
-private fun formatVotesRange(
+internal fun formatVotesRange(
     range: List<Int>,
     source: String,
     resources: Resources,
@@ -570,7 +602,7 @@ private fun formatVotesRange(
     }
 }
 
-private fun formatPercentRange(
+internal fun formatPercentRange(
     range: List<Int>,
     label: String,
     resources: Resources,
@@ -601,11 +633,11 @@ private fun String.toSearchableLabel(excluded: (String) -> String): String {
     return excluded(removePrefix(EXCLUSION_PREFIX).toSummaryTitleCase())
 }
 
-private fun String.toGenreLabel(resources: Resources): String {
+internal fun String.toGenreLabel(resources: Resources): String {
     val genre = MediaGenre.fromSlug(this) ?: return toSummaryTitleCase()
     return resources.getString(genre.displayStringRes)
 }
 
-private fun String.toSummaryTitleCase(): String {
+internal fun String.toSummaryTitleCase(): String {
     return split('-', '_').joinToString(" ") { it.capitalize() }
 }
