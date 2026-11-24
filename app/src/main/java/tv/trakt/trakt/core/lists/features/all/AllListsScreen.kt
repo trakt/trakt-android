@@ -297,10 +297,15 @@ private fun AllListsScreen(
             !state.items.isNullOrEmpty() && state.loading == Done
         }
 
-        val emptyVisible = state.items?.isEmpty() == true && state.loading == Done
+        val templatesActive = state.filter == Smart && state.user != null && state.loading == Done
         val templates = templatesState.templates
-            ?.takeIf { state.filter == Smart && state.user != null && state.loading == Done }
+            ?.takeIf { templatesActive }
             .orEmpty()
+        val templatesLoading = templatesActive && templatesState.templates == null
+        val emptyVisible = state.items?.isEmpty() == true &&
+            state.loading == Done &&
+            templates.isEmpty() &&
+            !templatesLoading
         var templatesScrolled by rememberSaveable { mutableStateOf(!scrollToTemplates) }
 
         LaunchedEffect(templates.isNotEmpty()) {
