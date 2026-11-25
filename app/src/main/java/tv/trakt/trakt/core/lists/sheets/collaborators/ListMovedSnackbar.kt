@@ -15,6 +15,7 @@ internal suspend fun SnackbarHostState.showListMovedSnackbar(
     resources: Resources,
     listName: String,
     destination: PersonalListType,
+    viewAction: Boolean = true,
 ): Boolean {
     val message = when (destination) {
         Collaborations -> R.string.action_toast_list_moved_to_shared
@@ -23,7 +24,10 @@ internal suspend fun SnackbarHostState.showListMovedSnackbar(
 
     val result = showSnackbar(
         message = resources.getString(message, listName),
-        actionLabel = resources.getString(R.string.action_toast_action_view_lists),
+        actionLabel = when {
+            viewAction -> resources.getString(R.string.action_toast_action_view_lists)
+            else -> null
+        },
         duration = SnackbarDuration.Long,
     )
 

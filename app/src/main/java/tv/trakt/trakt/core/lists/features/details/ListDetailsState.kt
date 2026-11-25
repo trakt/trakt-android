@@ -31,6 +31,9 @@ internal data class ListDetailsState(
     val error: Exception? = null,
     val canAddFromLists: Boolean = false,
 ) {
+    val isCollaborator: Boolean
+        get() = canAddFromLists && user != null && list?.list?.user?.ids?.trakt != user.ids.trakt
+
     @Immutable
     data class ListDetails(
         val list: CustomList,

@@ -4,20 +4,28 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -26,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
@@ -34,6 +43,10 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sheets.collaborators.ManageCollaboratorsEvent.Failed
+import tv.trakt.trakt.core.lists.sheets.collaborators.ManageCollaboratorsEvent.LimitReached
+import tv.trakt.trakt.core.lists.sheets.collaborators.ManageCollaboratorsEvent.ListMoved
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
@@ -41,10 +54,40 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val ListMaxHeight = 420.dp
-
 @Composable
 internal fun ManageCollaboratorsView(
+    viewModel: ManageCollaboratorsViewModel,
+    modifier: Modifier = Modifier,
+    onListMoved: (PersonalListType) -> Unit = {},
+    onLimitReached: () -> Unit = {},
+    onError: () -> Unit = {},
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val currentOnListMoved by rememberUpdatedState(onListMoved)
+    val currentOnLimitReached by rememberUpdatedState(onLimitReached)
+    val currentOnError by rememberUpdatedState(onError)
+
+    LaunchedEffect(viewModel) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is ListMoved -> currentOnListMoved(event.destination)
+                LimitReached -> currentOnLimitReached()
+                Failed -> currentOnError()
+            }
+        }
+    }
+
+    ManageCollaboratorsContent(
+        state = state,
+        onAddClick = viewModel::addCollaborator,
+        onRemoveClick = viewModel::removeCollaborator,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun ManageCollaboratorsContent(
     state: ManageCollaboratorsState,
     onAddClick: (User) -> Unit,
     onRemoveClick: (User) -> Unit,
@@ -64,25 +107,24 @@ internal fun ManageCollaboratorsView(
         }
     }
 
+    val bottomPadding = 24.dp + WindowInsets.navigationBars
+        .union(WindowInsets.ime)
+        .asPaddingValues()
+        .calculateBottomPadding()
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = modifier.padding(horizontal = 24.dp),
     ) {
         TraktHeader(
             title = stringResource(R.string.page_title_manage_collaborators),
-        )
-
-        Text(
-            text = stringResource(R.string.description_manage_collaborators_shared),
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textSecondary,
+            subtitle = stringResource(R.string.description_manage_collaborators_shared),
+            maxSubtitleLines = 10,
         )
 
         InputField(
             state = searchState,
-            icon = painterResource(R.drawable.ic_search_on),
+            icon = painterResource(R.drawable.ic_search_off),
             placeholder = stringResource(R.string.input_placeholder_search_collaborators),
             containerColor = Color.Transparent,
             modifier = Modifier.fillMaxWidth(),
@@ -94,7 +136,7 @@ internal fun ManageCollaboratorsView(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 24.dp),
+                        .padding(top = 24.dp, bottom = 24.dp + bottomPadding),
                 ) {
                     FilmProgressIndicator(size = 24.dp)
                 }
@@ -109,13 +151,14 @@ internal fun ManageCollaboratorsView(
                     ),
                     style = TraktTheme.typography.paragraphSmall,
                     color = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.padding(vertical = 12.dp),
+                    modifier = Modifier.padding(top = 12.dp, bottom = 12.dp + bottomPadding),
                 )
             }
             else -> {
                 CandidatesList(
                     candidates = visibleCandidates,
                     pendingUserId = state.pendingUserId,
+                    contentPadding = PaddingValues(bottom = bottomPadding),
                     onAddClick = onAddClick,
                     onRemoveClick = onRemoveClick,
                 )
@@ -128,6 +171,7 @@ internal fun ManageCollaboratorsView(
 private fun CandidatesList(
     candidates: List<CollaboratorCandidate>,
     pendingUserId: TraktId?,
+    contentPadding: PaddingValues,
     onAddClick: (User) -> Unit,
     onRemoveClick: (User) -> Unit,
 ) {
@@ -136,7 +180,8 @@ private fun CandidatesList(
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.heightIn(max = ListMaxHeight),
+        contentPadding = contentPadding,
+        overscrollEffect = null,
     ) {
         if (collaborators.isNotEmpty()) {
             item(key = "collaborators_title") {
@@ -196,13 +241,6 @@ private fun CollaboratorRow(
     modifier: Modifier = Modifier,
 ) {
     val user = candidate.user
-    val label = stringResource(
-        when {
-            candidate.isCollaborator -> R.string.button_label_remove_collaborator
-            else -> R.string.button_label_add_collaborator
-        },
-        user.displayName,
-    )
 
     Row(
         verticalAlignment = CenterVertically,
@@ -219,7 +257,7 @@ private fun CollaboratorRow(
             UserAvatar(
                 user = user,
                 borderWidth = 0.dp,
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(42.dp),
             )
 
             Column(
@@ -251,40 +289,73 @@ private fun CollaboratorRow(
             if (pending) {
                 FilmProgressIndicator(size = 20.dp)
             } else {
-                Icon(
-                    painter = painterResource(
-                        when {
-                            candidate.isCollaborator -> R.drawable.ic_check_2
-                            else -> R.drawable.ic_plus
-                        },
+                Checkbox(
+                    checked = candidate.isCollaborator,
+                    onCheckedChange = null,
+                    enabled = false,
+                    colors = CheckboxDefaults.colors().copy(
+                        disabledUncheckedBoxColor = Color.Transparent,
+                        disabledUncheckedBorderColor = TraktTheme.colors.textPrimary,
+                        disabledCheckedBoxColor = TraktTheme.colors.textPrimary,
+                        disabledBorderColor = TraktTheme.colors.textPrimary,
+                        checkedCheckmarkColor = TraktTheme.colors.dialogContainer,
                     ),
-                    contentDescription = label,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier.size(22.dp),
                 )
             }
         }
     }
 }
 
+private val previewCandidates = persistentListOf(
+    CollaboratorCandidate(PreviewData.user1, isCollaborator = true, isMutual = true),
+    CollaboratorCandidate(
+        user = PreviewData.user1.copy(
+            ids = PreviewData.user1.ids.copy(trakt = TraktId(2)),
+            username = "other",
+        ),
+        isCollaborator = false,
+        isMutual = false,
+    ),
+)
+
 @PreviewTraktLightDark
 @Composable
 private fun Preview() {
     TraktThemePreview {
-        ManageCollaboratorsView(
+        ManageCollaboratorsContent(
             state = ManageCollaboratorsState(
                 loading = LoadingState.Done,
-                candidates = persistentListOf(
-                    CollaboratorCandidate(PreviewData.user1, isCollaborator = true, isMutual = true),
-                    CollaboratorCandidate(
-                        user = PreviewData.user1.copy(
-                            ids = PreviewData.user1.ids.copy(trakt = TraktId(2)),
-                            username = "other",
-                        ),
-                        isCollaborator = false,
-                        isMutual = false,
-                    ),
-                ),
+                candidates = previewCandidates,
+            ),
+            onAddClick = {},
+            onRemoveClick = {},
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewLoading() {
+    TraktThemePreview {
+        ManageCollaboratorsContent(
+            state = ManageCollaboratorsState(
+                loading = LoadingState.Loading,
+            ),
+            onAddClick = {},
+            onRemoveClick = {},
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewPending() {
+    TraktThemePreview {
+        ManageCollaboratorsContent(
+            state = ManageCollaboratorsState(
+                loading = LoadingState.Done,
+                candidates = previewCandidates,
+                pendingUserId = TraktId(2),
             ),
             onAddClick = {},
             onRemoveClick = {},

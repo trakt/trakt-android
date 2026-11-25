@@ -3,7 +3,9 @@ package tv.trakt.trakt.core.lists.sheets.collaborators
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
@@ -19,11 +21,18 @@ import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 internal fun LeaveCollaborationConfirmation(
     list: CustomList?,
     onDismiss: () -> Unit,
+    onLeft: () -> Unit = {},
     viewModel: LeaveCollaborationViewModel = koinViewModel(),
 ) {
     val scope = rememberCoroutineScope()
     val snackbar = LocalSnackbarState.current
     val resources = LocalResources.current
+
+    val currentOnLeft by rememberUpdatedState(onLeft)
+
+    LaunchedEffect(viewModel) {
+        viewModel.left.collect { currentOnLeft() }
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.failed.collect {

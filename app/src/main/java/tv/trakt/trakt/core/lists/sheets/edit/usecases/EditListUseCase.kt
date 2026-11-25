@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.sheets.edit.usecases
 
+import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
@@ -9,6 +10,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 internal class EditListUseCase(
     private val remoteSource: ListsRemoteSource,
     private val localSource: ListsPersonalLocalSource,
+    private val sharedLocalSource: ListsCollaborationsLocalSource,
 ) {
     suspend fun editList(
         listId: TraktId,
@@ -32,6 +34,13 @@ internal class EditListUseCase(
             sorting = sorting,
             notify = true,
         )
+        sharedLocalSource.editItem(
+            listId = listId,
+            name = name.trim(),
+            description = description?.trim(),
+            privacy = privacy,
+            sorting = sorting,
+        )
     }
 
     suspend fun deleteList(listId: TraktId) {
@@ -42,5 +51,6 @@ internal class EditListUseCase(
             id = listId,
             notify = true,
         )
+        sharedLocalSource.deleteItem(listId)
     }
 }

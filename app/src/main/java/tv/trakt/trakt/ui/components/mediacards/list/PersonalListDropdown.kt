@@ -91,7 +91,7 @@ internal fun PersonalListDropdown(
                 MenuItem(
                     text = stringResource(R.string.button_text_manage_collaborators),
                     icon = R.drawable.ic_person_double,
-                    iconSize = 22.dp,
+                    iconSize = 20.dp,
                     onClick = {
                         showMenu = false
                         onCollaboratorsClick()
@@ -117,6 +117,7 @@ internal fun CollaborationListDropdown(
     onLeaveClick: () -> Unit,
     modifier: Modifier = Modifier,
     iconSize: Dp = 16.dp,
+    onAddFromListsClick: (() -> Unit)? = null,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -136,6 +137,18 @@ internal fun CollaborationListDropdown(
             shape = RoundedCornerShape(16.dp),
             onDismissRequest = { showMenu = false },
         ) {
+            if (onAddFromListsClick != null) {
+                MenuItem(
+                    text = stringResource(R.string.button_text_add_from_lists),
+                    icon = R.drawable.ic_plus,
+                    iconSize = 22.dp,
+                    onClick = {
+                        showMenu = false
+                        onAddFromListsClick()
+                    },
+                )
+            }
+
             MenuItem(
                 text = stringResource(R.string.button_text_leave_collaboration),
                 icon = R.drawable.ic_logout,
@@ -191,6 +204,17 @@ private fun Preview() {
             onEditClick = {},
             onReorderClick = {},
             onShareClick = {},
+            onAddFromListsClick = {},
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun CollaborationPreview() {
+    TraktThemePreview {
+        CollaborationListDropdown(
+            onLeaveClick = {},
             onAddFromListsClick = {},
         )
     }

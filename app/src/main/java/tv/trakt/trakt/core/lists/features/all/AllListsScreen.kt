@@ -473,6 +473,7 @@ private fun AllListsScreen(
                                                 onShareClick = { onListShareClick(list) },
                                             )
                                             else -> CollaborationListDropdown(
+                                                onAddFromListsClick = { onAddFromListsClick(list) },
                                                 onLeaveClick = { onLeaveCollaborationClick(list) },
                                             )
                                         }

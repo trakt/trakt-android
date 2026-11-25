@@ -31,6 +31,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -46,7 +48,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -83,6 +87,8 @@ import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListIte
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
+import tv.trakt.trakt.core.lists.sheets.collaborators.ManageCollaboratorsSheet
+import tv.trakt.trakt.core.lists.sheets.collaborators.showListMovedSnackbar
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
@@ -113,6 +119,9 @@ internal fun AllPersonalListScreen(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
+    val snackbar = LocalSnackbarState.current
+    val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.navigateMovie, state.navigateShow, state.navigateEpisode) {
@@ -134,6 +143,7 @@ internal fun AllPersonalListScreen(
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
     var itemContextSheet by remember { mutableStateOf<CustomListItem?>(null) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
+    var collaboratorsSheet by remember { mutableStateOf<CustomList?>(null) }
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
@@ -212,6 +222,9 @@ internal fun AllPersonalListScreen(
         onAddFromListsClick = {
             state.list?.let(onAddFromListsClick)
         },
+        onCollaboratorsClick = {
+            collaboratorsSheet = state.list
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -271,6 +284,22 @@ internal fun AllPersonalListScreen(
         onDismiss = { editListSheet = null },
     )
 
+    ManageCollaboratorsSheet(
+        active = collaboratorsSheet != null,
+        list = collaboratorsSheet,
+        onListMoved = { list, destination ->
+            scope.launch {
+                snackbar.showListMovedSnackbar(
+                    resources = resources,
+                    listName = list.name,
+                    destination = destination,
+                    viewAction = false,
+                )
+            }
+        },
+        onDismiss = { collaboratorsSheet = null },
+    )
+
     SortSelectionSheet(
         active = sortSheet != null,
         selectedSorting = sortSheet,
@@ -318,6 +347,7 @@ internal fun AllPersonalListContent(
     onReorderClick: () -> Unit = {},
     onInfoClick: () -> Unit = {},
     onAddFromListsClick: () -> Unit = {},
+    onCollaboratorsClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
 
@@ -372,6 +402,7 @@ internal fun AllPersonalListContent(
             onReorderClick = onReorderClick,
             onInfoClick = onInfoClick,
             onAddFromListsClick = onAddFromListsClick,
+            onCollaboratorsClick = onCollaboratorsClick,
             onEndOfList = onLoadMoreData,
         )
 
@@ -417,6 +448,7 @@ private fun TitleBar(
     onMoreClick: () -> Unit = {},
     onInfoClick: () -> Unit = {},
     onAddFromListsClick: () -> Unit = {},
+    onCollaboratorsClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -494,6 +526,7 @@ private fun TitleBar(
                 onReorderClick = onReorderClick,
                 onShareClick = onShareClick,
                 onAddFromListsClick = onAddFromListsClick,
+                onCollaboratorsClick = onCollaboratorsClick,
             )
         }
     }
@@ -561,6 +594,7 @@ private fun ContentList(
     onReorderClick: () -> Unit,
     onInfoClick: () -> Unit,
     onAddFromListsClick: () -> Unit,
+    onCollaboratorsClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -608,6 +642,7 @@ private fun ContentList(
                 onFiltersClick = onFiltersClick,
                 onInfoClick = onInfoClick,
                 onAddFromListsClick = onAddFromListsClick,
+                onCollaboratorsClick = onCollaboratorsClick,
             )
         }
 
