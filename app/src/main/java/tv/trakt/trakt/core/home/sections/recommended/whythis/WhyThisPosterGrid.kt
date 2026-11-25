@@ -29,6 +29,10 @@ internal sealed interface WhyThisGridCell {
     data class Poster(
         val title: String,
         val imageUrl: String?,
+        val watched: Boolean = false,
+        val watching: Boolean = false,
+        val watchlist: Boolean = false,
+        val onClick: (() -> Unit)? = null,
     ) : WhyThisGridCell
 
     data class More(
@@ -56,6 +60,11 @@ internal fun WhyThisPosterGrid(
                         is WhyThisGridCell.Poster -> VerticalMediaCard(
                             title = cell.title,
                             imageUrl = cell.imageUrl,
+                            watched = cell.watched,
+                            watching = cell.watching,
+                            watchlist = cell.watchlist,
+                            enabled = cell.onClick != null,
+                            onClick = cell.onClick ?: {},
                             more = false,
                             corner = CARD_CORNER,
                             elevation = CardDefaults.cardElevation(

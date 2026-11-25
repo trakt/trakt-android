@@ -3,12 +3,14 @@ package tv.trakt.trakt.core.summary.sentiment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,6 +24,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMatch
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
@@ -29,6 +32,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetDocumentaryCheckUseCase
+import tv.trakt.trakt.core.summary.sentiment.usecases.GetMediaMatchUseCase
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetRealityCheckUseCase
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetSentimentUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
@@ -44,6 +48,7 @@ internal class MediaSentimentViewModel(
     private val getSentimentUseCase: GetSentimentUseCase,
     private val getRealityCheckUseCase: GetRealityCheckUseCase,
     private val getDocumentaryCheckUseCase: GetDocumentaryCheckUseCase,
+    private val getMediaMatchUseCase: GetMediaMatchUseCase,
     private val sessionManager: SessionManager,
     collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -53,6 +58,7 @@ internal class MediaSentimentViewModel(
     private val sentimentState = MutableStateFlow(initialState.sentiment)
     private val realityCheckState = MutableStateFlow(initialState.realityCheck)
     private val documentaryCheckState = MutableStateFlow(initialState.documentaryCheck)
+    private val matchState = MutableStateFlow(initialState.match)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val collapse = CollapseDelegate(
@@ -65,6 +71,8 @@ internal class MediaSentimentViewModel(
         },
     )
 
+    private var loadJob: Job? = null
+
     init {
         loadData()
         observeUser()
@@ -74,10 +82,11 @@ internal class MediaSentimentViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
+            .drop(1)
             .debounce(200.milliseconds)
             .filter {
                 val user = userState.value
-                user != null && user.isAnyVip != it?.isAnyVip
+                user?.ids?.trakt != it?.ids?.trakt || user?.isAnyVip != it?.isAnyVip
             }
             .onEach { user ->
                 userState.update { user }
@@ -87,7 +96,8 @@ internal class MediaSentimentViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             try {
                 loadingState.update { Loading }
 
@@ -96,11 +106,13 @@ internal class MediaSentimentViewModel(
                 val sentiment = async { loadSentiment() }
                 val realityCheck = async { loadRealityCheck() }
                 val documentaryCheck = async { loadDocumentaryCheck() }
+                val match = async { loadMatch() }
 
                 val documentary = documentaryCheck.await()
                 sentimentState.update { sentiment.await() }
                 documentaryCheckState.update { documentary }
                 realityCheckState.update { realityCheck.await().takeIf { documentary == null } }
+                matchState.update { match.await() }
             } finally {
                 loadingState.update { Done }
             }
@@ -154,6 +166,22 @@ internal class MediaSentimentViewModel(
         }
     }
 
+    private suspend fun loadMatch(): MediaMatch? {
+        return try {
+            if (!sessionManager.isAuthenticated()) return null
+
+            getMediaMatchUseCase.getMatch(
+                mediaId = mediaId,
+                mediaType = mediaType,
+            )
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            null
+        }
+    }
+
     private suspend fun loadUser() {
         try {
             userState.update {
@@ -178,6 +206,7 @@ internal class MediaSentimentViewModel(
         errorState,
         realityCheckState,
         documentaryCheckState,
+        matchState,
     ) { state ->
         MediaSentimentState(
             user = state[0] as User?,
@@ -187,6 +216,7 @@ internal class MediaSentimentViewModel(
             error = state[4] as Exception?,
             realityCheck = state[5] as RealityCheck?,
             documentaryCheck = state[6] as DocumentaryCheck?,
+            match = state[7] as MediaMatch?,
         )
     }.stateIn(
         scope = viewModelScope,

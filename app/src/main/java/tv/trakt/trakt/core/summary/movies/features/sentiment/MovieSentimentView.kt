@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.summary.sentiment.MediaSentimentState
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentViewModel
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsMatchOnly
 import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentiment
 import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
@@ -59,7 +60,7 @@ internal fun MovieSentimentView(
     onSentimentClick: (MediaInsights) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var visible by remember { mutableStateOf(true) }
+    var visible by remember(state.user?.ids?.trakt) { mutableStateOf(true) }
 
     if (visible) {
         MovieSentimentContent(
@@ -107,7 +108,7 @@ private fun MovieSentimentContent(
                 .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick {
-                    if (state.hasInsights) {
+                    if (state.hasDrawer) {
                         onSentimentClick(state.insights())
                     }
                 },
@@ -130,12 +131,14 @@ private fun MovieSentimentContent(
                     }
 
                     Done -> {
-                        if (state.hasInsights) {
-                            DetailsSentiment(
+                        val match = state.insightsMatch
+                        when {
+                            state.hasInsights -> DetailsSentiment(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
                                 realityCheck = state.realityCheck,
                                 documentaryCheck = state.documentaryCheck,
+                                match = match,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)
@@ -145,9 +148,22 @@ private fun MovieSentimentContent(
                                 onRealityCheckClick = {
                                     onSentimentClick(state.insights(InsightsTab.RealityCheck))
                                 },
+                                onMatchClick = {
+                                    onSentimentClick(state.insights(InsightsTab.Match))
+                                },
                             )
-                        } else {
-                            onNotAvailable?.invoke()
+
+                            match != null -> DetailsMatchOnly(
+                                match = match,
+                                modifier = Modifier
+                                    .fillMaxWidth(maxWidth)
+                                    .padding(contentPadding)
+                                    .onClick(enabled = state.hasDrawer) {
+                                        onSentimentClick(state.insights())
+                                    },
+                            )
+
+                            else -> onNotAvailable?.invoke()
                         }
                     }
                 }

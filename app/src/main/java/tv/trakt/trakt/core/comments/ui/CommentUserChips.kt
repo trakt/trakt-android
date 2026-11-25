@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.comments.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -62,7 +63,7 @@ internal fun CommentUserChips(
                 text = rating,
                 iconPainter = painterResource(R.drawable.ic_star_trakt_on),
                 iconPadding = 1.dp,
-                endPadding = 1.dp,
+                extraPadding = PaddingValues(end = 1.dp),
                 contentTextStyle = textStyle,
             )
         }

@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.ColorImage
@@ -70,25 +71,11 @@ internal fun DetailsSentiment(
     documentaryCheck: DocumentaryCheck?,
     vip: Boolean,
     modifier: Modifier = Modifier,
+    match: InsightsMatch? = null,
     onRealityCheckClick: () -> Unit = {},
+    onMatchClick: () -> Unit = {},
 ) {
-    val containerColor = TraktTheme.colors.sentimentsContainer
-    val containerColor2 = TraktTheme.colors.dialogContainer
-
-    val radialGradient = remember {
-        object : ShaderBrush() {
-            override fun createShader(size: Size): Shader {
-                return RadialGradientShader(
-                    colors = listOf(
-                        containerColor,
-                        containerColor2,
-                    ),
-                    center = Offset(size.width / 4, size.height * 1.5F),
-                    radius = size.width * 1.2F,
-                )
-            }
-        }
-    }
+    val radialGradient = rememberInsightsGradient()
 
     val accentColor = TraktTheme.colors.sentimentsAccent
     val sentimentColor = when (sentiments?.overall) {
@@ -96,21 +83,51 @@ internal fun DetailsSentiment(
         Positive, Mixed, null -> accentColor
     }
 
+    Box(modifier = modifier) {
+        DetailsSentimentCard(
+            sentiments = sentiments,
+            realityCheck = realityCheck,
+            documentaryCheck = documentaryCheck,
+            vip = vip,
+            brush = radialGradient,
+            sentimentColor = sentimentColor,
+            accentColor = accentColor,
+            onRealityCheckClick = onRealityCheckClick,
+        )
+
+        if (match != null) {
+            MatchRing(
+                score = match.score,
+                badge = { MatchAvatar(avatarUrl = match.avatarUrl) },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(MatchCornerPadding)
+                    .onClick(enabled = match.score != null, onClick = onMatchClick),
+            )
+        }
+    }
+}
+
+@Composable
+private fun DetailsSentimentCard(
+    sentiments: Sentiments?,
+    realityCheck: RealityCheck?,
+    documentaryCheck: DocumentaryCheck?,
+    vip: Boolean,
+    brush: ShaderBrush,
+    sentimentColor: Color,
+    accentColor: Color,
+    onRealityCheckClick: () -> Unit,
+) {
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = spacedBy(0.dp, CenterVertically),
-        modifier = modifier
-            .shadow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .insightsCard(
+                brush = brush,
                 elevation = TraktTheme.colors.shadowDefault,
-                shape = DefaultCardShape,
-                ambientColor = DefaultShadowColor.copy(alpha = 0.66F),
-                spotColor = DefaultShadowColor.copy(alpha = 0.66F),
-            )
-            .background(
-                brush = radialGradient,
-                shape = DefaultCardShape,
-            )
-            .padding(20.dp),
+            ),
     ) {
         if (sentiments != null && !sentiments.isEmpty) {
             SentimentSummary(
@@ -176,6 +193,98 @@ internal fun DetailsSentiment(
 }
 
 @Composable
+internal fun DetailsMatchOnly(
+    match: InsightsMatch,
+    modifier: Modifier = Modifier,
+) {
+    val radialGradient = rememberInsightsGradient()
+
+    Column(
+        verticalArrangement = spacedBy(12.dp),
+        modifier = modifier.insightsCard(
+            brush = radialGradient,
+            elevation = TraktTheme.colors.shadowDefault,
+        ),
+    ) {
+        MatchRing(
+            score = match.score,
+            size = MatchRingSize.Drawer,
+            badge = { MatchAvatar(avatarUrl = match.avatarUrl) },
+        )
+
+        Row(
+            horizontalArrangement = spacedBy(12.dp),
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                text = when (match.score) {
+                    null -> stringResource(R.string.text_match_not_enough_data)
+                    else -> stringResource(R.string.text_match_better_than, match.score)
+                },
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    fontWeight = W600,
+                ),
+                modifier = Modifier.weight(1F),
+            )
+
+            if (match.score != null) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .rotate(180F),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun rememberInsightsGradient(): ShaderBrush {
+    val containerColor = TraktTheme.colors.sentimentsContainer
+    val containerColor2 = TraktTheme.colors.dialogContainer
+
+    return remember(containerColor, containerColor2) {
+        object : ShaderBrush() {
+            override fun createShader(size: Size): Shader {
+                return RadialGradientShader(
+                    colors = listOf(
+                        containerColor,
+                        containerColor2,
+                    ),
+                    center = Offset(size.width / 4, size.height * 1.5F),
+                    radius = size.width * 1.2F,
+                )
+            }
+        }
+    }
+}
+
+private val MatchCornerPadding = 12.dp
+
+private fun Modifier.insightsCard(
+    brush: ShaderBrush,
+    elevation: Dp,
+): Modifier {
+    return this
+        .shadow(
+            elevation = elevation,
+            shape = DefaultCardShape,
+            ambientColor = DefaultShadowColor.copy(alpha = 0.66F),
+            spotColor = DefaultShadowColor.copy(alpha = 0.66F),
+        )
+        .background(
+            brush = brush,
+            shape = DefaultCardShape,
+        )
+        .padding(20.dp)
+}
+
+@Composable
 private fun SentimentSummary(
     sentiments: Sentiments,
     sentimentColor: Color,
@@ -203,7 +312,8 @@ private fun SentimentSummary(
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = spacedBy(8.dp),
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier
+                .padding(top = 16.dp, end = 24.dp),
         ) {
             val prosCons = remember(sentiments) {
                 when (sentiments.overall) {
@@ -212,7 +322,7 @@ private fun SentimentSummary(
                     Negative -> sentiments.cons.take(4)
                 }
             }
-            for (value in prosCons) {
+            for ((proConValue) in prosCons) {
                 Row(
                     horizontalArrangement = spacedBy(6.dp, Alignment.Start),
                     verticalAlignment = Alignment.Top,
@@ -224,7 +334,7 @@ private fun SentimentSummary(
                     )
 
                     Text(
-                        text = value.value,
+                        text = proConValue,
                         color = sentimentColor,
                         style = TraktTheme.typography.paragraphSmall,
                     )
@@ -544,7 +654,6 @@ private fun PreviewDocumentaryCheckOnly() {
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF131517,
@@ -556,5 +665,54 @@ private fun Preview4() {
         DetailsSentimentSkeleton(
             modifier = Modifier.padding(16.dp),
         )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewMatch() {
+    TraktThemePreview {
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            DetailsSentiment(
+                vip = true,
+                sentiments = null,
+                realityCheck = PreviewData.realityCheck,
+                documentaryCheck = null,
+                match = InsightsMatch(score = 82, avatarUrl = null),
+            )
+            DetailsSentiment(
+                vip = true,
+                sentiments = Sentiments(
+                    overall = Positive,
+                    pros = listOf(
+                        Sentiments.Theme(value = "Stylish", confidence = 0.8F),
+                    ).toImmutableList(),
+                ),
+                realityCheck = null,
+                documentaryCheck = null,
+                match = InsightsMatch(score = 31, avatarUrl = null),
+            )
+        }
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewMatchOnly() {
+    TraktThemePreview {
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            DetailsMatchOnly(
+                match = InsightsMatch(score = 74, avatarUrl = null),
+            )
+            DetailsMatchOnly(
+                match = InsightsMatch(score = null, avatarUrl = null),
+            )
+        }
     }
 }

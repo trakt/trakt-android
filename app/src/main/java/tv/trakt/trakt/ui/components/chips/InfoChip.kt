@@ -2,6 +2,7 @@ package tv.trakt.trakt.ui.components.chips
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,7 +36,7 @@ internal fun InfoChip(
     containerColor: Color = TraktTheme.colors.chipContainer,
     contentColor: Color = TraktTheme.colors.textPrimaryOnAccent,
     contentTextStyle: TextStyle = TraktTheme.typography.meta,
-    endPadding: Dp = 0.dp,
+    extraPadding: PaddingValues = PaddingValues.Zero,
 ) {
     val hasIcon = (iconVector != null || iconPainter != null)
     Row(
@@ -50,7 +51,7 @@ internal fun InfoChip(
                 horizontal = if (hasIcon) 6.dp else 7.dp,
                 vertical = 4.dp,
             )
-            .padding(end = endPadding),
+            .padding(extraPadding),
     ) {
         if (iconVector != null) {
             Icon(
