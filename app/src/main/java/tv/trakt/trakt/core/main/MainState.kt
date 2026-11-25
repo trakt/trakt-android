@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
+import tv.trakt.trakt.core.vipveteran.model.UserTierState
 
 @Immutable
 internal data class MainState(
@@ -20,6 +21,7 @@ internal data class MainState(
     val yearInReviewUrl: String? = null,
     val paywall: Boolean? = null,
     val update: AppUpdateResult? = null,
+    val userTiers: UserTierState = UserTierState(),
     val error: Exception? = null,
 ) {
     @Immutable

@@ -2,7 +2,6 @@ package tv.trakt.trakt.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -39,8 +38,11 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPill
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
+import tv.trakt.trakt.core.vipveteran.model.LocalUserTierState
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.UserTierTag
+import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val AvatarSize = 64.dp
@@ -59,6 +61,8 @@ internal fun UserHeaderRow(
     onAvatarClick: (() -> Unit)? = null,
     trailing: @Composable () -> Unit = {},
 ) {
+    val tier = LocalUserTierState.current.tierOf(user)
+
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -81,6 +85,11 @@ internal fun UserHeaderRow(
                 UserAvatar(user = user)
                 when {
                     avatarBadge != null -> avatarBadge()
+                    tier != null -> UserTierTag(
+                        tier = tier,
+                        isDirector = user.isDirector,
+                        maxWidth = AvatarSize,
+                    )
                     user.isAnyVip || user.isDirector -> VipAvatarBadge(user)
                 }
             }
@@ -109,7 +118,7 @@ private fun UserAvatar(user: User) {
 
     val avatarModifier = Modifier
         .size(AvatarSize)
-        .border(3.dp, borderColor, CircleShape)
+        .userAvatarBorder(user, 3.dp, borderColor, animated = true)
         .clip(CircleShape)
 
     if (user.hasAvatar) {

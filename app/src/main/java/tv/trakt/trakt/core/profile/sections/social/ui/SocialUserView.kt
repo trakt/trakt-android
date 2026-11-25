@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.profile.sections.social.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -69,7 +69,7 @@ internal fun SocialUserView(
                     error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
                         .size(size)
-                        .border(borderWidth, borderColor, CircleShape)
+                        .userAvatarBorder(user, borderWidth, borderColor)
                         .clip(CircleShape),
                 )
             } else {
@@ -78,7 +78,7 @@ internal fun SocialUserView(
                     contentDescription = null,
                     modifier = Modifier
                         .size(size)
-                        .border(borderWidth, borderColor, CircleShape)
+                        .userAvatarBorder(user, borderWidth, borderColor)
                         .clip(CircleShape),
                 )
             }

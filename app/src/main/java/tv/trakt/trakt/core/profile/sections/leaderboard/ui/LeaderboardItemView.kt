@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 // Decorative podium colours. Light variants are darker to keep contrast on light cards.
@@ -179,7 +180,7 @@ internal fun LeaderboardAvatar(
     }
     val avatarModifier = modifier
         .size(size)
-        .border(border, borderColor, CircleShape)
+        .userAvatarBorder(entry.user, border, borderColor)
         .clip(CircleShape)
 
     val avatar = entry.user.images?.avatar?.full

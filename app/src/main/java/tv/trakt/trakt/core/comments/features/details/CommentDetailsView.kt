@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.comments.features.details
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -93,6 +92,7 @@ import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.userprofile.navigation.canNavigateToUserProfile
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
@@ -442,7 +442,7 @@ private fun CommentHeader(
                     contentScale = ContentScale.Crop,
                     error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
+                        .userAvatarBorder(comment.user, 2.dp, avatarBorder)
                         .clip(CircleShape),
                 )
             } else {
@@ -450,7 +450,7 @@ private fun CommentHeader(
                     painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
+                        .userAvatarBorder(comment.user, 2.dp, avatarBorder)
                         .clip(CircleShape),
                 )
             }

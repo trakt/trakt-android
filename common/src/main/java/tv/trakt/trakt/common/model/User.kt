@@ -24,6 +24,7 @@ data class User(
     val images: Images?,
     val streamings: Streamings?,
     val settings: Settings?,
+    val veteran: VipVeteran? = null,
 ) {
     @Immutable
     @Serializable
@@ -44,6 +45,9 @@ data class User(
 
     val displayName: String
         get() = (name ?: "").ifBlank { username }
+
+    val tier: UserTier
+        get() = UserTier.from(isVip = isVip || isVipEp, veteran = veteran)
 
     @Immutable
     @Serializable
@@ -152,5 +156,6 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
             shareCode = null,
             slurm = null,
         ),
+        veteran = VipVeteran.fromDto(dto),
     )
 }

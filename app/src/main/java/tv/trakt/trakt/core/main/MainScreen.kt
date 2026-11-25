@@ -115,6 +115,7 @@ import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
+import tv.trakt.trakt.core.vipveteran.model.LocalUserTierState
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
@@ -271,7 +272,10 @@ internal fun MainScreen(
         state.user != null &&
         !state.welcome.isActive
 
-    CompositionLocalProvider(LocalUriHandler provides inReviewUriHandler) {
+    CompositionLocalProvider(
+        LocalUriHandler provides inReviewUriHandler,
+        LocalUserTierState provides state.userTiers,
+    ) {
         MainScreenContent(
             modifier = modifier,
             state = state,

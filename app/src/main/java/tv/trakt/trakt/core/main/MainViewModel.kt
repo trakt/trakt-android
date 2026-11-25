@@ -69,6 +69,8 @@ import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.summary.livingposter.usecases.GetLivingPosterUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import tv.trakt.trakt.core.vipveteran.model.UserTierState
+import tv.trakt.trakt.core.vipveteran.usecases.ObserveUserTierStateUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 import java.time.Instant
 import java.time.YearMonth
@@ -101,6 +103,7 @@ internal class MainViewModel(
     private val widgetsUpdates: WidgetsUpdater,
     private val getLivingPosterUseCase: GetLivingPosterUseCase,
     private val featureFlagsUseCase: FeatureFlagsUseCase,
+    private val observeUserTierStateUseCase: ObserveUserTierStateUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -117,6 +120,7 @@ internal class MainViewModel(
     private val paywallState = MutableStateFlow(initialState.paywall)
     private val updateState = MutableStateFlow(initialState.update)
     private val errorState = MutableStateFlow(initialState.error)
+    private val userTiersState = MutableStateFlow(initialState.userTiers)
 
     private var lastLoadTime: Instant? = null
 
@@ -133,6 +137,7 @@ internal class MainViewModel(
         observeRatePrompt()
         observeInAppReview()
         observeErrors()
+        observeUserTiers()
     }
 
     private fun observeUser() {
@@ -222,6 +227,14 @@ internal class MainViewModel(
             }
             .onEach { result ->
                 updateState.update { result }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserTiers() {
+        observeUserTierStateUseCase.observe()
+            .onEach { tiers ->
+                userTiersState.update { tiers }
             }
             .launchIn(viewModelScope)
     }
@@ -552,6 +565,7 @@ internal class MainViewModel(
         updateState,
         errorState,
         yearInReviewState,
+        userTiersState,
     ) { state ->
         MainState(
             user = state[0] as User?,
@@ -566,6 +580,7 @@ internal class MainViewModel(
             update = state[9] as AppUpdateResult?,
             error = state[10] as Exception?,
             yearInReviewUrl = state[11] as String?,
+            userTiers = state[12] as UserTierState,
         )
     }.stateIn(
         scope = viewModelScope,
