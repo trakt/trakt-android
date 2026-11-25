@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMatch
@@ -83,6 +84,7 @@ internal class SentimentViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val sentimentState = MutableStateFlow(initialState.sentiments)
     private val tabState = MutableStateFlow(initialState.tab)
+    private val matchState = MutableStateFlow(initialState.match)
     private val matchReasonsState = MutableStateFlow(initialState.matchReasons)
     private val matchReasonsLoadingState = MutableStateFlow(initialState.matchReasonsLoading)
     private val sectionCollapses = RealityCheckSection.entries.associateWith { section ->
@@ -92,6 +94,7 @@ internal class SentimentViewModel(
             key = section.collapsingKey,
         )
     }
+    private var matchOwnerId: TraktId? = null
     private val collapsedSectionsState = combine(
         sectionCollapses.map { (section, collapse) ->
             collapse.state.map { collapsed -> section.takeIf { collapsed } }
@@ -121,9 +124,10 @@ internal class SentimentViewModel(
         viewModelScope.launch {
             try {
                 sessionManager.observeProfile()
-                    .distinctUntilChangedBy { it?.isAnyVip }
+                    .distinctUntilChangedBy { it?.ids?.trakt to it?.isAnyVip }
                     .collect { user ->
                         userState.update { user }
+                        keepMatchForAccount(user)
                         sentimentState.update {
                             when {
                                 sentiments == null -> null
@@ -143,7 +147,27 @@ internal class SentimentViewModel(
         }
     }
 
+    private fun keepMatchForAccount(user: User?) {
+        if (matchState.value == null) return
+
+        val owner = matchOwnerId
+        val userId = user?.ids?.trakt
+        if (owner == null && userId == null) return
+        if (userId != null && (owner == null || owner == userId)) {
+            matchOwnerId = userId
+            return
+        }
+
+        matchState.update { null }
+        matchReasonsState.update { EmptyImmutableList }
+        matchReasonsLoadingState.update { LoadingState.Idle }
+        tabState.update { tab ->
+            tab.takeUnless { it == InsightsTab.Match } ?: tabs.firstOrNull { it != InsightsTab.Match } ?: tab
+        }
+    }
+
     private fun loadMatchReasons() {
+        val match = matchState.value
         if (match == null || match.isLow) return
         if (matchReasonsLoadingState.value != LoadingState.Idle) return
 
@@ -191,16 +215,19 @@ internal class SentimentViewModel(
         collapsedSectionsState,
         matchReasonsState,
         matchReasonsLoadingState,
+        matchState,
     ) { state ->
         SentimentState(
             user = state[0] as? User,
             sentiments = state[1] as Sentiments?,
             realityCheck = initialState.realityCheck,
             documentaryCheck = initialState.documentaryCheck,
-            match = initialState.match,
+            match = state[6] as MediaMatch?,
             matchReasons = state[4] as ImmutableList<RecommendedSource>,
             matchReasonsLoading = state[5] as LoadingState,
-            tabs = initialState.tabs,
+            tabs = initialState.tabs
+                .filter { it != InsightsTab.Match || state[6] != null }
+                .toImmutableList(),
             tab = state[2] as InsightsTab,
             collapsedSections = state[3] as ImmutableSet<RealityCheckSection>,
             backgroundUrl = initialState.backgroundUrl,
