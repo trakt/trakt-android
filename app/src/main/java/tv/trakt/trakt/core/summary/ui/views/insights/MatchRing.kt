@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.summary.ui.views.insights
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -41,8 +40,8 @@ private const val RING_VIEWPORT = 40F
 private const val RING_RADIUS = 16F
 private const val RING_STROKE = 4F
 
-private val BadgeSize = 18.dp
-private val BadgeOffset = 4.dp
+private val BadgeSize = 16.dp
+private val BadgeOffset = 0.dp
 
 @Immutable
 internal data class InsightsMatch(
@@ -54,7 +53,7 @@ internal enum class MatchRingSize(
     val ring: Dp,
     val fontSize: TextUnit,
 ) {
-    Card(44.dp, 12.sp),
+    Card(44.dp, 11.sp),
     Drawer(56.dp, 15.sp),
 }
 
@@ -144,7 +143,6 @@ internal fun MatchAvatar(
         fallback = painterResource(R.drawable.ic_person_placeholder),
         modifier = modifier
             .size(BadgeSize)
-            .border(2.dp, TraktTheme.colors.dialogContainer, CircleShape)
             .clip(CircleShape),
     )
 }

@@ -1,15 +1,13 @@
 package tv.trakt.trakt.core.summary.sentiment.views
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,6 +32,7 @@ import tv.trakt.trakt.core.summary.ui.views.insights.MatchRing
 import tv.trakt.trakt.core.summary.ui.views.insights.MatchRingSize
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -52,8 +51,7 @@ internal fun MatchContent(
     Column(
         verticalArrangement = spacedBy(24.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
+            .fillMaxWidth(),
     ) {
         MatchScore(
             score = score,
@@ -122,8 +120,8 @@ private fun MatchTaste(taste: ImmutableList<MediaMatch.Taste>) {
     ) {
         SectionTitle(text = stringResource(R.string.header_match_taste))
         FlowRow(
-            horizontalArrangement = spacedBy(8.dp),
-            verticalArrangement = spacedBy(8.dp),
+            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
+            verticalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
         ) {
             taste.forEach { item ->
                 TasteChip(text = item.label)
@@ -134,20 +132,14 @@ private fun MatchTaste(taste: ImmutableList<MediaMatch.Taste>) {
 
 @Composable
 private fun TasteChip(text: String) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .height(24.dp)
-            .border(1.dp, TraktTheme.colors.textSecondary.copy(alpha = 0.4F), CircleShape)
-            .padding(horizontal = 10.dp),
-    ) {
-        Text(
-            text = text,
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
-            maxLines = 1,
-        )
-    }
+    InfoChip(
+        text = text,
+        contentColor = TraktTheme.colors.chipContent,
+        extraPadding = PaddingValues(
+            horizontal = 2.dp,
+            vertical = 1.dp,
+        ),
+    )
 }
 
 @Composable
@@ -210,7 +202,7 @@ private fun SectionTitle(text: String) {
     Text(
         text = text,
         color = TraktTheme.colors.textPrimary,
-        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W600),
+        style = TraktTheme.typography.heading5,
     )
 }
 
@@ -227,7 +219,6 @@ private fun Preview() {
             reasons = persistentListOf(),
             reasonsLoading = LoadingState.Done,
             vip = true,
-            modifier = Modifier.padding(16.dp),
         )
     }
 }
@@ -242,7 +233,6 @@ private fun PreviewFree() {
             reasons = persistentListOf(),
             reasonsLoading = LoadingState.Idle,
             vip = false,
-            modifier = Modifier.padding(16.dp),
         )
     }
 }

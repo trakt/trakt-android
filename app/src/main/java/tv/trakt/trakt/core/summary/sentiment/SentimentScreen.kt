@@ -244,6 +244,8 @@ private fun SentimentContent(
                                                 .onClick(onClick = onVipClick),
                                         )
                                     },
+                                    modifier = Modifier
+                                        .padding(top = 16.dp),
                                 )
                             }
                         }

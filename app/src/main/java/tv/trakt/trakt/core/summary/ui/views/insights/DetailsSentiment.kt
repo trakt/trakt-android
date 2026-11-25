@@ -312,7 +312,8 @@ private fun SentimentSummary(
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = spacedBy(8.dp),
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier
+                .padding(top = 16.dp, end = 24.dp),
         ) {
             val prosCons = remember(sentiments) {
                 when (sentiments.overall) {
@@ -321,7 +322,7 @@ private fun SentimentSummary(
                     Negative -> sentiments.cons.take(4)
                 }
             }
-            for (value in prosCons) {
+            for ((proConValue) in prosCons) {
                 Row(
                     horizontalArrangement = spacedBy(6.dp, Alignment.Start),
                     verticalAlignment = Alignment.Top,
@@ -333,7 +334,7 @@ private fun SentimentSummary(
                     )
 
                     Text(
-                        text = value.value,
+                        text = proConValue,
                         color = sentimentColor,
                         style = TraktTheme.typography.paragraphSmall,
                     )
@@ -653,7 +654,6 @@ private fun PreviewDocumentaryCheckOnly() {
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF131517,
