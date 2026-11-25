@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.sentiment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -70,6 +71,8 @@ internal class MediaSentimentViewModel(
         },
     )
 
+    private var loadJob: Job? = null
+
     init {
         loadData()
         observeUser()
@@ -93,7 +96,8 @@ internal class MediaSentimentViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             try {
                 loadingState.update { Loading }
 

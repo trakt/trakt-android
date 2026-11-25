@@ -56,7 +56,7 @@ internal fun ShowSentimentView(
     onSentimentClick: (MediaInsights) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var visible by remember { mutableStateOf(true) }
+    var visible by remember(state.user?.ids?.trakt) { mutableStateOf(true) }
 
     if (visible) {
         ShowSentimentContent(
