@@ -66,6 +66,7 @@ import tv.trakt.trakt.common.model.MediaMatch
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
@@ -93,6 +94,8 @@ internal fun SentimentScreen(
     viewModel: SentimentViewModel,
     onNavigateVip: (source: VipUpsellSource) -> Unit,
     onNavigateToPerson: (SlugId) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -104,6 +107,8 @@ internal fun SentimentScreen(
         onVipSeen = viewModel::onVipUpsellSeen,
         onSectionCollapse = viewModel::setSectionCollapsed,
         onPersonLinkClick = onNavigateToPerson,
+        onMovieClick = onNavigateToMovie,
+        onShowClick = onNavigateToShow,
         onBackClick = onNavigateBack,
     )
 }
@@ -116,6 +121,8 @@ private fun SentimentContent(
     onVipSeen: () -> Unit = {},
     onSectionCollapse: (RealityCheckSection, Boolean) -> Unit = { _, _ -> },
     onPersonLinkClick: (SlugId) -> Unit = {},
+    onMovieClick: (TraktId) -> Unit = {},
+    onShowClick: (TraktId) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
@@ -227,6 +234,9 @@ private fun SentimentContent(
                                     reasons = state.matchReasons,
                                     reasonsLoading = state.matchReasonsLoading,
                                     vip = state.user?.isAnyVip == true,
+                                    collection = state.collection,
+                                    onMovieClick = onMovieClick,
+                                    onShowClick = onShowClick,
                                     upsell = {
                                         GetVipView(
                                             modifier = Modifier

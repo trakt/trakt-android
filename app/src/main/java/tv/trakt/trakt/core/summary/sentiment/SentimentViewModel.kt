@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -49,6 +51,7 @@ internal class SentimentViewModel(
     private val getMockSentimentUseCase: GetMockSentimentUseCase,
     private val getMatchReasonsUseCase: GetMatchReasonsUseCase,
     private val sessionManager: SessionManager,
+    private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
     collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -105,6 +108,7 @@ internal class SentimentViewModel(
 
     init {
         loadUser()
+        collectionStateProvider.launchIn(viewModelScope)
 
         analytics.logDrilldown(
             source = when {
@@ -216,9 +220,11 @@ internal class SentimentViewModel(
         matchReasonsState,
         matchReasonsLoadingState,
         matchState,
+        collectionStateProvider.stateFlow,
     ) { state ->
         SentimentState(
             user = state[0] as? User,
+            collection = state[7] as UserCollectionState,
             sentiments = state[1] as Sentiments?,
             realityCheck = initialState.realityCheck,
             documentaryCheck = initialState.documentaryCheck,

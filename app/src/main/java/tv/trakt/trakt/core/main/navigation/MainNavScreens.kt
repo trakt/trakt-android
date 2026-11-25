@@ -965,6 +965,8 @@ internal fun NavGraphBuilder.sentimentScreens(controller: NavHostController) {
                     backdropUrl = sentiment.mediaImage,
                 )
             },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToShow = { navigateToShow(it) },
             onNavigateBack = { popBackStack() },
         )
     }

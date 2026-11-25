@@ -33,6 +33,8 @@ internal data class SentimentDestination(
 internal fun NavGraphBuilder.sentimentScreen(
     onNavigateVip: (source: VipUpsellSource) -> Unit,
     onNavigateToPerson: (SlugId, SentimentDestination) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SentimentDestination> { entry ->
@@ -41,6 +43,8 @@ internal fun NavGraphBuilder.sentimentScreen(
             viewModel = koinViewModel<SentimentViewModel>(),
             onNavigateVip = onNavigateVip,
             onNavigateToPerson = { slug -> onNavigateToPerson(slug, dest) },
+            onNavigateToMovie = onNavigateToMovie,
+            onNavigateToShow = onNavigateToShow,
             onNavigateBack = onNavigateBack,
         )
     }
