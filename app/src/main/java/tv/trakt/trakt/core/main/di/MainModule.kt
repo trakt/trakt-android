@@ -114,6 +114,7 @@ internal val mainModule = module {
             widgetsUpdates = get(),
             getLivingPosterUseCase = get(),
             featureFlagsUseCase = get(),
+            observeUserTierStateUseCase = get(),
             analytics = get(),
         )
     }

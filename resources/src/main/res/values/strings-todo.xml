@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="tag_text_user_tier_elite">Elite</string>
+  <string name="tag_text_user_tier_legend">Legend</string>
+  <string name="tag_text_user_tier_pro">Pro</string>
+  <string name="tag_text_user_tier_veteran">Veteran</string>
 </resources>

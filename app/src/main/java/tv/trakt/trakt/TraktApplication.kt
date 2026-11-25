@@ -93,6 +93,7 @@ import tv.trakt.trakt.core.today.di.todayDataModule
 import tv.trakt.trakt.core.today.di.todayModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import tv.trakt.trakt.core.userprofile.di.userProfileModule
+import tv.trakt.trakt.core.vipveteran.di.vipVeteranModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
 import tv.trakt.trakt.ui.components.dateselection.otherdatepicker.di.otherDatePickerModule
 import tv.trakt.trakt.widgets.di.widgetsModule
@@ -179,6 +180,7 @@ internal class TraktApplication : Application() {
                 triviaModule,
                 soundtrackModule,
                 livingPosterModule,
+                vipVeteranModule,
                 sentimentModule,
                 allCreditsModule,
                 listsModule,

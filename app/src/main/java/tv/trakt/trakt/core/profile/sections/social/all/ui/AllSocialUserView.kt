@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.profile.sections.social.all.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +31,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.AvatarVariant
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -64,41 +65,11 @@ internal fun AllSocialUserView(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(size),
         ) {
-            val borderWidth = 2.dp
-            val borderColor = when {
-                user.isAnyVip -> TraktTheme.colors.vipAccent
-                else -> Color.Transparent
-            }
-
-            val avatar = user.images?.avatar?.full
-            if (avatar != null) {
-                AsyncImage(
-                    model = remember(avatar) {
-                        when {
-                            avatar.startsWith("http") -> avatar
-                            else -> "https://$avatar"
-                        }
-                            .replace("/medium/", "/thumb/")
-                            .replace("/original/", "/thumb/")
-                    },
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.ic_person_placeholder),
-                    modifier = Modifier
-                        .size(size)
-                        .border(borderWidth, borderColor, CircleShape)
-                        .clip(CircleShape),
-                )
-            } else {
-                Image(
-                    painter = painterResource(R.drawable.ic_person_placeholder),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(size)
-                        .border(borderWidth, borderColor, CircleShape)
-                        .clip(CircleShape),
-                )
-            }
+            UserAvatar(
+                user = user,
+                variant = AvatarVariant.Thumb,
+                modifier = Modifier.size(size),
+            )
         }
 
         Column(

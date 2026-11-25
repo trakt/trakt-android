@@ -1,8 +1,6 @@
 package tv.trakt.trakt.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Text
@@ -21,26 +18,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPill
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
+import tv.trakt.trakt.core.vipveteran.model.LocalUserTierState
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
+import tv.trakt.trakt.ui.components.usertier.UserTierTag
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val AvatarSize = 64.dp
@@ -59,6 +55,8 @@ internal fun UserHeaderRow(
     onAvatarClick: (() -> Unit)? = null,
     trailing: @Composable () -> Unit = {},
 ) {
+    val tier = LocalUserTierState.current.tierOf(user)
+
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -78,9 +76,14 @@ internal fun UserHeaderRow(
                     onAvatarClick?.invoke()
                 },
             ) {
-                UserAvatar(user = user)
+                HeaderAvatar(user = user)
                 when {
                     avatarBadge != null -> avatarBadge()
+                    tier != null -> UserTierTag(
+                        tier = tier,
+                        isDirector = user.isDirector,
+                        maxWidth = AvatarSize,
+                    )
                     user.isAnyVip || user.isDirector -> VipAvatarBadge(user)
                 }
             }
@@ -98,7 +101,7 @@ internal fun UserHeaderRow(
 }
 
 @Composable
-private fun UserAvatar(user: User) {
+private fun HeaderAvatar(user: User) {
     val vipAccent = TraktTheme.colors.vipAccent
     val borderColor = remember(user, vipAccent) {
         when (user.isAnyVip) {
@@ -107,26 +110,13 @@ private fun UserAvatar(user: User) {
         }
     }
 
-    val avatarModifier = Modifier
-        .size(AvatarSize)
-        .border(3.dp, borderColor, CircleShape)
-        .clip(CircleShape)
-
-    if (user.hasAvatar) {
-        AsyncImage(
-            model = user.images?.avatar?.full,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.ic_person_placeholder),
-            modifier = avatarModifier,
-        )
-    } else {
-        Image(
-            painter = painterResource(R.drawable.ic_person_placeholder),
-            contentDescription = null,
-            modifier = avatarModifier,
-        )
-    }
+    UserAvatar(
+        user = user,
+        borderWidth = 3.dp,
+        borderColor = borderColor,
+        animated = true,
+        modifier = Modifier.size(AvatarSize),
+    )
 }
 
 @Composable

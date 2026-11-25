@@ -4,7 +4,6 @@ package tv.trakt.trakt.ui.components.mediacards.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -65,6 +64,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.lists.ListAuthorSubtitle
 import tv.trakt.trakt.ui.components.lists.ListPrivacySubtitle
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -266,29 +266,10 @@ private fun CustomListHeader(
                         .size(36.dp)
                         .onClick { onUserClick?.invoke(list.user) },
                 ) {
-                    val avatarBorder = if (list.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
-                    val avatar = list.user.images?.avatar?.full
-                    if (avatar != null) {
-                        AsyncImage(
-                            model = avatar,
-                            contentDescription = "User avatar",
-                            contentScale = ContentScale.Crop,
-                            error = painterResource(R.drawable.ic_person_placeholder),
-                            modifier =
-                                Modifier
-                                    .border(2.dp, avatarBorder, CircleShape)
-                                    .clip(CircleShape),
-                        )
-                    } else {
-                        Image(
-                            painter = painterResource(R.drawable.ic_person_placeholder),
-                            contentDescription = null,
-                            modifier =
-                                Modifier
-                                    .border(2.dp, avatarBorder, CircleShape)
-                                    .clip(CircleShape),
-                        )
-                    }
+                    UserAvatar(
+                        user = list.user,
+                        contentDescription = "User avatar",
+                    )
                 }
                 Spacer(modifier = Modifier.size(8.dp))
             }

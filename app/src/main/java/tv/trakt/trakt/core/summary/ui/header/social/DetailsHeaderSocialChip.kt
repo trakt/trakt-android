@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val USERS_LIMIT = 3
@@ -103,22 +104,13 @@ internal fun DetailsSocialChip(
         Box {
             limitUsers.forEachIndexed { index, user ->
                 val offset = (index * spacing).dp
-                AsyncImage(
-                    model = user.images?.avatar?.full,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    placeholder = painterResource(R.drawable.ic_person_placeholder),
-                    error = painterResource(R.drawable.ic_person_placeholder),
+                UserAvatar(
+                    user = user,
+                    borderWidth = 1.25.dp,
                     modifier = Modifier
                         .zIndex(10 - index.toFloat())
                         .padding(start = offset)
-                        .size(size)
-                        .border(
-                            width = 1.25.dp,
-                            color = if (user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent,
-                            shape = CircleShape,
-                        )
-                        .clip(CircleShape),
+                        .size(size),
                 )
             }
 
