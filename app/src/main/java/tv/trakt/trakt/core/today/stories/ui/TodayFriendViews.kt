@@ -1,8 +1,6 @@
 package tv.trakt.trakt.core.today.stories.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,24 +8,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -41,6 +33,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.today.model.TodayFriendAction
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.AvatarVariant
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 import java.time.LocalDate
@@ -54,7 +48,6 @@ private const val MAX_FACES = 5
 private val AvatarSize = 52.dp
 private val FaceSize = 36.dp
 private val FaceOverlap = 12.dp
-private val AvatarBorder = 2.dp
 private val InlineStarSize = 14.dp
 
 @Composable
@@ -68,11 +61,12 @@ internal fun TodayFriendFooter(
         horizontalArrangement = spacedBy(12.dp),
         modifier = modifier,
     ) {
-        TodayAvatar(
+        UserAvatar(
             user = action.user,
-            size = AvatarSize,
             borderColor = TraktTheme.colors.accent,
-            modifier = Modifier.onClick { onUserClick(action.user) },
+            modifier = Modifier
+                .size(AvatarSize)
+                .onClick { onUserClick(action.user) },
         )
 
         Column(
@@ -138,11 +132,13 @@ internal fun TodayFaces(
 
     Box(modifier = modifier) {
         users.take(MAX_FACES).forEachIndexed { index, user ->
-            TodayAvatar(
+            UserAvatar(
                 user = user,
-                size = FaceSize,
                 borderColor = background,
-                modifier = Modifier.offset(x = (FaceSize - FaceOverlap) * index),
+                variant = AvatarVariant.Thumb,
+                modifier = Modifier
+                    .offset(x = (FaceSize - FaceOverlap) * index)
+                    .size(FaceSize),
             )
         }
 
@@ -151,36 +147,6 @@ internal fun TodayFaces(
                 width = FaceSize + (FaceSize - FaceOverlap) * (minOf(users.size, MAX_FACES) - 1),
                 height = FaceSize,
             ),
-        )
-    }
-}
-
-@Composable
-private fun TodayAvatar(
-    user: User,
-    size: Dp,
-    borderColor: Color,
-    modifier: Modifier = Modifier,
-) {
-    val imageModifier = modifier
-        .size(size)
-        .border(AvatarBorder, borderColor, CircleShape)
-        .padding(AvatarBorder)
-        .clip(CircleShape)
-
-    if (user.hasAvatar) {
-        AsyncImage(
-            model = user.images?.avatar?.full,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.ic_person_placeholder),
-            modifier = imageModifier,
-        )
-    } else {
-        Image(
-            painter = painterResource(R.drawable.ic_person_placeholder),
-            contentDescription = null,
-            modifier = imageModifier,
         )
     }
 }
