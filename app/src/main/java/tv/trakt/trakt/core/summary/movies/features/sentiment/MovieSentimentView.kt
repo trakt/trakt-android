@@ -148,6 +148,9 @@ private fun MovieSentimentContent(
                                 onRealityCheckClick = {
                                     onSentimentClick(state.insights(InsightsTab.RealityCheck))
                                 },
+                                onMatchClick = {
+                                    onSentimentClick(state.insights(InsightsTab.Match))
+                                },
                             )
 
                             match != null -> DetailsMatchOnly(

@@ -73,6 +73,7 @@ internal fun DetailsSentiment(
     modifier: Modifier = Modifier,
     match: InsightsMatch? = null,
     onRealityCheckClick: () -> Unit = {},
+    onMatchClick: () -> Unit = {},
 ) {
     val radialGradient = rememberInsightsGradient()
 
@@ -87,6 +88,7 @@ internal fun DetailsSentiment(
             MatchRing(
                 score = it.score,
                 badge = { MatchAvatar(avatarUrl = it.avatarUrl) },
+                modifier = Modifier.onClick(enabled = it.score != null, onClick = onMatchClick),
             )
         }
     }
