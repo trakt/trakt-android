@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -41,30 +42,10 @@ internal fun AllActivityUserChip(
             endPadding = 26.dp,
             modifier = Modifier.fillMaxHeight(),
         )
-        val vipAccent = TraktTheme.colors.vipAccent
-        val borderColor = remember(user.isAnyVip) {
-            if (user.isAnyVip) vipAccent else Color.Transparent
-        }
-        if (user.hasAvatar) {
-            AsyncImage(
-                model = user.images?.avatar?.full,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                error = painterResource(R.drawable.ic_person_placeholder),
-                modifier = Modifier
-                    .size(26.dp)
-                    .border(1.5.dp, borderColor, CircleShape)
-                    .clip(CircleShape),
-            )
-        } else {
-            Image(
-                painter = painterResource(R.drawable.ic_person_placeholder),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(26.dp)
-                    .border(1.5.dp, borderColor, CircleShape)
-                    .clip(CircleShape),
-            )
-        }
+        UserAvatar(
+            user = user,
+            borderWidth = 1.5.dp,
+            modifier = Modifier.size(26.dp),
+        )
     }
 }

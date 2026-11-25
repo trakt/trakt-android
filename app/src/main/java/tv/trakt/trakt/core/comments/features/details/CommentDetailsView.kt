@@ -92,7 +92,7 @@ import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.userprofile.navigation.canNavigateToUserProfile
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
@@ -430,30 +430,10 @@ private fun CommentHeader(
                     onUserClick?.invoke(comment.user)
                 },
         ) {
-            val avatarBorder = when {
-                comment.user.isAnyVip -> TraktTheme.colors.vipAccent
-                else -> Color.Transparent
-            }
-            val avatar = comment.user.images?.avatar?.full
-            if (avatar != null) {
-                AsyncImage(
-                    model = avatar,
-                    contentDescription = "User avatar",
-                    contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.ic_person_placeholder),
-                    modifier = Modifier
-                        .userAvatarBorder(comment.user, 2.dp, avatarBorder)
-                        .clip(CircleShape),
-                )
-            } else {
-                Image(
-                    painter = painterResource(R.drawable.ic_person_placeholder),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .userAvatarBorder(comment.user, 2.dp, avatarBorder)
-                        .clip(CircleShape),
-                )
-            }
+            UserAvatar(
+                user = comment.user,
+                contentDescription = "User avatar",
+            )
         }
 
         Column(verticalArrangement = Arrangement.Absolute.spacedBy(1.dp)) {

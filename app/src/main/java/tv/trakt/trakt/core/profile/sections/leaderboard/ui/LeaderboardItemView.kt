@@ -38,7 +38,8 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
+import tv.trakt.trakt.ui.components.usertier.AvatarVariant
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 // Decorative podium colours. Light variants are darker to keep contrast on light cards.
@@ -174,38 +175,12 @@ internal fun LeaderboardAvatar(
     size: Dp = 44.dp,
     border: Dp = 2.dp,
 ) {
-    val borderColor = when {
-        entry.user.isAnyVip -> TraktTheme.colors.vipAccent
-        else -> Color.Transparent
-    }
-    val avatarModifier = modifier
-        .size(size)
-        .userAvatarBorder(entry.user, border, borderColor)
-        .clip(CircleShape)
-
-    val avatar = entry.user.images?.avatar?.full
-    if (avatar != null) {
-        AsyncImage(
-            model = remember(avatar) {
-                when {
-                    avatar.startsWith("http") -> avatar
-                    else -> "https://$avatar"
-                }
-                    .replace("/medium/", "/medium/")
-                    .replace("/original/", "/medium/")
-            },
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.ic_person_placeholder),
-            modifier = avatarModifier,
-        )
-    } else {
-        Image(
-            painter = painterResource(R.drawable.ic_person_placeholder),
-            contentDescription = null,
-            modifier = avatarModifier,
-        )
-    }
+    UserAvatar(
+        user = entry.user,
+        variant = AvatarVariant.Medium,
+        borderWidth = border,
+        modifier = modifier.size(size),
+    )
 }
 
 @Composable

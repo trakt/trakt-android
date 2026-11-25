@@ -32,7 +32,8 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
+import tv.trakt.trakt.ui.components.usertier.AvatarVariant
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val PillShape = RoundedCornerShape(100)
@@ -134,38 +135,15 @@ private fun StackedAvatar(
     user: User,
     modifier: Modifier = Modifier,
 ) {
-    val borderColor = when {
-        user.isAnyVip -> TraktTheme.colors.vipAccent
-        else -> TraktTheme.colors.chipContainer
-    }
-    val avatarModifier = modifier
-        .size(AvatarSize)
-        .userAvatarBorder(user, 1.25.dp, borderColor)
-        .clip(CircleShape)
-
-    val avatar = user.images?.avatar?.full
-    if (avatar == null) {
-        Image(
-            painter = painterResource(R.drawable.ic_person_placeholder),
-            contentDescription = null,
-            modifier = avatarModifier,
-        )
-        return
-    }
-
-    AsyncImage(
-        model = remember(avatar) {
-            when {
-                avatar.startsWith("http") -> avatar
-                else -> "https://$avatar"
-            }
-                .replace("/medium/", "/thumb/")
-                .replace("/original/", "/thumb/")
+    UserAvatar(
+        user = user,
+        variant = AvatarVariant.Thumb,
+        borderWidth = 1.25.dp,
+        borderColor = when {
+            user.isAnyVip -> TraktTheme.colors.vipAccent
+            else -> TraktTheme.colors.chipContainer
         },
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        error = painterResource(R.drawable.ic_person_placeholder),
-        modifier = avatarModifier,
+        modifier = modifier.size(AvatarSize),
     )
 }
 

@@ -49,20 +49,6 @@ private val MinRingGap = 1.5.dp
 private val NoGapMaxSize = 32.dp
 
 @Composable
-internal fun Modifier.userAvatarBorder(
-    user: User,
-    width: Dp,
-    color: Color,
-    animated: Boolean = false,
-): Modifier {
-    val tier = LocalUserTierState.current.tierOf(user)
-    return when (tier) {
-        null -> border(width, color, CircleShape)
-        else -> userTierRing(tier, animated)
-    }
-}
-
-@Composable
 internal fun Modifier.userTierRing(
     tier: UserTier,
     animated: Boolean = false,

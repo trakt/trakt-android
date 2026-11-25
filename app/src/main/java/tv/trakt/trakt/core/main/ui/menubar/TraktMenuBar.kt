@@ -64,6 +64,7 @@ import tv.trakt.trakt.core.search.views.SearchFiltersList
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val navigationItems = listOf(
@@ -208,9 +209,8 @@ private fun TraktMenuBarContent(
                     ?.any { it.hasRoute(ProfileDestination::class) } == true
 
                 ProfileItem(
+                    user = user,
                     selected = profileSelected,
-                    vip = user?.isAnyVip == true,
-                    userAvatar = user?.images?.avatar?.full,
                     onClick = {
                         if (!enabled || profileSelected) {
                             return@ProfileItem
@@ -231,9 +231,8 @@ private fun TraktMenuBarContent(
 @Composable
 fun ProfileItem(
     modifier: Modifier = Modifier,
-    vip: Boolean = false,
+    user: User? = null,
     selected: Boolean = false,
-    userAvatar: String? = null,
     onClick: () -> Unit = {},
 ) {
     val size = 26.dp
@@ -247,26 +246,21 @@ fun ProfileItem(
         val vipAccent = TraktTheme.colors.vipAccent
         val accent = TraktTheme.colors.accent
 
-        val borderColor = remember(vip, selected) {
+        val borderColor = remember(user?.isAnyVip, selected) {
             when {
                 selected -> accent
-                vip -> vipAccent
+                user?.isAnyVip == true -> vipAccent
                 else -> White
             }
         }
-        if (userAvatar != null) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(userAvatar)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                error = painterResource(R.drawable.ic_person_placeholder),
-                modifier = Modifier
-                    .size(size)
-                    .border(border, borderColor, CircleShape)
-                    .clip(CircleShape),
+
+        if (user != null) {
+            UserAvatar(
+                user = user,
+                borderWidth = border,
+                borderColor = borderColor,
+                ringEnabled = !selected,
+                modifier = Modifier.size(size),
             )
         } else {
             Image(

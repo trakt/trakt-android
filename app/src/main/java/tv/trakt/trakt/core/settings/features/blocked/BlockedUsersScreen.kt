@@ -53,6 +53,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val ROW_ITEM_SPACING = 12.dp
@@ -198,15 +199,10 @@ private fun BlockedUserRow(
             horizontalArrangement = spacedBy(ROW_ITEM_SPACING),
             modifier = Modifier.weight(1f),
         ) {
-            AsyncImage(
-                model = user.images?.avatar?.full,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                error = painterResource(R.drawable.ic_person_placeholder),
-                placeholder = painterResource(R.drawable.ic_person_placeholder),
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape),
+            UserAvatar(
+                user = user,
+                borderWidth = 0.dp,
+                modifier = Modifier.size(40.dp),
             )
 
             Column(

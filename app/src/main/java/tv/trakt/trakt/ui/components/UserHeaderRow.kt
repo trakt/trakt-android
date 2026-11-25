@@ -41,8 +41,8 @@ import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
 import tv.trakt.trakt.core.vipveteran.model.LocalUserTierState
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.components.usertier.UserTierTag
-import tv.trakt.trakt.ui.components.usertier.userAvatarBorder
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val AvatarSize = 64.dp
@@ -82,7 +82,7 @@ internal fun UserHeaderRow(
                     onAvatarClick?.invoke()
                 },
             ) {
-                UserAvatar(user = user)
+                HeaderAvatar(user = user)
                 when {
                     avatarBadge != null -> avatarBadge()
                     tier != null -> UserTierTag(
@@ -107,7 +107,7 @@ internal fun UserHeaderRow(
 }
 
 @Composable
-private fun UserAvatar(user: User) {
+private fun HeaderAvatar(user: User) {
     val vipAccent = TraktTheme.colors.vipAccent
     val borderColor = remember(user, vipAccent) {
         when (user.isAnyVip) {
@@ -116,26 +116,13 @@ private fun UserAvatar(user: User) {
         }
     }
 
-    val avatarModifier = Modifier
-        .size(AvatarSize)
-        .userAvatarBorder(user, 3.dp, borderColor, animated = true)
-        .clip(CircleShape)
-
-    if (user.hasAvatar) {
-        AsyncImage(
-            model = user.images?.avatar?.full,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.ic_person_placeholder),
-            modifier = avatarModifier,
-        )
-    } else {
-        Image(
-            painter = painterResource(R.drawable.ic_person_placeholder),
-            contentDescription = null,
-            modifier = avatarModifier,
-        )
-    }
+    UserAvatar(
+        user = user,
+        borderWidth = 3.dp,
+        borderColor = borderColor,
+        animated = true,
+        modifier = Modifier.size(AvatarSize),
+    )
 }
 
 @Composable
