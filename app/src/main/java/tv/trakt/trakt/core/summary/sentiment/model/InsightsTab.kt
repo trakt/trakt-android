@@ -12,4 +12,5 @@ internal enum class InsightsTab(
 ) {
     Sentiment("sentiment", R.string.header_community_sentiment, VipUpsellSource.Sentiment),
     RealityCheck("reality-check", R.string.header_reality_check, VipUpsellSource.RealityCheck),
+    Match("match", R.string.header_match, VipUpsellSource.Sentiment),
 }

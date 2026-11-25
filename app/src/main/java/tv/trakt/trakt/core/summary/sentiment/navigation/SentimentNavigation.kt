@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
@@ -18,9 +19,11 @@ import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 @Serializable
 internal data class SentimentDestination(
     val mediaId: Int,
+    val mediaType: MediaType,
     val sentimentsDto: String?,
     val realityCheckDto: String?,
     val documentaryCheckDto: String?,
+    val matchDto: String?,
     val tab: InsightsTab,
     val mediaTitle: String?,
     val mediaImage: String?,
@@ -45,6 +48,7 @@ internal fun NavGraphBuilder.sentimentScreen(
 
 internal fun NavController.navigateToSentiment(
     mediaId: TraktId,
+    mediaType: MediaType,
     insights: MediaInsights,
     mediaTitle: String?,
     mediaImage: String?,
@@ -53,9 +57,11 @@ internal fun NavController.navigateToSentiment(
     navigate(
         route = SentimentDestination(
             mediaId = mediaId.value,
+            mediaType = mediaType,
             sentimentsDto = insights.sentiments?.let { Json.encodeToString(it) },
             realityCheckDto = insights.realityCheck?.let { Json.encodeToString(it) },
             documentaryCheckDto = insights.documentaryCheck?.let { Json.encodeToString(it) },
+            matchDto = insights.match?.let { Json.encodeToString(it) },
             tab = insights.tab,
             mediaTitle = mediaTitle,
             mediaImage = mediaImage,

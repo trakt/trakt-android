@@ -307,6 +307,7 @@ internal fun NavGraphBuilder.showsScreens(
             onNavigateToSentiment = { show, insights ->
                 navigateToSentiment(
                     mediaId = show.ids.trakt,
+                    mediaType = Show,
                     insights = insights,
                     mediaTitle = show.title,
                     mediaImage = show.images?.getFanartUrl(),
@@ -498,6 +499,7 @@ internal fun NavGraphBuilder.moviesScreens(
             onNavigateToSentiment = { movie, insights ->
                 navigateToSentiment(
                     mediaId = movie.ids.trakt,
+                    mediaType = Movie,
                     insights = insights,
                     mediaTitle = movie.title,
                     mediaImage = movie.images?.getFanartUrl(),

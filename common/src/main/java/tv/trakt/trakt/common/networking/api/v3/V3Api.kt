@@ -15,6 +15,7 @@ import io.ktor.http.encodeURLPathPart
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.data.dto.ListCollaboratorDto
 import tv.trakt.trakt.common.data.dto.ListFeaturedPeopleDto
+import tv.trakt.trakt.common.data.dto.MediaMatchDto
 import tv.trakt.trakt.common.data.dto.SmartListFilterOptionDto
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -396,6 +397,14 @@ class V3Api(
         val response = client.get("${baseUrl}media/recommendations") {
             applyRecommendationsRequest(request)
         }
+        return response.body()
+    }
+
+    suspend fun getMediaMatch(
+        type: MediaType,
+        mediaId: TraktId,
+    ): MediaMatchDto {
+        val response = client.get("${baseUrl}${type.value}s/${mediaId.value}/match")
         return response.body()
     }
 

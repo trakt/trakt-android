@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
@@ -19,15 +20,22 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMatch
 import tv.trakt.trakt.common.model.Sentiments
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
+import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
 import tv.trakt.trakt.core.summary.sentiment.navigation.SentimentDestination
+import tv.trakt.trakt.core.summary.sentiment.usecases.GetMatchReasonsUseCase
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetMockSentimentUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -38,6 +46,7 @@ private const val INSIGHTS_OPEN_SOURCE = "card"
 internal class SentimentViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMockSentimentUseCase: GetMockSentimentUseCase,
+    private val getMatchReasonsUseCase: GetMatchReasonsUseCase,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
     collapsingManager: CollapsingManager,
@@ -51,15 +60,20 @@ internal class SentimentViewModel(
         ?.let { Json.decodeFromString<RealityCheck>(it) }
     private val documentaryCheck = destination.documentaryCheckDto
         ?.let { Json.decodeFromString<DocumentaryCheck>(it) }
+    private val match = destination.matchDto
+        ?.let { Json.decodeFromString<MediaMatch>(it) }
+        ?.takeIf { it.score != null }
     private val tabs = listOfNotNull(
         InsightsTab.Sentiment.takeIf { sentiments != null },
         InsightsTab.RealityCheck.takeIf { realityCheck != null || documentaryCheck != null },
+        InsightsTab.Match.takeIf { match != null },
     ).toImmutableList()
 
     private val initialState = SentimentState(
         sentiments = sentiments,
         realityCheck = realityCheck,
         documentaryCheck = documentaryCheck,
+        match = match,
         tabs = tabs,
         tab = destination.tab.takeIf { it in tabs } ?: tabs.firstOrNull() ?: InsightsTab.Sentiment,
         backgroundUrl = destination.mediaImage,
@@ -69,6 +83,8 @@ internal class SentimentViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val sentimentState = MutableStateFlow(initialState.sentiments)
     private val tabState = MutableStateFlow(initialState.tab)
+    private val matchReasonsState = MutableStateFlow(initialState.matchReasons)
+    private val matchReasonsLoadingState = MutableStateFlow(initialState.matchReasonsLoading)
     private val sectionCollapses = RealityCheckSection.entries.associateWith { section ->
         CollapseDelegate(
             manager = collapsingManager,
@@ -88,7 +104,11 @@ internal class SentimentViewModel(
         loadUser()
 
         analytics.logDrilldown(
-            source = if (sentiments != null) "sentiment" else "reality-check",
+            source = when {
+                sentiments != null -> "sentiment"
+                realityCheck != null || documentaryCheck != null -> "reality-check"
+                else -> "match"
+            },
             type = null,
         )
         analytics.logInsightsOpen(
@@ -111,11 +131,37 @@ internal class SentimentViewModel(
                                 else -> getMockSentimentUseCase.getMockSentiments()
                             }
                         }
+                        if (user?.isAnyVip == true) {
+                            loadMatchReasons()
+                        }
                     }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+            }
+        }
+    }
+
+    private fun loadMatchReasons() {
+        if (match == null || match.isLow) return
+        if (matchReasonsLoadingState.value != LoadingState.Idle) return
+
+        viewModelScope.launch {
+            try {
+                matchReasonsLoadingState.update { Loading }
+                matchReasonsState.update {
+                    getMatchReasonsUseCase.getReasons(
+                        mediaId = TraktId(destination.mediaId),
+                        mediaType = destination.mediaType,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                matchReasonsLoadingState.update { Done }
             }
         }
     }
@@ -143,12 +189,17 @@ internal class SentimentViewModel(
         sentimentState,
         tabState,
         collapsedSectionsState,
+        matchReasonsState,
+        matchReasonsLoadingState,
     ) { state ->
         SentimentState(
             user = state[0] as? User,
             sentiments = state[1] as Sentiments?,
             realityCheck = initialState.realityCheck,
             documentaryCheck = initialState.documentaryCheck,
+            match = initialState.match,
+            matchReasons = state[4] as ImmutableList<RecommendedSource>,
+            matchReasonsLoading = state[5] as LoadingState,
             tabs = initialState.tabs,
             tab = state[2] as InsightsTab,
             collapsedSections = state[3] as ImmutableSet<RealityCheckSection>,

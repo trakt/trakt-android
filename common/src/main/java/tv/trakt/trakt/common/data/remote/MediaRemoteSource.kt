@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.MediaApi
+import tv.trakt.trakt.common.data.dto.MediaMatchDto
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -150,6 +151,13 @@ class MediaRemoteSource(
                 ignoreCollected = true,
             ),
         )
+    }
+
+    suspend fun getMatch(
+        type: MediaType,
+        mediaId: TraktId,
+    ): MediaMatchDto {
+        return v3Api.getMediaMatch(type = type, mediaId = mediaId)
     }
 
     suspend fun getRecommendationReasons(

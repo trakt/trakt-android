@@ -58,9 +58,11 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.MediaMatch
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.common.model.SlugId
@@ -71,9 +73,11 @@ import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
 import tv.trakt.trakt.core.summary.sentiment.views.DocumentaryCheckContent
 import tv.trakt.trakt.core.summary.sentiment.views.InsightsSegments
+import tv.trakt.trakt.core.summary.sentiment.views.MatchContent
 import tv.trakt.trakt.core.summary.sentiment.views.RealityCheckContent
 import tv.trakt.trakt.core.summary.sentiment.views.markdownSections
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -207,6 +211,29 @@ private fun SentimentContent(
                                     collapsedSections = state.collapsedSections,
                                     onSectionCollapse = onSectionCollapse,
                                     upsell = upsell,
+                                )
+                            }
+                        }
+                    }
+
+                    InsightsTab.Match -> {
+                        val match = state.match
+                        val score = match?.score
+                        if (match != null && score != null) {
+                            item {
+                                MatchContent(
+                                    score = score,
+                                    taste = match.taste,
+                                    reasons = state.matchReasons,
+                                    reasonsLoading = state.matchReasonsLoading,
+                                    vip = state.user?.isAnyVip == true,
+                                    upsell = {
+                                        GetVipView(
+                                            modifier = Modifier
+                                                .onUpsellSeen(onVipSeen)
+                                                .onClick(onClick = onVipClick),
+                                        )
+                                    },
                                 )
                             }
                         }
@@ -618,6 +645,31 @@ private fun PreviewDocumentaryCheck() {
                 tabs = persistentListOf(InsightsTab.RealityCheck),
                 tab = InsightsTab.RealityCheck,
                 mediaTitle = "Tiger King",
+                backgroundUrl = null,
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewMatch() {
+    TraktThemePreview {
+        SentimentContent(
+            state = SentimentState(
+                user = PreviewData.user1.copy(
+                    isVip = true,
+                ),
+                realityCheck = PreviewData.realityCheck,
+                match = MediaMatch(
+                    score = 78,
+                    taste = persistentListOf(
+                        MediaMatch.Taste(slug = "heist", label = "Heist"),
+                    ),
+                ),
+                tabs = persistentListOf(InsightsTab.RealityCheck, InsightsTab.Match),
+                tab = InsightsTab.Match,
+                mediaTitle = "Breaking Bad",
                 backgroundUrl = null,
             ),
         )
