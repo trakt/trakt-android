@@ -56,7 +56,10 @@ internal fun UserAvatar(
     user: User,
     modifier: Modifier = Modifier,
     borderWidth: Dp = 2.dp,
-    borderColor: Color = defaultAvatarBorderColor(user),
+    borderColor: Color = when {
+        user.isAnyVip -> TraktTheme.colors.vipAccent
+        else -> Color.Transparent
+    },
     animated: Boolean = false,
     ringEnabled: Boolean = true,
     variant: AvatarVariant = AvatarVariant.Full,
@@ -92,14 +95,6 @@ internal fun UserAvatar(
     }
 }
 
-@Composable
-private fun defaultAvatarBorderColor(user: User): Color {
-    return when {
-        user.isAnyVip -> TraktTheme.colors.vipAccent
-        else -> Color.Transparent
-    }
-}
-
 private fun previewUser(tier: UserTier): User {
     val title = when (tier) {
         UserTier.Pro -> VipVeteran.Title.Pro
@@ -130,8 +125,8 @@ private fun TierRingsPreview() {
                 verticalArrangement = spacedBy(16.dp),
                 modifier = Modifier.padding(16.dp),
             ) {
-                listOf(24.dp, 36.dp, 64.dp).forEach { size ->
-                    Row(horizontalArrangement = spacedBy(12.dp)) {
+                listOf(24.dp, 36.dp, 52.dp).forEach { size ->
+                    Row(horizontalArrangement = spacedBy(8.dp)) {
                         UserTier.entries.forEach { tier ->
                             UserAvatar(
                                 user = previewUser(tier),

@@ -5,6 +5,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import tv.trakt.trakt.common.model.UserTier
 
+private const val RING_BASE_LIFT = 0.3F
+private const val RING_LIGHT_SHEEN = 0.65F
+
 private val VipBase = Color(0xFF6A45E6)
 private val VipSheen = Color(0xFFB07BFF)
 private val ProBase = Color(0xFFC2287F)
@@ -23,23 +26,23 @@ private val LegendTagLight = Color(0xFFFFF085)
 private val LegendTagDeep = Color(0xFFD08700)
 
 private val LegendRingLight = listOf(
-    0F to Color(0xFF8A6000),
-    70F / 360F to Color(0xFFA97800),
-    150F / 360F to Color(0xFFD9A21C),
-    175F / 360F to Color(0xFFE8B83A),
-    210F / 360F to Color(0xFFC08A00),
-    300F / 360F to Color(0xFF8A6000),
-    1F to Color(0xFF8A6000),
+    0F to Color(0xFFB98700),
+    70F / 360F to Color(0xFFC99500),
+    150F / 360F to Color(0xFFDDA824),
+    175F / 360F to Color(0xFFEBBD3F),
+    210F / 360F to Color(0xFFCC9600),
+    300F / 360F to Color(0xFFB98700),
+    1F to Color(0xFFB98700),
 )
 
 private val LegendRingDark = listOf(
-    0F to Color(0xFF8A6000),
-    70F / 360F to Color(0xFFB88600),
+    0F to Color(0xFFB88600),
+    70F / 360F to Color(0xFFC99500),
     150F / 360F to Color(0xFFFFE27A),
     175F / 360F to Color(0xFFFFF6CC),
     210F / 360F to Color(0xFFE0A800),
-    300F / 360F to Color(0xFF8A6000),
-    1F to Color(0xFF8A6000),
+    300F / 360F to Color(0xFFB88600),
+    1F to Color(0xFFB88600),
 )
 
 private val FreeRingLight = Color(0xFF0F0A14).copy(alpha = 0.14F)
@@ -76,8 +79,8 @@ internal fun UserTier.ringStops(isLight: Boolean): List<Pair<Float, Color>> {
         return if (isLight) LegendRingLight else LegendRingDark
     }
 
-    val base = baseColor()
-    val sheen = if (isLight) lerp(base, sheenColor(), 0.5F) else sheenColor()
+    val base = lerp(baseColor(), sheenColor(), RING_BASE_LIFT)
+    val sheen = if (isLight) lerp(baseColor(), sheenColor(), RING_LIGHT_SHEEN) else sheenColor()
     return listOf(
         0F to base,
         120F / 360F to base,
