@@ -214,10 +214,12 @@ internal fun MainScreen(
         onOpenComment = { appLinkComment = it },
     )
 
-    CommentDetailsSheet(
-        comment = appLinkComment,
-        onDismiss = { appLinkComment = null },
-    )
+    CompositionLocalProvider(LocalUserTierState provides state.userTiers) {
+        CommentDetailsSheet(
+            comment = appLinkComment,
+            onDismiss = { appLinkComment = null },
+        )
+    }
 
     CompositionLocalProvider(LocalUriHandler provides inReviewUriHandler) {
         LaunchedIntentHandler(

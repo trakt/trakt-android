@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.vipveteran.model
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserTier
@@ -27,4 +27,4 @@ internal data class UserTierState(
     }
 }
 
-internal val LocalUserTierState = staticCompositionLocalOf { UserTierState() }
+internal val LocalUserTierState = compositionLocalOf { UserTierState() }
