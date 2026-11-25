@@ -957,6 +957,7 @@ internal class FirebaseAnalyticsLists(
         const val LISTS_DELETE = "lists_delete"
         const val LISTS_LIKE = "lists_like"
         const val LISTS_UNLIKE = "lists_unlike"
+        const val LISTS_COLLABORATOR = "lists_collaborator"
         const val SMART_LISTS_CREATE = "smart_lists_create"
         const val SMART_LISTS_UPDATE = "smart_lists_update"
         const val SMART_LISTS_DELETE = "smart_lists_delete"
@@ -971,6 +972,7 @@ internal class FirebaseAnalyticsLists(
             LISTS_EDIT,
             LISTS_DELETE,
             LISTS_LIKE,
+            LISTS_COLLABORATOR,
             LISTS_UNLIKE,
             SMART_LISTS_CREATE,
             SMART_LISTS_UPDATE,
@@ -990,6 +992,13 @@ internal class FirebaseAnalyticsLists(
     override fun logListDelete() = log(LISTS_DELETE)
 
     override fun logListLike(liked: Boolean) = log(if (liked) LISTS_LIKE else LISTS_UNLIKE)
+
+    override fun logListCollaborator(action: String) {
+        firebase.logEvent(
+            eventName(LISTS_COLLABORATOR),
+            bundleOf(PARAMETER_ACTION to action),
+        )
+    }
 
     override fun logSmartListCreate() = log(SMART_LISTS_CREATE)
 

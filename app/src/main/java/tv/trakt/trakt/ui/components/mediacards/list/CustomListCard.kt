@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.lists.CustomList.Type
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.lists.ListAuthorSubtitle
+import tv.trakt.trakt.ui.components.lists.ListOwnedSubtitle
 import tv.trakt.trakt.ui.components.lists.ListPrivacySubtitle
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.usertier.UserAvatar
@@ -78,6 +79,7 @@ internal fun CustomListCard(
     likesVisible: Boolean = false,
     userVisible: Boolean = true,
     privacyVisible: Boolean = false,
+    yours: Boolean = false,
     onClick: () -> Unit,
     onUserClick: ((User) -> Unit)? = null,
     moreContent: (@Composable () -> Unit)? = null,
@@ -101,6 +103,7 @@ internal fun CustomListCard(
                 likesVisible = likesVisible,
                 userVisible = userVisible,
                 privacyVisible = privacyVisible,
+                yours = yours,
                 onClick = onClick,
                 onUserClick = onUserClick,
                 moreContent = moreContent,
@@ -116,6 +119,7 @@ private fun CustomListContent(
     likesVisible: Boolean,
     userVisible: Boolean,
     privacyVisible: Boolean,
+    yours: Boolean,
     onClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
     moreContent: (@Composable () -> Unit)?,
@@ -161,6 +165,7 @@ private fun CustomListContent(
             likesVisible = likesVisible,
             userVisible = userVisible,
             privacyVisible = privacyVisible,
+            yours = yours,
             onClick = onClick,
             onUserClick = onUserClick,
             moreContent = moreContent,
@@ -246,6 +251,7 @@ private fun CustomListHeader(
     likesVisible: Boolean,
     userVisible: Boolean,
     privacyVisible: Boolean,
+    yours: Boolean,
     onClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
     moreContent: (@Composable () -> Unit)?,
@@ -290,6 +296,10 @@ private fun CustomListHeader(
                 if (privacyVisible) {
                     ListPrivacySubtitle(
                         privacy = list.privacy,
+                        itemCount = list.itemCount,
+                    )
+                } else if (yours) {
+                    ListOwnedSubtitle(
                         itemCount = list.itemCount,
                     )
                 } else {

@@ -428,6 +428,10 @@ internal class DebugAnalyticsLists : Analytics.Lists {
         Timber.d("logListLike: liked=%s", liked)
     }
 
+    override fun logListCollaborator(action: String) {
+        Timber.d("logListCollaborator: action=%s", action)
+    }
+
     override fun logSmartListCreate() {
         Timber.d("logSmartListCreate")
     }

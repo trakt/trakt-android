@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.merge
+import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -16,15 +18,21 @@ import java.time.Instant
 internal class GetPersonalListsUseCase(
     private val remoteSource: UserPersonalListsRemoteSource,
     private val localSource: ListsPersonalLocalSource,
+    private val sharedLocalSource: ListsCollaborationsLocalSource,
 ) {
+    /**
+     * Own lists with collaborators are stored with the shared lists, not the personal ones.
+     */
     suspend fun getLocalList(listId: TraktId): CustomList? {
-        return localSource
-            .getItems()
-            .firstOrNull { it.ids.trakt == listId }
+        return localSource.getItems().firstOrNull { it.ids.trakt == listId }
+            ?: sharedLocalSource.getLists().firstOrNull { it.ids.trakt == listId }
     }
 
     fun observeLocalUpdates(): Flow<Instant?> {
-        return localSource.observeUpdates()
+        return merge(
+            localSource.observeUpdates(),
+            sharedLocalSource.observeUpdates(),
+        )
     }
 
     suspend fun getLocalLists(
@@ -41,7 +49,8 @@ internal class GetPersonalListsUseCase(
         sorting: ListsSorting = ListsSorting.Default,
         notify: Boolean = false,
     ): ImmutableList<CustomList> {
-        return remoteSource.getPersonalLists(
+        return remoteSource.getCollaborativeLists(
+            collaborative = false,
             pagination = pagination,
             sorting = sorting,
         )

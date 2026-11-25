@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_GIF_PICKER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_HIDE_RECOMMENDATION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_COLLABORATOR
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_CREATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_DELETE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_EDIT
@@ -248,6 +249,10 @@ internal class HalAnalyticsLists(
 
     override fun logListLike(liked: Boolean) {
         events.track(EVENT_LIST_LIKE, dims = mapOf(DIM_ACTION to if (liked) "like" else "unlike"))
+    }
+
+    override fun logListCollaborator(action: String) {
+        events.track(EVENT_LIST_COLLABORATOR, dims = mapOf(DIM_ACTION to action))
     }
 
     override fun logSmartListCreate() = events.track(EVENT_SMART_LIST_CREATE)

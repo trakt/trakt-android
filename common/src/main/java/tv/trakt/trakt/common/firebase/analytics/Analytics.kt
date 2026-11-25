@@ -522,6 +522,12 @@ interface Analytics {
         fun logListLike(liked: Boolean)
 
         /**
+         * Logs a list collaborator action.
+         * @param action The action (add, remove, leave, limit-reached, view-moved).
+         */
+        fun logListCollaborator(action: String)
+
+        /**
          * Logs creating a smart list.
          */
         fun logSmartListCreate()

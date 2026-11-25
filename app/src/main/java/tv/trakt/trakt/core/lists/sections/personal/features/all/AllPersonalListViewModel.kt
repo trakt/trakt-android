@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
+import tv.trakt.trakt.core.lists.features.convert.usecases.GetPersonalListUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -63,6 +64,7 @@ internal class AllPersonalListViewModel(
     filterManager: GlobalFilterManager,
     private val analytics: Analytics,
     private val getListUseCase: GetPersonalListsUseCase,
+    private val getRemoteListUseCase: GetPersonalListUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val collectionStateProvider: CollectionStateProvider,
     private val dataChanges: DataChanges,
@@ -126,9 +128,21 @@ internal class AllPersonalListViewModel(
             .launchIn(viewModelScope)
     }
 
+    private suspend fun loadRemoteList(listId: TraktId): CustomList? {
+        return try {
+            getRemoteListUseCase.getList(listId)
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            null
+        }
+    }
+
     fun loadDetails() {
         viewModelScope.launch {
-            val list = getListUseCase.getLocalList(destination.listId.toTraktId())
+            val listId = destination.listId.toTraktId()
+            val list = getListUseCase.getLocalList(listId) ?: loadRemoteList(listId)
             listState.update { list }
 
             val sorting = list?.sorting ?: return@launch

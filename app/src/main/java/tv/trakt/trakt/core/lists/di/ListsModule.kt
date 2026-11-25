@@ -75,6 +75,9 @@ import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.Watch
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
+import tv.trakt.trakt.core.lists.sheets.collaborators.LeaveCollaborationViewModel
+import tv.trakt.trakt.core.lists.sheets.collaborators.ManageCollaboratorsViewModel
+import tv.trakt.trakt.core.lists.sheets.collaborators.usecases.ManageListCollaboratorsUseCase
 import tv.trakt.trakt.core.lists.sheets.create.CreateListViewModel
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
@@ -113,6 +116,7 @@ internal val listsModule = module {
     factoryOf(::GetListFeaturedPeopleUseCase)
     factoryOf(::CreateListUseCase)
     factoryOf(::EditListUseCase)
+    factoryOf(::ManageListCollaboratorsUseCase)
     factoryOf(::AddLikedListUseCase)
     factoryOf(::RemoveLikedListUseCase)
     factoryOf(::ReorderListUseCase)
@@ -154,6 +158,15 @@ internal val listsModule = module {
     viewModelOf(::WatchlistReorderViewModel)
     viewModelOf(::CreateListViewModel)
     viewModelOf(::EditListViewModel)
+    viewModelOf(::LeaveCollaborationViewModel)
+    viewModel { (list: CustomList) ->
+        ManageCollaboratorsViewModel(
+            list = list,
+            manageCollaboratorsUseCase = get(),
+            loadSocialUseCase = get(),
+            analytics = get(),
+        )
+    }
     viewModelOf(::AllWatchlistViewModel)
     viewModelOf(::AllPersonalListViewModel)
     viewModelOf(::AllListsViewModel)

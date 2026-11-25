@@ -21,6 +21,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.lists.usecases.GetCollaborationsListsUseCase
+import tv.trakt.trakt.common.core.lists.usecases.sortSharedLists
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
@@ -158,8 +159,10 @@ internal class ListsViewModel(
                         .map(ListsItem::Smart)
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                         .map(ListsItem::Custom)
-                    Collaborations -> getCollaborationsListsUseCase.getLocalLists()
-                        .sortedByDescending { it.updatedAt }
+                    Collaborations -> sortSharedLists(
+                        lists = getCollaborationsListsUseCase.getLocalLists(),
+                        ownerId = userState.value.user?.ids?.trakt,
+                    )
                         .map(ListsItem::Custom)
                     Liked -> getLikedListsUseCase.getLocalLists(pagination)
                         .map(ListsItem::Custom)
@@ -193,8 +196,10 @@ internal class ListsViewModel(
                         .map(ListsItem::Smart)
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                         .map(ListsItem::Custom)
-                    Collaborations -> getCollaborationsListsUseCase.getLocalLists()
-                        .sortedByDescending { it.updatedAt }
+                    Collaborations -> sortSharedLists(
+                        lists = getCollaborationsListsUseCase.getLocalLists(),
+                        ownerId = userState.value.user?.ids?.trakt,
+                    )
                         .map(ListsItem::Custom)
                     Liked -> getLikedListsUseCase.getLocalLists(pagination)
                         .map(ListsItem::Custom)
@@ -215,8 +220,10 @@ internal class ListsViewModel(
                         .map(ListsItem::Smart)
                     Personal -> getPersonalListsUseCase.getLists(pagination)
                         .map(ListsItem::Custom)
-                    Collaborations -> getCollaborationsListsUseCase.getLists()
-                        .sortedByDescending { it.updatedAt }
+                    Collaborations -> sortSharedLists(
+                        lists = getCollaborationsListsUseCase.getLists(),
+                        ownerId = userState.value.user?.ids?.trakt,
+                    )
                         .map(ListsItem::Custom)
                     Liked -> getLikedListsUseCase.getLists(pagination)
                         .map(ListsItem::Custom)
@@ -240,6 +247,10 @@ internal class ListsViewModel(
 
     fun logListShare() {
         analytics.logShare(source = "user-list", type = null)
+    }
+
+    fun logMovedListView() {
+        analytics.lists.logListCollaborator("view-moved")
     }
 
     fun deleteSmartList(listId: TraktId) {

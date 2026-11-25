@@ -102,6 +102,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListItemContextSheet
+import tv.trakt.trakt.core.lists.sheets.collaborators.LeaveCollaborationConfirmation
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -112,6 +113,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.lists.ListAuthorSubtitle
+import tv.trakt.trakt.ui.components.mediacards.list.CollaborationListDropdown
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
@@ -183,6 +185,7 @@ internal fun ListDetailsScreen(
     var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
     var filtersSheet by remember { mutableStateOf(false) }
     var infoSheet by remember { mutableStateOf<CustomList?>(null) }
+    var leaveCollaborationList by remember { mutableStateOf<CustomList?>(null) }
 
     val upgradeList = state.list?.list?.takeIf {
         it.user.ids.trakt == state.user?.ids?.trakt &&
@@ -261,6 +264,9 @@ internal fun ListDetailsScreen(
         },
         onAddFromListsClick = {
             state.list?.list?.let(onAddFromListsClick)
+        },
+        onLeaveClick = {
+            leaveCollaborationList = state.list?.list
         },
         onBackClick = onNavigateBack,
     )
@@ -343,6 +349,12 @@ internal fun ListDetailsScreen(
             filtersSheet = false
         },
     )
+
+    LeaveCollaborationConfirmation(
+        list = leaveCollaborationList,
+        onDismiss = { leaveCollaborationList = null },
+        onLeft = onNavigateBack,
+    )
 }
 
 @Composable
@@ -359,6 +371,7 @@ internal fun ListDetailsContent(
     onSortOrderClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
     onAddFromListsClick: () -> Unit = {},
+    onLeaveClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMoreData: () -> Unit = {},
 ) {
@@ -419,6 +432,7 @@ internal fun ListDetailsContent(
             onSortOrderClick = onSortOrderClick,
             onLikeClick = onLikeClick,
             onAddFromListsClick = onAddFromListsClick.takeIf { state.canAddFromLists },
+            onLeaveClick = onLeaveClick.takeIf { state.isCollaborator },
             onBackClick = onBackClick,
         )
 
@@ -463,6 +477,7 @@ private fun TitleBar(
     onFiltersClick: () -> Unit,
     onInfoClick: () -> Unit,
     onAddFromListsClick: (() -> Unit)?,
+    onLeaveClick: (() -> Unit)?,
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -545,7 +560,7 @@ private fun TitleBar(
                 }
             }
 
-            onAddFromListsClick?.let {
+            onAddFromListsClick?.takeIf { onLeaveClick == null }?.let {
                 Icon(
                     painter = painterResource(R.drawable.ic_plus),
                     tint = TraktTheme.colors.textPrimary,
@@ -581,6 +596,15 @@ private fun TitleBar(
                     onClick = onFiltersClick,
                 )
             }
+
+            onLeaveClick?.let {
+                CollaborationListDropdown(
+                    iconSize = 18.dp,
+                    onAddFromListsClick = onAddFromListsClick,
+                    onLeaveClick = it,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
+            }
         }
     }
 }
@@ -611,6 +635,7 @@ private fun ContentList(
     onSortOrderClick: () -> Unit,
     onLikeClick: () -> Unit,
     onAddFromListsClick: (() -> Unit)?,
+    onLeaveClick: (() -> Unit)?,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
@@ -658,6 +683,7 @@ private fun ContentList(
                 onFiltersClick = onFiltersClick,
                 onInfoClick = onInfoClick,
                 onAddFromListsClick = onAddFromListsClick,
+                onLeaveClick = onLeaveClick,
             )
         }
 
@@ -863,24 +889,54 @@ private fun ContentEmpty(filter: MediaMode?) {
 )
 @Composable
 private fun Preview() {
+    PreviewContent(
+        state = ListDetailsState(
+            loading = LoadingState.Loading,
+            liked = LikedInfo(
+                liked = false,
+                loading = false,
+            ),
+            list = ListDetailsState.ListDetails(
+                list = PreviewData.customList1,
+                mediaId = TraktId(1),
+            ),
+        ),
+    )
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    locale = "en",
+)
+@Composable
+private fun PreviewCollaborator() {
+    PreviewContent(
+        state = ListDetailsState(
+            loading = LoadingState.Loading,
+            list = ListDetailsState.ListDetails(
+                list = PreviewData.customList1,
+                mediaId = TraktId(1),
+            ),
+            user = PreviewData.user1.copy(
+                ids = PreviewData.user1.ids.copy(trakt = TraktId(2)),
+            ),
+            canAddFromLists = true,
+        ),
+    )
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Composable
+private fun PreviewContent(state: ListDetailsState) {
     TraktTheme {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ListDetailsContent(
-                state = ListDetailsState(
-                    loading = LoadingState.Loading,
-                    liked = LikedInfo(
-                        liked = false,
-                        loading = false,
-                    ),
-                    list = ListDetailsState.ListDetails(
-                        list = PreviewData.customList1,
-                        mediaId = TraktId(1),
-                    ),
-                ),
-            )
+            ListDetailsContent(state = state)
         }
     }
 }

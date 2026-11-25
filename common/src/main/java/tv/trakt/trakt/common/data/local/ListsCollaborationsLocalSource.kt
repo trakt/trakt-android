@@ -9,6 +9,7 @@ import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -33,6 +34,33 @@ class ListsCollaborationsLocalSource {
     suspend fun getLists(): List<CustomList> {
         return mutex.withLock {
             storage.values.toList()
+        }
+    }
+
+    suspend fun editItem(
+        listId: TraktId,
+        name: String,
+        description: String?,
+        privacy: CustomList.Privacy,
+        sorting: Sorting?,
+    ) {
+        mutex.withLock {
+            val existing = storage[listId] ?: return
+
+            storage[listId] = existing.copy(
+                name = name,
+                description = description,
+                privacy = privacy,
+                sorting = sorting ?: existing.sorting,
+            )
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    suspend fun deleteItem(id: TraktId) {
+        mutex.withLock {
+            storage.remove(id) ?: return
+            updatedAt.tryEmit(nowUtcInstant())
         }
     }
 

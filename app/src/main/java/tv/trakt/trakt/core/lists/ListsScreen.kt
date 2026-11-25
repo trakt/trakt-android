@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
@@ -100,6 +101,9 @@ import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
+import tv.trakt.trakt.core.lists.sheets.collaborators.LeaveCollaborationConfirmation
+import tv.trakt.trakt.core.lists.sheets.collaborators.ManageCollaboratorsSheet
+import tv.trakt.trakt.core.lists.sheets.collaborators.showListMovedSnackbar
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
@@ -108,6 +112,7 @@ import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
+import tv.trakt.trakt.ui.components.mediacards.list.CollaborationListDropdown
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
 import tv.trakt.trakt.ui.components.mediacards.list.PersonalListDropdown
 import tv.trakt.trakt.ui.components.mediacards.list.SmartListCard
@@ -147,11 +152,14 @@ internal fun ListsScreen(
     var createListTypeSheet by remember { mutableStateOf(false) }
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
+    var collaboratorsSheet by remember { mutableStateOf<CustomList?>(null) }
+    var leaveCollaborationList by remember { mutableStateOf<CustomList?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
     var smartListToDelete by remember { mutableStateOf<SmartList?>(null) }
     var smartListRecipe by remember { mutableStateOf<SmartList?>(null) }
 
     val context = LocalContext.current
+    val resources = LocalResources.current
     val snackbar = LocalSnackbarState.current
     val startAuthorization = LocalStartAuthorization.current
 
@@ -191,6 +199,8 @@ internal fun ListsScreen(
         onCreateListClick = { createListSheet = true },
         onCreateSmartListClick = onNavigateToCreateSmartList,
         onEditListClick = { editListSheet = it },
+        onCollaboratorsClick = { collaboratorsSheet = it },
+        onLeaveCollaborationClick = { leaveCollaborationList = it },
         onReorderListClick = onNavigateToListReorder,
         onAddFromListsClick = onNavigateToAddFromLists,
         onConvertSmartListClick = onNavigateToConvertSmartList,
@@ -239,6 +249,26 @@ internal fun ListsScreen(
         onDismiss = { editListSheet = null },
     )
 
+    ManageCollaboratorsSheet(
+        active = collaboratorsSheet != null,
+        list = collaboratorsSheet,
+        onListMoved = { list, destination ->
+            scope.launch {
+                val viewed = snackbar.showListMovedSnackbar(resources, list.name, destination)
+                if (viewed) {
+                    viewModel.logMovedListView()
+                    viewModel.setFilter(destination)
+                }
+            }
+        },
+        onDismiss = { collaboratorsSheet = null },
+    )
+
+    LeaveCollaborationConfirmation(
+        list = leaveCollaborationList,
+        onDismiss = { leaveCollaborationList = null },
+    )
+
     GlobalFiltersSheet(
         active = filtersSheet,
         onDismiss = {
@@ -283,6 +313,8 @@ private fun ListsScreenContent(
     onCreateSmartListClick: () -> Unit = {},
     onSearchListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
+    onCollaboratorsClick: (CustomList) -> Unit = {},
+    onLeaveCollaborationClick: (CustomList) -> Unit = {},
     onReorderListClick: (CustomList) -> Unit = {},
     onAddFromListsClick: (CustomList) -> Unit = {},
     onConvertSmartListClick: (TraktId) -> Unit = {},
@@ -458,6 +490,7 @@ private fun ListsScreenContent(
                                             onEditClick = { onEditListClick(list) },
                                             onReorderClick = { onReorderListClick(list) },
                                             onAddFromListsClick = { onAddFromListsClick(list) },
+                                            onCollaboratorsClick = { onCollaboratorsClick(list) },
                                             onShareClick = { onShareListClick(list) },
                                         )
                                     },
@@ -474,11 +507,34 @@ private fun ListsScreenContent(
                                 )
                             }
                             Collaborations if listVisible -> {
+                                val yours = list.user.ids.trakt == state.user.user?.ids?.trakt
                                 CustomListCard(
                                     list = list,
-                                    onClick = { onCustomListClick(list) },
+                                    yours = yours,
+                                    onClick = {
+                                        when {
+                                            yours -> onPersonalListClick(list)
+                                            else -> onCustomListClick(list)
+                                        }
+                                    },
                                     onUserClick = onUserClick,
                                     modifier = cardModifier,
+                                    moreContent = {
+                                        when {
+                                            yours -> PersonalListDropdown(
+                                                reorderEnabled = (list.itemCount ?: 0) > 0,
+                                                onEditClick = { onEditListClick(list) },
+                                                onReorderClick = { onReorderListClick(list) },
+                                                onAddFromListsClick = { onAddFromListsClick(list) },
+                                                onCollaboratorsClick = { onCollaboratorsClick(list) },
+                                                onShareClick = { onShareListClick(list) },
+                                            )
+                                            else -> CollaborationListDropdown(
+                                                onAddFromListsClick = { onAddFromListsClick(list) },
+                                                onLeaveClick = { onLeaveCollaborationClick(list) },
+                                            )
+                                        }
+                                    },
                                 )
                             }
                             else -> {}
