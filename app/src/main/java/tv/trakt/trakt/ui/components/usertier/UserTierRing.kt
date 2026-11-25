@@ -7,7 +7,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -27,12 +26,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserTier
-import tv.trakt.trakt.core.vipveteran.model.LocalUserTierState
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -52,9 +48,13 @@ private val NoGapMaxSize = 32.dp
 internal fun Modifier.userTierRing(
     tier: UserTier,
     animated: Boolean = false,
+    gap: Boolean = true,
+    color: Color? = null,
 ): Modifier {
     val isLight = TraktTheme.colors.isLight
-    val brush = remember(tier, isLight) { tier.ringBrush(isLight) }
+    val brush = remember(tier, isLight, color) {
+        color?.let(::SolidColor) ?: tier.ringBrush(isLight)
+    }
     val rotation: State<Float>? = when {
         animated && tier != UserTier.Free -> rememberInfiniteTransition(label = "userTierRing")
             .animateFloat(
@@ -74,8 +74,11 @@ internal fun Modifier.userTierRing(
         val widthRatio = if (tier == UserTier.Free) FREE_RING_WIDTH_RATIO else RING_WIDTH_RATIO
         val minWidth = if (tier == UserTier.Free) MinFreeRingWidth else MinRingWidth
         val ringWidth = maxOf(minWidth.toPx(), side * widthRatio)
-        val gap = if (side < NoGapMaxSize.toPx()) 0F else maxOf(MinRingGap.toPx(), side * RING_GAP_RATIO)
-        val faceScale = ((side - 2 * (ringWidth + gap)) / side).coerceAtLeast(0F)
+        val ringGap = when {
+            !gap || side < NoGapMaxSize.toPx() -> 0F
+            else -> maxOf(MinRingGap.toPx(), side * RING_GAP_RATIO)
+        }
+        val faceScale = ((side - 2 * (ringWidth + ringGap)) / side).coerceAtLeast(0F)
 
         scale(scale = faceScale, pivot = center) {
             this@drawWithContent.drawContent()

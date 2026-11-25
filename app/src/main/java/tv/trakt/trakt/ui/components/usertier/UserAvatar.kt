@@ -62,6 +62,8 @@ internal fun UserAvatar(
     },
     animated: Boolean = false,
     ringEnabled: Boolean = true,
+    ringGap: Boolean = true,
+    ringColor: Color? = null,
     variant: AvatarVariant = AvatarVariant.Full,
     contentDescription: String? = null,
 ) {
@@ -72,7 +74,7 @@ internal fun UserAvatar(
         .then(
             when (tier) {
                 null -> Modifier.border(borderWidth, borderColor, CircleShape)
-                else -> Modifier.userTierRing(tier, animated)
+                else -> Modifier.userTierRing(tier, animated, ringGap, ringColor)
             },
         )
         .clip(CircleShape)

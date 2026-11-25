@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.userprofile.sections.match.model.matchLabelRes
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.usertier.UserAvatar
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -309,27 +310,26 @@ private fun MatchFace(
     base: Color,
     modifier: Modifier = Modifier,
 ) {
-    val faceModifier = modifier
-        .size(FaceSize)
-        .border(3.dp, base, CircleShape)
-        .padding(1.dp)
-        .clip(CircleShape)
-
-    if (user?.hasAvatar == true) {
-        AsyncImage(
-            model = user.images?.avatar?.full,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.ic_person_placeholder),
-            modifier = faceModifier,
-        )
-    } else {
+    if (user == null) {
         Image(
             painter = painterResource(R.drawable.ic_person_placeholder),
             contentDescription = null,
-            modifier = faceModifier,
+            modifier = modifier
+                .size(FaceSize)
+                .border(3.dp, base, CircleShape)
+                .padding(1.dp)
+                .clip(CircleShape),
         )
+        return
     }
+
+    UserAvatar(
+        user = user,
+        borderWidth = 3.dp,
+        borderColor = base,
+        ringGap = false,
+        modifier = modifier.size(FaceSize),
+    )
 }
 
 @Composable

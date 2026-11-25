@@ -259,7 +259,7 @@ fun ProfileItem(
                 user = user,
                 borderWidth = border,
                 borderColor = borderColor,
-                ringEnabled = !selected,
+                ringColor = if (selected) accent else null,
                 modifier = Modifier.size(size),
             )
         } else {
