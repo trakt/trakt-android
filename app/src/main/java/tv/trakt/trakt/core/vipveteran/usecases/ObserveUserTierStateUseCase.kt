@@ -44,7 +44,7 @@ internal class ObserveUserTierStateUseCase(
                     )
                     emit(base)
 
-                    if (user == null || !(user.isVip || user.isVipEp)) return@flow
+                    if (user == null || !user.isAnyVip) return@flow
 
                     try {
                         val veteran = getUserProfileDetailsUseCase

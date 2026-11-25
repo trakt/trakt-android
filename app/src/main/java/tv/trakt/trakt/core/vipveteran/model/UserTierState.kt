@@ -21,7 +21,7 @@ internal data class UserTierState(
             else -> user.veteran
         }
         return UserTier.from(
-            isVip = user.isVip || user.isVipEp,
+            isVip = user.isAnyVip,
             veteran = veteran,
         )
     }

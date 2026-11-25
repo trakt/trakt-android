@@ -138,6 +138,7 @@ object PreviewData {
         images = null,
         streamings = null,
         settings = null,
+        veteran = null,
         about = "About John Doe: John is a movie enthusiast and avid TV show watcher. " +
             "He enjoys exploring different genres and sharing his reviews with the community.",
     )
