@@ -83,29 +83,56 @@ internal fun DetailsSentiment(
         Positive, Mixed, null -> accentColor
     }
 
-    val trailing: (@Composable () -> Unit)? = match?.let {
-        {
+    Box(modifier = modifier) {
+        DetailsSentimentCard(
+            sentiments = sentiments,
+            realityCheck = realityCheck,
+            documentaryCheck = documentaryCheck,
+            vip = vip,
+            brush = radialGradient,
+            sentimentColor = sentimentColor,
+            accentColor = accentColor,
+            onRealityCheckClick = onRealityCheckClick,
+        )
+
+        if (match != null) {
             MatchRing(
-                score = it.score,
-                badge = { MatchAvatar(avatarUrl = it.avatarUrl) },
-                modifier = Modifier.onClick(enabled = it.score != null, onClick = onMatchClick),
+                score = match.score,
+                badge = { MatchAvatar(avatarUrl = match.avatarUrl) },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(MatchCornerPadding)
+                    .onClick(enabled = match.score != null, onClick = onMatchClick),
             )
         }
     }
+}
 
+@Composable
+private fun DetailsSentimentCard(
+    sentiments: Sentiments?,
+    realityCheck: RealityCheck?,
+    documentaryCheck: DocumentaryCheck?,
+    vip: Boolean,
+    brush: ShaderBrush,
+    sentimentColor: Color,
+    accentColor: Color,
+    onRealityCheckClick: () -> Unit,
+) {
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = spacedBy(0.dp, CenterVertically),
-        modifier = modifier.insightsCard(
-            brush = radialGradient,
-            elevation = TraktTheme.colors.shadowDefault,
-        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .insightsCard(
+                brush = brush,
+                elevation = TraktTheme.colors.shadowDefault,
+            ),
     ) {
         if (sentiments != null && !sentiments.isEmpty) {
             SentimentSummary(
                 sentiments = sentiments,
                 sentimentColor = sentimentColor,
-                trailing = trailing,
             )
         } else if (documentaryCheck != null) {
             RealityCheckSummary(
@@ -113,13 +140,11 @@ internal fun DetailsSentiment(
                 color = accentColor,
                 maxLines = 3,
                 footer = documentaryMakersText(documentaryCheck),
-                trailing = trailing,
             )
         } else if (realityCheck != null) {
             RealityCheckSummary(
                 summary = realityCheck.summary,
                 color = accentColor,
-                trailing = trailing,
             )
         }
 
@@ -239,6 +264,8 @@ private fun rememberInsightsGradient(): ShaderBrush {
     }
 }
 
+private val MatchCornerPadding = 12.dp
+
 private fun Modifier.insightsCard(
     brush: ShaderBrush,
     elevation: Dp,
@@ -261,13 +288,11 @@ private fun Modifier.insightsCard(
 private fun SentimentSummary(
     sentiments: Sentiments,
     sentimentColor: Color,
-    trailing: (@Composable () -> Unit)? = null,
 ) {
     Column {
         Row(
             horizontalArrangement = spacedBy(10.dp, Alignment.Start),
             verticalAlignment = CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
         ) {
             Icon(
                 painter = painterResource(sentiments.overall.displayIconRes),
@@ -281,9 +306,7 @@ private fun SentimentSummary(
                 style = TraktTheme.typography.heading5.copy(
                     fontSize = 15.sp,
                 ),
-                modifier = Modifier.weight(1F),
             )
-            trailing?.invoke()
         }
 
         Column(
@@ -348,26 +371,17 @@ private fun RealityCheckSummary(
     color: Color,
     maxLines: Int = 5,
     footer: String? = null,
-    trailing: (@Composable () -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(12.dp),
     ) {
-        Row(
-            horizontalArrangement = spacedBy(10.dp),
-            verticalAlignment = CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(R.string.header_reality_check),
-                color = color,
-                style = TraktTheme.typography.heading5.copy(
-                    fontSize = 15.sp,
-                ),
-                modifier = Modifier.weight(1F),
-            )
-            trailing?.invoke()
-        }
+        Text(
+            text = stringResource(R.string.header_reality_check),
+            color = color,
+            style = TraktTheme.typography.heading5.copy(
+                fontSize = 15.sp,
+            ),
+        )
         Column(
             verticalArrangement = spacedBy(6.dp),
         ) {
