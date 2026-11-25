@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.data.remote
 
+import io.ktor.client.plugins.ClientRequestException
 import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.models.PostUsersListsCreateRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
@@ -13,6 +14,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerIds
 import org.openapitools.client.models.PostUsersListsReorderRequest
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
+import tv.trakt.trakt.common.data.dto.ListCollaboratorDto
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
@@ -519,5 +521,41 @@ class ListsRemoteSource(
             ),
         )
         cacheMarker.invalidate()
+    }
+
+    suspend fun getCollaborators(listId: TraktId): List<ListCollaboratorDto> {
+        return v3Api.getListCollaborators(listId)
+    }
+
+    /**
+     * @return false when the list has reached its collaborator limit.
+     */
+    suspend fun addCollaborator(
+        listId: TraktId,
+        userSlug: String,
+    ): Boolean {
+        try {
+            v3Api.postListCollaborator(listId, userSlug)
+        } catch (error: ClientRequestException) {
+            if (error.response.status.value == COLLABORATOR_LIMIT_STATUS) {
+                return false
+            }
+            throw error
+        }
+
+        cacheMarker.invalidate()
+        return true
+    }
+
+    suspend fun removeCollaborator(
+        listId: TraktId,
+        userSlug: String,
+    ) {
+        v3Api.deleteListCollaborator(listId, userSlug)
+        cacheMarker.invalidate()
+    }
+
+    private companion object {
+        const val COLLABORATOR_LIMIT_STATUS = 420
     }
 }

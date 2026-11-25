@@ -24,6 +24,7 @@ internal object HalContract {
     const val EVENT_LIST_EDIT = "list-action.edit"
     const val EVENT_LIST_DELETE = "list-action.delete"
     const val EVENT_LIST_LIKE = "list-action.like"
+    const val EVENT_LIST_COLLABORATOR = "list-action.collaborator"
     const val EVENT_SMART_LIST_CREATE = "smart-list-action.create"
     const val EVENT_SMART_LIST_UPDATE = "smart-list-action.update"
     const val EVENT_SMART_LIST_DELETE = "smart-list-action.delete"

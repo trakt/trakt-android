@@ -13,12 +13,14 @@ import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.encodeURLPathPart
 import org.openapitools.client.infrastructure.ApiClient
+import tv.trakt.trakt.common.data.dto.ListCollaboratorDto
 import tv.trakt.trakt.common.data.dto.ListFeaturedPeopleDto
 import tv.trakt.trakt.common.data.dto.SmartListFilterOptionDto
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.SmartListItemDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3BulkIntlResponse
@@ -125,6 +127,44 @@ class V3Api(
     suspend fun getEpisodeMeLists(episodeId: TraktId): List<Int> {
         val response = client.get("${baseV3Url}episodes/${episodeId.value}/me/lists")
         return response.body<List<Int>>()
+    }
+
+    suspend fun getUserLists(
+        userId: String,
+        collaborative: Boolean,
+        extended: String,
+        sortBy: String?,
+        sortHow: String?,
+        pagination: Pagination,
+    ): List<ListDto> {
+        val response = client.get("${baseUrl}users/${userId.encodeURLPathPart()}/lists") {
+            parameter("extended", extended)
+            parameter("collaborative", collaborative)
+            parameter("sort_by", sortBy)
+            parameter("sort_how", sortHow)
+            parameter("page", pagination.page)
+            parameter("limit", pagination.limit)
+        }
+        return response.body()
+    }
+
+    suspend fun getListCollaborators(listId: TraktId): List<ListCollaboratorDto> {
+        val response = client.get("${baseUrl}lists/${listId.value}/collaborators")
+        return response.body()
+    }
+
+    suspend fun postListCollaborator(
+        listId: TraktId,
+        userSlug: String,
+    ) {
+        client.post("${baseUrl}lists/${listId.value}/collaborators/${userSlug.encodeURLPathPart()}")
+    }
+
+    suspend fun deleteListCollaborator(
+        listId: TraktId,
+        userSlug: String,
+    ) {
+        client.delete("${baseUrl}lists/${listId.value}/collaborators/${userSlug.encodeURLPathPart()}")
     }
 
     suspend fun getListFeaturedPeople(listId: TraktId): ListFeaturedPeopleDto {

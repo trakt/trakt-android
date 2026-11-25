@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.data.dto.ListCollaboratorDto
 import tv.trakt.trakt.common.model.User.Companion
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserSettingsDto
@@ -158,5 +159,29 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
             slurm = null,
         ),
         veteran = VipVeteran.fromDto(dto),
+    )
+}
+
+fun Companion.fromDto(dto: ListCollaboratorDto): User {
+    val traktId = dto.ids.trakt?.toTraktId()
+    return User(
+        ids = Ids(
+            trakt = traktId ?: TraktId(0),
+            slug = SlugId(dto.ids.slug.orEmpty()),
+        ),
+        username = dto.username,
+        name = dto.name.orEmpty(),
+        email = null,
+        location = dto.location,
+        about = dto.about,
+        isPrivate = dto.isPrivate,
+        isVip = dto.vip ?: false,
+        isVipEp = dto.vipEp ?: false,
+        isVipOg = dto.vipOg ?: false,
+        isDirector = dto.director ?: false,
+        images = traktId?.let { User.Images.forUser(it) },
+        streamings = null,
+        settings = null,
+        veteran = null,
     )
 }

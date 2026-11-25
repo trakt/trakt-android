@@ -34,6 +34,7 @@ internal fun PersonalListDropdown(
     modifier: Modifier = Modifier,
     iconSize: Dp = 16.dp,
     onAddFromListsClick: (() -> Unit)? = null,
+    onCollaboratorsClick: (() -> Unit)? = null,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -86,6 +87,18 @@ internal fun PersonalListDropdown(
                 )
             }
 
+            if (onCollaboratorsClick != null) {
+                MenuItem(
+                    text = stringResource(R.string.button_text_manage_collaborators),
+                    icon = R.drawable.ic_person_double,
+                    iconSize = 22.dp,
+                    onClick = {
+                        showMenu = false
+                        onCollaboratorsClick()
+                    },
+                )
+            }
+
             MenuItem(
                 text = stringResource(R.string.button_text_share),
                 icon = R.drawable.ic_share,
@@ -93,6 +106,43 @@ internal fun PersonalListDropdown(
                 onClick = {
                     showMenu = false
                     onShareClick()
+                },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun CollaborationListDropdown(
+    onLeaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    iconSize: Dp = 16.dp,
+) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    Box(modifier = modifier) {
+        Icon(
+            painter = painterResource(R.drawable.ic_more_vertical),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .size(iconSize)
+                .onClick { showMenu = true },
+        )
+
+        DropdownMenu(
+            expanded = showMenu,
+            containerColor = TraktTheme.colors.dialogContainer,
+            shape = RoundedCornerShape(16.dp),
+            onDismissRequest = { showMenu = false },
+        ) {
+            MenuItem(
+                text = stringResource(R.string.button_text_leave_collaboration),
+                icon = R.drawable.ic_logout,
+                iconSize = 22.dp,
+                onClick = {
+                    showMenu = false
+                    onLeaveClick()
                 },
             )
         }

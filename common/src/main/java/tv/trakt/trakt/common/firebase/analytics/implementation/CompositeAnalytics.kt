@@ -440,6 +440,10 @@ private class CompositeLists(
         targets.forEach { it.logListLike(liked) }
     }
 
+    override fun logListCollaborator(action: String) {
+        targets.forEach { it.logListCollaborator(action) }
+    }
+
     override fun logSmartListCreate() {
         targets.forEach { it.logSmartListCreate() }
     }

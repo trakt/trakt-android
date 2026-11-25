@@ -41,7 +41,8 @@ internal class GetPersonalListsUseCase(
         sorting: ListsSorting = ListsSorting.Default,
         notify: Boolean = false,
     ): ImmutableList<CustomList> {
-        return remoteSource.getPersonalLists(
+        return remoteSource.getCollaborativeLists(
+            collaborative = false,
             pagination = pagination,
             sorting = sorting,
         )

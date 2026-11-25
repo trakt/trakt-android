@@ -36,6 +36,22 @@ class UserPersonalListsRemoteSource(
         return response.body()
     }
 
+    suspend fun getCollaborativeLists(
+        collaborative: Boolean,
+        pagination: Pagination,
+        userId: String = "me",
+        sorting: ListsSorting? = null,
+    ): List<ListDto> {
+        return v3Api.getUserLists(
+            userId = userId,
+            collaborative = collaborative,
+            extended = "images",
+            sortBy = sorting?.type?.value,
+            sortHow = sorting?.order?.value,
+            pagination = pagination,
+        )
+    }
+
     suspend fun getPersonalListsMinimal(): List<V3MinimalList> {
         return v3Api.getListsMinimal()
     }
