@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -71,7 +70,7 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCa
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SKELETON_COUNT = 9
-private const val SEARCH_ITEM_INDEX = 3
+private const val SEARCH_ITEM_INDEX = 2
 private const val SETTLING_ALPHA = 0.5F
 
 private val ROW_ITEM_SPACING = 12.dp
@@ -198,12 +197,13 @@ private fun LazyGridScope.headerItems(
             horizontalArrangement = spacedBy(ROW_ITEM_SPACING),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(TraktTheme.size.titleBarHeight),
+                .heightIn(min = TraktTheme.size.titleBarHeight),
         ) {
             Row(
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = spacedBy(ROW_ITEM_SPACING),
                 modifier = Modifier
+                    .weight(1F)
                     .graphicsLayer { translationX = -2.dp.toPx() }
                     .onClick { onBackClick() },
             ) {
@@ -214,32 +214,24 @@ private fun LazyGridScope.headerItems(
                 )
                 TraktHeader(
                     title = stringResource(R.string.page_title_mixtape),
+                    subtitle = stringResource(
+                        when (state.type) {
+                            MediaType.Show -> R.string.text_mixtape_description_shows
+                            MediaType.Movie,
+                            MediaType.Season,
+                            MediaType.Episode,
+                            -> R.string.text_mixtape_description_movies
+                        },
+                    ),
+                    maxSubtitleLines = 2,
                 )
             }
-
-            Spacer(modifier = Modifier.weight(1F))
 
             TypeSelector(
                 selected = state.type.toMediaMode(),
                 onSelect = { onTypeClick(it.toMediaType()) },
             )
         }
-    }
-
-    item(span = { GridItemSpan(maxLineSpan) }) {
-        Text(
-            text = stringResource(
-                when (state.type) {
-                    MediaType.Show -> R.string.text_mixtape_description_shows
-                    MediaType.Movie,
-                    MediaType.Season,
-                    MediaType.Episode,
-                    -> R.string.text_mixtape_description_movies
-                },
-            ),
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textSecondary,
-        )
     }
 
     item(span = { GridItemSpan(maxLineSpan) }) {
