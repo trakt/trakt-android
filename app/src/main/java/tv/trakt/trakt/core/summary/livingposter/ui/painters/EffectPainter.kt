@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.livingposter.ui.painters
 
+import android.graphics.Bitmap
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
@@ -22,6 +23,7 @@ internal fun interface SkyLuminance {
 /** Loaded layers painted effects read from. [luminance] stays null until the backdrop is sampled. */
 internal class EffectSources(
     val backdrop: Painter?,
+    val backdropBitmap: Bitmap?,
     val figures: Painter?,
     val luminance: SkyLuminance?,
 )

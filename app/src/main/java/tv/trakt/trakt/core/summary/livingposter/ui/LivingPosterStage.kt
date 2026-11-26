@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.livingposter.ui
 
+import android.graphics.Bitmap
 import android.view.Surface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -107,7 +108,12 @@ internal fun LivingPosterStage(
     LaunchedEffect(ready) { currentOnReady(ready) }
     DisposableEffect(Unit) { onDispose { currentOnReady(false) } }
 
-    val luminance by rememberSkyLuminance(stack, layerStates)
+    val backdropKey = remember(stack) {
+        stack.firstNotNullOfOrNull { (it as? LivingPosterStackItem.Painted)?.sources?.backdrop }
+    }
+    val backdropState = backdropKey?.let { layerStates[it] } as? AsyncImagePainter.State.Success
+    val backdropBitmap = remember(backdropState) { backdropState?.result?.image?.toBitmap() }
+    val luminance by rememberSkyLuminance(stack, backdropState)
     val motion = rememberLivingPosterMotion(tiltEnabled)
     val planeScale = if (tiltEnabled) PLANE_SCALE else 1F
 
@@ -132,6 +138,7 @@ internal fun LivingPosterStage(
             shadows = readyShadows,
             masks = readyMasks,
             painters = painters,
+            backdropBitmap = backdropBitmap,
             luminance = luminance,
         )
         val planeFilter = painters.values.firstNotNullOfOrNull { it.planeFilter(frame.seconds) }
@@ -155,6 +162,7 @@ private class StackPainting(
     val shadows: Map<String, Painter>,
     val masks: Map<String, Painter>,
     val painters: Map<Int, EffectPainter>,
+    val backdropBitmap: Bitmap?,
     val luminance: SkyLuminance?,
 )
 
@@ -205,6 +213,7 @@ private fun DrawScope.drawPainted(
         sources = EffectSources(
             backdrop = item.sources.backdrop?.let { painting.layers[it] },
             figures = item.sources.figures?.let { painting.layers[it] },
+            backdropBitmap = painting.backdropBitmap,
             luminance = painting.luminance,
         ),
     )
@@ -240,18 +249,16 @@ private fun ImmutableList<LivingPosterStackItem>.toPainters(): Map<Int, EffectPa
 @Composable
 private fun rememberSkyLuminance(
     stack: ImmutableList<LivingPosterStackItem>,
-    layerStates: Map<String, AsyncImagePainter.State>,
+    backdrop: AsyncImagePainter.State.Success?,
 ): State<SkyLuminance?> {
-    val backdropKey = remember(stack) {
+    val hasStars = remember(stack) {
         stack
             .filterIsInstance<LivingPosterStackItem.Painted>()
-            .firstOrNull { item -> item.effects.any { it.effect.kind == LivingPosterEffect.Kind.Twinkle } }
-            ?.sources
-            ?.backdrop
+            .any { item -> item.effects.any { it.effect.kind == LivingPosterEffect.Kind.Twinkle } }
     }
-    val backdrop = backdropKey?.let { layerStates[it] } as? AsyncImagePainter.State.Success
 
-    return produceState<SkyLuminance?>(initialValue = null, backdrop) {
+    return produceState<SkyLuminance?>(initialValue = null, backdrop, hasStars) {
+        if (!hasStars) return@produceState
         val image = backdrop?.result?.image ?: return@produceState
         value = withContext(Dispatchers.Default) { sampleLuminance(image.toBitmap()) }
     }

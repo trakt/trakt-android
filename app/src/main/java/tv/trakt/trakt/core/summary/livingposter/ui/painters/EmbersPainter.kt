@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.summary.livingposter.ui.painters
 
+import android.os.Build
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -194,10 +196,14 @@ internal class EmbersPainter(
     private val simulation = EmberSimulation(effect, seed, box)
     private val coreSprites by lazy { palette.colors.map { createRadialSprite(it, SpriteProfile.Core) } }
     private val softSprites by lazy { palette.colors.map { createRadialSprite(it, SpriteProfile.Soft) } }
+    private val hazeShader by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) HeatHazeShader() else null
+    }
 
     override fun prepare() {
         (coreSprites + softSprites).forEach { it.prepareToDraw() }
         simulation.prepare()
+        hazeShader
     }
 
     override fun DrawScope.paint(
@@ -264,8 +270,37 @@ internal class EmbersPainter(
         }
     }
 
-    /** Redraws the bottom of the background in thin strips, each nudged by a travelling wave. */
+    /** Ripples the bottom of the background with a travelling wave, strongest at the base. */
     private fun DrawScope.paintHaze(scene: EffectScene) {
+        val unit = scene.unit
+        val top = (box.y + box.height * HAZE_TOP) * unit
+        val bottom = (box.y + box.height) * unit
+        val left = box.x * unit
+        val shader = hazeShader
+        val bitmap = scene.sources.backdropBitmap
+
+        if (shader == null || bitmap == null) {
+            paintHazeStrips(scene)
+            return
+        }
+
+        drawRect(
+            brush = shader.brush(
+                backdrop = bitmap,
+                canvasSize = size,
+                unit = unit,
+                seconds = scene.frame.seconds,
+                top = top,
+                bottom = bottom,
+                amplitude = HAZE_AMPLITUDE * unit,
+            ),
+            topLeft = Offset(left, top),
+            size = Size(box.width * unit, bottom - top),
+        )
+    }
+
+    /** Fallback below API 33: redraws the band in thin strips, each nudged by the same wave. */
+    private fun DrawScope.paintHazeStrips(scene: EffectScene) {
         val backdrop = scene.sources.backdrop ?: return
         val unit = scene.unit
         val seconds = scene.frame.seconds
