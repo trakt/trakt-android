@@ -48,7 +48,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val IconSize = 22.dp
 private val CloseIconSize = 14.dp
-private val TouchTargetSize = 42.dp
+private val TouchTargetSize = 48.dp
 private val MeterWidth = 152.dp
 private val MeterHeight = 4.dp
 private val MeterGap = 2.dp
