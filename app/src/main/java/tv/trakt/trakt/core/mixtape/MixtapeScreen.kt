@@ -13,12 +13,12 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.text.input.TextFieldState
@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -76,6 +77,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private const val SKELETON_COUNT = 9
 private const val SEARCH_ITEM_INDEX = 2
 private const val SETTLING_ALPHA = 0.5F
+private const val FULL_ITEM_KEY = "full"
 
 private val ROW_ITEM_SPACING = 12.dp
 private val TypeOptions = persistentListOf(MediaMode.Shows, MediaMode.Movies)
@@ -166,6 +168,7 @@ private fun MixtapeContent(
 
             pickerItems(
                 state = state,
+                gridState = gridState,
                 onPickClick = onPickClick,
             )
         }
@@ -291,10 +294,11 @@ private fun LazyGridScope.headerItems(
 
 private fun LazyGridScope.pickerItems(
     state: MixtapeState,
+    gridState: LazyGridState,
     onPickClick: (MixtapeItem) -> Unit,
 ) {
     when {
-        state.isFull -> fullItem()
+        state.isFull -> fullItem(gridState)
 
         state.loading -> items(count = SKELETON_COUNT) {
             VerticalMediaSkeletonCard(
@@ -340,17 +344,30 @@ private fun LazyGridScope.messageItem(
     }
 }
 
-private fun LazyGridScope.fullItem() {
-    item(span = { GridItemSpan(maxLineSpan) }) {
+private fun LazyGridScope.fullItem(gridState: LazyGridState) {
+    item(
+        key = FULL_ITEM_KEY,
+        span = { GridItemSpan(maxLineSpan) },
+    ) {
+        val density = LocalDensity.current
+        val remainingHeight by remember(gridState) {
+            derivedStateOf {
+                val info = gridState.layoutInfo
+                val item = info.visibleItemsInfo.firstOrNull { it.key == FULL_ITEM_KEY }
+                    ?: return@derivedStateOf 0
+                info.viewportEndOffset - info.afterContentPadding - item.offset.y
+            }
+        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = spacedBy(12.dp),
+            verticalArrangement = spacedBy(12.dp, Alignment.CenterVertically),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 32.dp),
+                .heightIn(min = with(density) { remainingHeight.coerceAtLeast(0).toDp() }),
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_check),
+                painter = painterResource(R.drawable.ic_mixtape),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier.size(28.dp),
