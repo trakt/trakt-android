@@ -136,6 +136,7 @@ internal fun TodayFaces(
                 user = user,
                 borderColor = background,
                 variant = AvatarVariant.Thumb,
+                ringGap = false,
                 modifier = Modifier
                     .offset(x = (FaceSize - FaceOverlap) * index)
                     .size(FaceSize),
