@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.mixtape
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,9 +44,11 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -236,7 +239,11 @@ private fun LazyGridScope.headerItems(
     item(span = { GridItemSpan(maxLineSpan) }) {
         Row(
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = spacedBy(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationY = 2.dp.toPx()
+                },
         ) {
             Text(
                 text = stringResource(state.picker.kind.headerRes(state.type)),
@@ -250,7 +257,10 @@ private fun LazyGridScope.headerItems(
                         R.string.text_mixtape_fits_count,
                         state.picker.items.size.toString(),
                     ),
-                    style = TraktTheme.typography.meta,
+                    style = TraktTheme.typography.meta.copy(
+                        fontWeight = W400,
+                        lineHeight = 1.2.em,
+                    ),
                     color = TraktTheme.colors.textSecondary,
                 )
             }
