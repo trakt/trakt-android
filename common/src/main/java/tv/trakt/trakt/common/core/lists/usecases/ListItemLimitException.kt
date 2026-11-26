@@ -30,7 +30,6 @@ class ListItemLimitException(
     enum class Kind {
         SingleList,
         AllLists,
-        Favorites,
     }
 
     companion object {
@@ -53,18 +52,6 @@ class ListItemLimitException(
                 kind = kind,
                 limit = limit,
                 isVip = response.headers[HEADER_VIP_USER] == "true",
-                cause = error,
-            )
-        }
-
-        suspend fun fromFavoritesResponse(error: ResponseException): ListItemLimitException? {
-            val limitError = fromResponse(error) ?: return null
-            if (limitError.kind != Kind.SingleList) return limitError
-
-            return ListItemLimitException(
-                kind = Kind.Favorites,
-                limit = limitError.limit,
-                isVip = limitError.isVip,
                 cause = error,
             )
         }
@@ -113,10 +100,6 @@ private fun ListItemLimitException.messageResId(): Int {
         ListItemLimitException.Kind.AllLists -> when {
             isVip -> R.string.text_lists_item_limit_reached_vip
             else -> R.string.text_lists_item_limit_reached_free
-        }
-        ListItemLimitException.Kind.Favorites -> when {
-            isVip -> R.string.text_favorites_item_limit_reached_vip
-            else -> R.string.text_favorites_item_limit_reached_free
         }
     }
 }

@@ -22,7 +22,7 @@ class UpdateShowFavoritesUseCase(
                 showId = show.ids.trakt,
             )
         } catch (error: ResponseException) {
-            throw ListItemLimitException.fromFavoritesResponse(error) ?: error
+            throw ListItemLimitException.fromResponse(error) ?: error
         }
 
         userFavoritesLocalSource.addShows(
