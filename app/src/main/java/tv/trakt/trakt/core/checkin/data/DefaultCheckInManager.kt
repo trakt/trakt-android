@@ -328,11 +328,15 @@ internal class DefaultCheckInManager(
                     endsAt = response.endsAt(),
                 ).localized()
 
+                val isNewMovie = state.value !is ActiveMovie || state.value.id != newState.id
+                if (isNewMovie || !CheckInService.isRunning) {
+                    startForegroundService(context, newState)
+                }
+
                 // Only update state if it's a different movie than currently stored
-                if (state.value !is ActiveMovie || state.value.id != newState.id) {
+                if (isNewMovie) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
-                    startForegroundService(context, newState)
 
                     coroutineScope {
                         val progressAsync = async { loadProgressIfNeeded(newState) }
@@ -354,11 +358,15 @@ internal class DefaultCheckInManager(
                     endsAt = response.endsAt(),
                 ).localized()
 
+                val isNewEpisode = state.value !is ActiveEpisode || state.value.id != newState.id
+                if (isNewEpisode || !CheckInService.isRunning) {
+                    startForegroundService(context, newState)
+                }
+
                 // Only update state if it's a different episode than currently stored
-                if (state.value !is ActiveEpisode || state.value.id != newState.id) {
+                if (isNewEpisode) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
-                    startForegroundService(context, newState)
 
                     coroutineScope {
                         val progressAsync = async { loadProgressIfNeeded(newState) }

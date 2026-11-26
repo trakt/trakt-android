@@ -68,6 +68,12 @@ internal class CheckInService : Service() {
 
     private var progressTimestamp: Instant = nowUtcInstant()
     private var progressJob: Job? = null
+    private var isForeground = false
+
+    override fun onCreate() {
+        super.onCreate()
+        isRunning = true
+    }
 
     override fun onStartCommand(
         intent: Intent?,
@@ -82,15 +88,32 @@ internal class CheckInService : Service() {
             data = serviceData,
         )
 
-        @SuppressLint("InlinedApi")
-        ServiceCompat.startForeground(
-            this@CheckInService,
-            SERVICE_ID,
-            notification,
-            FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
-        )
+        if (isForeground) {
+            NotificationManagerCompat
+                .from(applicationContext)
+                .notify(SERVICE_ID, notification)
+        } else {
+            try {
+                @SuppressLint("InlinedApi")
+                ServiceCompat.startForeground(
+                    this@CheckInService,
+                    SERVICE_ID,
+                    notification,
+                    FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
+                )
+                isForeground = true
+            } catch (error: IllegalStateException) {
+                Timber.w(error, "Check-in service not allowed to enter the foreground")
+                stopSelf()
+                return START_NOT_STICKY
+            }
+        }
 
-        scope.launch {
+        hasTrivia = false
+        progressJob?.cancel()
+        progressJob = scope.launch {
+            launch { checkTrivia(serviceData) }
+
             while (isActive) {
                 delay(5.seconds)
 
@@ -101,8 +124,6 @@ internal class CheckInService : Service() {
                 checkActive()
             }
         }
-
-        checkTrivia(serviceData)
 
         Timber.d("Check-in service started.")
         return START_NOT_STICKY
@@ -221,38 +242,36 @@ internal class CheckInService : Service() {
             )
     }
 
-    private fun checkTrivia(serviceData: CheckInServiceData) {
-        scope.launch {
-            if (sessionManager.getProfile()?.isAnyVip != true) {
-                // User is not VIP, no trivia available.
-                return@launch
+    private suspend fun checkTrivia(serviceData: CheckInServiceData) {
+        if (sessionManager.getProfile()?.isAnyVip != true) {
+            // User is not VIP, no trivia available.
+            return
+        }
+
+        try {
+            val movieId = serviceData.mediaId.toTraktId()
+            val showId = serviceData.extraId?.toTraktId()
+
+            hasTrivia = when (serviceData.mediaType) {
+                MediaType.Movie -> getTriviaUseCase.getTrivia(movieId, MediaType.Movie).facts.isNotEmpty()
+                MediaType.Episode if showId != null -> getTriviaUseCase.getTrivia(
+                    showId,
+                    MediaType.Show,
+                ).facts.isNotEmpty()
+                else -> false
             }
-
-            try {
-                val movieId = serviceData.mediaId.toTraktId()
-                val showId = serviceData.extraId?.toTraktId()
-
-                hasTrivia = when (serviceData.mediaType) {
-                    MediaType.Movie -> getTriviaUseCase.getTrivia(movieId, MediaType.Movie).facts.isNotEmpty()
-                    MediaType.Episode if showId != null -> getTriviaUseCase.getTrivia(
-                        showId,
-                        MediaType.Show,
-                    ).facts.isNotEmpty()
-                    else -> false
-                }
-            } catch (error: Exception) {
-                // Trivia check failed, log the error but continue without trivia.
-                error.rethrowCancellation {
-                    // Ignore 404 errors, as they simply mean no trivia is available.
-                    if (error.getHttpCode() != HTTP_ERROR_NOT_FOUND) {
-                        Timber.recordError(error)
-                    }
+        } catch (error: Exception) {
+            // Trivia check failed, log the error but continue without trivia.
+            error.rethrowCancellation {
+                // Ignore 404 errors, as they simply mean no trivia is available.
+                if (error.getHttpCode() != HTTP_ERROR_NOT_FOUND) {
+                    Timber.recordError(error)
                 }
             }
+        }
 
-            if (hasTrivia) {
-                updateProgress(serviceData)
-            }
+        if (hasTrivia) {
+            updateProgress(serviceData)
         }
     }
 
@@ -325,6 +344,7 @@ internal class CheckInService : Service() {
     override fun onDestroy() {
         progressJob?.cancel()
         progressJob = null
+        isRunning = false
         scope.cancel()
         super.onDestroy()
     }
@@ -332,6 +352,10 @@ internal class CheckInService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     companion object {
+        @Volatile
+        var isRunning: Boolean = false
+            private set
+
         fun start(
             context: Context,
             data: CheckInServiceData,
@@ -356,8 +380,17 @@ internal class CheckInService : Service() {
             val intent = Intent(context, CheckInService::class.java).apply {
                 putExtra(EXTRA_DATA, data.toBundle())
             }
-            context.stopService(intent)
-            context.startForegroundService(intent)
+
+            try {
+                if (isRunning) {
+                    // An app with a running foreground service may start services from the background.
+                    context.startService(intent)
+                } else {
+                    context.startForegroundService(intent)
+                }
+            } catch (error: IllegalStateException) {
+                Timber.w(error, "Check-in service start not allowed")
+            }
         }
 
         fun stop(context: Context) {
