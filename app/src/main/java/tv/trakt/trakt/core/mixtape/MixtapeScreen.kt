@@ -61,6 +61,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.launch
@@ -152,6 +153,8 @@ private fun MixtapeContent(
     var rootOffset by remember { mutableStateOf(Offset.Zero) }
     var addSlotBounds by remember { mutableStateOf<Rect?>(null) }
     val flights = remember { mutableStateListOf<PosterFlight>() }
+    val landingKeys = flights.map { it.item.key }.toImmutableSet()
+    val departedKeys = (state.picks.map { it.key } + landingKeys).toImmutableSet()
 
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -185,6 +188,7 @@ private fun MixtapeContent(
             pickerItems(
                 state = state,
                 gridState = gridState,
+                departedKeys = departedKeys,
                 onPickClick = { item, posterBounds ->
                     val target = addSlotBounds
                     val canPick = !state.isFull && state.picks.none { it.id == item.id }
@@ -202,7 +206,7 @@ private fun MixtapeContent(
 
         MixtapeDock(
             picks = state.picks,
-            landingKeys = flights.map { it.item.key }.toImmutableSet(),
+            landingKeys = landingKeys,
             onAddSlotPositioned = { addSlotBounds = it },
             onAddClick = {
                 scope.launch {
@@ -333,6 +337,7 @@ private fun LazyGridScope.headerItems(
 private fun LazyGridScope.pickerItems(
     state: MixtapeState,
     gridState: LazyGridState,
+    departedKeys: ImmutableSet<String>,
     onPickClick: (MixtapeItem, Rect) -> Unit,
 ) {
     when {
@@ -363,7 +368,13 @@ private fun LazyGridScope.pickerItems(
                 enabled = !state.settling,
                 onClick = { posterBounds -> onPickClick(entry.item, posterBounds) },
                 modifier = Modifier
-                    .alpha(if (state.settling) SETTLING_ALPHA else 1F)
+                    .alpha(
+                        when {
+                            entry.item.key in departedKeys -> 0F
+                            state.settling -> SETTLING_ALPHA
+                            else -> 1F
+                        },
+                    )
                     .animateItem(),
             )
         }
