@@ -1,10 +1,12 @@
 package tv.trakt.trakt.core.mixtape
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,28 +14,65 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.mixtape.MixtapeItem
+import tv.trakt.trakt.core.mixtape.model.MixtapePicker
+import tv.trakt.trakt.core.mixtape.ui.MixtapeDock
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InputField
+import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private const val SKELETON_COUNT = 9
+private const val SEARCH_ITEM_INDEX = 3
+private const val SETTLING_ALPHA = 0.5F
+
 private val ROW_ITEM_SPACING = 12.dp
+private val TypeOptions = persistentListOf(MediaMode.Movies, MediaMode.Shows)
 
 @Composable
 internal fun MixtapeScreen(
@@ -42,6 +81,7 @@ internal fun MixtapeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val bottomBarVisibility = LocalBottomBarVisibility.current
+    val searchState = rememberTextFieldState()
 
     DisposableEffect(Unit) {
         bottomBarVisibility.value = false
@@ -50,9 +90,25 @@ internal fun MixtapeScreen(
         }
     }
 
+    LaunchedEffect(searchState) {
+        snapshotFlow { searchState.text.toString() }
+            .collect(viewModel::setQuery)
+    }
+
     MixtapeContent(
         state = state,
+        searchState = searchState,
         onBackClick = onNavigateBack,
+        onTypeClick = {
+            searchState.clearText()
+            viewModel.setType(it)
+        },
+        onPickClick = {
+            searchState.clearText()
+            viewModel.pick(it)
+        },
+        onRemoveClick = viewModel::removePick,
+        onClearClick = viewModel::clearPicks,
     )
 }
 
@@ -60,39 +116,116 @@ internal fun MixtapeScreen(
 private fun MixtapeContent(
     state: MixtapeState,
     modifier: Modifier = Modifier,
+    searchState: TextFieldState = rememberTextFieldState(),
     onBackClick: () -> Unit = {},
+    onTypeClick: (MediaType) -> Unit = {},
+    onPickClick: (MixtapeItem) -> Unit = {},
+    onRemoveClick: (MixtapeItem) -> Unit = {},
+    onClearClick: () -> Unit = {},
+    onMixClick: () -> Unit = {},
 ) {
+    val density = LocalDensity.current
+    val scope = rememberCoroutineScope()
+    val gridState = rememberLazyGridState()
+    val searchFocus = remember { FocusRequester() }
+    var dockHeight by remember { mutableStateOf(0.dp) }
+
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding().plus(4.dp),
+        bottom = dockHeight.plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .padding(contentPadding),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
+        LazyVerticalGrid(
+            state = gridState,
+            columns = GridCells.Fixed(TraktTheme.size.mainGridColumns),
+            horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
+            verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
+            contentPadding = contentPadding,
+            overscrollEffect = null,
+        ) {
+            headerItems(
+                state = state,
+                searchState = searchState,
+                searchFocus = searchFocus,
+                onBackClick = onBackClick,
+                onTypeClick = onTypeClick,
+            )
+
+            pickerItems(
+                state = state,
+                onPickClick = onPickClick,
+            )
+        }
+
+        MixtapeDock(
+            picks = state.picks,
+            onAddClick = {
+                scope.launch {
+                    gridState.animateScrollToItem(SEARCH_ITEM_INDEX)
+                    searchFocus.requestFocus()
+                }
+            },
+            onRemoveClick = onRemoveClick,
+            onClearClick = onClearClick,
+            onMixClick = onMixClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .onSizeChanged { dockHeight = with(density) { it.height.toDp() } },
+        )
+    }
+}
+
+private fun LazyGridScope.headerItems(
+    state: MixtapeState,
+    searchState: TextFieldState,
+    searchFocus: FocusRequester,
+    onBackClick: () -> Unit,
+    onTypeClick: (MediaType) -> Unit,
+) {
+    item(span = { GridItemSpan(maxLineSpan) }) {
         Row(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(ROW_ITEM_SPACING),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(TraktTheme.size.titleBarHeight)
-                .graphicsLayer { translationX = -2.dp.toPx() }
-                .onClick { onBackClick() },
+                .height(TraktTheme.size.titleBarHeight),
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-            )
-            TraktHeader(
-                title = stringResource(R.string.page_title_mixtape),
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(ROW_ITEM_SPACING),
+                modifier = Modifier
+                    .graphicsLayer { translationX = -2.dp.toPx() }
+                    .onClick { onBackClick() },
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                )
+                TraktHeader(
+                    title = stringResource(R.string.page_title_mixtape),
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1F))
+
+            MediaModeButtons(
+                mode = state.type.toMediaMode(),
+                options = TypeOptions,
+                height = 32.dp,
+                onModeSelect = { onTypeClick(it.toMediaType()) },
             )
         }
+    }
 
+    item(span = { GridItemSpan(maxLineSpan) }) {
         Text(
             text = stringResource(
                 when (state.type) {
@@ -107,11 +240,182 @@ private fun MixtapeContent(
             color = TraktTheme.colors.textSecondary,
         )
     }
+
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = spacedBy(8.dp),
+            modifier = Modifier.padding(top = 8.dp),
+        ) {
+            Text(
+                text = stringResource(state.picker.kind.headerRes(state.type)),
+                style = TraktTheme.typography.heading5,
+                color = TraktTheme.colors.textPrimary,
+            )
+
+            if (state.picker.kind == MixtapePicker.Kind.Fits && !state.loading) {
+                Text(
+                    text = stringResource(
+                        R.string.text_mixtape_fits_count,
+                        state.picker.items.size.toString(),
+                    ),
+                    style = TraktTheme.typography.meta,
+                    color = TraktTheme.colors.textSecondary,
+                )
+            }
+        }
+    }
+
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        InputField(
+            state = searchState,
+            icon = painterResource(R.drawable.ic_search_off),
+            placeholder = stringResource(
+                when (state.type) {
+                    MediaType.Show -> R.string.input_placeholder_mixtape_search_shows
+                    MediaType.Movie,
+                    MediaType.Season,
+                    MediaType.Episode,
+                    -> R.string.input_placeholder_mixtape_search_movies
+                },
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(searchFocus),
+        )
+    }
+}
+
+private fun LazyGridScope.pickerItems(
+    state: MixtapeState,
+    onPickClick: (MixtapeItem) -> Unit,
+) {
+    when {
+        state.isFull -> messageItem(textRes = R.string.text_mixtape_max_picks)
+
+        state.loading -> items(count = SKELETON_COUNT) {
+            VerticalMediaSkeletonCard(
+                chipRatio = 0.66F,
+                chipSpacing = 8.dp,
+            )
+        }
+
+        state.picker.items.isEmpty() -> messageItem(
+            textRes = when (state.picker.kind) {
+                MixtapePicker.Kind.Search -> R.string.text_mixtape_no_search_results
+                MixtapePicker.Kind.Fits -> R.string.text_mixtape_no_fits
+                MixtapePicker.Kind.Recent -> R.string.text_mixtape_empty_history
+            },
+        )
+
+        else -> items(
+            count = state.picker.items.size,
+            key = { index -> state.picker.items[index].item.key },
+        ) { index ->
+            val entry = state.picker.items[index]
+            PickerCard(
+                entry = entry,
+                enabled = !state.settling,
+                onClick = { onPickClick(entry.item) },
+                modifier = Modifier
+                    .alpha(if (state.settling) SETTLING_ALPHA else 1F)
+                    .animateItem(),
+            )
+        }
+    }
+}
+
+private fun LazyGridScope.messageItem(
+    @StringRes textRes: Int,
+) {
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Text(
+            text = stringResource(textRes),
+            style = TraktTheme.typography.paragraphSmall,
+            color = TraktTheme.colors.textSecondary,
+        )
+    }
+}
+
+@Composable
+private fun PickerCard(
+    entry: MixtapePicker.Entry,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    VerticalMediaCard(
+        title = entry.item.title,
+        imageUrl = entry.item.images?.getPosterUrl(),
+        enabled = enabled && !entry.isOff,
+        more = false,
+        blackWhite = entry.isOff,
+        chipSpacing = 10.dp,
+        chipContent = { chipModifier ->
+            Text(
+                text = when {
+                    entry.isOff -> stringResource(R.string.tag_mixtape_different_mood)
+                    else -> entry.item.year?.toString() ?: "TBA"
+                },
+                style = TraktTheme.typography.cardTitle,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = chipModifier,
+            )
+        },
+        onClick = onClick,
+        modifier = modifier,
+    )
+}
+
+private fun MixtapePicker.Kind.headerRes(type: MediaType): Int {
+    return when (this) {
+        MixtapePicker.Kind.Search -> R.string.header_mixtape_search_results
+        MixtapePicker.Kind.Fits -> R.string.header_mixtape_fits
+        MixtapePicker.Kind.Recent -> when (type) {
+            MediaType.Show -> R.string.header_mixtape_recent_shows
+            MediaType.Movie,
+            MediaType.Season,
+            MediaType.Episode,
+            -> R.string.header_mixtape_recent_movies
+        }
+    }
+}
+
+private fun MediaType.toMediaMode(): MediaMode {
+    return when (this) {
+        MediaType.Show -> MediaMode.Shows
+        MediaType.Movie,
+        MediaType.Season,
+        MediaType.Episode,
+        -> MediaMode.Movies
+    }
+}
+
+private fun MediaMode.toMediaType(): MediaType {
+    return when (this) {
+        MediaMode.Shows -> MediaType.Show
+        MediaMode.Movies,
+        MediaMode.Media,
+        -> MediaType.Movie
+    }
 }
 
 @PreviewTraktLightDark
 @Composable
 private fun Preview() {
+    TraktThemePreview {
+        MixtapeContent(
+            state = MixtapeState(loading = false),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun LoadingPreview() {
     TraktThemePreview {
         MixtapeContent(
             state = MixtapeState(),

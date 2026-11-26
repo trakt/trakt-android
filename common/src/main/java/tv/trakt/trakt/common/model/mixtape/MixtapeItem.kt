@@ -45,6 +45,12 @@ sealed class MixtapeItem {
             is ShowItem -> show.title
         }
 
+    val year: Int?
+        get() = when (this) {
+            is MovieItem -> movie.year
+            is ShowItem -> show.year
+        }
+
     val images: Images?
         get() = when (this) {
             is MovieItem -> movie.images
