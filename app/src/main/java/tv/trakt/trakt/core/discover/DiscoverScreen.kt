@@ -12,12 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -50,6 +48,7 @@ import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.HintIcon
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -264,13 +263,12 @@ private fun ScreenHeader(
         onFilterClick = onFiltersClick,
         leadingActions = if (userState.second) {
             {
-                Icon(
+                HintIcon(
                     painter = painterResource(R.drawable.ic_mixtape),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    attention = state.mixtapeHint,
+                    size = MIXTAPE_ICON_SIZE,
                     modifier = Modifier
                         .padding(end = 2.dp)
-                        .size(MIXTAPE_ICON_SIZE)
                         .onClick(onClick = onMixtapeClick),
                 )
             }
