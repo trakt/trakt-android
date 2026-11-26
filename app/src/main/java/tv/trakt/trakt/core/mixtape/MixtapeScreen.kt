@@ -54,6 +54,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -147,6 +148,7 @@ private fun MixtapeContent(
     val density = LocalDensity.current
     val gridState = rememberLazyGridState()
     val searchFocus = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
     var dockHeight by remember { mutableStateOf(0.dp) }
     var rootOffset by remember { mutableStateOf(Offset.Zero) }
     var addSlotBounds by remember { mutableStateOf<Rect?>(null) }
@@ -171,7 +173,7 @@ private fun MixtapeContent(
             state = gridState,
             columns = GridCells.Fixed(TraktTheme.size.mainGridColumns),
             horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
-            verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
+            verticalArrangement = spacedBy(0.dp),
             contentPadding = contentPadding,
             overscrollEffect = null,
         ) {
@@ -188,6 +190,7 @@ private fun MixtapeContent(
                 gridState = gridState,
                 departedKeys = departedKeys,
                 onPickClick = { item, posterBounds ->
+                    focusManager.clearFocus()
                     val target = addSlotBounds
                     val canPick = !state.isFull && state.picks.none { it.id == item.id }
                     if (target != null && canPick) {
@@ -278,6 +281,11 @@ private fun LazyGridScope.headerItems(
             ),
             style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textSecondary,
+            modifier = Modifier
+                .padding(
+                    top = TraktTheme.spacing.mainGridVerticalSpace / 4,
+                    bottom = TraktTheme.spacing.mainGridVerticalSpace,
+                ),
         )
     }
 
@@ -286,6 +294,7 @@ private fun LazyGridScope.headerItems(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
+                .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace)
                 .graphicsLayer {
                     translationY = 2.dp.toPx()
                 },
@@ -331,8 +340,21 @@ private fun LazyGridScope.headerItems(
                     -> R.string.input_placeholder_mixtape_search_movies
                 },
             ),
+            endSlot = {
+                if (searchState.text.isNotBlank()) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_close),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textSecondary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick { searchState.clearText() },
+                    )
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace)
                 .focusRequester(searchFocus),
         )
     }
@@ -351,6 +373,8 @@ private fun LazyGridScope.pickerItems(
             VerticalMediaSkeletonCard(
                 chipRatio = 0.66F,
                 chipSpacing = 8.dp,
+                modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace),
             )
         }
 
@@ -372,6 +396,7 @@ private fun LazyGridScope.pickerItems(
                 enabled = !state.settling,
                 onClick = { posterBounds -> onPickClick(entry.item, posterBounds) },
                 modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace)
                     .alpha(
                         when {
                             entry.item.key in departedKeys -> 0F
