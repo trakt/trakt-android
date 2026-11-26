@@ -13,6 +13,7 @@ internal class CompositeAnalytics(
     override val playback: Analytics.Playback = CompositePlayback(targets.map(Analytics::playback))
     override val lists: Analytics.Lists = CompositeLists(targets.map(Analytics::lists))
     override val today: Analytics.Today = CompositeToday(targets.map(Analytics::today))
+    override val mixtape: Analytics.Mixtape = CompositeMixtape(targets.map(Analytics::mixtape))
     override val vip: Analytics.Vip = CompositeVip(targets.map(Analytics::vip))
 
     override fun setUserId(userId: String?) {
@@ -499,6 +500,48 @@ private class CompositeToday(
         frame: String,
     ) {
         targets.forEach { it.logAction(action, frame) }
+    }
+}
+
+private class CompositeMixtape(
+    private val targets: List<Analytics.Mixtape>,
+) : Analytics.Mixtape {
+    override fun logOpen(
+        source: String,
+        type: String,
+    ) {
+        targets.forEach { it.logOpen(source, type) }
+    }
+
+    override fun logPick(
+        source: String,
+        type: String,
+        picks: Int,
+    ) {
+        targets.forEach { it.logPick(source = source, type = type, picks = picks) }
+    }
+
+    override fun logNoFits(
+        type: String,
+        picks: Int,
+    ) {
+        targets.forEach { it.logNoFits(type, picks) }
+    }
+
+    override fun logMix(
+        type: String,
+        picks: Int,
+        fits: Int,
+    ) {
+        targets.forEach { it.logMix(type = type, picks = picks, fits = fits) }
+    }
+
+    override fun logResult(
+        action: String,
+        position: Int,
+        type: String,
+    ) {
+        targets.forEach { it.logResult(action = action, position = position, type = type) }
     }
 }
 

@@ -31,6 +31,11 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_LIKE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_SORT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MARK_AS_WATCHED
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MIXTAPE_MIX
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MIXTAPE_NO_FITS
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MIXTAPE_OPEN
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MIXTAPE_PICK
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MIXTAPE_RESULT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_RATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REACT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_CREATE
@@ -52,8 +57,10 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_VIEW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_WATCHLIST
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_DURATION
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_FITS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_FRAMES
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_GROUPS
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_PICKS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_RATING
 
 private const val ACTION_ADD = "add"
@@ -311,6 +318,70 @@ internal class HalAnalyticsToday(
         frame: String,
     ) {
         events.track(EVENT_TODAY_ACTION, dims = mapOf(DIM_ACTION to action, DIM_FRAME to frame))
+    }
+}
+
+internal class HalAnalyticsMixtape(
+    private val events: HalEvents,
+) : Analytics.Mixtape {
+    override fun logOpen(
+        source: String,
+        type: String,
+    ) {
+        events.track(EVENT_MIXTAPE_OPEN, dims = mapOf(DIM_SOURCE to source, DIM_TYPE to type))
+    }
+
+    override fun logPick(
+        source: String,
+        type: String,
+        picks: Int,
+    ) {
+        events.track(
+            EVENT_MIXTAPE_PICK,
+            dims = mapOf(DIM_SOURCE to source, DIM_TYPE to type),
+            metrics = mapOf(METRIC_PICKS to picks.toLong()),
+        )
+    }
+
+    override fun logNoFits(
+        type: String,
+        picks: Int,
+    ) {
+        events.track(
+            EVENT_MIXTAPE_NO_FITS,
+            dims = mapOf(DIM_TYPE to type),
+            metrics = mapOf(METRIC_PICKS to picks.toLong()),
+        )
+    }
+
+    override fun logMix(
+        type: String,
+        picks: Int,
+        fits: Int,
+    ) {
+        events.track(
+            EVENT_MIXTAPE_MIX,
+            dims = mapOf(DIM_TYPE to type),
+            metrics = mapOf(
+                METRIC_PICKS to picks.toLong(),
+                METRIC_FITS to fits.toLong(),
+            ),
+        )
+    }
+
+    override fun logResult(
+        action: String,
+        position: Int,
+        type: String,
+    ) {
+        events.track(
+            EVENT_MIXTAPE_RESULT,
+            dims = mapOf(
+                DIM_ACTION to action,
+                DIM_POSITION to position.toString(),
+                DIM_TYPE to type,
+            ),
+        )
     }
 }
 

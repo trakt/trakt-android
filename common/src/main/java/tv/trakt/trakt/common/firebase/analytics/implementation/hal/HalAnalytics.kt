@@ -68,6 +68,7 @@ internal class HalAnalytics(
     override val playback: Analytics.Playback,
     override val lists: Analytics.Lists,
     override val today: Analytics.Today,
+    override val mixtape: Analytics.Mixtape,
     override val vip: Analytics.Vip,
 ) : Analytics {
     override fun setUserId(userId: String?) = Unit
