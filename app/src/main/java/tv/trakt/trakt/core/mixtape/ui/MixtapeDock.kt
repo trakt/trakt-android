@@ -5,12 +5,16 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -44,12 +48,13 @@ import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.MAX_MIXTAPE_PICKS
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val SlotWidth = 44.dp
-private val SlotHeight = 66.dp
+private const val SLOT_RATIO = 2F / 3F
+
+private val SlotSpacing = 8.dp
+private val MixButtonMinWidth = 112.dp
 private val SlotRadius = 8.dp
 private val SlotShape = RoundedCornerShape(SlotRadius)
 private val DockShape = RoundedCornerShape(24.dp)
@@ -125,13 +130,19 @@ private fun DockCard(
             .padding(16.dp),
     ) {
         Row(
-            horizontalArrangement = spacedBy(8.dp),
+            horizontalArrangement = spacedBy(SlotSpacing),
             verticalAlignment = CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
         ) {
+            val slotModifier = Modifier
+                .weight(1F)
+                .aspectRatio(SLOT_RATIO)
+
             picks.forEach { item ->
                 PickSlot(
                     item = item,
                     onRemoveClick = { onRemoveClick(item) },
+                    modifier = slotModifier,
                 )
             }
 
@@ -139,7 +150,13 @@ private fun DockCard(
                 AddSlot(
                     first = !hasPicks,
                     onClick = onAddClick,
+                    modifier = slotModifier,
                 )
+            }
+
+            val emptySlots = MAX_MIXTAPE_PICKS - picks.size - 1
+            if (emptySlots > 0) {
+                Spacer(modifier = Modifier.weight(emptySlots.toFloat()))
             }
         }
 
@@ -160,10 +177,14 @@ private fun DockCard(
             )
 
             if (hasPicks) {
-                GhostButton(
-                    text = stringResource(R.string.button_text_mixtape_clear),
-                    fillWidth = false,
-                    onClick = onClearClick,
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .size(21.dp)
+                        .onClick(onClick = onClearClick),
                 )
             }
 
@@ -171,6 +192,7 @@ private fun DockCard(
                 text = stringResource(R.string.button_text_mix_it),
                 enabled = hasPicks,
                 onClick = onMixClick,
+                modifier = Modifier.widthIn(min = MixButtonMinWidth),
             )
         }
     }
@@ -180,16 +202,17 @@ private fun DockCard(
 private fun PickSlot(
     item: MixtapeItem,
     onRemoveClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier.size(width = SlotWidth, height = SlotHeight),
+        modifier = modifier,
     ) {
         AsyncImage(
             model = item.images?.getPosterUrl(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(width = SlotWidth, height = SlotHeight)
+                .fillMaxSize()
                 .clip(SlotShape)
                 .background(TraktTheme.colors.placeholderContainer),
         )
@@ -218,14 +241,14 @@ private fun PickSlot(
 private fun AddSlot(
     first: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val dashColor = TraktTheme.colors.chipContainer
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(4.dp, Alignment.CenterVertically),
-        modifier = Modifier
-            .size(width = SlotWidth, height = SlotHeight)
+        modifier = modifier
             .drawBehind {
                 val radius = SlotRadius.toPx()
                 drawRoundRect(
