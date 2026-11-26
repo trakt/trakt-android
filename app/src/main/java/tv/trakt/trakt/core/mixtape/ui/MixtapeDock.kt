@@ -54,6 +54,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.MAX_MIXTAPE_PICKS
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
@@ -77,7 +78,6 @@ internal fun MixtapeDock(
     modifier: Modifier = Modifier,
     landingKeys: ImmutableSet<String> = persistentSetOf(),
     onAddSlotPositioned: (Rect) -> Unit = {},
-    onAddClick: () -> Unit = {},
     onRemoveClick: (MixtapeItem) -> Unit = {},
     onClearClick: () -> Unit = {},
     onMixClick: () -> Unit = {},
@@ -105,14 +105,14 @@ internal fun MixtapeDock(
                 bottom = WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding()
                     .plus(12.dp),
-            ),
+            )
+            .onEmptyClick(),
     ) {
         DockCard(
             picks = picks,
             hasPicks = hasPicks,
             landingKeys = landingKeys,
             onAddSlotPositioned = onAddSlotPositioned,
-            onAddClick = onAddClick,
             onRemoveClick = onRemoveClick,
             onClearClick = onClearClick,
             onMixClick = onMixClick,
@@ -126,7 +126,6 @@ private fun DockCard(
     hasPicks: Boolean,
     landingKeys: ImmutableSet<String>,
     onAddSlotPositioned: (Rect) -> Unit,
-    onAddClick: () -> Unit,
     onRemoveClick: (MixtapeItem) -> Unit,
     onClearClick: () -> Unit,
     onMixClick: () -> Unit,
@@ -170,7 +169,6 @@ private fun DockCard(
                 if (picks.size < MAX_MIXTAPE_PICKS) {
                     AddSlot(
                         first = !hasPicks,
-                        onClick = onAddClick,
                         modifier = slotModifier.onGloballyPositioned {
                             onAddSlotPositioned(it.boundsInWindow())
                         },
@@ -268,14 +266,13 @@ private fun PickSlot(
 @Composable
 private fun AddSlot(
     first: Boolean,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val dashColor = TraktTheme.colors.chipContainer
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = spacedBy(4.dp, Alignment.CenterVertically),
+        verticalArrangement = spacedBy(4.dp, CenterVertically),
         modifier = modifier
             .drawBehind {
                 val radius = SlotRadius.toPx()
@@ -288,8 +285,7 @@ private fun AddSlot(
                     ),
                 )
             }
-            .padding(horizontal = 2.dp)
-            .onClick(onClick = onClick),
+            .padding(horizontal = 2.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_plus),

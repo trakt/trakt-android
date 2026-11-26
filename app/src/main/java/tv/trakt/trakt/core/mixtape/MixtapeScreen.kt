@@ -35,7 +35,6 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -64,7 +63,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -87,7 +85,6 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCa
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SKELETON_COUNT = 9
-private const val SEARCH_ITEM_INDEX = 2
 private const val SETTLING_ALPHA = 0.5F
 private const val FULL_ITEM_KEY = "full"
 private const val VERTICAL_POSTER_RATIO = 2F / 3F
@@ -146,7 +143,6 @@ private fun MixtapeContent(
     onMixClick: () -> Unit = {},
 ) {
     val density = LocalDensity.current
-    val scope = rememberCoroutineScope()
     val gridState = rememberLazyGridState()
     val searchFocus = remember { FocusRequester() }
     var dockHeight by remember { mutableStateOf(0.dp) }
@@ -208,12 +204,6 @@ private fun MixtapeContent(
             picks = state.picks,
             landingKeys = landingKeys,
             onAddSlotPositioned = { addSlotBounds = it },
-            onAddClick = {
-                scope.launch {
-                    gridState.animateScrollToItem(SEARCH_ITEM_INDEX)
-                    searchFocus.requestFocus()
-                }
-            },
             onRemoveClick = onRemoveClick,
             onClearClick = onClearClick,
             onMixClick = onMixClick,
@@ -410,7 +400,7 @@ private fun LazyGridScope.fullItem(gridState: LazyGridState) {
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = spacedBy(12.dp, Alignment.CenterVertically),
+            verticalArrangement = spacedBy(12.dp, CenterVertically),
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = with(density) { remainingHeight.coerceAtLeast(0).toDp() }),

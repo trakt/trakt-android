@@ -28,7 +28,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private const val FLIGHT_DURATION_MS = 400
 
 private val StartCorner = 15.dp
-private val EndCorner = 8.dp
+private val EndCorner = 12.dp
 
 @Immutable
 internal data class PosterFlight(
