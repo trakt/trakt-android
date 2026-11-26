@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
@@ -39,6 +41,14 @@ internal fun MixtapeScreen(
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val bottomBarVisibility = LocalBottomBarVisibility.current
+
+    DisposableEffect(Unit) {
+        bottomBarVisibility.value = false
+        onDispose {
+            bottomBarVisibility.value = true
+        }
+    }
 
     MixtapeContent(
         state = state,
