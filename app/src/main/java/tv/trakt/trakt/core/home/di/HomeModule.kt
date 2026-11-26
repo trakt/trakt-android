@@ -31,6 +31,9 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseC
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
 import tv.trakt.trakt.core.home.sections.monthreview.usecases.MonthReviewBannerUseCase
+import tv.trakt.trakt.core.home.sections.nudge.HomeNudgeViewModel
+import tv.trakt.trakt.core.home.sections.nudge.usecases.GetVipNudgeUseCase
+import tv.trakt.trakt.core.home.sections.nudge.usecases.VipNudgeDismissalUseCase
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
 import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
@@ -85,13 +88,22 @@ internal val homeModule = module {
     factoryOf(::GetUserUsageUseCase)
     factoryOf(::GetRecommendedMediaUseCase)
 
+    factoryOf(::GetVipNudgeUseCase)
+
     factory {
         MonthReviewBannerUseCase(
             dataStore = get(named(HOME_PREFERENCES)),
         )
     }
 
+    factory {
+        VipNudgeDismissalUseCase(
+            dataStore = get(named(HOME_PREFERENCES)),
+        )
+    }
+
     viewModelOf(::HomeViewModel)
+    viewModelOf(::HomeNudgeViewModel)
     viewModelOf(::HomeSocialViewModel)
     viewModelOf(::HomeHistoryViewModel)
     viewModelOf(::AllActivityPersonalViewModel)

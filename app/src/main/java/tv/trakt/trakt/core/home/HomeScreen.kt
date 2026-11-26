@@ -51,6 +51,9 @@ import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.monthreview.HomeMonthReviewView
+import tv.trakt.trakt.core.home.sections.nudge.HomeNudgeView
+import tv.trakt.trakt.core.home.sections.nudge.HomeNudgeViewModel
+import tv.trakt.trakt.core.home.sections.nudge.model.VipNudge
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedView
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksView
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksSheet
@@ -83,10 +86,12 @@ internal fun HomeScreen(
     onNavigateToVip: (VipUpsellSource) -> Unit,
     onNavigateToCalendar: (CalendarView) -> Unit,
     onNavigateToToday: (groupKey: String) -> Unit,
+    nudgeViewModel: HomeNudgeViewModel = koinViewModel(),
 ) {
     val startAuthorization = LocalStartAuthorization.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val nudgeState by nudgeViewModel.state.collectAsStateWithLifecycle()
 
     var filtersSheet by remember { mutableStateOf(false) }
     var streaksSheet by remember { mutableStateOf(false) }
@@ -99,6 +104,7 @@ internal fun HomeScreen(
 
     HomeScreenContent(
         state = state,
+        nudge = nudgeState.nudge,
         userLoading = userLoading,
         onShowClick = onNavigateToShow,
         onShowsClick = {
@@ -142,6 +148,9 @@ internal fun HomeScreen(
         onDismissWelcomeClick = viewModel::dismissWelcomeBanner,
         onMonthReviewClick = viewModel::openMonthReview,
         onDismissMonthReviewClick = viewModel::dismissMonthReview,
+        onDismissNudgeClick = nudgeViewModel::dismissNudge,
+        onNudgeShown = nudgeViewModel::onNudgeShown,
+        onNudgeSeen = nudgeViewModel::onVipUpsellSeen,
     )
 
     GlobalFiltersSheet(
@@ -172,6 +181,7 @@ private fun HomeScreenContent(
     state: HomeState,
     userLoading: Boolean,
     modifier: Modifier = Modifier,
+    nudge: VipNudge? = null,
     onMoreUpNextClick: () -> Unit = {},
     onMoreWatchlistClick: () -> Unit = {},
     onMorePersonalClick: () -> Unit = {},
@@ -193,6 +203,9 @@ private fun HomeScreenContent(
     onDismissWelcomeClick: () -> Unit = {},
     onMonthReviewClick: (target: String) -> Unit = {},
     onDismissMonthReviewClick: () -> Unit = {},
+    onDismissNudgeClick: () -> Unit = {},
+    onNudgeShown: () -> Unit = {},
+    onNudgeSeen: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
     val headerState = rememberHeaderState()
@@ -267,6 +280,21 @@ private fun HomeScreenContent(
                             )
                         }
                     }
+                }
+            }
+
+            if (nudge != null && !state.welcomeBanner) {
+                item(key = "vip_nudge") {
+                    HomeNudgeView(
+                        nudge = nudge,
+                        onClick = { onVipClick(VipUpsellSource.HomeNudge) },
+                        onDismissClick = onDismissNudgeClick,
+                        onShown = onNudgeShown,
+                        onSeen = onNudgeSeen,
+                        modifier = Modifier
+                            .padding(sectionPadding)
+                            .animateItem(),
+                    )
                 }
             }
 

@@ -115,8 +115,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.vip.VipBanner
-import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.snackbar.showFavoriteNotePrompt
@@ -262,7 +260,6 @@ internal fun MovieDetailsScreen(
         },
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
-        onVipSeen = viewModel::onVipUpsellSeen,
         onTriviaClick = {
             state.movie?.let { movie ->
                 onTriviaClick(movie)
@@ -508,7 +505,6 @@ internal fun MovieDetailsContent(
     onFavoriteClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: ((VipUpsellSource) -> Unit)? = null,
-    onVipSeen: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onPersonLinkClick: ((SlugId) -> Unit)? = null,
     onSentimentClick: ((MediaInsights) -> Unit)? = null,
@@ -693,20 +689,6 @@ internal fun MovieDetailsContent(
                                 .fillMaxWidth()
                                 .padding(top = 18.dp)
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                        )
-                    }
-                }
-
-                if (state.user != null && !state.user.isVip) {
-                    item {
-                        VipBanner(
-                            onClick = { onVipClick?.invoke(VipUpsellSource.MovieDetails) },
-                            modifier = Modifier
-                                .onUpsellSeen { onVipSeen?.invoke() }
-                                .alpha(ratingAlphaMask)
-                                .fillMaxWidth()
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(top = 24.dp),
                         )
                     }
                 }

@@ -441,7 +441,6 @@ internal fun NavGraphBuilder.episodesScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateVip = { navigateToBilling(source = VipUpsellSource.EpisodeDetails) },
             onNavigateBack = { popBackStack() },
             onNavigateToList = { navigateToListDetails(it) },
         )

@@ -59,7 +59,6 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.helpers.hasLightsaber
@@ -891,10 +890,6 @@ internal class MovieDetailsViewModel(
 
     fun logShare() {
         analytics.logShare(source = "media", type = MediaType.Movie.value)
-    }
-
-    fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression(VipUpsellSource.MovieDetails.value)
     }
 
     @Suppress("UNCHECKED_CAST")

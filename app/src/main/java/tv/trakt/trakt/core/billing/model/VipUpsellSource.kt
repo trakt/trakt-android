@@ -9,9 +9,6 @@ internal enum class VipUpsellSource(
     AllTimeStats("all-time-stats"),
     LibraryCollectionLimit("library-collection-limit"),
     LeaderboardViewer("leaderboard-viewer"),
-    ShowDetails("show-details"),
-    MovieDetails("movie-details"),
-    EpisodeDetails("episode-details"),
     Soundtrack("soundtrack"),
     Trivia("trivia"),
     Sentiment("sentiment"),
@@ -20,4 +17,5 @@ internal enum class VipUpsellSource(
     Onboarding("onboarding"),
     VipLimit("vip-limit"),
     PreviewFeatures("preview-features"),
+    HomeNudge("home-nudge"),
 }
