@@ -42,6 +42,15 @@ internal class ScoreMixtapeFitsUseCase {
             .toImmutableList()
     }
 
+    fun appendFits(
+        local: List<Fit>,
+        deep: List<Fit>,
+    ): ImmutableList<Fit> {
+        return (local + deep)
+            .distinctBy { it.id }
+            .toImmutableList()
+    }
+
     private fun cosine(
         a: ByteArray,
         b: ByteArray,
