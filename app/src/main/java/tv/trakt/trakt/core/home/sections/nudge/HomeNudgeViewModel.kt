@@ -97,6 +97,10 @@ internal class HomeNudgeViewModel(
         }
     }
 
+    fun refresh() {
+        loadNudge()
+    }
+
     fun onNudgeShown() {
         if (isSeenReported) return
         isSeenReported = true

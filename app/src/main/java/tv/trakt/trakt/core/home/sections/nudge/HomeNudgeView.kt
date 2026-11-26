@@ -140,7 +140,7 @@ private fun FeaturesContent(nudge: VipNudge.Features) {
 private fun LimitContent(nudge: VipNudge.Limit) {
     val used = rememberNumberFormat(nudge.used)
     val total = rememberNumberFormat(nudge.total)
-    val vip = rememberNumberFormat(nudge.vip)
+    val vip = nudge.vip?.let { rememberNumberFormat(it) }.orEmpty()
 
     NudgeTitle(stringResource(nudge.titleRes(), used, total))
 
@@ -148,7 +148,10 @@ private fun LimitContent(nudge: VipNudge.Limit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(10.dp),
     ) {
-        NudgeMeter(nudge)
+        NudgeMeter(
+            nudge = nudge,
+            modifier = Modifier.weight(1F, fill = false),
+        )
 
         Text(
             text = buildAnnotatedString {
@@ -211,7 +214,10 @@ private fun NudgeDetail(text: String) {
 }
 
 @Composable
-private fun NudgeMeter(nudge: VipNudge.Limit) {
+private fun NudgeMeter(
+    nudge: VipNudge.Limit,
+    modifier: Modifier = Modifier,
+) {
     val accent = TraktTheme.colors.vipAccent
     val colors = MeterColors(
         track = accent.copy(alpha = 0.2F),
@@ -220,7 +226,7 @@ private fun NudgeMeter(nudge: VipNudge.Limit) {
     )
 
     Spacer(
-        modifier = Modifier
+        modifier = modifier
             .width(MeterWidth)
             .height(MeterHeight)
             .drawBehind {
@@ -299,7 +305,7 @@ private fun Preview() {
                     limit = VipNudgeLimit.StaticLists,
                     used = 7,
                     total = 5,
-                    vip = 50,
+                    vip = null,
                 ),
             )
             HomeNudgeView(

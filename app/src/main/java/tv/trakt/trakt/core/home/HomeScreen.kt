@@ -99,6 +99,7 @@ internal fun HomeScreen(
 
     LifecycleResumeEffect(Unit) {
         viewModel.refreshMonthReview()
+        nudgeViewModel.refresh()
         onPauseOrDispose {}
     }
 

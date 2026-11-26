@@ -35,7 +35,7 @@ internal sealed interface VipNudge {
         val limit: VipNudgeLimit,
         val used: Int,
         val total: Int,
-        val vip: Int,
+        val vip: Int?,
     ) : VipNudge {
         val isOverLimit: Boolean
             get() = used > total
@@ -69,7 +69,8 @@ internal sealed interface VipNudge {
                     val limit = VipNudgeLimit.entries.firstOrNull { it.value == nudge.limit } ?: return null
                     val used = nudge.used ?: return null
                     val total = nudge.total ?: return null
-                    val vip = limit.vipAmount(usage) ?: return null
+                    val vip = limit.vipAmount(usage)
+                    if (vip == null && limit != VipNudgeLimit.StaticLists) return null
                     Limit(
                         limit = limit,
                         used = used,
