@@ -6,6 +6,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.discover.di.DISCOVER_PREFERENCES
 import tv.trakt.trakt.core.mixtape.MixtapeViewModel
+import tv.trakt.trakt.core.mixtape.results.MixtapeResultsViewModel
+import tv.trakt.trakt.core.mixtape.usecases.AddMixtapeToWatchlistUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeHistoryUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeVectorsUseCase
@@ -23,6 +25,8 @@ internal val mixtapeModule = module {
     factoryOf(::GetMixtapeVectorsUseCase)
     factoryOf(::GetMixtapeUseCase)
     factoryOf(::ScoreMixtapeFitsUseCase)
+    factoryOf(::AddMixtapeToWatchlistUseCase)
 
     viewModelOf(::MixtapeViewModel)
+    viewModelOf(::MixtapeResultsViewModel)
 }

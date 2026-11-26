@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.data.dto.MixtapeDto
 import tv.trakt.trakt.common.data.dto.MixtapeMediaDto
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -11,6 +12,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.ShowDto
+import kotlin.time.Duration
 
 @Immutable
 sealed class MixtapeItem {
@@ -55,6 +57,24 @@ sealed class MixtapeItem {
         get() = when (this) {
             is MovieItem -> movie.images
             is ShowItem -> show.images
+        }
+
+    val overview: String?
+        get() = when (this) {
+            is MovieItem -> movie.overview
+            is ShowItem -> show.overview
+        }
+
+    val runtime: Duration?
+        get() = when (this) {
+            is MovieItem -> movie.runtime
+            is ShowItem -> show.runtime
+        }
+
+    val genre: MediaGenre?
+        get() = when (this) {
+            is MovieItem -> movie.genres.firstOrNull()
+            is ShowItem -> show.genres.firstOrNull()
         }
 
     companion object {

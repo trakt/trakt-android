@@ -29,7 +29,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -66,7 +65,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableSet
-import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -75,6 +73,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MixtapePicker
 import tv.trakt.trakt.core.mixtape.ui.FlyingPoster
+import tv.trakt.trakt.core.mixtape.ui.HideBottomBar
 import tv.trakt.trakt.core.mixtape.ui.MixtapeDock
 import tv.trakt.trakt.core.mixtape.ui.PosterFlight
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
@@ -99,17 +98,12 @@ private val TypeOptions = persistentListOf(MediaMode.Shows, MediaMode.Movies)
 internal fun MixtapeScreen(
     viewModel: MixtapeViewModel,
     onNavigateBack: () -> Unit,
+    onNavigateToResults: (MediaType, List<MixtapeItem>) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val bottomBarVisibility = LocalBottomBarVisibility.current
     val searchState = rememberTextFieldState()
 
-    DisposableEffect(Unit) {
-        bottomBarVisibility.value = false
-        onDispose {
-            bottomBarVisibility.value = true
-        }
-    }
+    HideBottomBar()
 
     LaunchedEffect(searchState) {
         snapshotFlow { searchState.text.toString() }
@@ -127,6 +121,10 @@ internal fun MixtapeScreen(
         onPickClick = viewModel::pick,
         onRemoveClick = viewModel::removePick,
         onClearClick = viewModel::clearPicks,
+        onMixClick = {
+            viewModel.logMix()
+            onNavigateToResults(state.type, state.picks)
+        },
     )
 }
 

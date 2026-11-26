@@ -43,6 +43,9 @@ import tv.trakt.trakt.core.mixtape.usecases.ScoreMixtapeFitsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 private val SEARCH_DEBOUNCE = 300.milliseconds
+private const val OPEN_SOURCE = "navbar"
+private const val PICK_SOURCE_GRID = "grid"
+private const val PICK_SOURCE_SEARCH = "search"
 private val DEEP_FITS_TIMEOUT = 1500.milliseconds
 
 private data class DeepFits(
@@ -54,7 +57,7 @@ private data class DeepFits(
 @Suppress("UNCHECKED_CAST")
 internal class MixtapeViewModel(
     filterManager: GlobalFilterManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
     private val mixtapeHintUseCase: MixtapeHintUseCase,
     private val getHistoryUseCase: GetMixtapeHistoryUseCase,
     private val getVectorsUseCase: GetMixtapeVectorsUseCase,
@@ -88,6 +91,10 @@ internal class MixtapeViewModel(
 
         analytics.logScreenView(
             screenName = "mixtape",
+        )
+        analytics.mixtape.logOpen(
+            source = OPEN_SOURCE,
+            type = initialState.type.value,
         )
     }
 
@@ -240,11 +247,26 @@ internal class MixtapeViewModel(
         val picks = picksState.value
         if (picks.size >= MAX_MIXTAPE_PICKS || picks.any { it.id == item.id }) return
 
+        analytics.mixtape.logPick(
+            source = if (queryState.value.isBlank()) PICK_SOURCE_GRID else PICK_SOURCE_SEARCH,
+            type = typeState.value.value,
+            picks = picks.size + 1,
+        )
+
         picksState.update { (it + item).toImmutableList() }
     }
 
     fun removePick(item: MixtapeItem) {
         picksState.update { picks -> picks.filterNot { it.id == item.id }.toImmutableList() }
+    }
+
+    fun logMix() {
+        val picker = state.value.picker
+        analytics.mixtape.logMix(
+            type = typeState.value.value,
+            picks = picksState.value.size,
+            fits = if (picker.kind == MixtapePicker.Kind.Fits) picker.items.size else 0,
+        )
     }
 
     fun clearPicks() {

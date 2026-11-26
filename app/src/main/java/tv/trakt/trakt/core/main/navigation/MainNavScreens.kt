@@ -63,8 +63,11 @@ import tv.trakt.trakt.core.lists.sections.smart.details.navigation.navigateToSma
 import tv.trakt.trakt.core.lists.sections.smart.details.navigation.smartListDetailsScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
+import tv.trakt.trakt.core.mixtape.navigation.closeMixtape
+import tv.trakt.trakt.core.mixtape.navigation.mixtapeResultsScreen
 import tv.trakt.trakt.core.mixtape.navigation.mixtapeScreen
 import tv.trakt.trakt.core.mixtape.navigation.navigateToMixtape
+import tv.trakt.trakt.core.mixtape.navigation.navigateToMixtapeResults
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.profile.sections.activity.all.navigation.navigateToProfileActivity
@@ -241,6 +244,11 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
         )
         mixtapeScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToResults = { type, picks -> navigateToMixtapeResults(type, picks) },
+        )
+        mixtapeResultsScreen(
+            onNavigateBack = { popBackStack() },
+            onNavigateClose = { closeMixtape() },
         )
         discoverAllScreen(
             onNavigateBack = { popBackStack() },
