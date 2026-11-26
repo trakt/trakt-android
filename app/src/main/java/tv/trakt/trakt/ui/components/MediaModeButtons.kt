@@ -33,20 +33,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val Options = MediaMode.entries.toImmutableList()
+private val Options = MediaMode.entries
 
 @Composable
 internal fun MediaModeButtons(
     modifier: Modifier = Modifier,
     height: Dp = 36.dp,
     mode: MediaMode? = null,
-    options: ImmutableList<MediaMode> = Options,
     onModeSelect: (MediaMode) -> Unit = { _ -> },
 ) {
     var selectedMode by remember(mode) { mutableStateOf(mode) }
@@ -60,7 +56,7 @@ internal fun MediaModeButtons(
         Row(
             horizontalArrangement = Arrangement.spacedBy(3.dp),
         ) {
-            options.forEachIndexed { index, option ->
+            Options.forEach { option ->
                 ToggleButton(
                     checked = selectedMode == option,
                     onCheckedChange = {
@@ -85,10 +81,10 @@ internal fun MediaModeButtons(
                             color = TraktTheme.colors.chipContainer,
                         )
                     },
-                    shapes = when (index) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                    shapes = when (option) {
+                        MediaMode.Media -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                        MediaMode.Shows -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                        MediaMode.Movies -> ButtonGroupDefaults.connectedTrailingButtonShapes()
                     },
                     modifier = Modifier.height(height),
                 ) {
@@ -134,10 +130,6 @@ private fun Preview() {
                     mode = it,
                 )
             }
-            MediaModeButtons(
-                mode = MediaMode.Shows,
-                options = persistentListOf(MediaMode.Shows, MediaMode.Movies),
-            )
         }
     }
 }

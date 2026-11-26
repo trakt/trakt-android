@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -53,6 +54,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
@@ -61,8 +63,9 @@ import tv.trakt.trakt.core.mixtape.ui.MixtapeDock
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
-import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -216,11 +219,9 @@ private fun LazyGridScope.headerItems(
 
             Spacer(modifier = Modifier.weight(1F))
 
-            MediaModeButtons(
-                mode = state.type.toMediaMode(),
-                options = TypeOptions,
-                height = 32.dp,
-                onModeSelect = { onTypeClick(it.toMediaType()) },
+            TypeSelector(
+                selected = state.type.toMediaMode(),
+                onSelect = { onTypeClick(it.toMediaType()) },
             )
         }
     }
@@ -352,22 +353,87 @@ private fun PickerCard(
         blackWhite = entry.isOff,
         chipSpacing = 10.dp,
         chipContent = { chipModifier ->
-            Text(
-                text = when {
-                    entry.isOff -> stringResource(R.string.tag_mixtape_different_mood)
-                    else -> entry.item.year?.toString() ?: "TBA"
-                },
-                style = TraktTheme.typography.cardTitle,
-                color = TraktTheme.colors.textPrimary,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
                 modifier = chipModifier,
-            )
+            ) {
+                Icon(
+                    painter = painterResource(entry.item.typeIcon()),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.chipContent,
+                    modifier = Modifier.size(13.dp),
+                )
+                Text(
+                    text = when {
+                        entry.isOff -> stringResource(R.string.tag_mixtape_different_mood)
+                        else -> entry.item.subtitle()
+                    },
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         },
         onClick = onClick,
         modifier = modifier,
     )
+}
+
+@Composable
+private fun TypeSelector(
+    selected: MediaMode,
+    onSelect: (MediaMode) -> Unit,
+) {
+    FilterChipGroup(
+        paddingVertical = PaddingValues.Zero,
+    ) {
+        for (mode in TypeOptions) {
+            FilterChip(
+                selected = selected == mode,
+                height = 36.dp,
+                text = stringResource(mode.displayRes),
+                unselectedTextVisible = false,
+                leadingContent = {
+                    Icon(
+                        painter = painterResource(mode.offIcon),
+                        contentDescription = null,
+                        tint = when (selected) {
+                            mode -> TraktTheme.colors.textPrimaryOnAccent
+                            else -> TraktTheme.colors.textPrimary
+                        },
+                        modifier = Modifier.size(16.dp),
+                    )
+                },
+                onClick = { onSelect(mode) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun MixtapeItem.subtitle(): String {
+    return when (this) {
+        is MixtapeItem.MovieItem -> {
+            val year = movie.year?.toString() ?: "TBA"
+            val runtime = rememberDurationFormat(movie.runtime?.inWholeMinutes)
+            if (runtime != "N/A") "$year • $runtime" else year
+        }
+        is MixtapeItem.ShowItem -> {
+            val year = show.year?.toString() ?: "TBA"
+            val episodes = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes)
+            if (show.airedEpisodes > 0) "$year • $episodes" else year
+        }
+    }
+}
+
+private fun MixtapeItem.typeIcon(): Int {
+    return when (this) {
+        is MixtapeItem.MovieItem -> R.drawable.ic_movies_off
+        is MixtapeItem.ShowItem -> R.drawable.ic_shows_off
+    }
 }
 
 private fun MixtapePicker.Kind.headerRes(type: MediaType): Int {

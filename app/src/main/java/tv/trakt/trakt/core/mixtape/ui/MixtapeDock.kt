@@ -17,10 +17,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,7 +47,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private val SlotWidth = 44.dp
 private val SlotHeight = 66.dp
 private val SlotShape = RoundedCornerShape(8.dp)
-private val DockShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+private val DockShape = RoundedCornerShape(24.dp)
 private val RemoveSize = 18.dp
 
 @Composable
@@ -55,20 +60,64 @@ internal fun MixtapeDock(
     onMixClick: () -> Unit = {},
 ) {
     val hasPicks = picks.isNotEmpty()
+    val backgroundColor = TraktTheme.colors.backgroundPrimary
+    val gradient = remember(backgroundColor) {
+        verticalGradient(
+            colors = listOf(
+                Color.Transparent,
+                backgroundColor.copy(alpha = 0.95F),
+                backgroundColor,
+            ),
+        )
+    }
 
-    Column(
-        verticalArrangement = spacedBy(12.dp),
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(TraktTheme.colors.navigationContainer, DockShape)
+            .background(gradient)
             .padding(
                 start = TraktTheme.spacing.mainPageHorizontalSpace,
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
-                top = 16.dp,
+                top = 32.dp,
                 bottom = WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding()
                     .plus(12.dp),
             ),
+    ) {
+        DockCard(
+            picks = picks,
+            hasPicks = hasPicks,
+            onAddClick = onAddClick,
+            onRemoveClick = onRemoveClick,
+            onClearClick = onClearClick,
+            onMixClick = onMixClick,
+        )
+    }
+}
+
+@Composable
+private fun DockCard(
+    picks: ImmutableList<MixtapeItem>,
+    hasPicks: Boolean,
+    onAddClick: () -> Unit,
+    onRemoveClick: (MixtapeItem) -> Unit,
+    onClearClick: () -> Unit,
+    onMixClick: () -> Unit,
+) {
+    val shadow = Shadow(
+        radius = 8.dp,
+        color = Color.Black,
+        spread = 2.dp,
+        alpha = if (TraktTheme.colors.isLight) 0.1F else 0.25F,
+    )
+
+    Column(
+        verticalArrangement = spacedBy(12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .dropShadow(shape = DockShape, shadow = shadow)
+            .background(TraktTheme.colors.navigationContainer, DockShape)
+            .padding(16.dp),
     ) {
         Row(
             horizontalArrangement = spacedBy(8.dp),
