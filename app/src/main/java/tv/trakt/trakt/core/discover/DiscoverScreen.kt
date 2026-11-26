@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -266,6 +267,7 @@ private fun ScreenHeader(
                 HintIcon(
                     painter = painterResource(R.drawable.ic_mixtape),
                     attention = state.mixtapeHint,
+                    tooltip = stringResource(R.string.text_mixtape_strip_description),
                     size = MIXTAPE_ICON_SIZE,
                     modifier = Modifier
                         .padding(end = 2.dp)
