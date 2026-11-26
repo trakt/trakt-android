@@ -74,7 +74,7 @@ private const val SEARCH_ITEM_INDEX = 2
 private const val SETTLING_ALPHA = 0.5F
 
 private val ROW_ITEM_SPACING = 12.dp
-private val TypeOptions = persistentListOf(MediaMode.Movies, MediaMode.Shows)
+private val TypeOptions = persistentListOf(MediaMode.Shows, MediaMode.Movies)
 
 @Composable
 internal fun MixtapeScreen(
@@ -454,10 +454,10 @@ private fun MediaType.toMediaMode(): MediaMode {
 
 private fun MediaMode.toMediaType(): MediaType {
     return when (this) {
-        MediaMode.Shows -> MediaType.Show
-        MediaMode.Movies,
+        MediaMode.Shows,
         MediaMode.Media,
-        -> MediaType.Movie
+        -> MediaType.Show
+        MediaMode.Movies -> MediaType.Movie
     }
 }
 

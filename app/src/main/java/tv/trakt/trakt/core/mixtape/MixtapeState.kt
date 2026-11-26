@@ -11,7 +11,7 @@ internal const val MAX_MIXTAPE_PICKS = 5
 
 @Immutable
 internal data class MixtapeState(
-    val type: MediaType = MediaType.Movie,
+    val type: MediaType = MediaType.Show,
     val picks: ImmutableList<MixtapeItem> = persistentListOf(),
     val picker: MixtapePicker = MixtapePicker(),
     val loading: Boolean = true,

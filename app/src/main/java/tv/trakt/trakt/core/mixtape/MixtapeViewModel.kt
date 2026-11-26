@@ -256,8 +256,8 @@ internal class MixtapeViewModel(
 
     private fun MediaMode.toMixtapeType(): MediaType {
         return when (this) {
-            MediaMode.Shows -> MediaType.Show
-            MediaMode.Movies, MediaMode.Media -> MediaType.Movie
+            MediaMode.Shows, MediaMode.Media -> MediaType.Show
+            MediaMode.Movies -> MediaType.Movie
         }
     }
 
