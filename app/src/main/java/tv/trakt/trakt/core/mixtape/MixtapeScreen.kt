@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -286,6 +287,10 @@ private fun LazyGridScope.headerItems(
                 text = stringResource(state.picker.kind.headerRes(state.type)),
                 style = TraktTheme.typography.heading5,
                 color = TraktTheme.colors.textPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .weight(1F),
             )
 
             if (state.picker.kind == MixtapePicker.Kind.Fits && !state.loading) {
@@ -299,6 +304,8 @@ private fun LazyGridScope.headerItems(
                         lineHeight = 1.2.em,
                     ),
                     color = TraktTheme.colors.textSecondary,
+                    modifier = Modifier
+                        .padding(start = 16.dp),
                 )
             }
         }
