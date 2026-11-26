@@ -73,6 +73,15 @@ internal class CheckInService : Service() {
     override fun onCreate() {
         super.onCreate()
         isRunning = true
+
+        scope.launch {
+            while (isActive) {
+                delay(5.seconds)
+
+                // Periodically check if the check-in is still active
+                checkActive()
+            }
+        }
     }
 
     override fun onStartCommand(
@@ -119,9 +128,6 @@ internal class CheckInService : Service() {
 
                 // Update the notification progress
                 updateProgress(serviceData)
-
-                // Periodically check if the check-in is still active
-                checkActive()
             }
         }
 
@@ -203,7 +209,7 @@ internal class CheckInService : Service() {
         return notification.build()
     }
 
-    private fun updateProgress(serviceData: CheckInServiceData) {
+    private suspend fun updateProgress(serviceData: CheckInServiceData) {
         if (!checkPermission()) {
             // Missing notification permission, stop the service
             Timber.w("Missing POST_NOTIFICATIONS permission for check-in service")
@@ -215,20 +221,17 @@ internal class CheckInService : Service() {
         val now = nowUtcInstant()
         if (serviceData.endsAt <= now) {
             Timber.d("Check-in ended, stopping service")
-            scope.launch {
-                try {
-                    when {
-                        serviceData.expiresAt <= now -> checkInManager.stop(context = applicationContext)
-                        else -> checkInManager.finish(context = applicationContext)
-                    }
-                } catch (error: Exception) {
-                    error.rethrowCancellation {
-                        Timber.recordError(error)
-                    }
-                } finally {
-                    stopSelf()
+            try {
+                when {
+                    serviceData.expiresAt <= now -> checkInManager.stop(context = applicationContext)
+                    else -> checkInManager.finish(context = applicationContext)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
                 }
             }
+            stopSelf()
             return
         }
 
