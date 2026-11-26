@@ -97,7 +97,7 @@ class ListsRemoteSource(
     }
 
     suspend fun getListFeaturedPeople(listId: TraktId): List<PersonDto> {
-        return v3Api.getListFeaturedPeople(listId).featured.orEmpty()
+        return v3Api.getListFeaturedPeople(listId)?.featured.orEmpty()
     }
 
     suspend fun deleteList(listId: TraktId) {

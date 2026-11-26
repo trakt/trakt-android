@@ -168,9 +168,12 @@ class V3Api(
         client.delete("${baseUrl}lists/${listId.value}/collaborators/${userSlug.encodeURLPathPart()}")
     }
 
-    suspend fun getListFeaturedPeople(listId: TraktId): ListFeaturedPeopleDto {
+    suspend fun getListFeaturedPeople(listId: TraktId): ListFeaturedPeopleDto? {
         val response = client.get("${baseUrl}lists/${listId.value}") {
             parameter("extended", "featured")
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
         }
         return response.body()
     }
