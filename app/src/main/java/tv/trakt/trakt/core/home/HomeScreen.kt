@@ -72,6 +72,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun HomeScreen(
     viewModel: HomeViewModel,
+    nudgeViewModel: HomeNudgeViewModel,
     userLoading: Boolean,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToDiscover: () -> Unit,
@@ -86,7 +87,6 @@ internal fun HomeScreen(
     onNavigateToVip: (VipUpsellSource) -> Unit,
     onNavigateToCalendar: (CalendarView) -> Unit,
     onNavigateToToday: (groupKey: String) -> Unit,
-    nudgeViewModel: HomeNudgeViewModel = koinViewModel(),
 ) {
     val startAuthorization = LocalStartAuthorization.current
 

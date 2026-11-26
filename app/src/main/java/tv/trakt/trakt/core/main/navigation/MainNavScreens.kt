@@ -149,12 +149,6 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllWatchlist = ::navigateToAllHomeWatchlist,
             onNavigateToAllRecommended = { navigateToDiscoverAll(DiscoverSection.Recommended) },
             onNavigateToVip = { navigateToBilling(source = it) },
-            onNavigateToUser = { user ->
-                navigateToUserProfile(
-                    user = user,
-                    currentUserId = userId,
-                )
-            },
             onNavigateToToday = ::navigateToTodayStories,
             onNavigateToList = { navigateToListDetails(it) },
         )

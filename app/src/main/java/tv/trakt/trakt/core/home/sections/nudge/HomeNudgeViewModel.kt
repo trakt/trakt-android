@@ -25,7 +25,6 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
-import tv.trakt.trakt.core.home.sections.nudge.model.VipNudge
 import tv.trakt.trakt.core.home.sections.nudge.usecases.GetVipNudgeUseCase
 import tv.trakt.trakt.core.home.sections.nudge.usecases.VipNudgeDismissalUseCase
 import kotlin.time.Duration.Companion.milliseconds
@@ -144,7 +143,7 @@ internal class HomeNudgeViewModel(
         nudgeState,
     ) { state ->
         HomeNudgeState(
-            nudge = state[0] as VipNudge?,
+            nudge = state[0],
         )
     }.stateIn(
         scope = viewModelScope,

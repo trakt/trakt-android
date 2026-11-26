@@ -26,6 +26,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -41,14 +42,14 @@ import tv.trakt.trakt.core.home.sections.nudge.model.VipNudge
 import tv.trakt.trakt.core.home.sections.nudge.model.VipNudgeLimit
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val IconSize = 22.dp
-private val CloseIconSize = 14.dp
+private val CloseIconSize = 16.dp
 private val TouchTargetSize = 48.dp
+private val ContentPadding = 18.dp
 private val MeterWidth = 152.dp
 private val MeterHeight = 4.dp
 private val MeterGap = 2.dp
@@ -73,45 +74,33 @@ internal fun HomeNudgeView(
             .onUpsellSeen(onSeen)
             .background(TraktTheme.colors.panelCardContainer, DefaultCardShape),
     ) {
-        Row(
-            horizontalArrangement = spacedBy(12.dp),
+        Column(
+            verticalArrangement = spacedBy(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    top = 14.dp,
-                    bottom = 14.dp,
-                    end = TouchTargetSize,
-                ),
+                .padding(ContentPadding),
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_crown),
-                contentDescription = null,
-                tint = TraktTheme.colors.vipAccent,
-                modifier = Modifier.size(IconSize),
-            )
-
-            Column(
-                verticalArrangement = spacedBy(6.dp),
-                modifier = Modifier.weight(1F),
-            ) {
-                when (nudge) {
-                    is VipNudge.Features -> FeaturesContent(nudge)
-                    is VipNudge.Limit -> LimitContent(nudge)
-                }
-
-                TertiaryButton(
-                    text = stringResource(R.string.vip_nudge_action),
-                    onClick = onClick,
-                    modifier = Modifier.padding(top = 4.dp),
-                )
+            when (nudge) {
+                is VipNudge.Features -> FeaturesContent(nudge)
+                is VipNudge.Limit -> LimitContent(nudge)
             }
+
+            PrimaryButton(
+                text = stringResource(R.string.vip_nudge_action),
+                icon = painterResource(R.drawable.ic_crown),
+                height = 40.dp,
+                onClick = onClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+            )
         }
 
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.TopEnd)
+                .padding(top = ContentPadding - (TouchTargetSize - CloseIconSize) / 2)
                 .size(TouchTargetSize)
                 .onClick(onClick = onDismissClick),
         ) {
@@ -119,7 +108,11 @@ internal fun HomeNudgeView(
                 painter = painterResource(R.drawable.ic_close),
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier.size(CloseIconSize),
+                modifier = Modifier
+                    .size(CloseIconSize)
+                    .graphicsLayer {
+                        translationY = 1.dp.toPx()
+                    },
             )
         }
     }
@@ -144,37 +137,41 @@ private fun LimitContent(nudge: VipNudge.Limit) {
 
     NudgeTitle(stringResource(nudge.titleRes(), used, total))
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(10.dp),
+    Column(
+        verticalArrangement = spacedBy(3.dp),
+        modifier = Modifier,
     ) {
-        NudgeMeter(
-            nudge = nudge,
-            modifier = Modifier.weight(1F, fill = false),
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(10.dp),
+        ) {
+            NudgeMeter(
+                nudge = nudge,
+                modifier = Modifier.weight(1F, fill = false),
+            )
 
-        Text(
-            text = buildAnnotatedString {
-                withStyle(SpanStyle(color = TraktTheme.colors.textPrimary, fontWeight = FontWeight.Bold)) {
-                    append(used)
-                }
-                append(" / ")
-                append(total)
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(color = TraktTheme.colors.textPrimary, fontWeight = FontWeight.Bold)) {
+                        append(used)
+                    }
+                    append(" / ")
+                    append(total)
+                },
+                style = TraktTheme.typography.paragraphSmaller,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 1,
+            )
+        }
+        NudgeDetail(
+            when (nudge.limit) {
+                VipNudgeLimit.WatchlistItems -> stringResource(R.string.vip_nudge_vip_limit_watchlist_items, vip)
+                VipNudgeLimit.TotalListItems -> stringResource(R.string.vip_nudge_vip_limit_list_items, vip)
+                VipNudgeLimit.StaticLists -> stringResource(R.string.vip_nudge_vip_limit_lists)
+                VipNudgeLimit.TotalNotes -> stringResource(R.string.vip_nudge_vip_limit_notes, vip)
             },
-            style = TraktTheme.typography.paragraphSmaller,
-            color = TraktTheme.colors.textSecondary,
-            maxLines = 1,
         )
     }
-
-    NudgeDetail(
-        when (nudge.limit) {
-            VipNudgeLimit.WatchlistItems -> stringResource(R.string.vip_nudge_vip_limit_watchlist_items, vip)
-            VipNudgeLimit.TotalListItems -> stringResource(R.string.vip_nudge_vip_limit_list_items, vip)
-            VipNudgeLimit.StaticLists -> stringResource(R.string.vip_nudge_vip_limit_lists)
-            VipNudgeLimit.TotalNotes -> stringResource(R.string.vip_nudge_vip_limit_notes, vip)
-        },
-    )
 }
 
 private fun VipNudge.Limit.titleRes(): Int {
@@ -199,8 +196,9 @@ private fun VipNudge.Limit.titleRes(): Int {
 private fun NudgeTitle(text: String) {
     Text(
         text = text,
-        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = FontWeight.Bold),
+        style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.Bold),
         color = TraktTheme.colors.textPrimary,
+        modifier = Modifier.padding(end = TouchTargetSize - ContentPadding),
     )
 }
 
