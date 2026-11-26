@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.mixtape.ui
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -21,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -59,6 +62,7 @@ import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SLOT_RATIO = 2F / 3F
+private const val REMOVE_FADE_MS = 250
 
 private val SlotSpacing = 8.dp
 private val MixButtonMinWidth = 84.dp
@@ -157,8 +161,9 @@ private fun DockCard(
                 picks.forEach { item ->
                     PickSlot(
                         item = item,
+                        landing = item.key in landingKeys,
                         onRemoveClick = { onRemoveClick(item) },
-                        modifier = slotModifier.alpha(if (item.key in landingKeys) 0F else 1F),
+                        modifier = slotModifier,
                     )
                 }
 
@@ -215,9 +220,16 @@ private fun DockCard(
 @Composable
 private fun PickSlot(
     item: MixtapeItem,
+    landing: Boolean,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val removeAlpha by animateFloatAsState(
+        targetValue = if (landing) 0F else 1F,
+        animationSpec = tween(REMOVE_FADE_MS),
+        label = "removeAlpha",
+    )
+
     Box(
         modifier = modifier,
     ) {
@@ -227,6 +239,7 @@ private fun PickSlot(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
+                .alpha(if (landing) 0F else 1F)
                 .clip(SlotShape)
                 .background(TraktTheme.colors.placeholderContainer),
         )
@@ -235,6 +248,7 @@ private fun PickSlot(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.TopEnd)
+                .alpha(removeAlpha)
                 .padding(2.dp)
                 .size(RemoveSize)
                 .clip(CircleShape)
