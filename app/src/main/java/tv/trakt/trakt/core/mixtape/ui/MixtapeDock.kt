@@ -25,16 +25,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,7 +46,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
@@ -65,6 +71,8 @@ private val RemoveSize = 18.dp
 internal fun MixtapeDock(
     picks: ImmutableList<MixtapeItem>,
     modifier: Modifier = Modifier,
+    landingKeys: ImmutableSet<String> = persistentSetOf(),
+    onAddSlotPositioned: (Rect) -> Unit = {},
     onAddClick: () -> Unit = {},
     onRemoveClick: (MixtapeItem) -> Unit = {},
     onClearClick: () -> Unit = {},
@@ -98,6 +106,8 @@ internal fun MixtapeDock(
         DockCard(
             picks = picks,
             hasPicks = hasPicks,
+            landingKeys = landingKeys,
+            onAddSlotPositioned = onAddSlotPositioned,
             onAddClick = onAddClick,
             onRemoveClick = onRemoveClick,
             onClearClick = onClearClick,
@@ -110,6 +120,8 @@ internal fun MixtapeDock(
 private fun DockCard(
     picks: ImmutableList<MixtapeItem>,
     hasPicks: Boolean,
+    landingKeys: ImmutableSet<String>,
+    onAddSlotPositioned: (Rect) -> Unit,
     onAddClick: () -> Unit,
     onRemoveClick: (MixtapeItem) -> Unit,
     onClearClick: () -> Unit,
@@ -146,7 +158,7 @@ private fun DockCard(
                     PickSlot(
                         item = item,
                         onRemoveClick = { onRemoveClick(item) },
-                        modifier = slotModifier,
+                        modifier = slotModifier.alpha(if (item.key in landingKeys) 0F else 1F),
                     )
                 }
 
@@ -154,7 +166,9 @@ private fun DockCard(
                     AddSlot(
                         first = !hasPicks,
                         onClick = onAddClick,
-                        modifier = slotModifier,
+                        modifier = slotModifier.onGloballyPositioned {
+                            onAddSlotPositioned(it.boundsInWindow())
+                        },
                     )
                 }
             }

@@ -31,6 +31,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,8 +44,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
@@ -63,7 +72,9 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MixtapePicker
+import tv.trakt.trakt.core.mixtape.ui.FlyingPoster
 import tv.trakt.trakt.core.mixtape.ui.MixtapeDock
+import tv.trakt.trakt.core.mixtape.ui.PosterFlight
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
@@ -78,6 +89,7 @@ private const val SKELETON_COUNT = 9
 private const val SEARCH_ITEM_INDEX = 2
 private const val SETTLING_ALPHA = 0.5F
 private const val FULL_ITEM_KEY = "full"
+private const val VERTICAL_POSTER_RATIO = 2F / 3F
 
 private val ROW_ITEM_SPACING = 12.dp
 private val TypeOptions = persistentListOf(MediaMode.Shows, MediaMode.Movies)
@@ -137,6 +149,9 @@ private fun MixtapeContent(
     val gridState = rememberLazyGridState()
     val searchFocus = remember { FocusRequester() }
     var dockHeight by remember { mutableStateOf(0.dp) }
+    var rootOffset by remember { mutableStateOf(Offset.Zero) }
+    var addSlotBounds by remember { mutableStateOf<Rect?>(null) }
+    val flights = remember { mutableStateListOf<PosterFlight>() }
 
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -148,7 +163,8 @@ private fun MixtapeContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+            .background(TraktTheme.colors.backgroundPrimary)
+            .onGloballyPositioned { rootOffset = it.positionInWindow() },
     ) {
         LazyVerticalGrid(
             state = gridState,
@@ -169,12 +185,25 @@ private fun MixtapeContent(
             pickerItems(
                 state = state,
                 gridState = gridState,
-                onPickClick = onPickClick,
+                onPickClick = { item, posterBounds ->
+                    val target = addSlotBounds
+                    val canPick = !state.isFull && state.picks.none { it.id == item.id }
+                    if (target != null && canPick) {
+                        flights += PosterFlight(
+                            item = item,
+                            from = posterBounds.translate(-rootOffset),
+                            to = target.translate(-rootOffset),
+                        )
+                    }
+                    onPickClick(item)
+                },
             )
         }
 
         MixtapeDock(
             picks = state.picks,
+            landingKeys = flights.map { it.item.key }.toImmutableSet(),
+            onAddSlotPositioned = { addSlotBounds = it },
             onAddClick = {
                 scope.launch {
                     gridState.animateScrollToItem(SEARCH_ITEM_INDEX)
@@ -188,6 +217,15 @@ private fun MixtapeContent(
                 .align(Alignment.BottomCenter)
                 .onSizeChanged { dockHeight = with(density) { it.height.toDp() } },
         )
+
+        flights.forEach { flight ->
+            key(flight) {
+                FlyingPoster(
+                    flight = flight,
+                    onLanded = { flights.remove(flight) },
+                )
+            }
+        }
     }
 }
 
@@ -295,7 +333,7 @@ private fun LazyGridScope.headerItems(
 private fun LazyGridScope.pickerItems(
     state: MixtapeState,
     gridState: LazyGridState,
-    onPickClick: (MixtapeItem) -> Unit,
+    onPickClick: (MixtapeItem, Rect) -> Unit,
 ) {
     when {
         state.isFull -> fullItem(gridState)
@@ -323,7 +361,7 @@ private fun LazyGridScope.pickerItems(
             PickerCard(
                 entry = entry,
                 enabled = !state.settling,
-                onClick = { onPickClick(entry.item) },
+                onClick = { posterBounds -> onPickClick(entry.item, posterBounds) },
                 modifier = Modifier
                     .alpha(if (state.settling) SETTLING_ALPHA else 1F)
                     .animateItem(),
@@ -386,9 +424,11 @@ private fun LazyGridScope.fullItem(gridState: LazyGridState) {
 private fun PickerCard(
     entry: MixtapePicker.Entry,
     enabled: Boolean,
-    onClick: () -> Unit,
+    onClick: (posterBounds: Rect) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coordinates = remember { mutableStateOf<LayoutCoordinates?>(null) }
+
     VerticalMediaCard(
         title = entry.item.title,
         imageUrl = entry.item.images?.getPosterUrl(),
@@ -421,8 +461,12 @@ private fun PickerCard(
                 )
             }
         },
-        onClick = onClick,
-        modifier = modifier,
+        onClick = {
+            val card = coordinates.value ?: return@VerticalMediaCard
+            val width = card.size.width.toFloat()
+            onClick(Rect(card.positionInWindow(), Size(width, width / VERTICAL_POSTER_RATIO)))
+        },
+        modifier = modifier.onGloballyPositioned { coordinates.value = it },
     )
 }
 
