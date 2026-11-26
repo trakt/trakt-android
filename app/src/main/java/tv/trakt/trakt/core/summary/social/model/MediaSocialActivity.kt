@@ -20,14 +20,13 @@ internal data class MediaSocialActivity(
     val watched: Watched?,
     val watchlist: Watchlist?,
 ) {
-    val lastActivityAt: Instant
-        get() {
-            val watchedAt = watched?.lastWatchedAt ?: Instant.MIN
-            val watchlistAt = watchlist?.listedAt ?: Instant.MIN
-            val ratedAt = watched?.rated?.ratedAt ?: Instant.MIN
-            val commentedAt = watched?.commented?.createdAt ?: Instant.MIN
-            return maxOf(watchedAt, watchlistAt, ratedAt, commentedAt)
-        }
+    val lastActivityAt: Instant?
+        get() = listOfNotNull(
+            watched?.lastWatchedAt,
+            watchlist?.listedAt,
+            watched?.rated?.ratedAt,
+            watched?.commented?.createdAt,
+        ).maxOrNull()
 
     @Immutable
     data class Watched(
