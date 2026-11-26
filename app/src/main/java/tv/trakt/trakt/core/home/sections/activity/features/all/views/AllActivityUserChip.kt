@@ -35,7 +35,6 @@ internal fun AllActivityUserChip(
         )
         UserAvatar(
             user = user,
-            borderWidth = 1.5.dp,
             modifier = Modifier.size(26.dp),
         )
     }

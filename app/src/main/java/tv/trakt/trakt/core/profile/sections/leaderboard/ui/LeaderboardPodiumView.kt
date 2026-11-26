@@ -164,7 +164,7 @@ private fun PodiumSpot(
             LeaderboardAvatar(
                 entry = entry,
                 size = avatarSize,
-                border = 3.dp,
+                border = 4.dp,
                 modifier = avatarModifier,
             )
         } else {

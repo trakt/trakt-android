@@ -3,6 +3,7 @@ package tv.trakt.trakt.ui.components.usertier
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -118,6 +120,27 @@ private fun previewUser(tier: UserTier): User {
     )
 }
 
+@Composable
+private fun PreviewAvatarWithTag(
+    tier: UserTier,
+    size: Dp,
+    animated: Boolean = false,
+    isDirector: Boolean = false,
+) {
+    Box(contentAlignment = Alignment.BottomCenter) {
+        UserAvatar(
+            user = previewUser(tier).copy(isDirector = isDirector),
+            animated = animated,
+            modifier = Modifier.size(size),
+        )
+        UserTierTag(
+            tier = tier,
+            isDirector = isDirector,
+            maxWidth = maxOf(size, 36.dp),
+        )
+    }
+}
+
 @PreviewTraktLightDark
 @Composable
 private fun TierRingsPreview() {
@@ -130,11 +153,9 @@ private fun TierRingsPreview() {
                 listOf(24.dp, 36.dp, 52.dp).forEach { size ->
                     Row(horizontalArrangement = spacedBy(8.dp)) {
                         UserTier.entries.forEach { tier ->
-                            UserAvatar(
-                                user = previewUser(tier),
-                                modifier = Modifier.size(size),
-                            )
+                            PreviewAvatarWithTag(tier = tier, size = size)
                         }
+                        PreviewAvatarWithTag(tier = UserTier.Free, size = size, isDirector = true)
                     }
                 }
             }
@@ -177,10 +198,10 @@ private fun AnimatedRingPreview() {
                 horizontalArrangement = spacedBy(12.dp),
                 modifier = Modifier.padding(16.dp),
             ) {
-                UserAvatar(
-                    user = previewUser(UserTier.Legend),
+                PreviewAvatarWithTag(
+                    tier = UserTier.Legend,
+                    size = 96.dp,
                     animated = true,
-                    modifier = Modifier.size(96.dp),
                 )
                 UserAvatar(
                     user = previewUser(UserTier.Free),

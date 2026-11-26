@@ -34,8 +34,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,9 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import tv.trakt.trakt.common.core.search.model.SearchFilter
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -236,7 +231,6 @@ fun ProfileItem(
     onClick: () -> Unit = {},
 ) {
     val size = 26.dp
-    val border = (1.6).dp
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -257,7 +251,7 @@ fun ProfileItem(
         if (user != null) {
             UserAvatar(
                 user = user,
-                borderWidth = border,
+                borderWidth = 2.dp,
                 borderColor = borderColor,
                 ringColor = if (selected) accent else null,
                 modifier = Modifier.size(size),
@@ -268,7 +262,7 @@ fun ProfileItem(
                 contentDescription = null,
                 modifier = Modifier
                     .size(size)
-                    .border(border, borderColor, CircleShape)
+                    .border(2.dp, borderColor, CircleShape)
                     .clip(CircleShape),
             )
         }

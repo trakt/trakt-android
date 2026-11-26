@@ -256,7 +256,6 @@ private fun CollaboratorRow(
         ) {
             UserAvatar(
                 user = user,
-                borderWidth = 0.dp,
                 modifier = Modifier.size(42.dp),
             )
 

@@ -39,7 +39,7 @@ private const val RING_GAP_RATIO = 0.028F
 private const val RING_TURN_MILLIS = 16_000
 private const val SWEEP_START_DEGREES = 90F
 
-private val MinRingWidth = 1.5.dp
+private val MinRingWidth = 2.dp
 private val MinFreeRingWidth = 1.dp
 private val MinRingGap = 1.5.dp
 private val NoGapMaxSize = 32.dp

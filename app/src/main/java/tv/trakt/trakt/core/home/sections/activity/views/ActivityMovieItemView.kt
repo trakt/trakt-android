@@ -82,7 +82,6 @@ internal fun ActivityMovieItemView(
 
                     UserAvatar(
                         user = user,
-                        borderWidth = 1.5.dp,
                         modifier = Modifier.size(26.dp),
                     )
                 }
