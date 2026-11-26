@@ -7,18 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.geometry.isUnspecified
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -36,14 +36,24 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.transformations
+import coil3.toBitmap
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import tv.trakt.trakt.common.model.livingposter.LivingPoster
-import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterParticle
+import tv.trakt.trakt.common.model.livingposter.LivingPosterEffect
 import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterStackItem
 import tv.trakt.trakt.core.summary.livingposter.model.Spring
 import tv.trakt.trakt.core.summary.livingposter.model.Tilt
 import tv.trakt.trakt.core.summary.livingposter.model.toStack
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.EffectPainter
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.EffectScene
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.EffectSources
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.SkyLuminance
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.UNIT_WIDTH
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.createEffectPainter
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.sampleLuminance
 
 private val cardShape = RoundedCornerShape(24.dp)
 
@@ -54,8 +64,6 @@ private const val PLANE_SCALE = 1F + 2F * LAYER_TRAVEL * MAX_LAYER_SHIFT
 private const val TILT_STIFFNESS = 210F
 private const val TILT_DAMPING = 20F
 private const val MAX_FRAME_SECONDS = 1F / 30F
-private const val PARTICLE_BASE_SEED = 42
-private const val PARTICLE_SEED_STEP = 101
 
 /** Draws the layered poster once every layer has loaded, reported through [onReady]. */
 @Composable
@@ -66,7 +74,7 @@ internal fun LivingPosterStage(
     modifier: Modifier = Modifier,
 ) {
     val stack = remember(poster) { poster.toStack() }
-    val particles = remember(stack) { stack.toParticles() }
+    val painters = remember(stack) { stack.toPainters() }
 
     val layerPainters = stack
         .filterIsInstance<LivingPosterStackItem.Layer>()
@@ -80,9 +88,8 @@ internal fun LivingPosterStage(
         .mapNotNull { item -> item.maskUrl?.let { item.key to it } }
         .associate { (itemKey, url) -> key(itemKey) { itemKey to rememberLayerPainter(url) } }
 
-    val layersLoaded = layerPainters.values
-        .map { it.state.collectAsState().value }
-        .all { it is AsyncImagePainter.State.Success }
+    val layerStates = layerPainters.mapValues { (_, painter) -> painter.state.collectAsState().value }
+    val layersLoaded = layerStates.values.all { it is AsyncImagePainter.State.Success }
     val maskStates = maskPainters.mapValues { (_, painter) -> painter.state.collectAsState().value }
     val masksSettled = maskStates.values.all {
         it is AsyncImagePainter.State.Success || it is AsyncImagePainter.State.Error
@@ -96,6 +103,7 @@ internal fun LivingPosterStage(
     LaunchedEffect(ready) { currentOnReady(ready) }
     DisposableEffect(Unit) { onDispose { currentOnReady(false) } }
 
+    val luminance by rememberSkyLuminance(stack, layerStates)
     val motion = rememberLivingPosterMotion(tiltEnabled)
     val planeScale = if (tiltEnabled) PLANE_SCALE else 1F
 
@@ -114,30 +122,44 @@ internal fun LivingPosterStage(
             seconds = motion.seconds,
         )
 
-        drawRect(Color.Black)
-        withTransform({ scale(planeScale, planeScale, pivot = center) }) {
-            drawStack(
-                stack = stack,
-                frame = frame,
-                layers = layerPainters,
-                shadows = readyShadows,
-                masks = readyMasks,
-                particles = particles,
-            )
+        val painting = StackPainting(
+            frame = frame,
+            layers = layerPainters,
+            shadows = readyShadows,
+            masks = readyMasks,
+            painters = painters,
+            luminance = luminance,
+        )
+        val planeFilter = painters.values.firstNotNullOfOrNull { it.planeFilter(frame.seconds) }
+
+        fun drawPlane() {
+            withTransform({ scale(planeScale, planeScale, pivot = center) }) {
+                drawStack(stack, painting)
+            }
+            drawVignette()
         }
-        drawVignette()
+
+        drawRect(Color.Black)
+        if (planeFilter == null) drawPlane() else withLayer(colorFilter = planeFilter) { drawPlane() }
         drawGlare(frame)
     }
 }
 
+private class StackPainting(
+    val frame: LivingPosterFrame,
+    val layers: Map<String, Painter>,
+    val shadows: Map<String, Painter>,
+    val masks: Map<String, Painter>,
+    val painters: Map<Int, EffectPainter>,
+    val luminance: SkyLuminance?,
+)
+
 private fun DrawScope.drawStack(
     stack: ImmutableList<LivingPosterStackItem>,
-    frame: LivingPosterFrame,
-    layers: Map<String, Painter>,
-    shadows: Map<String, Painter>,
-    masks: Map<String, Painter>,
-    particles: Map<String, List<LivingPosterParticle>>,
+    painting: StackPainting,
 ) {
+    val frame = painting.frame
+
     stack.forEach { item ->
         val shift = item.shift.coerceIn(-MAX_LAYER_SHIFT, MAX_LAYER_SHIFT)
         translate(
@@ -146,23 +168,42 @@ private fun DrawScope.drawStack(
         ) {
             when (item) {
                 is LivingPosterStackItem.Layer -> {
-                    shadows[item.key]?.let { drawCastShadow(it, frame) }
-                    layers[item.key]?.let { drawCover(it) }
+                    painting.shadows[item.key]?.let { drawCastShadow(it, frame) }
+                    painting.layers[item.key]?.let { drawCover(it) }
                 }
 
                 is LivingPosterStackItem.Effect -> {
-                    if (item.maskUrl != null && masks[item.key] == null) return@translate
-                    drawEffect(item.effect, masks[item.key], frame)
+                    val mask = painting.masks[item.key]
+                    if (item.maskUrl != null && mask == null) return@translate
+                    drawEffect(item.effect, mask, frame)
                 }
 
-                is LivingPosterStackItem.Particles -> {
-                    drawParticles(
-                        particles = particles[item.key].orEmpty(),
-                        isScreen = item.isScreen,
-                        seconds = frame.seconds,
-                    )
+                is LivingPosterStackItem.Painted -> {
+                    drawPainted(item, painting)
                 }
             }
+        }
+    }
+}
+
+private fun DrawScope.drawPainted(
+    item: LivingPosterStackItem.Painted,
+    painting: StackPainting,
+) {
+    val scene = EffectScene(
+        frame = painting.frame,
+        unit = size.width / UNIT_WIDTH,
+        sources = EffectSources(
+            backdrop = item.sources.backdrop?.let { painting.layers[it] },
+            figures = item.sources.figures?.let { painting.layers[it] },
+            luminance = painting.luminance,
+        ),
+    )
+
+    withLayer(blendMode = if (item.isScreen) BlendMode.Screen else BlendMode.SrcOver) {
+        item.effects.forEach { seeded ->
+            val painter = painting.painters[seeded.seed] ?: return@forEach
+            with(painter) { paint(item.plane, scene) }
         }
     }
 }
@@ -179,30 +220,32 @@ private fun DrawScope.drawCastShadow(
     }
 }
 
-private fun DrawScope.drawCover(
-    painter: Painter,
-    alpha: Float = 1F,
-) {
-    val intrinsic = painter.intrinsicSize
-    if (intrinsic.isUnspecified || intrinsic.width <= 0F || intrinsic.height <= 0F) {
-        with(painter) { draw(size, alpha) }
-        return
-    }
-
-    val scale = maxOf(size.width / intrinsic.width, size.height / intrinsic.height)
-    val drawSize = Size(intrinsic.width * scale, intrinsic.height * scale)
-    val offset = Offset((size.width - drawSize.width) / 2F, (size.height - drawSize.height) / 2F)
-
-    translate(offset.x, offset.y) {
-        with(painter) { draw(drawSize, alpha) }
-    }
+private fun ImmutableList<LivingPosterStackItem>.toPainters(): Map<Int, EffectPainter> {
+    return filterIsInstance<LivingPosterStackItem.Painted>()
+        .flatMap { it.effects }
+        .distinctBy { it.seed }
+        .mapNotNull { seeded -> createEffectPainter(seeded)?.let { seeded.seed to it } }
+        .toMap()
 }
 
-private fun ImmutableList<LivingPosterStackItem>.toParticles(): Map<String, List<LivingPosterParticle>> {
-    return filterIsInstance<LivingPosterStackItem.Particles>().associate { item ->
-        item.key to item.effects.flatMapIndexed { index, effect ->
-            LivingPosterParticle.create(effect, seed = PARTICLE_BASE_SEED + index * PARTICLE_SEED_STEP)
-        }
+/** Samples the background for twinkle placement, only when the poster has stars. */
+@Composable
+private fun rememberSkyLuminance(
+    stack: ImmutableList<LivingPosterStackItem>,
+    layerStates: Map<String, AsyncImagePainter.State>,
+): State<SkyLuminance?> {
+    val backdropKey = remember(stack) {
+        stack
+            .filterIsInstance<LivingPosterStackItem.Painted>()
+            .firstOrNull { item -> item.effects.any { it.effect.kind == LivingPosterEffect.Kind.Twinkle } }
+            ?.sources
+            ?.backdrop
+    }
+    val backdrop = backdropKey?.let { layerStates[it] } as? AsyncImagePainter.State.Success
+
+    return produceState<SkyLuminance?>(initialValue = null, backdrop) {
+        val image = backdrop?.result?.image ?: return@produceState
+        value = withContext(Dispatchers.Default) { sampleLuminance(image.toBitmap()) }
     }
 }
 
