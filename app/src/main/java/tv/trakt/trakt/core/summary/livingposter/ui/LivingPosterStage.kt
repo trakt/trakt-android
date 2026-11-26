@@ -51,7 +51,7 @@ import tv.trakt.trakt.core.summary.livingposter.model.toStack
 import tv.trakt.trakt.core.summary.livingposter.ui.painters.EffectPainter
 import tv.trakt.trakt.core.summary.livingposter.ui.painters.EffectScene
 import tv.trakt.trakt.core.summary.livingposter.ui.painters.EffectSources
-import tv.trakt.trakt.core.summary.livingposter.ui.painters.SkyLuminance
+import tv.trakt.trakt.core.summary.livingposter.ui.painters.SkySample
 import tv.trakt.trakt.core.summary.livingposter.ui.painters.UNIT_WIDTH
 import tv.trakt.trakt.core.summary.livingposter.ui.painters.createEffectPainter
 import tv.trakt.trakt.core.summary.livingposter.ui.painters.sampleLuminance
@@ -113,7 +113,7 @@ internal fun LivingPosterStage(
     }
     val backdropState = backdropKey?.let { layerStates[it] } as? AsyncImagePainter.State.Success
     val backdropBitmap = remember(backdropState) { backdropState?.result?.image?.toBitmap() }
-    val luminance by rememberSkyLuminance(stack, backdropState)
+    val sky by rememberSkySample(stack, backdropState)
     val motion = rememberLivingPosterMotion(tiltEnabled)
     val planeScale = if (tiltEnabled) PLANE_SCALE else 1F
 
@@ -139,7 +139,7 @@ internal fun LivingPosterStage(
             masks = readyMasks,
             painters = painters,
             backdropBitmap = backdropBitmap,
-            luminance = luminance,
+            sky = sky,
         )
         val planeFilter = painters.values.firstNotNullOfOrNull { it.planeFilter(frame.seconds) }
 
@@ -163,7 +163,7 @@ private class StackPainting(
     val masks: Map<String, Painter>,
     val painters: Map<Int, EffectPainter>,
     val backdropBitmap: Bitmap?,
-    val luminance: SkyLuminance?,
+    val sky: SkySample,
 )
 
 private fun DrawScope.drawStack(
@@ -214,7 +214,7 @@ private fun DrawScope.drawPainted(
             backdrop = item.sources.backdrop?.let { painting.layers[it] },
             figures = item.sources.figures?.let { painting.layers[it] },
             backdropBitmap = painting.backdropBitmap,
-            luminance = painting.luminance,
+            sky = painting.sky,
         ),
     )
 
@@ -247,20 +247,24 @@ private fun ImmutableList<LivingPosterStackItem>.toPainters(): Map<Int, EffectPa
 
 /** Samples the background for twinkle placement, only when the poster has stars. */
 @Composable
-private fun rememberSkyLuminance(
+private fun rememberSkySample(
     stack: ImmutableList<LivingPosterStackItem>,
     backdrop: AsyncImagePainter.State.Success?,
-): State<SkyLuminance?> {
+): State<SkySample> {
     val hasStars = remember(stack) {
         stack
             .filterIsInstance<LivingPosterStackItem.Painted>()
             .any { item -> item.effects.any { it.effect.kind == LivingPosterEffect.Kind.Twinkle } }
     }
 
-    return produceState<SkyLuminance?>(initialValue = null, backdrop, hasStars) {
-        if (!hasStars) return@produceState
+    return produceState<SkySample>(initialValue = SkySample.Pending, backdrop, hasStars) {
+        if (!hasStars) {
+            value = SkySample.Sampled(luminance = null)
+            return@produceState
+        }
         val image = backdrop?.result?.image ?: return@produceState
-        value = withContext(Dispatchers.Default) { sampleLuminance(image.toBitmap()) }
+        val luminance = withContext(Dispatchers.Default) { sampleLuminance(image.toBitmap()) }
+        value = SkySample.Sampled(luminance)
     }
 }
 

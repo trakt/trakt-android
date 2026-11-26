@@ -20,12 +20,21 @@ internal fun interface SkyLuminance {
     ): Float
 }
 
-/** Loaded layers painted effects read from. [luminance] stays null until the backdrop is sampled. */
+/** Background luminance for star placement: pending until sampling finished, which can fail. */
+internal sealed interface SkySample {
+    data object Pending : SkySample
+
+    class Sampled(
+        val luminance: SkyLuminance?,
+    ) : SkySample
+}
+
+/** Loaded layers painted effects read from. */
 internal class EffectSources(
     val backdrop: Painter?,
     val backdropBitmap: Bitmap?,
     val figures: Painter?,
-    val luminance: SkyLuminance?,
+    val sky: SkySample,
 )
 
 internal class EffectScene(

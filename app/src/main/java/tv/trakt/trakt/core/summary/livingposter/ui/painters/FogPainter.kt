@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import tv.trakt.trakt.common.model.livingposter.LivingPosterEffect
 import tv.trakt.trakt.core.summary.livingposter.model.EffectPlane
+import tv.trakt.trakt.core.summary.livingposter.ui.parseHexColor
 import tv.trakt.trakt.core.summary.livingposter.ui.toPixelRect
 import tv.trakt.trakt.core.summary.livingposter.ui.withLayer
 
@@ -32,6 +33,7 @@ private val frontBank = FogBank(seed = 17, from = 0.45F, to = 0.9F, speed = -12F
 internal class FogPainter(
     private val effect: LivingPosterEffect,
 ) : EffectPainter {
+    private val mistTint = effect.color?.let(::parseHexColor)?.copy(alpha = 1F) ?: mistColor
     private val back = BankPainter(backBank)
     private val front = BankPainter(frontBank)
 
@@ -56,7 +58,7 @@ internal class FogPainter(
     ) {
         private val opacity = (bank.opacity * intensityScale(effect.intensity)).coerceAtMost(1F)
         val texture: ImageBitmap by lazy {
-            cloudTexture(seed = bank.seed, color = mistColor, from = bank.from, to = bank.to)
+            cloudTexture(seed = bank.seed, color = mistTint, from = bank.from, to = bank.to)
         }
 
         fun DrawScope.paint(scene: EffectScene) {

@@ -18,7 +18,6 @@ private const val STAR_COUNT = 28
 private const val CANDIDATES = 7
 private const val SPIKY_COUNT = 3
 private const val BRIGHT_SKY = 0.7F
-private const val SAMPLE_WAIT_SECONDS = 1.5F
 private const val SPIKE_SIZE = 128
 private const val RADIANS_TO_DEGREES = 180F / PI.toFloat()
 
@@ -101,10 +100,9 @@ internal class TwinklePainter(
     private fun resolveStars(scene: EffectScene): List<Star>? {
         stars?.let { return it }
 
-        val luminance = scene.sources.luminance
-        if (luminance == null && scene.frame.seconds < SAMPLE_WAIT_SECONDS) return null
+        val sky = scene.sources.sky as? SkySample.Sampled ?: return null
 
-        return placeStars(luminance).also { stars = it }
+        return placeStars(sky.luminance).also { stars = it }
     }
 
     private fun DrawScope.paintStars(scene: EffectScene) {
