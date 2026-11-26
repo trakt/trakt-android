@@ -67,6 +67,7 @@ internal val ratingsModule = module {
             sessionManager = get(),
             ratePromptManager = get(),
             updateMovieFavoritesUseCase = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

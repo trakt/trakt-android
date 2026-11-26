@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.lists.usecases
 
 import android.content.res.Resources
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.statement.HttpResponse
@@ -9,6 +10,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import tv.trakt.trakt.common.helpers.DynamicStringResource
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.resources.R
@@ -27,6 +30,7 @@ class ListItemLimitException(
     enum class Kind {
         SingleList,
         AllLists,
+        Favorites,
     }
 
     companion object {
@@ -53,6 +57,18 @@ class ListItemLimitException(
             )
         }
 
+        suspend fun fromFavoritesResponse(error: ResponseException): ListItemLimitException? {
+            val limitError = fromResponse(error) ?: return null
+            if (limitError.kind != Kind.SingleList) return limitError
+
+            return ListItemLimitException(
+                kind = Kind.Favorites,
+                limit = limitError.limit,
+                isVip = limitError.isVip,
+                cause = error,
+            )
+        }
+
         private suspend fun HttpResponse.readBody(): String? {
             return try {
                 bodyAsText()
@@ -75,16 +91,32 @@ class ListItemLimitException(
 }
 
 fun ListItemLimitException.toUserMessage(resources: Resources): String {
-    val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-    val formattedLimit = NumberFormat.getNumberInstance(locale).format(limit)
+    return resources.getString(messageResId(), formattedLimit())
+}
 
-    val resId = when (kind) {
+fun ListItemLimitException.toStringResource(): StringResource {
+    return DynamicStringResource(
+        resId = messageResId(),
+        args = listOf(formattedLimit()),
+    )
+}
+
+private fun ListItemLimitException.formattedLimit(): String {
+    val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    return NumberFormat.getNumberInstance(locale).format(limit)
+}
+
+@StringRes
+private fun ListItemLimitException.messageResId(): Int {
+    return when (kind) {
         ListItemLimitException.Kind.SingleList -> R.string.text_list_item_limit_reached
         ListItemLimitException.Kind.AllLists -> when {
             isVip -> R.string.text_lists_item_limit_reached_vip
             else -> R.string.text_lists_item_limit_reached_free
         }
+        ListItemLimitException.Kind.Favorites -> when {
+            isVip -> R.string.text_favorites_item_limit_reached_vip
+            else -> R.string.text_favorites_item_limit_reached_free
+        }
     }
-
-    return resources.getString(resId, formattedLimit)
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="text_favorites_item_limit_reached_free">Your favorites are full at %s items. VIP raises that limit.</string>
+  <string name="text_favorites_item_limit_reached_vip">Your favorites are full at %s items. Remove one to add another.</string>
   <string name="tag_text_user_tier_elite">Elite</string>
   <string name="tag_text_user_tier_legend">Legend</string>
   <string name="tag_text_user_tier_pro">Pro</string>

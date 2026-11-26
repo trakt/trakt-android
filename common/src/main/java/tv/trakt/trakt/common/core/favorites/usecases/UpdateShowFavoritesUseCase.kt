@@ -1,6 +1,8 @@
 package tv.trakt.trakt.common.core.favorites.usecases
 
+import io.ktor.client.plugins.ResponseException
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
@@ -15,9 +17,13 @@ class UpdateShowFavoritesUseCase(
     private val dataChanges: DataChanges,
 ) {
     suspend fun addToFavorites(show: Show) {
-        remoteSource.addToFavorites(
-            showId = show.ids.trakt,
-        )
+        try {
+            remoteSource.addToFavorites(
+                showId = show.ids.trakt,
+            )
+        } catch (error: ResponseException) {
+            throw ListItemLimitException.fromFavoritesResponse(error) ?: error
+        }
 
         userFavoritesLocalSource.addShows(
             shows = listOf(

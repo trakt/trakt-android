@@ -43,6 +43,8 @@ import tv.trakt.trakt.app.core.details.ratings.usecases.IsFavoriteUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.IsWatchedUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
+import tv.trakt.trakt.common.core.lists.usecases.toStringResource
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.core.streamings.usecase.GetYouTubeSpecialUseCase
@@ -566,6 +568,9 @@ internal class MovieDetailsViewModel(
                         if (favorite) R.string.text_info_favorites_added else R.string.text_info_favorites_removed,
                     ),
                 )
+            } catch (error: ListItemLimitException) {
+                userRatingState.update { it.copy(favorite = !favorite, favoriteLoading = false) }
+                showSnackMessage(error.toStringResource())
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     userRatingState.update { it.copy(favorite = !favorite, favoriteLoading = false) }
