@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -237,7 +238,7 @@ private fun LazyGridScope.headerItems(
             horizontalArrangement = spacedBy(ROW_ITEM_SPACING),
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = TraktTheme.size.titleBarHeight),
+                .height(TraktTheme.size.titleBarHeight),
         ) {
             Row(
                 verticalAlignment = CenterVertically,
@@ -254,16 +255,6 @@ private fun LazyGridScope.headerItems(
                 )
                 TraktHeader(
                     title = stringResource(R.string.page_title_mixtape),
-                    subtitle = stringResource(
-                        when (state.type) {
-                            MediaType.Show -> R.string.text_mixtape_description_shows
-                            MediaType.Movie,
-                            MediaType.Season,
-                            MediaType.Episode,
-                            -> R.string.text_mixtape_description_movies
-                        },
-                    ),
-                    maxSubtitleLines = 2,
                 )
             }
 
@@ -272,6 +263,22 @@ private fun LazyGridScope.headerItems(
                 onSelect = { onTypeClick(it.toMediaType()) },
             )
         }
+    }
+
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Text(
+            text = stringResource(
+                when (state.type) {
+                    MediaType.Show -> R.string.text_mixtape_description_shows
+                    MediaType.Movie,
+                    MediaType.Season,
+                    MediaType.Episode,
+                    -> R.string.text_mixtape_description_movies
+                },
+            ),
+            style = TraktTheme.typography.paragraphSmall,
+            color = TraktTheme.colors.textSecondary,
+        )
     }
 
     item(span = { GridItemSpan(maxLineSpan) }) {
