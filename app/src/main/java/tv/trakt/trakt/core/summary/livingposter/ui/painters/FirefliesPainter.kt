@@ -13,6 +13,8 @@ private const val SEED_RANGE = 1_000_000
 private val haloColor = Color(0xFFD8FF6A)
 private val coreColor = Color(0xFFFBFFD0)
 
+private val blinkFade = Keyframes(0F to 0F, 0.1F to 1F, 0.35F to 0.9F, 0.55F to 0F, 1F to 0F)
+
 private class Firefly(
     val pathX: Noise,
     val pathY: Noise,
@@ -27,6 +29,8 @@ internal class FirefliesPainter(
     seed: Int,
 ) : EffectPainter {
     private val flies: List<Firefly>
+    private val halo by lazy { createRadialSprite(haloColor, SpriteProfile.GlowSoft) }
+    private val core by lazy { createRadialSprite(coreColor, SpriteProfile.Glow) }
 
     init {
         val random = SeededRandom(seed)
@@ -41,6 +45,11 @@ internal class FirefliesPainter(
         }
     }
 
+    override fun prepare() {
+        halo.prepareToDraw()
+        core.prepareToDraw()
+    }
+
     override fun DrawScope.paint(
         plane: EffectPlane,
         scene: EffectScene,
@@ -52,13 +61,11 @@ internal class FirefliesPainter(
     }
 
     private fun DrawScope.paintBack(scene: EffectScene) {
-        val halo = radialSprite(haloColor, SpriteProfile.GlowSoft)
-        val core = radialSprite(coreColor, SpriteProfile.Glow)
         val seconds = scene.frame.seconds
 
         flies.forEach { fly ->
             val progress = ((seconds + fly.phase) % fly.blink) / fly.blink
-            val opacity = interpolate(progress, 0F to 0F, 0.1F to 1F, 0.35F to 0.9F, 0.55F to 0F, 1F to 0F)
+            val opacity = blinkFade.at(progress)
             if (opacity < 0.02F) return@forEach
 
             val center = Offset(

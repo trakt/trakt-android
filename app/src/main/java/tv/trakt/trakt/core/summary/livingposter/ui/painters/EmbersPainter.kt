@@ -43,18 +43,20 @@ private class ViewBox(
     val height: Float,
 )
 
-private data class Ember(
-    val x: Float,
-    val y: Float,
-    val vx: Float = 0F,
-    val vy: Float = 0F,
-    val age: Float = 0F,
+/** Mutable, because the simulation steps every ember on every frame and copies would churn the GC. */
+private class Ember(
+    var x: Float,
+    var y: Float,
     val life: Float,
     val size: Float,
     val isNear: Boolean,
     val phase: Float,
     val rate: Float,
-)
+) {
+    var vx = 0F
+    var vy = 0F
+    var age = 0F
+}
 
 /** Curl of a drifting noise stream: divergence-free, so embers swirl instead of bunching up. */
 private class AirField(
@@ -95,18 +97,24 @@ private class EmberSimulation(
     private var pending = 0F
     private var seconds: Float? = null
 
-    var embers: List<Ember> = emptyList()
-        private set
+    private val live = ArrayList<Ember>()
 
-    /** Steps the simulation to [now]; the first call warms it up so the poster opens mid-burn. */
+    val embers: List<Ember>
+        get() = live
+
+    /** Runs the warm-up ending at time zero, so the poster opens mid-burn. */
+    fun prepare() {
+        if (seconds != null) return
+        warmUp(endingAt = 0F)
+    }
+
+    /** Steps the simulation to [now], warming it up first when [prepare] has not run. */
     fun advance(now: Float) {
         val previous = seconds
         if (previous == now) return
 
         if (previous == null) {
-            val steps = (WARMUP_SECONDS / WARMUP_STEP).roundToInt()
-            repeat(steps) { index -> simulate(WARMUP_STEP, now - WARMUP_SECONDS + index * WARMUP_STEP) }
-            seconds = now
+            warmUp(endingAt = now)
             return
         }
 
@@ -116,16 +124,23 @@ private class EmberSimulation(
         seconds = now
     }
 
+    private fun warmUp(endingAt: Float) {
+        val steps = (WARMUP_SECONDS / WARMUP_STEP).roundToInt()
+        repeat(steps) { index -> simulate(WARMUP_STEP, endingAt - WARMUP_SECONDS + index * WARMUP_STEP) }
+        seconds = endingAt
+    }
+
     private fun simulate(
         step: Float,
         t: Float,
     ) {
         val due = pending + step * rate
-        val spawned = List(floor(due).toInt()) { spawnEmber() }
-        pending = due - spawned.size
-        embers = (embers + spawned)
-            .map { move(it, step, t) }
-            .filter { it.age <= it.life && it.y >= MIN_Y }
+        val spawned = floor(due).toInt()
+        pending = due - spawned
+        repeat(spawned) { live += spawnEmber() }
+
+        live.forEach { move(it, step, t) }
+        live.removeAll { it.age > it.life || it.y < MIN_Y }
     }
 
     private fun spawnEmber(): Ember {
@@ -146,21 +161,17 @@ private class EmberSimulation(
         ember: Ember,
         step: Float,
         t: Float,
-    ): Ember {
+    ) {
         val height = ((box.y + box.height - ember.y) / box.height).coerceIn(0F, 1F)
         val flow = air.flow(ember.x, ember.y, t)
         val lift = 0.45F + 0.7F * height
         val speed = if (ember.isNear) 1.5F else 1F
-        val vx = flow.x * CURL_STRENGTH * lift * speed
-        val vy = (flow.y * CURL_STRENGTH * lift - LIFT * (1F - 0.35F * height)) * speed
 
-        return ember.copy(
-            vx = vx,
-            vy = vy,
-            x = ember.x + vx * step,
-            y = ember.y + vy * step,
-            age = ember.age + step,
-        )
+        ember.vx = flow.x * CURL_STRENGTH * lift * speed
+        ember.vy = (flow.y * CURL_STRENGTH * lift - LIFT * (1F - 0.35F * height)) * speed
+        ember.x += ember.vx * step
+        ember.y += ember.vy * step
+        ember.age += step
     }
 }
 
@@ -181,6 +192,13 @@ internal class EmbersPainter(
     private val palette = EmberPalette(effect.color)
     private val glow = FractalNoise(seed + 7)
     private val simulation = EmberSimulation(effect, seed, box)
+    private val coreSprites by lazy { palette.colors.map { createRadialSprite(it, SpriteProfile.Core) } }
+    private val softSprites by lazy { palette.colors.map { createRadialSprite(it, SpriteProfile.Soft) } }
+
+    override fun prepare() {
+        (coreSprites + softSprites).forEach { it.prepareToDraw() }
+        simulation.prepare()
+    }
 
     override fun DrawScope.paint(
         plane: EffectPlane,
@@ -203,7 +221,7 @@ internal class EmbersPainter(
         val unit = scene.unit
 
         drawSprite(
-            sprite = radialSprite(palette.at(0.55F), SpriteProfile.Soft),
+            sprite = softSprites[palette.bin(0.55F)],
             center = Offset((box.x + box.width / 2F) * unit, (box.y + box.height) * unit),
             width = box.width * 1.25F * unit,
             height = box.height * 0.5F * unit,
@@ -236,7 +254,7 @@ internal class EmbersPainter(
 
             rotate(degrees = heading * RADIANS_TO_DEGREES, pivot = center) {
                 drawSprite(
-                    sprite = radialSprite(palette.at(heat), if (isNear) SpriteProfile.Soft else SpriteProfile.Core),
+                    sprite = (if (isNear) softSprites else coreSprites)[palette.bin(heat)],
                     center = center,
                     width = emberSize,
                     height = emberSize * (1F + speed * 0.012F),

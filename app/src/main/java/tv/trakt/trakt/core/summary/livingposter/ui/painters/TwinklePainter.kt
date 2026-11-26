@@ -34,9 +34,16 @@ private data class Star(
     val scintillation: FractalNoise,
     val rate: Float,
     val turn: Float,
-    val tint: Color,
+    val sprites: StarSprites,
     val isSpiky: Boolean = false,
 )
+
+private class StarSprites(
+    tint: Color,
+) {
+    val glow = createRadialSprite(tint, SpriteProfile.Soft)
+    val core = createRadialSprite(tint, SpriteProfile.Core)
+}
 
 private val spikeSprite: ImageBitmap by lazy {
     createSprite(SPIKE_SIZE, SPIKE_SIZE) {
@@ -70,6 +77,16 @@ internal class TwinklePainter(
 ) : EffectPainter {
     private val random = SeededRandom(seed)
     private var stars: List<Star>? = null
+    private val coolSprites by lazy { StarSprites(mix(Color.White, coolTint, 0.5F)) }
+    private val warmSprites by lazy { StarSprites(mix(Color.White, warmTint, 0.5F)) }
+
+    override fun prepare() {
+        listOf(coolSprites, warmSprites).forEach { sprites ->
+            sprites.glow.prepareToDraw()
+            sprites.core.prepareToDraw()
+        }
+        spikeSprite.prepareToDraw()
+    }
 
     override fun DrawScope.paint(
         plane: EffectPlane,
@@ -101,13 +118,13 @@ internal class TwinklePainter(
             val center = Offset(star.x * size.width, star.y * size.height)
 
             drawSprite(
-                sprite = radialSprite(star.tint, SpriteProfile.Soft),
+                sprite = star.sprites.glow,
                 center = center,
                 width = star.size * unit * 7F,
                 alpha = brightness * 0.3F,
             )
             drawSprite(
-                sprite = radialSprite(star.tint, SpriteProfile.Core),
+                sprite = star.sprites.core,
                 center = center,
                 width = star.size * unit * 3.2F,
                 alpha = brightness,
@@ -147,7 +164,7 @@ internal class TwinklePainter(
                 scintillation = FractalNoise(seed + index * 17),
                 rate = 2F + random.next() * 3F,
                 turn = 0.3F + random.next() * 0.4F,
-                tint = mix(Color.White, if (random.next() < 0.5F) coolTint else warmTint, 0.5F),
+                sprites = if (random.next() < 0.5F) coolSprites else warmSprites,
             )
 
             star.takeUnless { luminance != null && level > BRIGHT_SKY }

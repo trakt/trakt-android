@@ -13,15 +13,16 @@ private val defaultEmberColor = Color(255, 140, 60)
 internal class EmberPalette(
     hex: String?,
 ) {
-    private val bins: List<Color>
+    val colors: List<Color>
 
     init {
         val base = hex?.let(::parseHexColor)?.copy(alpha = 1F) ?: defaultEmberColor
         val isWarmBase = base.isWarm()
-        bins = List(PALETTE_BINS + 1) { index -> binColor(base, isWarmBase, heat = index.toFloat() / PALETTE_BINS) }
+        colors = List(PALETTE_BINS + 1) { index -> binColor(base, isWarmBase, heat = index.toFloat() / PALETTE_BINS) }
     }
 
-    fun at(heat: Float): Color = bins[(heat.coerceIn(0F, 1F) * PALETTE_BINS).roundToInt()]
+    /** Index into [colors] for [heat]. */
+    fun bin(heat: Float): Int = (heat.coerceIn(0F, 1F) * PALETTE_BINS).roundToInt()
 }
 
 private fun binColor(

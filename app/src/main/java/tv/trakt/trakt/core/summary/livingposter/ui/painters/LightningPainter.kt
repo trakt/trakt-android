@@ -94,6 +94,25 @@ internal class LightningPainter(
     private val plan = planStrikes(SeededRandom(seed))
     private val strength = effect.intensity * 2F
     private val sky: ImageBitmap by lazy { createSkyTexture(seed) }
+    private val glowSprite by lazy { createRadialSprite(skyColor, SpriteProfile.Soft) }
+
+    override fun prepare() {
+        sky.prepareToDraw()
+        glowSprite.prepareToDraw()
+    }
+
+    override fun hasContent(
+        plane: EffectPlane,
+        seconds: Float,
+    ): Boolean {
+        val flash = flashAt(seconds) ?: return false
+
+        return when (plane) {
+            EffectPlane.Back, EffectPlane.Front -> true
+            EffectPlane.Rim -> !flash.strike.isFar
+            EffectPlane.Backdrop -> false
+        }
+    }
 
     override fun DrawScope.paint(
         plane: EffectPlane,
@@ -140,7 +159,7 @@ internal class LightningPainter(
 
         drawImageIn(sky, Offset.Zero, Size(size.width, size.height * 0.7F), alpha = lit * 0.55F)
         drawSprite(
-            sprite = radialSprite(skyColor, SpriteProfile.Soft),
+            sprite = glowSprite,
             center = Offset(strike.centerX * size.width, (if (strike.isFar) 0.3F else 0.1F) * size.height),
             width = size.width * 1.6F,
             height = size.height * 1.1F,

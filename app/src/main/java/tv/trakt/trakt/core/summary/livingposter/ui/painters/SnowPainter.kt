@@ -29,11 +29,7 @@ private class Flake(
     val opacity: Float,
 )
 
-private class PlacedFlake(
-    val progress: Float,
-    val center: Offset,
-    val radius: Float,
-)
+private val nearFade = Keyframes(0F to 0F, 0.15F to 1F, 0.85F to 1F, 1F to 0F)
 
 /** Three depth layers of flakes; the near, out-of-focus ones fall in front of the figures. */
 internal class SnowPainter(
@@ -43,6 +39,7 @@ internal class SnowPainter(
     private val far: List<Flake>
     private val mid: List<Flake>
     private val near: List<Flake>
+    private val nearSprite by lazy { createRadialSprite(Color.White, SpriteProfile.GlowSoft) }
 
     init {
         val random = SeededRandom(seed)
@@ -50,6 +47,10 @@ internal class SnowPainter(
         far = createFlakes(farDepth, random, scale)
         mid = createFlakes(midDepth, random, scale)
         near = createFlakes(nearDepth, random, scale)
+    }
+
+    override fun prepare() {
+        nearSprite.prepareToDraw()
     }
 
     override fun DrawScope.paint(
@@ -64,29 +65,32 @@ internal class SnowPainter(
     }
 
     private fun DrawScope.paintBack(scene: EffectScene) {
-        listOf(far, mid).forEachIndexed { depth, flakes ->
-            flakes.forEach { flake ->
-                val placed = placeFlake(scene, flake, depth)
-                drawCircle(
-                    color = Color.White,
-                    radius = placed.radius / 2F,
-                    center = placed.center,
-                    alpha = flake.opacity,
-                )
-            }
+        paintFlakes(scene, far, depth = 0)
+        paintFlakes(scene, mid, depth = 1)
+    }
+
+    private fun DrawScope.paintFlakes(
+        scene: EffectScene,
+        flakes: List<Flake>,
+        depth: Int,
+    ) {
+        flakes.forEach { flake ->
+            drawCircle(
+                color = Color.White,
+                radius = flake.size * scene.unit / 2F,
+                center = placeFlake(scene, flake, depth),
+                alpha = flake.opacity,
+            )
         }
     }
 
     private fun DrawScope.paintFront(scene: EffectScene) {
-        val sprite = radialSprite(Color.White, SpriteProfile.GlowSoft)
-
         near.forEach { flake ->
-            val placed = placeFlake(scene, flake, depth = 2)
             drawSprite(
-                sprite = sprite,
-                center = placed.center,
-                width = placed.radius * 2F,
-                alpha = flake.opacity * interpolate(placed.progress, 0F to 0F, 0.15F to 1F, 0.85F to 1F, 1F to 0F),
+                sprite = nearSprite,
+                center = placeFlake(scene, flake, depth = 2),
+                width = flake.size * scene.unit * 2F,
+                alpha = flake.opacity * nearFade.at(flake.progress(scene.frame.seconds)),
             )
         }
     }
@@ -95,21 +99,18 @@ internal class SnowPainter(
         scene: EffectScene,
         flake: Flake,
         depth: Int,
-    ): PlacedFlake {
+    ): Offset {
         val seconds = scene.frame.seconds
-        val progress = (seconds / flake.duration + flake.phase) % 1F
         val sway = sin(seconds * flake.swaySpeed + flake.phase * 9F) * flake.sway
 
-        return PlacedFlake(
-            progress = progress,
-            center = Offset(
-                x = (flake.x + sway) / 100F * size.width + scene.frame.tiltX * (depth + 1) * 3F * scene.unit,
-                y = (progress * 1.15F - 0.08F) * size.height,
-            ),
-            radius = flake.size * scene.unit,
+        return Offset(
+            x = (flake.x + sway) / 100F * size.width + scene.frame.tiltX * (depth + 1) * 3F * scene.unit,
+            y = (flake.progress(seconds) * 1.15F - 0.08F) * size.height,
         )
     }
 }
+
+private fun Flake.progress(seconds: Float): Float = (seconds / duration + phase) % 1F
 
 private fun createFlakes(
     depth: SnowDepth,

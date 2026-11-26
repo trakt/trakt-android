@@ -35,6 +35,11 @@ internal class FogPainter(
     private val back = BankPainter(backBank)
     private val front = BankPainter(frontBank)
 
+    override fun prepare() {
+        back.texture.prepareToDraw()
+        front.texture.prepareToDraw()
+    }
+
     override fun DrawScope.paint(
         plane: EffectPlane,
         scene: EffectScene,
@@ -50,7 +55,7 @@ internal class FogPainter(
         private val bank: FogBank,
     ) {
         private val opacity = (bank.opacity * intensityScale(effect.intensity)).coerceAtMost(1F)
-        private val texture: ImageBitmap by lazy {
+        val texture: ImageBitmap by lazy {
             cloudTexture(seed = bank.seed, color = mistColor, from = bank.from, to = bank.to)
         }
 

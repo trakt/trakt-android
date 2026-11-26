@@ -27,26 +27,22 @@ internal enum class SpriteProfile(
     Bokeh(listOf(0F to 0.5F, 0.6F to 0.56F, 0.8F to 0.5F, 0.92F to 0.16F, 1F to 0F)),
 }
 
-private val radialSprites = mutableMapOf<Pair<Int, SpriteProfile>, ImageBitmap>()
-
-/** Cached, so particles draw a small bitmap instead of building a gradient every frame. */
-internal fun radialSprite(
+/** A small glow bitmap, so particles draw an image instead of building a gradient every frame. */
+internal fun createRadialSprite(
     color: Color,
     profile: SpriteProfile,
 ): ImageBitmap {
-    return radialSprites.getOrPut(color.toArgb() to profile) {
-        createSprite(SPRITE_SIZE, SPRITE_SIZE) {
-            val half = SPRITE_SIZE / 2F
-            drawCircle(
-                half,
-                half,
-                half,
-                radialPaint(
-                    radius = half,
-                    stops = profile.stops.map { (at, alpha) -> at to color.copy(alpha = alpha) },
-                ),
-            )
-        }
+    return createSprite(SPRITE_SIZE, SPRITE_SIZE) {
+        val half = SPRITE_SIZE / 2F
+        drawCircle(
+            half,
+            half,
+            half,
+            radialPaint(
+                radius = half,
+                stops = profile.stops.map { (at, alpha) -> at to color.copy(alpha = alpha) },
+            ),
+        )
     }
 }
 

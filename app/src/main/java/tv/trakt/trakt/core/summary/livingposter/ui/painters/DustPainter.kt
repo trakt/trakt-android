@@ -29,12 +29,19 @@ internal class DustPainter(
 ) : EffectPainter {
     private val far: List<Speck>
     private val near: List<Speck>
+    private val farSprite by lazy { createRadialSprite(dustColor, SpriteProfile.Glow) }
+    private val nearSprite by lazy { createRadialSprite(dustColor, SpriteProfile.GlowSoft) }
 
     init {
         val random = SeededRandom(seed)
         val scale = intensityScale(effect.intensity)
         far = createSpecks(random, count = (FAR_COUNT * scale).roundToInt(), sizeFrom = 0.5F, sizeSpan = 1.2F)
         near = createSpecks(random, count = (NEAR_COUNT * scale).roundToInt(), sizeFrom = 6F, sizeSpan = 9F)
+    }
+
+    override fun prepare() {
+        farSprite.prepareToDraw()
+        nearSprite.prepareToDraw()
     }
 
     override fun DrawScope.paint(
@@ -49,12 +56,11 @@ internal class DustPainter(
     }
 
     private fun DrawScope.paintBack(scene: EffectScene) {
-        val sprite = radialSprite(dustColor, SpriteProfile.Glow)
         val seconds = scene.frame.seconds
 
         far.forEach { speck ->
             drawSprite(
-                sprite = sprite,
+                sprite = farSprite,
                 center = placeSpeck(speck, seconds, reach = 0.02F, speed = 0.25F),
                 width = speck.size * scene.unit * 4F,
                 alpha = 0.4F + 0.4F * sin(seconds * 1.5F + speck.phase),
@@ -63,11 +69,9 @@ internal class DustPainter(
     }
 
     private fun DrawScope.paintFront(scene: EffectScene) {
-        val sprite = radialSprite(dustColor, SpriteProfile.GlowSoft)
-
         near.forEach { speck ->
             drawSprite(
-                sprite = sprite,
+                sprite = nearSprite,
                 center = placeSpeck(speck, scene.frame.seconds, reach = 0.05F, speed = 0.12F),
                 width = speck.size * scene.unit * 2F,
                 alpha = NEAR_ALPHA,

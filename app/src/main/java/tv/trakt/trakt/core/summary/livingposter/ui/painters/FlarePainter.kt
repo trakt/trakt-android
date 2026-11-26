@@ -85,6 +85,15 @@ internal class FlarePainter(
     seed: Int,
 ) : EffectPainter {
     private val breathing = FractalNoise(seed)
+    private val haloSprite by lazy { createRadialSprite(haloColor, SpriteProfile.Soft) }
+    private val glowSprite by lazy { createRadialSprite(glowColor, SpriteProfile.Soft) }
+    private val coreSprite by lazy { createRadialSprite(Color.White, SpriteProfile.Core) }
+    private val ghostSprites by lazy { ghosts.map { createRadialSprite(it.color, SpriteProfile.Bokeh) } }
+
+    override fun prepare() {
+        (listOf(haloSprite, glowSprite, coreSprite, ringSprite, streakSprite) + ghostSprites)
+            .forEach { it.prepareToDraw() }
+    }
 
     override fun DrawScope.paint(
         plane: EffectPlane,
@@ -106,19 +115,19 @@ internal class FlarePainter(
         val strength = effect.intensity * 1.6F * (0.9F + 0.1F * breathing.at(seconds * 0.35F)) * facing
 
         drawSprite(
-            sprite = radialSprite(haloColor, SpriteProfile.Soft),
+            sprite = haloSprite,
             center = source,
             width = width * 0.75F,
             alpha = 0.14F * strength,
         )
         drawSprite(
-            sprite = radialSprite(glowColor, SpriteProfile.Soft),
+            sprite = glowSprite,
             center = source,
             width = width * 0.26F,
             alpha = 0.5F * strength,
         )
         drawSprite(
-            sprite = radialSprite(Color.White, SpriteProfile.Core),
+            sprite = coreSprite,
             center = source,
             width = width * 0.07F,
             alpha = 0.95F * strength,
@@ -143,9 +152,9 @@ internal class FlarePainter(
 
         fun along(reach: Float): Offset = source + (focus - source) * reach
 
-        ghosts.forEach { ghost ->
+        ghosts.forEachIndexed { index, ghost ->
             drawSprite(
-                sprite = radialSprite(ghost.color, SpriteProfile.Bokeh),
+                sprite = ghostSprites[index],
                 center = along(ghost.reach),
                 width = ghost.size * width * 2F,
                 alpha = ghost.alpha * strength,

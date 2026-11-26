@@ -97,19 +97,22 @@ internal class Noise2d(
     }
 }
 
-internal fun interpolate(
-    progress: Float,
-    vararg keyframes: Pair<Float, Float>,
-): Float {
-    val next = keyframes.indexOfFirst { (at, _) -> at >= progress }
-    if (next <= 0) return keyframes.first().second
+/** Linear keyframes as (progress, value) pairs, stored unboxed so lookups do not allocate per frame. */
+internal class Keyframes(
+    vararg frames: Pair<Float, Float>,
+) {
+    private val stops = FloatArray(frames.size) { frames[it].first }
+    private val values = FloatArray(frames.size) { frames[it].second }
 
-    val (fromAt, fromValue) = keyframes[next - 1]
-    val (toAt, toValue) = keyframes[next]
-    val span = toAt - fromAt
-    if (span == 0F) return toValue
+    fun at(progress: Float): Float {
+        val next = stops.indexOfFirst { it >= progress }
+        if (next <= 0) return values.first()
 
-    return fromValue + (toValue - fromValue) * ((progress - fromAt) / span)
+        val span = stops[next] - stops[next - 1]
+        if (span == 0F) return values[next]
+
+        return values[next - 1] + (values[next] - values[next - 1]) * ((progress - stops[next - 1]) / span)
+    }
 }
 
 internal fun smoothstep(

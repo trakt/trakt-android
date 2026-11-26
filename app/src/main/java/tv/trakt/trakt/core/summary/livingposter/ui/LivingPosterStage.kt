@@ -98,7 +98,11 @@ internal fun LivingPosterStage(
     val shadowStates = shadowPainters.mapValues { (_, painter) -> painter.state.collectAsState().value }
     val readyShadows = shadowPainters.filterKeys { shadowStates[it] is AsyncImagePainter.State.Success }
 
-    val ready = layersLoaded && masksSettled
+    val paintersPrepared by produceState(initialValue = false, painters) {
+        withContext(Dispatchers.Default) { painters.values.forEach { it.prepare() } }
+        value = true
+    }
+    val ready = layersLoaded && masksSettled && paintersPrepared
     val currentOnReady by rememberUpdatedState(onReady)
     LaunchedEffect(ready) { currentOnReady(ready) }
     DisposableEffect(Unit) { onDispose { currentOnReady(false) } }
@@ -190,6 +194,11 @@ private fun DrawScope.drawPainted(
     item: LivingPosterStackItem.Painted,
     painting: StackPainting,
 ) {
+    val painters = item.effects
+        .mapNotNull { painting.painters[it.seed] }
+        .filter { it.hasContent(item.plane, painting.frame.seconds) }
+    if (painters.isEmpty()) return
+
     val scene = EffectScene(
         frame = painting.frame,
         unit = size.width / UNIT_WIDTH,
@@ -200,12 +209,11 @@ private fun DrawScope.drawPainted(
         ),
     )
 
-    withLayer(blendMode = if (item.isScreen) BlendMode.Screen else BlendMode.SrcOver) {
-        item.effects.forEach { seeded ->
-            val painter = painting.painters[seeded.seed] ?: return@forEach
-            with(painter) { paint(item.plane, scene) }
-        }
+    fun paintAll() {
+        painters.forEach { painter -> with(painter) { paint(item.plane, scene) } }
     }
+
+    if (item.isScreen) withLayer(blendMode = BlendMode.Screen) { paintAll() } else paintAll()
 }
 
 private fun DrawScope.drawCastShadow(

@@ -1,23 +1,35 @@
 package tv.trakt.trakt.core.summary.livingposter.ui.painters
 
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Shader
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.toArgb
 import tv.trakt.trakt.common.model.livingposter.LivingPosterEffect
 import tv.trakt.trakt.core.summary.livingposter.model.EffectPlane
 import kotlin.math.PI
+import kotlin.math.atan
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 private const val DROP_COUNT = 60
 private const val SPLASH_EVERY = 0.045F
 private const val SPLASH_SECONDS = 0.5F
 private const val MAX_CATCH_UP_SECONDS = 1F
 private const val SPLASH_HOP = 0.4F
+private const val SLANT = 0.1F
+private const val STREAK_SPRITE_WIDTH = 4
+private const val STREAK_SPRITE_HEIGHT = 64
+private val slantDegrees = atan(SLANT) * 180F / PI.toFloat()
+private val slantStretch = sqrt(1F + SLANT * SLANT)
 
 private val streakColor = Color(220, 232, 255)
 private val streakTail = Color(210, 225, 255, 0)
@@ -50,6 +62,27 @@ internal class RainPainter(
     private val splashEvery: Float
     private var splashes: List<Splash> = emptyList()
     private var lastSplash = 0F
+    private val streakSprite by lazy {
+        createSprite(STREAK_SPRITE_WIDTH, STREAK_SPRITE_HEIGHT) {
+            drawRect(
+                0F,
+                0F,
+                STREAK_SPRITE_WIDTH.toFloat(),
+                STREAK_SPRITE_HEIGHT.toFloat(),
+                Paint().apply {
+                    shader = LinearGradient(
+                        0F,
+                        0F,
+                        0F,
+                        STREAK_SPRITE_HEIGHT.toFloat(),
+                        streakTail.toArgb(),
+                        streakColor.toArgb(),
+                        Shader.TileMode.CLAMP,
+                    )
+                },
+            )
+        }
+    }
 
     init {
         val scale = intensityScale(effect.intensity)
@@ -63,6 +96,10 @@ internal class RainPainter(
             )
         }
         splashEvery = SPLASH_EVERY / scale
+    }
+
+    override fun prepare() {
+        streakSprite.prepareToDraw()
     }
 
     override fun DrawScope.paint(
@@ -82,22 +119,20 @@ internal class RainPainter(
 
         drops.forEach { drop ->
             val progress = (seconds / drop.duration + drop.phase) % 1F
-            val y = (progress * 1.25F - 0.15F) * size.height
-            val x = drop.x / 100F * size.width - progress * 0.1F * size.height
-            val length = drop.length * size.height
-            val start = Offset(x + 0.1F * length, y - length)
-            val end = Offset(x, y)
-
-            drawLine(
-                brush = Brush.linearGradient(
-                    colors = listOf(streakTail, streakColor.copy(alpha = drop.opacity)),
-                    start = start,
-                    end = end,
-                ),
-                start = start,
-                end = end,
-                strokeWidth = strokeWidth,
+            val end = Offset(
+                x = drop.x / 100F * size.width - progress * SLANT * size.height,
+                y = (progress * 1.25F - 0.15F) * size.height,
             )
+            val length = drop.length * size.height * slantStretch
+
+            rotate(degrees = slantDegrees, pivot = end) {
+                drawImageIn(
+                    image = streakSprite,
+                    topLeft = Offset(end.x - strokeWidth / 2F, end.y - length),
+                    size = Size(strokeWidth, length),
+                    alpha = drop.opacity,
+                )
+            }
         }
     }
 

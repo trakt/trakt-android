@@ -32,8 +32,20 @@ internal class EffectScene(
     val sources: EffectSources,
 )
 
-/** Draws one effect onto the planes it uses. Painters keep their own simulation state between frames. */
+/**
+ * Draws one effect onto the planes it uses. Painters keep their own simulation state between
+ * frames and are not thread-safe: only [prepare] may run off the main thread, before any drawing.
+ */
 internal interface EffectPainter {
+    /** Builds sprites, textures and warm-up state, so the first frames draw without stalls. */
+    fun prepare() = Unit
+
+    /** False when [plane] would draw nothing at [seconds], so its layer can be skipped. */
+    fun hasContent(
+        plane: EffectPlane,
+        seconds: Float,
+    ): Boolean = true
+
     fun DrawScope.paint(
         plane: EffectPlane,
         scene: EffectScene,
