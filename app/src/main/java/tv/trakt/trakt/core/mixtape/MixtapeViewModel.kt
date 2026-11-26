@@ -45,6 +45,11 @@ import kotlin.time.Duration.Companion.milliseconds
 private val SEARCH_DEBOUNCE = 300.milliseconds
 private val DEEP_FITS_TIMEOUT = 1500.milliseconds
 
+private data class DeepFits(
+    val picks: List<TraktId> = emptyList(),
+    val fits: List<Fit> = emptyList(),
+)
+
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class MixtapeViewModel(
@@ -67,9 +72,8 @@ internal class MixtapeViewModel(
     private val historyLoadingState = MutableStateFlow(true)
     private val searchResultsState = MutableStateFlow<ImmutableList<MixtapeItem>>(persistentListOf())
     private val searchLoadingState = MutableStateFlow(false)
-    private val deepFitsState = MutableStateFlow<ImmutableList<Fit>>(persistentListOf())
-    private val deepLoadingState = MutableStateFlow(false)
-    private val deepTimedOutState = MutableStateFlow(false)
+    private val deepFitsState = MutableStateFlow(DeepFits())
+    private val deepTimedOutState = MutableStateFlow<List<TraktId>?>(null)
     private val knownState = MutableStateFlow<PersistentMap<TraktId, MixtapeItem>>(persistentMapOf())
     private val vectorsState = MutableStateFlow(MixtapeVectors())
 
@@ -149,34 +153,28 @@ internal class MixtapeViewModel(
             combine(typeState, picksState) { type, picks -> type to picks.map { it.id } }
                 .distinctUntilChanged()
                 .collectLatest { (type, picks) ->
-                    deepFitsState.update { persistentListOf() }
-                    deepTimedOutState.update { false }
-                    if (picks.isEmpty()) {
-                        deepLoadingState.update { false }
-                        return@collectLatest
-                    }
+                    if (picks.isEmpty()) return@collectLatest
 
                     val timeout = viewModelScope.launch {
                         delay(DEEP_FITS_TIMEOUT)
-                        deepTimedOutState.update { true }
+                        deepTimedOutState.update { picks }
                     }
                     try {
-                        deepLoadingState.update { true }
                         loadVectors(type, picks)
                         val mixtape = getMixtapeUseCase.getMixtape(
                             type = type,
                             picks = picks,
                             suggestions = false,
                         )
-                        deepFitsState.update { mixtape.fits }
                         addKnown(mixtape.fits.mapNotNull { it.item })
+                        deepFitsState.update { DeepFits(picks, mixtape.fits) }
                     } catch (error: Exception) {
                         error.rethrowCancellation {
                             Timber.recordError(error)
+                            deepFitsState.update { DeepFits(picks) }
                         }
                     } finally {
                         timeout.cancel()
-                        deepLoadingState.update { false }
                     }
                 }
         }
@@ -224,6 +222,8 @@ internal class MixtapeViewModel(
         picksState.update { persistentListOf() }
         historyState.update { persistentListOf() }
         searchResultsState.update { persistentListOf() }
+        deepFitsState.update { DeepFits() }
+        deepTimedOutState.update { null }
         knownState.update { persistentMapOf() }
         vectorsState.update { MixtapeVectors() }
         requestedVectorIds.clear()
@@ -267,27 +267,27 @@ internal class MixtapeViewModel(
         searchResultsState,
         searchLoadingState,
         deepFitsState,
-        deepLoadingState,
+        deepTimedOutState,
         knownState,
         vectorsState,
-        deepTimedOutState,
     ) { state ->
         val type = state[0] as MediaType
         val query = state[1] as String
         val picks = state[2] as ImmutableList<MixtapeItem>
         val historyLoading = state[4] as Boolean
         val searchLoading = state[6] as Boolean
-        val deepLoading = state[8] as Boolean
-        val deepTimedOut = state[11] as Boolean
         val known = state[9] as Map<TraktId, MixtapeItem>
         val pickIds = picks.map { it.id }
+        val deep = state[7] as DeepFits
+        val deepReady = deep.picks == pickIds
+        val deepTimedOut = state[8] == pickIds
 
         val localFits = scoreFitsUseCase.scoreLocalFits(
             picks = pickIds,
             candidates = known.keys,
             vectors = state[10] as MixtapeVectors,
         )
-        val deepFits = state[7] as List<Fit>
+        val deepFits = if (deepReady) deep.fits else emptyList()
         val fits = when {
             deepTimedOut -> scoreFitsUseCase.appendFits(localFits.orEmpty(), deepFits)
             else -> scoreFitsUseCase.mergeFits(localFits.orEmpty(), deepFits)
@@ -302,7 +302,7 @@ internal class MixtapeViewModel(
         )
 
         val settling = picker.kind == MixtapePicker.Kind.Fits &&
-            deepLoading &&
+            !deepReady &&
             (!deepTimedOut || localFits.isNullOrEmpty())
         val shown = pickerHold.resolve(picker, settling, historyLoading)
         val searchPending = picker.kind == MixtapePicker.Kind.Search &&
@@ -313,7 +313,9 @@ internal class MixtapeViewModel(
             type = type,
             picks = picks,
             picker = shown,
-            loading = historyLoading || (settling && shown === picker) || searchPending,
+            loading = historyLoading ||
+                (settling && (shown === picker || shown.items.isEmpty())) ||
+                searchPending,
             settling = settling,
         )
     }.flowOn(Dispatchers.Default)
