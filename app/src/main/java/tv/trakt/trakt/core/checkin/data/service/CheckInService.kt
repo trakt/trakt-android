@@ -93,6 +93,10 @@ internal class CheckInService : Service() {
             "Check-in service started without data!"
         }
         val serviceData = CheckInServiceData.fromBundle(bundleData)
+
+        progressJob?.cancel()
+        hasTrivia = false
+
         val notification = setNotification(
             data = serviceData,
         )
@@ -118,8 +122,6 @@ internal class CheckInService : Service() {
             }
         }
 
-        hasTrivia = false
-        progressJob?.cancel()
         progressJob = scope.launch {
             launch { checkTrivia(serviceData) }
 
