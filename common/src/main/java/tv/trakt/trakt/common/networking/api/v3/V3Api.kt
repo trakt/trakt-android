@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3NudgeResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3PostNoteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3PushTokenRequest
@@ -76,6 +77,18 @@ class V3Api(
     suspend fun getUsage(): V3UsageResponse {
         val response = client.get("${baseV3Url}users/me/usage")
         return response.body()
+    }
+
+    suspend fun getNudge(): V3NudgeResponse? {
+        val response = client.get("${baseV3Url}users/me/nudge")
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
+    }
+
+    suspend fun postNudgeSeen() {
+        client.post("${baseV3Url}users/me/nudge/seen")
     }
 
     suspend fun getSyncConnections(): List<V3SyncConnectionResponse> {

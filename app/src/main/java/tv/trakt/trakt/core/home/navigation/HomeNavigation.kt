@@ -8,7 +8,6 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
@@ -30,13 +29,13 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToAllRecommended: () -> Unit,
     onNavigateToVip: (VipUpsellSource) -> Unit,
     onNavigateToCalendar: (CalendarView) -> Unit,
-    onNavigateToUser: (User) -> Unit,
     onNavigateToToday: (groupKey: String) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
             viewModel = koinViewModel(),
+            nudgeViewModel = koinViewModel(),
             userLoading = userLoading,
             onNavigateToShow = onNavigateToShow,
             onNavigateToDiscover = onNavigateToDiscover,

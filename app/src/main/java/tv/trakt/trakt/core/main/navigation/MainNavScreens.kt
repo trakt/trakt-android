@@ -149,12 +149,6 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllWatchlist = ::navigateToAllHomeWatchlist,
             onNavigateToAllRecommended = { navigateToDiscoverAll(DiscoverSection.Recommended) },
             onNavigateToVip = { navigateToBilling(source = it) },
-            onNavigateToUser = { user ->
-                navigateToUserProfile(
-                    user = user,
-                    currentUserId = userId,
-                )
-            },
             onNavigateToToday = ::navigateToTodayStories,
             onNavigateToList = { navigateToListDetails(it) },
         )
@@ -441,7 +435,6 @@ internal fun NavGraphBuilder.episodesScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateVip = { navigateToBilling(source = VipUpsellSource.EpisodeDetails) },
             onNavigateBack = { popBackStack() },
             onNavigateToList = { navigateToListDetails(it) },
         )

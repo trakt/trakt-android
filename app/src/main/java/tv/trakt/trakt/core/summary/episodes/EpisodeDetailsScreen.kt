@@ -101,8 +101,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.vip.VipBanner
-import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -121,7 +119,6 @@ internal fun EpisodeDetailsScreen(
     onNavigateToAllCredits: (Show, Episode) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
-    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -234,8 +231,6 @@ internal fun EpisodeDetailsScreen(
             }
         },
         onNavigateToUser = onNavigateToUser,
-        onVipClick = onNavigateVip,
-        onVipSeen = viewModel::onVipUpsellSeen,
         onBackClick = onNavigateBack,
         onInfoClick = {
             val show = state.show
@@ -413,8 +408,6 @@ internal fun EpisodeDetailsContent(
     onAllCreditsClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToList: (CustomList) -> Unit = {},
-    onVipClick: (() -> Unit)? = null,
-    onVipSeen: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
 ) {
@@ -578,20 +571,6 @@ internal fun EpisodeDetailsContent(
                                 .fillMaxWidth()
                                 .padding(top = 18.dp)
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                        )
-                    }
-                }
-
-                if (state.user != null && !state.user.isVip) {
-                    item {
-                        VipBanner(
-                            onClick = onVipClick ?: {},
-                            modifier = Modifier
-                                .onUpsellSeen { onVipSeen?.invoke() }
-                                .alpha(ratingAlphaMask)
-                                .fillMaxWidth()
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(top = 24.dp),
                         )
                     }
                 }

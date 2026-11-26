@@ -124,8 +124,6 @@ import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.vip.VipBanner
-import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.snackbar.showFavoriteNotePrompt
@@ -312,7 +310,6 @@ internal fun ShowDetailsScreen(
         },
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
-        onVipSeen = viewModel::onVipUpsellSeen,
         onBackClick = onNavigateBack,
     )
 
@@ -602,7 +599,6 @@ internal fun ShowDetailsContent(
     onAllSoundtrackClick: ((currentSeason: Int?) -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: ((VipUpsellSource) -> Unit)? = null,
-    onVipSeen: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -789,20 +785,6 @@ internal fun ShowDetailsContent(
                                 .fillMaxWidth()
                                 .padding(top = 18.dp)
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                        )
-                    }
-                }
-
-                if (state.user != null && !state.user.isVip) {
-                    item {
-                        VipBanner(
-                            onClick = { onVipClick?.invoke(VipUpsellSource.ShowDetails) },
-                            modifier = Modifier
-                                .onUpsellSeen { onVipSeen?.invoke() }
-                                .alpha(ratingAlphaMask)
-                                .fillMaxWidth()
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(top = 24.dp),
                         )
                     }
                 }

@@ -33,7 +33,6 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onNavigateToAllStreamings: (Show, Episode) -> Unit,
     onNavigateToAllCredits: (Show, Episode) -> Unit,
     onNavigateToUser: (User) -> Unit,
-    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
 ) {
@@ -49,7 +48,6 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
             onNavigateToAllStreamings = onNavigateToAllStreamings,
             onNavigateToAllCredits = onNavigateToAllCredits,
             onNavigateToUser = onNavigateToUser,
-            onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
             onNavigateToList = onNavigateToList,
         )
