@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.mixtape.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,13 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -46,7 +50,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val SlotWidth = 44.dp
 private val SlotHeight = 66.dp
-private val SlotShape = RoundedCornerShape(8.dp)
+private val SlotRadius = 8.dp
+private val SlotShape = RoundedCornerShape(SlotRadius)
 private val DockShape = RoundedCornerShape(24.dp)
 private val RemoveSize = 18.dp
 
@@ -214,12 +219,25 @@ private fun AddSlot(
     first: Boolean,
     onClick: () -> Unit,
 ) {
+    val dashColor = TraktTheme.colors.chipContainer
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(4.dp, Alignment.CenterVertically),
         modifier = Modifier
             .size(width = SlotWidth, height = SlotHeight)
-            .border(1.dp, TraktTheme.colors.chipContainer, SlotShape)
+            .drawBehind {
+                val radius = SlotRadius.toPx()
+                drawRoundRect(
+                    color = dashColor,
+                    cornerRadius = CornerRadius(radius, radius),
+                    style = Stroke(
+                        width = 1.dp.toPx(),
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 4.dp.toPx())),
+                    ),
+                )
+            }
+            .padding(horizontal = 2.dp)
             .onClick(onClick = onClick),
     ) {
         Icon(
@@ -234,7 +252,10 @@ private fun AddSlot(
             ),
             style = TraktTheme.typography.meta,
             color = TraktTheme.colors.textSecondary,
-            maxLines = 1,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
