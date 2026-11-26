@@ -70,22 +70,10 @@ data class LivingPosterEffect(
         val y: Float,
     )
 
-    val isParticle: Boolean
-        get() = kind in particleKinds
-
     val isMasked: Boolean
         get() = kind == Kind.Shimmer || kind == Kind.Foil
 
     companion object {
-        private val particleKinds = setOf(
-            Kind.Embers,
-            Kind.Snow,
-            Kind.Dust,
-            Kind.Rain,
-            Kind.Fireflies,
-            Kind.Twinkle,
-        )
-
         /** Parses one `[kind, color, intensity, box, extra]` manifest tuple. Unknown kinds give null. */
         fun fromDto(tuple: JsonElement): LivingPosterEffect? {
             if (tuple !is JsonArray) return null

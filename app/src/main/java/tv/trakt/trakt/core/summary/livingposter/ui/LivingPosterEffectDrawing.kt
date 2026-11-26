@@ -2,40 +2,34 @@ package tv.trakt.trakt.core.summary.livingposter.ui
 
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Easing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.isSupported
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import tv.trakt.trakt.common.model.livingposter.LivingPosterEffect
 import tv.trakt.trakt.common.model.livingposter.LivingPosterEffect.Kind
-import tv.trakt.trakt.core.summary.livingposter.model.LivingPosterParticle
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
-import kotlin.math.floor
 import kotlin.math.sin
 import kotlin.math.sqrt
 
 internal val easeInOut: Easing = CubicBezierEasing(0.42F, 0F, 0.58F, 1F)
 internal val easeOut: Easing = CubicBezierEasing(0F, 0F, 0.58F, 1F)
-
-private const val GLOW_RADIUS_RATIO = 2.5F
-private const val PARTICLES_ALPHA = 0.9F
 
 /** Current tilt (-1..1 per axis) and running time shared by every animated layer. */
 internal data class LivingPosterFrame(
@@ -49,46 +43,20 @@ internal fun DrawScope.drawEffect(
     mask: Painter?,
     frame: LivingPosterFrame,
 ) {
-    val box = effect.box
-    val boxRect = Rect(
-        left = box.x / 100F * size.width,
-        top = box.y / 100F * size.height,
-        right = (box.x + box.width) / 100F * size.width,
-        bottom = (box.y + box.height) / 100F * size.height,
-    )
+    val boxRect = effect.box.toPixelRect(size)
     val color = effect.color?.let(::parseHexColor) ?: Color.White
     val intensity = effect.intensity
 
     when (effect.kind) {
-        Kind.Fog -> drawFog(boxRect, color, intensity, frame.seconds)
         Kind.Haze -> drawHaze(boxRect, color, intensity, frame.seconds)
         Kind.Glow -> drawGlow(boxRect, color, breathe(intensity, frame.seconds, duration = 4.5F))
         Kind.Flicker -> drawGlow(boxRect, color, flicker(intensity, frame.seconds))
-        Kind.Lightning -> drawLightning(boxRect, intensity, frame.seconds)
         Kind.Bulbs -> drawBulbs(boxRect, effect.points, color, intensity, frame.seconds)
-        Kind.Flare -> effect.at?.let { drawFlare(boxRect, it, intensity, frame) }
         Kind.Foil -> mask?.let { drawFoil(it, intensity, frame) }
-        Kind.Shimmer -> mask?.let { drawShimmer(it, intensity, frame.seconds) }
-        Kind.Embers, Kind.Rain, Kind.Twinkle, Kind.Snow, Kind.Fireflies, Kind.Dust -> Unit
-    }
-}
-
-internal fun DrawScope.drawParticles(
-    particles: List<LivingPosterParticle>,
-    isScreen: Boolean,
-    seconds: Float,
-) {
-    val bounds = size.toRect()
-    drawIntoCanvas { canvas ->
-        canvas.saveLayer(
-            bounds,
-            Paint().apply {
-                alpha = PARTICLES_ALPHA
-                if (isScreen) blendMode = BlendMode.Screen
-            },
-        )
-        particles.forEach { particle -> drawParticle(particle, seconds) }
-        canvas.restore()
+        Kind.Shimmer -> mask?.let { drawShimmer(it, intensity, frame) }
+        Kind.Embers, Kind.Rain, Kind.Twinkle, Kind.Snow, Kind.Fireflies, Kind.Dust,
+        Kind.Fog, Kind.Lightning, Kind.Flare,
+        -> Unit
     }
 }
 
@@ -128,131 +96,6 @@ internal fun DrawScope.drawGlare(frame: LivingPosterFrame) {
     )
 }
 
-private fun DrawScope.drawParticle(
-    particle: LivingPosterParticle,
-    seconds: Float,
-) {
-    val frame = particle.frame(seconds)
-    if (frame.opacity <= 0.01F) return
-
-    val box = particle.box
-    val x = (box.x + frame.x * box.width / 100F) * size.width / 100F
-    val y = (box.y + frame.y * box.height / 100F) * size.height / 100F
-    val color = parseHexColor(particle.color)
-    val opacity = frame.opacity.coerceIn(0F, 1F)
-
-    when (particle.kind) {
-        Kind.Rain -> {
-            val length = particle.length.dp.toPx()
-            val width = 1.dp.toPx()
-            rotate(degrees = frame.rotation, pivot = Offset(x, y + length / 2F)) {
-                drawRect(
-                    brush = Brush.verticalGradient(
-                        0F to color.copy(alpha = 0F),
-                        1F to color,
-                        startY = y,
-                        endY = y + length,
-                    ),
-                    topLeft = Offset(x, y),
-                    size = Size(width, length),
-                    alpha = opacity,
-                )
-            }
-        }
-
-        Kind.Snow, Kind.Dust -> {
-            drawCircle(
-                color = color,
-                radius = (particle.size * frame.scale / 2F).dp.toPx(),
-                center = Offset(x, y),
-                alpha = opacity,
-            )
-        }
-
-        else -> {
-            val radius = (particle.size * frame.scale * GLOW_RADIUS_RATIO).dp.toPx()
-            drawCircle(
-                brush = Brush.radialGradient(
-                    0F to color,
-                    0.2F to color,
-                    0.45F to color.copy(alpha = 0.3F),
-                    1F to color.copy(alpha = 0F),
-                    center = Offset(x, y),
-                    radius = radius,
-                ),
-                radius = radius,
-                center = Offset(x, y),
-                alpha = opacity,
-            )
-        }
-    }
-}
-
-private fun DrawScope.drawFog(
-    box: Rect,
-    color: Color,
-    intensity: Float,
-    seconds: Float,
-) {
-    val bank = Rect(
-        left = box.left - box.width * 0.3F,
-        top = box.top,
-        right = box.right + box.width * 0.3F,
-        bottom = box.bottom,
-    )
-    val clear = color.copy(alpha = 0F)
-
-    withLayerAlpha(intensity) {
-        val firstShift = sway(seconds, duration = 22F, reverse = false) * bank.width
-        translate(left = firstShift) {
-            drawEllipseGradient(
-                bank.at(0.24F, 0.6F),
-                bank.width * 0.4F,
-                bank.height * 0.6F,
-                arrayOf(
-                    0F to color,
-                    0.7F to clear,
-                ),
-                bank,
-            )
-            drawEllipseGradient(
-                bank.at(0.78F, 0.55F),
-                bank.width * 0.4F,
-                bank.height * 0.6F,
-                arrayOf(
-                    0F to color,
-                    0.7F to clear,
-                ),
-                bank,
-            )
-        }
-
-        val secondShift = sway(seconds, duration = 31F, reverse = true) * bank.width
-        translate(left = secondShift) {
-            drawEllipseGradient(
-                bank.at(0.5F, 0.5F),
-                bank.width * 0.35F,
-                bank.height * 0.55F,
-                arrayOf(
-                    0F to color,
-                    0.7F to clear,
-                ),
-                bank,
-            )
-            drawEllipseGradient(
-                bank.at(0.95F, 0.6F),
-                bank.width * 0.3F,
-                bank.height * 0.5F,
-                arrayOf(
-                    0F to color,
-                    0.7F to clear,
-                ),
-                bank,
-            )
-        }
-    }
-}
-
 private fun DrawScope.drawHaze(
     box: Rect,
     color: Color,
@@ -289,35 +132,6 @@ private fun DrawScope.drawGlow(
         radiusY = glow.height / 2F,
         stops = arrayOf(0F to color, 1F to color.copy(alpha = 0F)),
         bounds = glow,
-        alpha = alpha,
-    )
-}
-
-private fun DrawScope.drawLightning(
-    box: Rect,
-    intensity: Float,
-    seconds: Float,
-) {
-    val color = Color(220, 230, 255)
-    val alpha = keyframes(
-        cycle(seconds, duration = 7F),
-        LinearEasing,
-        0F to 0F,
-        0.88F to 0F,
-        0.89F to intensity * 0.85F,
-        0.90F to intensity * 0.1F,
-        0.92F to intensity * 0.7F,
-        0.95F to 0F,
-        1F to 0F,
-    )
-    if (alpha <= 0F) return
-
-    drawEllipseGradient(
-        center = box.at(0.6F, 0.1F),
-        radiusX = box.width * 0.7F,
-        radiusY = box.height * 0.5F,
-        stops = arrayOf(0F to color.copy(alpha = 0.9F), 0.7F to color.copy(alpha = 0F)),
-        bounds = box,
         alpha = alpha,
     )
 }
@@ -367,79 +181,6 @@ private fun DrawScope.drawBulbs(
     }
 }
 
-private fun DrawScope.drawFlare(
-    box: Rect,
-    at: LivingPosterEffect.Point,
-    intensity: Float,
-    frame: LivingPosterFrame,
-) {
-    val unit = box.width / 100F
-    val center = box.at(at.x / 100F, at.y / 100F)
-    val haloRadius = 23F * unit
-
-    drawCircle(
-        brush = Brush.radialGradient(
-            0F to Color(255, 240, 215).copy(alpha = intensity * 0.9F),
-            0.45F to Color(255, 180, 110).copy(alpha = intensity * 0.25F),
-            1F to Color(255, 180, 110).copy(alpha = 0F),
-            center = center,
-            radius = haloRadius,
-        ),
-        radius = haloRadius,
-        center = center,
-    )
-
-    val streakColor = Color(255, 226, 190)
-    val streakWidth = 70F * unit
-    val streakHeight = 2.dp.toPx()
-    rotate(degrees = frame.tiltX * 6F, pivot = center) {
-        drawRect(
-            brush = Brush.horizontalGradient(
-                0F to streakColor.copy(alpha = 0F),
-                0.5F to streakColor.copy(alpha = intensity * 0.8F),
-                1F to streakColor.copy(alpha = 0F),
-                startX = center.x - streakWidth / 2F,
-                endX = center.x + streakWidth / 2F,
-            ),
-            topLeft = Offset(center.x - streakWidth / 2F, center.y - streakHeight / 2F),
-            size = Size(streakWidth, streakHeight),
-        )
-    }
-
-    val focusX = 50F + frame.tiltX * 20F
-    val focusY = 50F + frame.tiltY * 20F
-    val unitY = box.height / 100F
-    flareGhosts.forEach { ghost ->
-        val diameter = ghost.size * unit
-        val left = box.left + (at.x + (focusX - at.x) * ghost.k) * unit - 4F * unit
-        val top = box.top + (at.y + (focusY - at.y) * ghost.k) * unitY - 4F * unit
-        val ghostCenter = Offset(left + diameter / 2F, top + diameter / 2F)
-
-        drawCircle(
-            brush = Brush.radialGradient(
-                0F to ghost.color,
-                1F to ghost.color.copy(alpha = 0F),
-                center = ghostCenter,
-                radius = diameter / 2F,
-            ),
-            radius = diameter / 2F,
-            center = ghostCenter,
-        )
-    }
-}
-
-private data class FlareGhost(
-    val k: Float,
-    val size: Float,
-    val color: Color,
-)
-
-private val flareGhosts = listOf(
-    FlareGhost(k = 0.55F, size = 9F, color = Color(255, 170, 120).copy(alpha = 0.22F)),
-    FlareGhost(k = 1.15F, size = 5F, color = Color(140, 200, 255).copy(alpha = 0.25F)),
-    FlareGhost(k = 1.6F, size = 14F, color = Color(255, 230, 160).copy(alpha = 0.12F)),
-)
-
 private val foilStops = arrayOf(
     0.20F to Color(255, 120, 180).copy(alpha = 0F),
     0.34F to Color(255, 120, 180).copy(alpha = 0.55F),
@@ -465,24 +206,34 @@ private fun DrawScope.drawFoil(
     }
 }
 
+/** A soft gloss that follows the tilt and a warm band sweeping across every few seconds. */
 private fun DrawScope.drawShimmer(
     mask: Painter,
     intensity: Float,
-    seconds: Float,
+    frame: LivingPosterFrame,
 ) {
-    val sweep = keyframes(cycle(seconds, duration = 5.5F), easeInOut, 0F to -1.4F, 0.55F to 1.4F, 1F to 1.4F)
-    val white = Color.White
+    val sweep = keyframes(cycle(frame.seconds, duration = 8.5F), easeInOut, 0F to -0.9F, 0.21F to 0.9F, 1F to 0.9F)
+    val blendMode = if (BlendMode.Overlay.isSupported()) BlendMode.Overlay else BlendMode.SrcOver
+    val bounds = size.toRect()
+    val band = Color(255, 247, 228)
 
-    drawMasked(mask, alpha = intensity) {
+    drawMasked(mask, alpha = intensity * 0.9F, blendMode = blendMode) {
+        drawEllipseGradient(
+            center = Offset(size.width * (0.5F - frame.tiltX * 0.45F), size.height * (0.35F - frame.tiltY * 0.45F)),
+            radiusX = size.width * 0.7F,
+            radiusY = size.height * 0.45F,
+            stops = arrayOf(0F to Color.White.copy(alpha = 0.1F), 0.7F to Color.White.copy(alpha = 0F)),
+            bounds = bounds,
+        )
         translate(left = sweep * size.width) {
             drawRect(
                 brush = cssLinearGradient(
-                    angleDegrees = 105F,
-                    rect = size.toRect(),
+                    angleDegrees = 108F,
+                    rect = bounds,
                     stops = arrayOf(
-                        0.35F to white.copy(alpha = 0F),
-                        0.5F to white.copy(alpha = 0.85F),
-                        0.65F to white.copy(alpha = 0F),
+                        0.37F to band.copy(alpha = 0F),
+                        0.5F to band.copy(alpha = 0.8F),
+                        0.63F to band.copy(alpha = 0F),
                     ),
                 ),
             )
@@ -493,28 +244,65 @@ private fun DrawScope.drawShimmer(
 private fun DrawScope.drawMasked(
     mask: Painter,
     alpha: Float,
+    blendMode: BlendMode = BlendMode.SrcOver,
     content: DrawScope.() -> Unit,
 ) {
-    val bounds = size.toRect()
-    drawIntoCanvas { canvas ->
-        canvas.saveLayer(bounds, Paint().apply { this.alpha = alpha })
+    withLayer(alpha = alpha, blendMode = blendMode) {
         content()
-        canvas.saveLayer(bounds, Paint().apply { blendMode = BlendMode.DstIn })
-        with(mask) { draw(size) }
-        canvas.restore()
+        withLayer(blendMode = BlendMode.DstIn) {
+            with(mask) { draw(size) }
+        }
+    }
+}
+
+/** Draws [content] into an offscreen layer composited with [alpha], [blendMode] and [colorFilter]. */
+internal fun DrawScope.withLayer(
+    bounds: Rect = size.toRect(),
+    alpha: Float = 1F,
+    blendMode: BlendMode = BlendMode.SrcOver,
+    colorFilter: ColorFilter? = null,
+    content: DrawScope.() -> Unit,
+) {
+    val paint = Paint().apply {
+        this.alpha = alpha
+        this.blendMode = blendMode
+        this.colorFilter = colorFilter
+    }
+
+    drawIntoCanvas { canvas ->
+        canvas.saveLayer(bounds, paint)
+        content()
         canvas.restore()
     }
 }
 
-private fun DrawScope.withLayerAlpha(
-    alpha: Float,
-    content: DrawScope.() -> Unit,
+/** Draws [painter] scaled to fill the canvas, cropping the overflow like `ContentScale.Crop`. */
+internal fun DrawScope.drawCover(
+    painter: Painter,
+    alpha: Float = 1F,
+    colorFilter: ColorFilter? = null,
 ) {
-    drawIntoCanvas { canvas ->
-        canvas.saveLayer(size.toRect(), Paint().apply { this.alpha = alpha })
-        content()
-        canvas.restore()
+    val intrinsic = painter.intrinsicSize
+    if (intrinsic.isUnspecified || intrinsic.width <= 0F || intrinsic.height <= 0F) {
+        with(painter) { draw(size, alpha, colorFilter) }
+        return
     }
+
+    val scale = maxOf(size.width / intrinsic.width, size.height / intrinsic.height)
+    val drawSize = Size(intrinsic.width * scale, intrinsic.height * scale)
+
+    translate((size.width - drawSize.width) / 2F, (size.height - drawSize.height) / 2F) {
+        with(painter) { draw(drawSize, alpha, colorFilter) }
+    }
+}
+
+internal fun LivingPosterEffect.Box.toPixelRect(size: Size): Rect {
+    return Rect(
+        left = x / 100F * size.width,
+        top = y / 100F * size.height,
+        right = (x + width) / 100F * size.width,
+        bottom = (y + height) / 100F * size.height,
+    )
 }
 
 private fun DrawScope.drawEllipseGradient(
@@ -591,20 +379,6 @@ private fun flicker(
     )
 
     return steps.last { (at, _) -> at <= progress }.second
-}
-
-/** Horizontal fog drift as a fraction of the bank width, alternating direction each run. */
-private fun sway(
-    seconds: Float,
-    duration: Float,
-    reverse: Boolean,
-): Float {
-    val iteration = floor(seconds / duration).toInt()
-    val progress = cycle(seconds, duration)
-    val backwards = (iteration % 2 == 1) != reverse
-    val directed = if (backwards) 1F - progress else progress
-
-    return lerp(-0.09F, 0.09F, easeInOut.transform(directed))
 }
 
 private fun cycle(
