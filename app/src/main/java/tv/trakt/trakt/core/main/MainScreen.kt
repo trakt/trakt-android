@@ -75,6 +75,8 @@ import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.app.BuildConfig
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
+import tv.trakt.trakt.common.core.lists.usecases.toUserMessage
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
@@ -241,6 +243,10 @@ internal fun MainScreen(
             )
             error is PostRatingException -> localSnackbar.showSnackbar(
                 message = localRes.getString(R.string.error_text_rating_not_saved),
+                duration = SnackbarDuration.Long,
+            )
+            error is ListItemLimitException -> localSnackbar.showSnackbar(
+                message = error.toUserMessage(localRes),
                 duration = SnackbarDuration.Long,
             )
             error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling(

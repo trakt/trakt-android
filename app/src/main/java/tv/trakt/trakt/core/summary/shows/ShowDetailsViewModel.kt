@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.usecases.UpdateShowFavoritesUseCase
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
@@ -681,6 +682,8 @@ internal class ShowDetailsViewModel(
 
                 analytics.ratings.logFavoriteAdd(mediaType = "show")
                 notePromptState.update { true }
+            } catch (error: ListItemLimitException) {
+                errorsManager.tryEmit(error)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

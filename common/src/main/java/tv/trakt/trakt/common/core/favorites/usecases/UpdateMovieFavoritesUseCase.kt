@@ -1,6 +1,8 @@
 package tv.trakt.trakt.common.core.favorites.usecases
 
+import io.ktor.client.plugins.ResponseException
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
@@ -19,9 +21,13 @@ class UpdateMovieFavoritesUseCase(
         movie: Movie,
         origin: ChangeOrigin? = null,
     ) {
-        remoteSource.addToFavorites(
-            movieId = movie.ids.trakt,
-        )
+        try {
+            remoteSource.addToFavorites(
+                movieId = movie.ids.trakt,
+            )
+        } catch (error: ResponseException) {
+            throw ListItemLimitException.fromResponse(error) ?: error
+        }
 
         userFavoritesLocalSource.addMovies(
             movies = listOf(

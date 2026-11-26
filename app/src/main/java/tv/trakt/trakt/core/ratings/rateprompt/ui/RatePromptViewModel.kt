@@ -21,11 +21,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.usecases.UpdateMovieFavoritesUseCase
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -42,6 +44,7 @@ internal class RatePromptViewModel(
     private val sessionManager: SessionManager,
     private val ratePromptManager: RatePromptManager,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
+    private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = RatePromptUiState()
@@ -161,6 +164,8 @@ internal class RatePromptViewModel(
                 analytics.ratings.logFavoriteAdd(
                     mediaType = "movie",
                 )
+            } catch (error: ListItemLimitException) {
+                errorsManager.tryEmit(error)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
