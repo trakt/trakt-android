@@ -63,6 +63,8 @@ import tv.trakt.trakt.core.lists.sections.smart.details.navigation.navigateToSma
 import tv.trakt.trakt.core.lists.sections.smart.details.navigation.smartListDetailsScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
+import tv.trakt.trakt.core.mixtape.navigation.mixtapeScreen
+import tv.trakt.trakt.core.mixtape.navigation.navigateToMixtape
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.profile.sections.activity.all.navigation.navigateToProfileActivity
@@ -234,7 +236,11 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
             onNavigateToVip = {
                 navigateToBilling(source = VipUpsellSource.NavbarMobile)
             },
+            onNavigateToMixtape = { navigateToMixtape() },
             onNavigateToList = { navigateToListDetails(it) },
+        )
+        mixtapeScreen(
+            onNavigateBack = { popBackStack() },
         )
         discoverAllScreen(
             onNavigateBack = { popBackStack() },

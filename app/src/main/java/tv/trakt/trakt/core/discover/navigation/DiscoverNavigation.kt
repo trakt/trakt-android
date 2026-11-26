@@ -24,6 +24,7 @@ internal fun NavGraphBuilder.discoverScreen(
     onNavigateToAllAnticipated: () -> Unit = {},
     onNavigateToAllReleases: (CalendarView) -> Unit = {},
     onNavigateToVip: () -> Unit = {},
+    onNavigateToMixtape: () -> Unit = {},
     onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<DiscoverDestination> {
@@ -37,6 +38,7 @@ internal fun NavGraphBuilder.discoverScreen(
             onNavigateToAllAnticipated = onNavigateToAllAnticipated,
             onNavigateToAllReleases = onNavigateToAllReleases,
             onNavigateToVip = onNavigateToVip,
+            onNavigateToMixtape = onNavigateToMixtape,
             onNavigateToList = onNavigateToList,
         )
     }

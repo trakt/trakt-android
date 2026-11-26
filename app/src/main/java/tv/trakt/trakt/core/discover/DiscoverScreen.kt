@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -24,13 +27,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverSection
@@ -43,9 +49,12 @@ import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val MIXTAPE_ICON_SIZE = 24.dp
 
 @Composable
 internal fun DiscoverScreen(
@@ -59,6 +68,7 @@ internal fun DiscoverScreen(
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllReleases: (CalendarView) -> Unit,
     onNavigateToVip: () -> Unit,
+    onNavigateToMixtape: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -75,6 +85,7 @@ internal fun DiscoverScreen(
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
         onMoreReleasesClick = { onNavigateToAllReleases(state.releasesView) },
         onVipClick = onNavigateToVip,
+        onMixtapeClick = onNavigateToMixtape,
         onVipSeen = viewModel::onVipUpsellSeen,
         onFiltersClick = {
             filtersSheet = true
@@ -102,6 +113,7 @@ private fun DiscoverScreen(
     onMoreAnticipatedClick: () -> Unit = {},
     onMoreReleasesClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onMixtapeClick: () -> Unit = {},
     onVipSeen: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
 ) {
@@ -221,6 +233,7 @@ private fun DiscoverScreen(
             onVipClick = onVipClick,
             onVipSeen = onVipSeen,
             onFiltersClick = onFiltersClick,
+            onMixtapeClick = onMixtapeClick,
         )
     }
 }
@@ -233,6 +246,7 @@ private fun ScreenHeader(
     onVipClick: () -> Unit,
     onVipSeen: () -> Unit,
     onFiltersClick: () -> Unit,
+    onMixtapeClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -248,6 +262,21 @@ private fun ScreenHeader(
         onVipSeen = onVipSeen,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
+        leadingActions = if (userState.second) {
+            {
+                Icon(
+                    painter = painterResource(R.drawable.ic_mixtape),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(end = 2.dp)
+                        .size(MIXTAPE_ICON_SIZE)
+                        .onClick(onClick = onMixtapeClick),
+                )
+            }
+        } else {
+            null
+        },
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

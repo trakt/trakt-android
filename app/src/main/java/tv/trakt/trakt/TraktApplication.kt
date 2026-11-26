@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.klipy.di.gifPickerModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.main.di.mainModule
+import tv.trakt.trakt.core.mixtape.di.mixtapeModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.notes.di.notesModule
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
@@ -155,6 +156,7 @@ internal class TraktApplication : Application() {
                 homeModule,
                 homeDataModule,
                 discoverModule,
+                mixtapeModule,
                 dataChangesModule,
                 showsModule,
                 showDetailsModule,
