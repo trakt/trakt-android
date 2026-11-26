@@ -103,13 +103,15 @@ internal fun MediaSocialItemCard(
                             .padding(end = 16.dp),
                     )
 
-                    Text(
-                        text = item.lastActivityAt.toLocal().relativePastDateString(),
-                        style = TraktTheme.typography.cardSubtitle.copy(fontSize = 11.sp),
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                    item.lastActivityAt?.let { lastActivityAt ->
+                        Text(
+                            text = lastActivityAt.toLocal().relativePastDateString(),
+                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 11.sp),
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
 
