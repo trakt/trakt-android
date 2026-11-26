@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.home.sections.nudge.model.VipNudge
@@ -45,7 +46,7 @@ internal class HomeNudgeViewModel(
 
     private val nudgeState = MutableStateFlow(initialState.nudge)
 
-    private var isEligible = false
+    private var eligibleUserId: TraktId? = null
     private var isSeenReported = false
     private var loadJob: Job? = null
 
@@ -56,10 +57,10 @@ internal class HomeNudgeViewModel(
 
     private fun observeUser() {
         sessionManager.observeProfile()
-            .map { user -> user != null && !user.isVip }
+            .map { user -> user?.takeUnless { it.isVip }?.ids?.trakt }
             .distinctUntilChanged()
-            .onEach { eligible ->
-                isEligible = eligible
+            .onEach { userId ->
+                eligibleUserId = userId
                 loadNudge()
             }
             .launchIn(viewModelScope)
@@ -74,14 +75,15 @@ internal class HomeNudgeViewModel(
 
     private fun loadNudge() {
         loadJob?.cancel()
-        if (!isEligible) {
+        val userId = eligibleUserId
+        if (userId == null) {
             nudgeState.update { null }
             return
         }
 
         loadJob = viewModelScope.launch {
             try {
-                if (dismissalUseCase.isHidden(nowUtcInstant())) {
+                if (dismissalUseCase.isHidden(userId, nowUtcInstant())) {
                     nudgeState.update { null }
                     return@launch
                 }
@@ -115,12 +117,13 @@ internal class HomeNudgeViewModel(
     }
 
     fun dismissNudge() {
+        val userId = eligibleUserId ?: return
         loadJob?.cancel()
         nudgeState.update { null }
 
         viewModelScope.launch {
             try {
-                dismissalUseCase.hide(nowUtcInstant())
+                dismissalUseCase.hide(userId, nowUtcInstant())
                 analytics.logBannerDismiss(
                     id = NUDGE_BANNER_ID,
                     value = NUDGE_DISMISS_VALUE,

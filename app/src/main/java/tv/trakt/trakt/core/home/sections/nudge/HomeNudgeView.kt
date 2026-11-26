@@ -101,7 +101,7 @@ internal fun HomeNudgeView(
                 }
 
                 TertiaryButton(
-                    text = stringResource(R.string.button_label_vip_nudge_action),
+                    text = stringResource(R.string.vip_nudge_action),
                     onClick = onClick,
                     modifier = Modifier.padding(top = 4.dp),
                 )
@@ -127,10 +127,10 @@ internal fun HomeNudgeView(
 
 @Composable
 private fun FeaturesContent(nudge: VipNudge.Features) {
-    NudgeTitle(stringResource(R.string.text_vip_nudge_feature_title))
+    NudgeTitle(stringResource(R.string.vip_nudge_feature_title))
     NudgeDetail(
         stringResource(
-            R.string.text_vip_nudge_feature_body_short,
+            R.string.vip_nudge_feature_body_short,
             rememberNumberFormat(nudge.vipWatchlistItems),
         ),
     )
@@ -166,10 +166,10 @@ private fun LimitContent(nudge: VipNudge.Limit) {
 
     NudgeDetail(
         when (nudge.limit) {
-            VipNudgeLimit.WatchlistItems -> stringResource(R.string.text_vip_nudge_vip_limit_watchlist_items, vip)
-            VipNudgeLimit.TotalListItems -> stringResource(R.string.text_vip_nudge_vip_limit_list_items, vip)
-            VipNudgeLimit.StaticLists -> stringResource(R.string.text_vip_nudge_vip_limit_lists)
-            VipNudgeLimit.TotalNotes -> stringResource(R.string.text_vip_nudge_vip_limit_notes, vip)
+            VipNudgeLimit.WatchlistItems -> stringResource(R.string.vip_nudge_vip_limit_watchlist_items, vip)
+            VipNudgeLimit.TotalListItems -> stringResource(R.string.vip_nudge_vip_limit_list_items, vip)
+            VipNudgeLimit.StaticLists -> stringResource(R.string.vip_nudge_vip_limit_lists)
+            VipNudgeLimit.TotalNotes -> stringResource(R.string.vip_nudge_vip_limit_notes, vip)
         },
     )
 }
@@ -177,17 +177,17 @@ private fun LimitContent(nudge: VipNudge.Limit) {
 private fun VipNudge.Limit.titleRes(): Int {
     return if (isOverLimit) {
         when (limit) {
-            VipNudgeLimit.WatchlistItems -> R.string.text_vip_nudge_over_watchlist_items
-            VipNudgeLimit.TotalListItems -> R.string.text_vip_nudge_over_list_items
-            VipNudgeLimit.StaticLists -> R.string.text_vip_nudge_over_lists
-            VipNudgeLimit.TotalNotes -> R.string.text_vip_nudge_over_notes
+            VipNudgeLimit.WatchlistItems -> R.string.vip_nudge_over_watchlist_items
+            VipNudgeLimit.TotalListItems -> R.string.vip_nudge_over_list_items
+            VipNudgeLimit.StaticLists -> R.string.vip_nudge_over_lists
+            VipNudgeLimit.TotalNotes -> R.string.vip_nudge_over_notes
         }
     } else {
         when (limit) {
-            VipNudgeLimit.WatchlistItems -> R.string.text_vip_nudge_within_watchlist_items
-            VipNudgeLimit.TotalListItems -> R.string.text_vip_nudge_within_list_items
-            VipNudgeLimit.StaticLists -> R.string.text_vip_nudge_within_lists
-            VipNudgeLimit.TotalNotes -> R.string.text_vip_nudge_within_notes
+            VipNudgeLimit.WatchlistItems -> R.string.vip_nudge_within_watchlist_items
+            VipNudgeLimit.TotalListItems -> R.string.vip_nudge_within_list_items
+            VipNudgeLimit.StaticLists -> R.string.vip_nudge_within_lists
+            VipNudgeLimit.TotalNotes -> R.string.vip_nudge_within_notes
         }
     }
 }
