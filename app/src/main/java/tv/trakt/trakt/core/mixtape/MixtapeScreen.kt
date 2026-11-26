@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -292,7 +294,7 @@ private fun LazyGridScope.pickerItems(
     onPickClick: (MixtapeItem) -> Unit,
 ) {
     when {
-        state.isFull -> messageItem(textRes = R.string.text_mixtape_max_picks)
+        state.isFull -> fullItem()
 
         state.loading -> items(count = SKELETON_COUNT) {
             VerticalMediaSkeletonCard(
@@ -335,6 +337,31 @@ private fun LazyGridScope.messageItem(
             style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textSecondary,
         )
+    }
+}
+
+private fun LazyGridScope.fullItem() {
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_check),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(28.dp),
+            )
+            Text(
+                text = stringResource(R.string.text_mixtape_max_picks),
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
