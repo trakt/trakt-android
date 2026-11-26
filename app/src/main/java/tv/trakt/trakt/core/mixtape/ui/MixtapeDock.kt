@@ -3,9 +3,9 @@ package tv.trakt.trakt.core.mixtape.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,8 +55,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private const val SLOT_RATIO = 2F / 3F
 
 private val SlotSpacing = 8.dp
-private val MixButtonMinWidth = 112.dp
-private val SlotRadius = 8.dp
+private val MixButtonMinWidth = 84.dp
+private val SlotRadius = 12.dp
 private val SlotShape = RoundedCornerShape(SlotRadius)
 private val DockShape = RoundedCornerShape(24.dp)
 private val RemoveSize = 18.dp
@@ -129,34 +130,33 @@ private fun DockCard(
             .background(TraktTheme.colors.navigationContainer, DockShape)
             .padding(16.dp),
     ) {
-        Row(
-            horizontalArrangement = spacedBy(SlotSpacing),
-            verticalAlignment = CenterVertically,
+        BoxWithConstraints(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            val slotWidth = (maxWidth - SlotSpacing * (MAX_MIXTAPE_PICKS - 1)) / MAX_MIXTAPE_PICKS
             val slotModifier = Modifier
-                .weight(1F)
+                .width(slotWidth)
                 .aspectRatio(SLOT_RATIO)
 
-            picks.forEach { item ->
-                PickSlot(
-                    item = item,
-                    onRemoveClick = { onRemoveClick(item) },
-                    modifier = slotModifier,
-                )
-            }
+            Row(
+                horizontalArrangement = spacedBy(SlotSpacing),
+                verticalAlignment = CenterVertically,
+            ) {
+                picks.forEach { item ->
+                    PickSlot(
+                        item = item,
+                        onRemoveClick = { onRemoveClick(item) },
+                        modifier = slotModifier,
+                    )
+                }
 
-            if (picks.size < MAX_MIXTAPE_PICKS) {
-                AddSlot(
-                    first = !hasPicks,
-                    onClick = onAddClick,
-                    modifier = slotModifier,
-                )
-            }
-
-            val emptySlots = MAX_MIXTAPE_PICKS - picks.size - 1
-            if (emptySlots > 0) {
-                Spacer(modifier = Modifier.weight(emptySlots.toFloat()))
+                if (picks.size < MAX_MIXTAPE_PICKS) {
+                    AddSlot(
+                        first = !hasPicks,
+                        onClick = onAddClick,
+                        modifier = slotModifier,
+                    )
+                }
             }
         }
 
@@ -169,7 +169,7 @@ private fun DockCard(
                     hasPicks -> stringResource(R.string.text_mixtape_pick_count, picks.size.toString())
                     else -> stringResource(R.string.text_mixtape_pick_prompt)
                 },
-                style = TraktTheme.typography.paragraphSmall,
+                style = TraktTheme.typography.paragraphSmaller,
                 color = TraktTheme.colors.textSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -182,7 +182,7 @@ private fun DockCard(
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .padding(end = 8.dp)
+                        .padding(end = 6.dp)
                         .size(21.dp)
                         .onClick(onClick = onClearClick),
                 )

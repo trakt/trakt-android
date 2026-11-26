@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -238,7 +237,6 @@ private fun LazyGridScope.headerItems(
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = spacedBy(8.dp),
-            modifier = Modifier.padding(top = 8.dp),
         ) {
             Text(
                 text = stringResource(state.picker.kind.headerRes(state.type)),
