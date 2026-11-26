@@ -124,10 +124,7 @@ internal fun MixtapeScreen(
             searchState.clearText()
             viewModel.setType(it)
         },
-        onPickClick = {
-            searchState.clearText()
-            viewModel.pick(it)
-        },
+        onPickClick = viewModel::pick,
         onRemoveClick = viewModel::removePick,
         onClearClick = viewModel::clearPicks,
     )
