@@ -35,7 +35,6 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
-import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -48,7 +47,7 @@ private const val CAMERA_DISTANCE = 12F
 
 internal val SwipeCardShape = RoundedCornerShape(20.dp)
 private val StampStroke = 2.dp
-private val StampCorner = 8.dp
+private val StampCorner = 99.dp
 
 @Composable
 internal fun MixtapeSwipeCard(
@@ -98,7 +97,7 @@ internal fun MixtapeSwipeCard(
 
         CardStamp(
             text = stringResource(R.string.button_text_watchlist),
-            color = TraktTheme.colors.accent,
+            color = TraktTheme.colors.accentPalette.shade400,
             tilt = -STAMP_TILT,
             alpha = keepStrength,
             modifier = Modifier
@@ -107,7 +106,7 @@ internal fun MixtapeSwipeCard(
         )
         CardStamp(
             text = stringResource(R.string.button_text_mixtape_not_this),
-            color = Red400,
+            color = Color.White,
             tilt = STAMP_TILT,
             alpha = skipStrength,
             modifier = Modifier
@@ -198,6 +197,7 @@ private fun CardStamp(
     alpha: Float,
     modifier: Modifier = Modifier,
 ) {
+    val backgroundColor = color.copy(alpha = 0.15F)
     Text(
         text = text.uppercase(),
         style = TraktTheme.typography.heading6,
@@ -207,6 +207,7 @@ private fun CardStamp(
                 rotationZ = tilt
                 this.alpha = alpha
             }
+            .background(backgroundColor, RoundedCornerShape(StampCorner))
             .drawBehind {
                 val stroke = StampStroke.toPx()
                 drawRoundRect(
@@ -217,7 +218,7 @@ private fun CardStamp(
                     style = Stroke(stroke),
                 )
             }
-            .padding(horizontal = 10.dp, vertical = 4.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp),
     )
 }
 
