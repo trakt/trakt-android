@@ -47,13 +47,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.SingletonImageLoader
 import coil3.compose.AsyncImage
@@ -116,7 +114,6 @@ internal fun MixtapeDeck(
     var skipping by remember(current.item.key) { mutableStateOf(false) }
     var flipped by remember(current.item.key) { mutableStateOf(false) }
     var toast by remember { mutableStateOf<KeptToast?>(null) }
-    var cardInset by remember { mutableStateOf(0.dp) }
 
     PreloadPosters(suggestions = state.suggestions)
 
@@ -156,8 +153,9 @@ internal fun MixtapeDeck(
     ) {
         DeckBackdrop(item = current.item)
 
-        Column(
-            verticalArrangement = spacedBy(20.dp),
+        MixtapeDeckLayout(
+            cardRatio = POSTER_RATIO,
+            spacing = 20.dp,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -166,95 +164,91 @@ internal fun MixtapeDeck(
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
-        ) {
-            DeckHeader(
-                state = state,
-                slotsInset = cardInset,
-                onBackClick = onBackClick,
-            )
-
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .weight(1F)
-                    .fillMaxWidth()
-                    .onSizeChanged { size ->
-                        val cardWidth = minOf(size.width.toFloat(), size.height * POSTER_RATIO)
-                        cardInset = with(density) { ((size.width - cardWidth) / 2).toDp() }
-                    },
-            ) {
+            header = {
+                DeckHeader(
+                    state = state,
+                    onBackClick = onBackClick,
+                )
+            },
+            card = {
                 Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(POSTER_RATIO, matchHeightConstraintsFirst = true),
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
                 ) {
-                    BehindCard(
-                        next = state.next?.item,
-                        mystery = skipping || offsetX.value < 0F,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                    MixtapeSwipeCard(
-                        suggestion = current,
-                        offsetX = offsetX.value,
-                        commitDistance = commitDistance,
-                        flipped = flipped,
+                    Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .pointerInput(current.item.key) {
-                                detectHorizontalDragGestures(
-                                    onDragEnd = {
-                                        when {
-                                            offsetX.value > commitDistance -> commit(keep = true)
-                                            offsetX.value < -commitDistance -> commit(keep = false)
-                                            else -> scope.launch { offsetX.animateTo(0F, spring()) }
-                                        }
-                                    },
-                                    onDragCancel = {
-                                        scope.launch { offsetX.animateTo(0F, spring()) }
-                                    },
-                                ) { change, amount ->
-                                    if (leaving) return@detectHorizontalDragGestures
-                                    change.consume()
-                                    scope.launch { offsetX.snapTo(offsetX.value + amount) }
+                            .fillMaxHeight()
+                            .aspectRatio(POSTER_RATIO, matchHeightConstraintsFirst = true),
+                    ) {
+                        BehindCard(
+                            next = state.next?.item,
+                            mystery = skipping || offsetX.value < 0F,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                        MixtapeSwipeCard(
+                            suggestion = current,
+                            offsetX = offsetX.value,
+                            commitDistance = commitDistance,
+                            flipped = flipped,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .pointerInput(current.item.key) {
+                                    detectHorizontalDragGestures(
+                                        onDragEnd = {
+                                            when {
+                                                offsetX.value > commitDistance -> commit(keep = true)
+                                                offsetX.value < -commitDistance -> commit(keep = false)
+                                                else -> scope.launch { offsetX.animateTo(0F, spring()) }
+                                            }
+                                        },
+                                        onDragCancel = {
+                                            scope.launch { offsetX.animateTo(0F, spring()) }
+                                        },
+                                    ) { change, amount ->
+                                        if (leaving) return@detectHorizontalDragGestures
+                                        change.consume()
+                                        scope.launch { offsetX.snapTo(offsetX.value + amount) }
+                                    }
                                 }
-                            }
-                            .onClick {
-                                if (leaving) return@onClick
-                                flipped = !flipped
-                                if (flipped) onOpen()
-                            },
-                    )
+                                .onClick {
+                                    if (leaving) return@onClick
+                                    flipped = !flipped
+                                    if (flipped) onOpen()
+                                },
+                        )
+                    }
+
+                    toast?.let {
+                        Text(
+                            text = stringResource(R.string.text_mixtape_kept_toast, it.title, it.left),
+                            style = TraktTheme.typography.meta,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(top = 12.dp)
+                                .background(TraktTheme.colors.navigationContainer, RoundedCornerShape(100))
+                                .padding(horizontal = 14.dp, vertical = 8.dp),
+                        )
+                    }
                 }
-
-                toast?.let {
-                    Text(
-                        text = stringResource(R.string.text_mixtape_kept_toast, it.title, it.left),
-                        style = TraktTheme.typography.meta,
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(top = 12.dp)
-                            .background(TraktTheme.colors.navigationContainer, RoundedCornerShape(100))
-                            .padding(horizontal = 14.dp, vertical = 8.dp),
-                    )
-                }
-            }
-
-            DeckText(
-                suggestion = current,
-                becauseTitle = state.pickTitles[current.because],
-            )
-
-            DeckActions(
-                modifier = Modifier.padding(horizontal = cardInset),
-                keepStrength = keepStrength,
-                skipStrength = skipStrength,
-                onSkipClick = { commit(keep = false) },
-                onKeepClick = { commit(keep = true) },
-            )
-        }
+            },
+            text = {
+                DeckText(
+                    suggestion = current,
+                    becauseTitle = state.pickTitles[current.because],
+                )
+            },
+            actions = {
+                DeckActions(
+                    keepStrength = keepStrength,
+                    skipStrength = skipStrength,
+                    onSkipClick = { commit(keep = false) },
+                    onKeepClick = { commit(keep = true) },
+                )
+            },
+        )
     }
 }
 
@@ -299,7 +293,6 @@ private fun DeckBackdrop(item: MixtapeItem) {
 @Composable
 private fun DeckHeader(
     state: MixtapeResultsState,
-    slotsInset: Dp,
     onBackClick: () -> Unit,
 ) {
     val remaining = MIXTAPE_SLOT_COUNT - state.position
@@ -346,22 +339,13 @@ private fun DeckHeader(
             )
         }
 
-        GoalSlots(
-            round = state.round,
-            modifier = Modifier.padding(end = slotsInset),
-        )
+        GoalSlots(round = state.round)
     }
 }
 
 @Composable
-private fun GoalSlots(
-    round: ImmutableList<MixtapeItem>,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        horizontalArrangement = spacedBy(6.dp),
-        modifier = modifier,
-    ) {
+private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
+    Row(horizontalArrangement = spacedBy(6.dp)) {
         repeat(MIXTAPE_SLOT_COUNT) { index ->
             val kept = round.getOrNull(index)
             val borderColor = when (index) {
@@ -447,7 +431,7 @@ private fun DeckText(
             Text(
                 text = stringResource(R.string.text_mixtape_because, it).uppercase(),
                 style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.accent,
+                color = TraktTheme.colors.accentPalette.shade400,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -492,7 +476,7 @@ private fun DeckActions(
 
         Row(
             verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(4.dp),
+            horizontalArrangement = spacedBy(8.dp),
             modifier = Modifier.height(ActionSize),
         ) {
             Icon(
@@ -500,19 +484,19 @@ private fun DeckActions(
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
-                    .size(14.dp)
+                    .size(16.dp)
                     .graphicsLayer { rotationZ = 180F },
             )
             Text(
                 text = stringResource(R.string.text_mixtape_or_swipe),
-                style = TraktTheme.typography.meta,
+                style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
             )
             Icon(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier.size(14.dp),
+                modifier = Modifier.size(16.dp),
             )
         }
 
