@@ -7,8 +7,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -25,8 +27,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -117,7 +123,7 @@ private fun CardFront(
             .background(TraktTheme.colors.placeholderContainer),
     ) {
         AsyncImage(
-            model = suggestion.item.images?.getPosterUrl(),
+            model = suggestion.item.images?.getPosterUrl(Size.MEDIUM),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
@@ -195,3 +201,73 @@ private fun CardStamp(
             .padding(horizontal = 10.dp, vertical = 4.dp),
     )
 }
+
+@PreviewTraktLightDark
+@Composable
+private fun FrontPreview() {
+    TraktThemePreview {
+        MixtapeSwipeCard(
+            suggestion = previewSuggestion,
+            offsetX = 0F,
+            commitDistance = 300F,
+            flipped = false,
+            modifier = Modifier
+                .width(240.dp)
+                .aspectRatio(2F / 3F),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun KeepDragPreview() {
+    TraktThemePreview {
+        MixtapeSwipeCard(
+            suggestion = previewSuggestion,
+            offsetX = 200F,
+            commitDistance = 300F,
+            flipped = false,
+            modifier = Modifier
+                .width(240.dp)
+                .aspectRatio(2F / 3F),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun SkipDragPreview() {
+    TraktThemePreview {
+        MixtapeSwipeCard(
+            suggestion = previewSuggestion,
+            offsetX = -200F,
+            commitDistance = 300F,
+            flipped = false,
+            modifier = Modifier
+                .width(240.dp)
+                .aspectRatio(2F / 3F),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun BackPreview() {
+    TraktThemePreview {
+        MixtapeSwipeCard(
+            suggestion = previewSuggestion,
+            offsetX = 0F,
+            commitDistance = 300F,
+            flipped = true,
+            modifier = Modifier
+                .width(240.dp)
+                .aspectRatio(2F / 3F),
+        )
+    }
+}
+
+private val previewSuggestion = Suggestion(
+    item = MixtapeItem.ShowItem(PreviewData.show1),
+    because = PreviewData.show2.ids.trakt,
+    match = 88,
+)

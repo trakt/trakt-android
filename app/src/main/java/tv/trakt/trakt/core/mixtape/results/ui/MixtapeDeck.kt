@@ -56,13 +56,18 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MIXTAPE_SLOT_COUNT
 import tv.trakt.trakt.core.mixtape.results.MixtapeResultsState
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -535,6 +540,55 @@ private fun DeckAction(
             text = label,
             style = TraktTheme.typography.meta,
             color = if (filled) TraktTheme.colors.accent else TraktTheme.colors.textSecondary,
+        )
+    }
+}
+
+private val previewSuggestions = persistentListOf(
+    Suggestion(
+        item = MixtapeItem.ShowItem(PreviewData.show1),
+        because = PreviewData.show2.ids.trakt,
+        match = 88,
+    ),
+    Suggestion(
+        item = MixtapeItem.MovieItem(PreviewData.movie1),
+        because = PreviewData.show2.ids.trakt,
+        match = 81,
+    ),
+    Suggestion(
+        item = MixtapeItem.MovieItem(PreviewData.movie2),
+        because = PreviewData.show2.ids.trakt,
+        match = 74,
+    ),
+)
+
+private val previewState = MixtapeResultsState(
+    loading = false,
+    suggestions = previewSuggestions,
+    slots = previewSuggestions,
+    pickTitles = persistentMapOf(PreviewData.show2.ids.trakt to PreviewData.show2.title),
+)
+
+@PreviewTraktLightDark
+@Composable
+private fun Preview() {
+    TraktThemePreview {
+        MixtapeDeck(
+            state = previewState,
+            current = previewSuggestions[0],
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun KeptPreview() {
+    TraktThemePreview {
+        MixtapeDeck(
+            state = previewState.copy(
+                rounds = persistentListOf(persistentListOf(previewSuggestions[0].item)),
+            ),
+            current = previewSuggestions[1],
         )
     }
 }
