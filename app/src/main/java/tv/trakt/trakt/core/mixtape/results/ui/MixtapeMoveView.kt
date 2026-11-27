@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -133,7 +134,7 @@ private fun MoveOption(
         onClick = onClick,
     ) {
         Column(
-            verticalArrangement = spacedBy(2.dp),
+            verticalArrangement = spacedBy(1.dp),
             modifier = Modifier.weight(1F),
         ) {
             Text(
@@ -197,6 +198,7 @@ private fun OptionContainer(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = OptionMinHeight)
+            .shadow(elevation = TraktTheme.colors.shadowDynamicSmall, shape = OptionShape)
             .clip(OptionShape)
             .background(TraktTheme.colors.dialogOnContainer)
             .border(
@@ -212,7 +214,7 @@ private fun OptionContainer(
             Icon(
                 painter = painterResource(R.drawable.ic_check),
                 contentDescription = null,
-                tint = TraktTheme.colors.accent,
+                tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier.size(18.dp),
             )
         }

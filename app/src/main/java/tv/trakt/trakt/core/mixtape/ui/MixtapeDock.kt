@@ -209,6 +209,7 @@ private fun DockCard(
                 text = stringResource(R.string.button_text_mix_it),
                 enabled = hasPicks,
                 onClick = onMixClick,
+                height = 36.dp,
                 modifier = Modifier.widthIn(min = MixButtonMinWidth),
             )
         }
