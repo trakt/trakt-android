@@ -24,10 +24,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
+import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.mixtape.model.MixtapeTarget
+import tv.trakt.trakt.core.mixtape.results.MixtapeResultsEvent.KeepFailed
+import tv.trakt.trakt.core.mixtape.results.MixtapeResultsEvent.MoveFailed
+import tv.trakt.trakt.core.mixtape.results.MixtapeResultsEvent.Moved
 import tv.trakt.trakt.core.mixtape.results.ui.MixtapeDeck
 import tv.trakt.trakt.core.mixtape.results.ui.MixtapeDone
 import tv.trakt.trakt.core.mixtape.results.ui.MixtapeMoveSheet
@@ -59,7 +70,7 @@ internal fun MixtapeResultsScreen(
         viewModel.events.collect { event ->
             val watchlistName = resources.getString(R.string.page_title_watchlist)
             when (event) {
-                is MixtapeResultsEvent.Moved -> {
+                is Moved -> {
                     val result = snackbar.showSnackbar(
                         message = resources.getString(
                             R.string.text_mixtape_moved,
@@ -71,10 +82,10 @@ internal fun MixtapeResultsScreen(
                     )
                     if (result == SnackbarResult.ActionPerformed) viewModel.undoMove()
                 }
-                MixtapeResultsEvent.MoveFailed -> {
+                is MoveFailed -> {
                     snackbar.showSnackbar(resources.getString(R.string.text_mixtape_move_failed))
                 }
-                is MixtapeResultsEvent.KeepFailed -> {
+                is KeepFailed -> {
                     snackbar.showSnackbar(resources.getString(R.string.text_mixtape_keep_failed, event.title))
                 }
             }
@@ -187,6 +198,61 @@ private fun LoadingPreview() {
     TraktThemePreview {
         MixtapeResultsContent(
             state = MixtapeResultsState(),
+        )
+    }
+}
+
+private val previewSuggestions = persistentListOf(
+    Suggestion(
+        item = MixtapeItem.ShowItem(PreviewData.show1),
+        because = PreviewData.show2.ids.trakt,
+        match = 88,
+    ),
+    Suggestion(
+        item = MixtapeItem.MovieItem(PreviewData.movie1),
+        because = PreviewData.show2.ids.trakt,
+        match = 81,
+    ),
+    Suggestion(
+        item = MixtapeItem.MovieItem(PreviewData.movie2),
+        because = PreviewData.show2.ids.trakt,
+        match = 74,
+    ),
+)
+
+private val previewState = MixtapeResultsState(
+    loading = false,
+    suggestions = previewSuggestions,
+    slots = previewSuggestions,
+    pickTitles = persistentMapOf(PreviewData.show2.ids.trakt to PreviewData.show2.title),
+)
+
+@PreviewTraktLightDark
+@Composable
+private fun DeckPreview() {
+    TraktThemePreview {
+        MixtapeResultsContent(
+            state = previewState,
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun DonePreview() {
+    TraktThemePreview {
+        MixtapeResultsContent(
+            state = previewState.copy(
+                rounds = persistentListOf(
+                    persistentListOf(previewSuggestions[0].item),
+                    previewSuggestions.map { it.item }.toImmutableList(),
+                ),
+                savedTo = MixtapeTarget.PersonalList(
+                    id = TraktId(1),
+                    ownerId = TraktId(1),
+                    name = "Weekend picks",
+                ),
+            ),
         )
     }
 }
