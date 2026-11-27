@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.mixtape.results
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,8 @@ internal fun MixtapeResultsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HideBottomBar()
+
+    BackHandler(onBack = onNavigateClose)
 
     MixtapeResultsContent(
         state = state,
@@ -79,7 +82,7 @@ private fun MixtapeResultsContent(
                 onKeep = onKeep,
                 onSkip = onSkip,
                 onOpen = onOpen,
-                onBackClick = onChangePicksClick,
+                onBackClick = onCloseClick,
             )
         }
     }
