@@ -282,7 +282,7 @@ private fun DoneButtons(
     onStartOverClick: () -> Unit,
 ) {
     Column(verticalArrangement = spacedBy(12.dp)) {
-        Row(horizontalArrangement = spacedBy(12.dp)) {
+        Row(horizontalArrangement = spacedBy(8.dp)) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_mixtape_finish),
                 onClick = onDoneClick,
@@ -298,7 +298,8 @@ private fun DoneButtons(
                 )
             }
         }
-        Row(horizontalArrangement = spacedBy(12.dp)) {
+
+        Row(horizontalArrangement = spacedBy(8.dp)) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_mixtape_change_picks),
                 border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
