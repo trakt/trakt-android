@@ -115,6 +115,7 @@ internal fun MixtapeDone(
         } else {
             SavedToRow(
                 name = state.savedTo.displayName(stringResource(R.string.page_title_watchlist)),
+                moving = state.moving,
                 onClick = onSavedToClick,
             )
 
@@ -188,6 +189,7 @@ private fun DoneHeader(
 @Composable
 private fun SavedToRow(
     name: String,
+    moving: Boolean,
     onClick: () -> Unit,
 ) {
     Row(
@@ -217,11 +219,15 @@ private fun SavedToRow(
             text = stringResource(R.string.button_text_mixtape_change_target),
             textStyle = TraktTheme.typography.buttonTertiary,
             onClick = onClick,
+            enabled = !moving,
+            loading = moving,
             height = ChangeButtonHeight,
             contentPadding = 14.dp,
             border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
             containerColor = Color.Transparent,
             contentColor = TraktTheme.colors.textPrimary,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = TraktTheme.colors.textPrimary,
         )
     }
 }
@@ -333,6 +339,23 @@ private fun Preview() {
                         MixtapeItem.MovieItem(PreviewData.movie1),
                     ),
                     persistentListOf(MixtapeItem.MovieItem(PreviewData.movie2)),
+                ),
+                pickTitles = persistentMapOf(PreviewData.show2.ids.trakt to PreviewData.show2.title),
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun MovingPreview() {
+    TraktThemePreview {
+        MixtapeDone(
+            state = MixtapeResultsState(
+                loading = false,
+                moving = true,
+                rounds = persistentListOf(
+                    persistentListOf(MixtapeItem.MovieItem(PreviewData.movie1)),
                 ),
                 pickTitles = persistentMapOf(PreviewData.show2.ids.trakt to PreviewData.show2.title),
             ),

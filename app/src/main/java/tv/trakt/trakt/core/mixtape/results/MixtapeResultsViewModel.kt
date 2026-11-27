@@ -236,6 +236,7 @@ internal class MixtapeResultsViewModel(
 
     fun undoMove(move: MixtapeMove) {
         viewModelScope.launch {
+            movingState.update { true }
             try {
                 withContext(NonCancellable) {
                     saveUseCase.undoMove(
@@ -251,6 +252,8 @@ internal class MixtapeResultsViewModel(
                     Timber.recordError(error)
                 }
                 eventsFlow.emit(MixtapeResultsEvent.MoveFailed)
+            } finally {
+                movingState.update { false }
             }
         }
     }
