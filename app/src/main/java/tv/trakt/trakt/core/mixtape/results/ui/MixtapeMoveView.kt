@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -47,7 +48,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val OptionShape = RoundedCornerShape(12.dp)
 private val OptionMinHeight = 52.dp
-private val ListMaxHeight = 320.dp
+private val PreviewHeight = 600.dp
 
 @Composable
 internal fun MixtapeMoveView(
@@ -82,7 +83,7 @@ internal fun MixtapeMoveView(
         Column(
             verticalArrangement = spacedBy(8.dp),
             modifier = Modifier
-                .heightIn(max = ListMaxHeight)
+                .weight(1F)
                 .verticalScroll(rememberScrollState(), overscrollEffect = null),
         ) {
             (listOf(Watchlist) + lists).forEach { target ->
@@ -238,6 +239,7 @@ private fun Preview() {
             suggestedName = "Mixtape: The Pitt + Severance",
             moving = false,
             modifier = Modifier
+                .height(PreviewHeight)
                 .background(TraktTheme.colors.dialogContainer)
                 .padding(24.dp),
         )

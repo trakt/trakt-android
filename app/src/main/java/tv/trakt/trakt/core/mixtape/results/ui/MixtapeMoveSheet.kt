@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.mixtape.results.ui
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.core.mixtape.model.MixtapeTarget
 import tv.trakt.trakt.core.mixtape.model.MixtapeTarget.PersonalList
 import tv.trakt.trakt.ui.components.TraktBottomSheet
+
+private const val SHEET_HEIGHT_FRACTION = 0.85F
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +65,7 @@ internal fun MixtapeMoveSheet(
                     hide()
                 },
                 modifier = Modifier
+                    .fillMaxHeight(SHEET_HEIGHT_FRACTION)
                     .padding(bottom = 24.dp)
                     .padding(horizontal = 24.dp),
             )
