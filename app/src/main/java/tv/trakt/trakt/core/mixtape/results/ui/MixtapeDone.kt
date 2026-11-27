@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.mixtape.results.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +49,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private const val DONE_COLUMNS = 3
 
 private val SavedToShape = RoundedCornerShape(12.dp)
+private val ChangeButtonHeight = 32.dp
 
 private data class DoneRound(
     val number: Int,
@@ -193,13 +196,12 @@ private fun SavedToRow(
         modifier = Modifier
             .fillMaxWidth()
             .background(TraktTheme.colors.panelCardContainer, SavedToShape)
-            .onClick(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 12.dp),
+            .padding(start = 14.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_bookmark_on),
             contentDescription = null,
-            tint = TraktTheme.colors.accent,
+            tint = TraktTheme.colors.textPrimary,
             modifier = Modifier.size(18.dp),
         )
         Text(
@@ -210,10 +212,14 @@ private fun SavedToRow(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1F),
         )
-        Text(
+        PrimaryButton(
             text = stringResource(R.string.button_text_mixtape_change_target),
-            style = TraktTheme.typography.meta,
-            color = TraktTheme.colors.textSecondary,
+            onClick = onClick,
+            height = ChangeButtonHeight,
+            contentPadding = 14.dp,
+            border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+            containerColor = Color.Transparent,
+            contentColor = TraktTheme.colors.textPrimary,
         )
     }
 }
