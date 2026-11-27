@@ -92,7 +92,7 @@ internal fun MixtapeSwipeCard(
 
         CardStamp(
             text = stringResource(R.string.button_text_watchlist),
-            color = TraktTheme.colors.sentimentsGoodAccent,
+            color = TraktTheme.colors.accent,
             tilt = -STAMP_TILT,
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -131,7 +131,7 @@ private fun CardFront(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(TraktTheme.colors.sentimentsGoodAccent.copy(alpha = TINT_ALPHA * keepStrength)),
+                .background(TraktTheme.colors.accent.copy(alpha = TINT_ALPHA * keepStrength)),
         )
         Box(
             modifier = Modifier
