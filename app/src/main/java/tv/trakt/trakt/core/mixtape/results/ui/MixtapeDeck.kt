@@ -53,6 +53,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import coil3.SingletonImageLoader
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
@@ -73,17 +74,20 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val LEAVE_DURATION_MS = 260
 private const val TOAST_DURATION_MS = 2200L
 private const val LEAVE_DISTANCE_RATIO = 1.2F
 private const val BEHIND_SCALE = 0.94F
+private const val BEHIND_ALPHA = 0.5F
 private const val BACKDROP_ALPHA = 0.35F
 private const val ACTION_SCALE_BOOST = 0.2F
 private const val POSTER_RATIO = 2F / 3F
 
 private val SwipeCommitDistance = 100.dp
+private val BehindOffset = 14.dp
 private val ActionSize = 56.dp
 private val GoalSlotShape = RoundedCornerShape(6.dp)
 private val GoalSlotWidth = 32.dp
@@ -183,6 +187,7 @@ internal fun MixtapeDeck(
                         BehindCard(
                             next = state.next?.item,
                             mystery = skipping || offsetX.value < 0F,
+                            progress = abs(offsetX.value) / (windowWidth * LEAVE_DISTANCE_RATIO).coerceAtLeast(1F),
                             modifier = Modifier.fillMaxSize(),
                         )
                         MixtapeSwipeCard(
@@ -384,15 +389,19 @@ private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
 private fun BehindCard(
     next: MixtapeItem?,
     mystery: Boolean,
+    progress: Float,
     modifier: Modifier = Modifier,
 ) {
+    val reveal = progress.coerceIn(0F, 1F)
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .graphicsLayer {
-                scaleX = BEHIND_SCALE
-                scaleY = BEHIND_SCALE
-                translationY = 14.dp.toPx()
+                val scale = lerp(BEHIND_SCALE, 1F, reveal)
+                scaleX = scale
+                scaleY = scale
+                translationY = lerp(BehindOffset.toPx(), 0F, reveal)
             }
             .clip(SwipeCardShape)
             .background(TraktTheme.colors.navigationContainer),
@@ -404,7 +413,7 @@ private fun BehindCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .graphicsLayer { alpha = 0.5F },
+                    .graphicsLayer { alpha = lerp(BEHIND_ALPHA, 1F, reveal) },
             )
         } else {
             Icon(
