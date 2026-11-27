@@ -150,6 +150,7 @@ internal fun MixtapeDone(
 
         DoneButtons(
             canFindMore = state.slots.isNotEmpty(),
+            moving = state.moving,
             onFindMoreClick = onFindMoreClick,
             onDoneClick = onCloseClick,
             onChangePicksClick = onChangePicksClick,
@@ -282,6 +283,7 @@ private fun KeptPoster(
 @Composable
 private fun DoneButtons(
     canFindMore: Boolean,
+    moving: Boolean,
     onFindMoreClick: () -> Unit,
     onDoneClick: () -> Unit,
     onChangePicksClick: () -> Unit,
@@ -300,6 +302,7 @@ private fun DoneButtons(
                 PrimaryButton(
                     text = stringResource(R.string.button_text_mixtape_show_more),
                     onClick = onFindMoreClick,
+                    enabled = !moving,
                     modifier = Modifier.weight(1F),
                 )
             }

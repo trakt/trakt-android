@@ -42,8 +42,14 @@ internal class SaveMixtapeUseCase(
         items: List<MixtapeItem>,
     ): List<MixtapeItem> {
         val added = notYetIn(to, items)
-        add(to, items)
-        remove(from, items)
+        try {
+            add(to, items)
+            remove(from, items)
+        } catch (error: Exception) {
+            // A partial move leaves titles split across both targets, so restore the source first.
+            undoMove(from = from, to = to, items = items, added = added)
+            throw error
+        }
         return added
     }
 

@@ -16,6 +16,7 @@ internal data class MixtapeState(
     val picker: MixtapePicker = MixtapePicker(),
     val loading: Boolean = true,
     val settling: Boolean = false,
+    val historyError: Exception? = null,
 ) {
     val isFull: Boolean
         get() = picks.size >= MAX_MIXTAPE_PICKS

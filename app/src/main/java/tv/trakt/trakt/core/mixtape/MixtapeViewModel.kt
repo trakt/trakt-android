@@ -87,6 +87,8 @@ internal class MixtapeViewModel(
     private val deepTimedOutState = MutableStateFlow<List<TraktId>?>(null)
     private val knownState = MutableStateFlow<PersistentMap<TraktId, MixtapeItem>>(persistentMapOf())
     private val vectorsState = MutableStateFlow(MixtapeVectors())
+    private val historyErrorState = MutableStateFlow<Exception?>(null)
+    private val historyRetryState = MutableStateFlow(0)
 
     private val requestedVectorIds = mutableSetOf<TraktId>()
     private val pickerHold = MixtapePickerHold()
@@ -134,9 +136,10 @@ internal class MixtapeViewModel(
 
     private fun observeHistory() {
         viewModelScope.launch {
-            typeState.collectLatest { type ->
+            combine(typeState, historyRetryState) { type, _ -> type }.collectLatest { type ->
                 try {
                     historyLoadingState.update { true }
+                    historyErrorState.update { null }
                     val history = getHistoryUseCase.getHistory(type)
                     historyState.update { history }
                     addKnown(history)
@@ -144,6 +147,7 @@ internal class MixtapeViewModel(
                 } catch (error: Exception) {
                     error.rethrowCancellation {
                         Timber.recordError(error)
+                        historyErrorState.update { error }
                     }
                 } finally {
                     historyLoadingState.update { false }
@@ -251,6 +255,10 @@ internal class MixtapeViewModel(
         }
     }
 
+    fun retryHistory() {
+        historyRetryState.update { it + 1 }
+    }
+
     fun setType(type: MediaType) {
         if (type == typeState.value) return
 
@@ -334,6 +342,7 @@ internal class MixtapeViewModel(
         deepTimedOutState,
         knownState,
         vectorsState,
+        historyErrorState,
     ) { state ->
         val type = state[0] as MediaType
         val query = state[1] as String
@@ -381,6 +390,7 @@ internal class MixtapeViewModel(
                 (settling && (shown === picker || shown.items.isEmpty())) ||
                 searchPending,
             settling = settling,
+            historyError = state[11] as Exception?,
         )
     }.flowOn(Dispatchers.Default)
         .stateIn(

@@ -173,6 +173,7 @@ internal class MixtapeResultsViewModel(
     }
 
     fun findMore() {
+        if (movingState.value) return
         val ids = slots().map { it.item.id }
         skipsState.update { (it + ids).toImmutableList() }
         roundsState.update { (it + listOf(persistentListOf<MixtapeItem>())).toImmutableList() }

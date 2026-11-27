@@ -80,6 +80,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -125,6 +126,7 @@ internal fun MixtapeScreen(
         onPickClick = viewModel::pick,
         onRemoveClick = viewModel::removePick,
         onClearClick = viewModel::clearPicks,
+        onRetryClick = viewModel::retryHistory,
         onMixClick = {
             viewModel.logMix()
             onNavigateToResults(state.type, state.picks)
@@ -142,6 +144,7 @@ private fun MixtapeContent(
     onPickClick: (MixtapeItem) -> Unit = {},
     onRemoveClick: (MixtapeItem) -> Unit = {},
     onClearClick: () -> Unit = {},
+    onRetryClick: () -> Unit = {},
     onMixClick: () -> Unit = {},
 ) {
     val density = LocalDensity.current
@@ -188,6 +191,7 @@ private fun MixtapeContent(
                 state = state,
                 gridState = gridState,
                 departedKeys = departedKeys,
+                onRetryClick = onRetryClick,
                 onPickClick = { item, posterBounds ->
                     focusManager.clearFocus()
                     val target = addSlotBounds
@@ -363,6 +367,7 @@ private fun LazyGridScope.pickerItems(
     state: MixtapeState,
     gridState: LazyGridState,
     departedKeys: ImmutableSet<String>,
+    onRetryClick: () -> Unit,
     onPickClick: (MixtapeItem, Rect) -> Unit,
 ) {
     when {
@@ -376,6 +381,8 @@ private fun LazyGridScope.pickerItems(
                     .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace),
             )
         }
+
+        state.picker.kind == MixtapePicker.Kind.Recent && state.historyError != null -> errorItem(onRetryClick)
 
         state.picker.items.isEmpty() -> messageItem(
             textRes = when (state.picker.kind) {
@@ -404,6 +411,22 @@ private fun LazyGridScope.pickerItems(
                         },
                     )
                     .animateItem(),
+            )
+        }
+    }
+}
+
+private fun LazyGridScope.errorItem(onRetryClick: () -> Unit) {
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Column(verticalArrangement = spacedBy(12.dp)) {
+            Text(
+                text = stringResource(R.string.error_text_unexpected_error_short),
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textSecondary,
+            )
+            PrimaryButton(
+                text = stringResource(R.string.button_text_retry),
+                onClick = onRetryClick,
             )
         }
     }
@@ -602,6 +625,16 @@ private fun Preview() {
     TraktThemePreview {
         MixtapeContent(
             state = MixtapeState(loading = false),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun ErrorPreview() {
+    TraktThemePreview {
+        MixtapeContent(
+            state = MixtapeState(loading = false, historyError = Exception()),
         )
     }
 }
