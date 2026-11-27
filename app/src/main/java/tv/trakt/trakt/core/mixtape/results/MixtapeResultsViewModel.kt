@@ -72,6 +72,7 @@ internal class MixtapeResultsViewModel(
     val events = eventsFlow.asSharedFlow()
 
     private val pendingKeeps = mutableSetOf<Job>()
+    private var lastMove: MixtapeMove? = null
 
     init {
         loadMixtape()
@@ -215,17 +216,17 @@ internal class MixtapeResultsViewModel(
         from: MixtapeTarget,
         to: MixtapeTarget,
     ) {
-        pendingKeeps.toList().joinAll()
-        val items = kept()
         try {
-            val added = withContext(NonCancellable) { saveUseCase.move(from = from, to = to, items = items) }
+            // The target change is accepted once picked, so leaving the screen must not cancel it.
+            val move = withContext(NonCancellable) {
+                pendingKeeps.toList().joinAll()
+                val items = kept()
+                val added = saveUseCase.move(from = from, to = to, items = items)
+                MixtapeMove(from = from, to = to, items = items, added = added)
+            }
             savedToState.update { to }
-            eventsFlow.emit(
-                MixtapeResultsEvent.Moved(
-                    count = items.size,
-                    move = MixtapeMove(from = from, to = to, items = items, added = added),
-                ),
-            )
+            lastMove = move
+            eventsFlow.emit(MixtapeResultsEvent.Moved(count = move.items.size, move = move))
         } catch (error: Exception) {
             error.rethrowCancellation {
                 Timber.recordError(error)
@@ -235,6 +236,9 @@ internal class MixtapeResultsViewModel(
     }
 
     fun undoMove(move: MixtapeMove) {
+        if (move != lastMove || movingState.value) return
+        lastMove = null
+
         viewModelScope.launch {
             movingState.update { true }
             try {

@@ -100,7 +100,10 @@ internal fun MixtapeResultsScreen(
         onSkip = viewModel::skip,
         onOpen = viewModel::open,
         onFindMoreClick = viewModel::findMore,
-        onSavedToClick = { moveSheet = true },
+        onSavedToClick = {
+            snackbar.currentSnackbarData?.dismiss()
+            moveSheet = true
+        },
         onChangePicksClick = onNavigateBack,
         onStartOverClick = { onNavigateStartOver(state.type) },
         onCloseClick = onNavigateClose,

@@ -5,6 +5,8 @@ import tv.trakt.trakt.common.core.lists.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem.MovieItem
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem.ShowItem
@@ -20,6 +22,8 @@ internal class SaveMixtapeUseCase(
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
+    private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val watchlistLocalSource: UserWatchlistMinimalLocalSource,
     private val dataChanges: DataChanges,
 ) {
     suspend fun keep(
@@ -110,13 +114,25 @@ internal class SaveMixtapeUseCase(
         items: List<MixtapeItem>,
     ): List<MixtapeItem> {
         return when (target) {
-            Watchlist -> items
-            is PersonalList -> items.filterNot {
-                val lists = when (it) {
-                    is MovieItem -> loadListsUseCase.loadMovieLists(it.id)
-                    is ShowItem -> loadListsUseCase.loadShowLists(it.id)
+            Watchlist -> {
+                if (!loadWatchlistUseCase.isLoaded()) {
+                    loadWatchlistUseCase.loadWatchlist()
                 }
-                target.id in lists
+                items.filterNot {
+                    when (it) {
+                        is MovieItem -> watchlistLocalSource.containsMovie(it.id)
+                        is ShowItem -> watchlistLocalSource.containsShow(it.id)
+                    }
+                }
+            }
+            is PersonalList -> {
+                items.filterNot {
+                    val lists = when (it) {
+                        is MovieItem -> loadListsUseCase.loadMovieLists(it.id)
+                        is ShowItem -> loadListsUseCase.loadShowLists(it.id)
+                    }
+                    target.id in lists
+                }
             }
         }
     }
