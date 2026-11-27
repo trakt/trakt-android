@@ -165,8 +165,8 @@ internal class MixtapeViewModel(
                 .map { it.trim() }
                 .distinctUntilChanged()
                 .debounce(SEARCH_DEBOUNCE)
-            combine(queries, retries(MixtapePicker.Kind.Search)) { query, _ -> query }
-                .collectLatest { query ->
+            combine(queries, typeState, retries(MixtapePicker.Kind.Search)) { query, type, _ -> query to type }
+                .collectLatest { (query, type) ->
                     setFailed(MixtapePicker.Kind.Search, false)
                     if (query.isEmpty()) {
                         searchResultsState.update { persistentListOf() }
@@ -176,7 +176,6 @@ internal class MixtapeViewModel(
 
                     try {
                         searchLoadingState.update { true }
-                        val type = typeState.value
                         val results = getHistoryUseCase.getHistory(type, query)
                         searchResultsState.update { results }
                         addKnown(results)

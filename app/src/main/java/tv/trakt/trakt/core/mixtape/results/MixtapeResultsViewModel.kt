@@ -203,9 +203,11 @@ internal class MixtapeResultsViewModel(
         viewModelScope.launch {
             movingState.update { true }
             try {
-                val list = withContext(NonCancellable) { getListsUseCase.createList(name) }
-                listsState.update { (it + list).toImmutableList() }
-                transfer(from = savedToState.value, to = list)
+                withContext(NonCancellable) {
+                    val list = getListsUseCase.createList(name)
+                    listsState.update { (it + list).toImmutableList() }
+                    transfer(from = savedToState.value, to = list)
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
