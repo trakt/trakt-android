@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.mixtape.results.ui
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -80,8 +82,9 @@ private const val LEAVE_DURATION_MS = 260
 private const val LEAVE_DISTANCE_RATIO = 1.2F
 private const val BEHIND_SCALE = 0.94F
 private const val BEHIND_ALPHA = 0.5F
+private const val BEHIND_FADE_MS = 150
 private const val BACKDROP_ALPHA = 0.35F
-private const val BACKDROP_FADE_MS = 500
+private const val BACKDROP_FADE_MS = 350
 private const val ACTION_SCALE_BOOST = 0.1F
 private const val POSTER_RATIO = 2F / 3F
 
@@ -110,6 +113,15 @@ internal fun MixtapeDeck(
     var leaving by remember(current.item.key) { mutableStateOf(false) }
     var skipping by remember(current.item.key) { mutableStateOf(false) }
     var flipped by remember(current.item.key) { mutableStateOf(false) }
+    val behindHidden = flipped && offsetX.value == 0F
+    val behindAlpha by animateFloatAsState(
+        targetValue = if (behindHidden) 0F else 1F,
+        animationSpec = when {
+            flipped -> snap()
+            else -> tween(durationMillis = BEHIND_FADE_MS, delayMillis = FLIP_DURATION_MS)
+        },
+        label = "behindAlpha",
+    )
 
     PreloadPosters(suggestions = state.suggestions)
 
@@ -172,7 +184,9 @@ internal fun MixtapeDeck(
                             next = state.next?.item,
                             mystery = skipping || offsetX.value < 0F,
                             progress = abs(offsetX.value) / (windowWidth * LEAVE_DISTANCE_RATIO).coerceAtLeast(1F),
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .graphicsLayer { alpha = behindAlpha },
                         )
                         MixtapeSwipeCard(
                             suggestion = current,
@@ -413,7 +427,7 @@ private fun DeckText(
     ) {
         becauseTitle?.let {
             Text(
-                text = stringResource(R.string.text_mixtape_because, it).uppercase(),
+                text = stringResource(R.string.text_mixtape_because, "\"$it\"").uppercase(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.accentPalette.shade400,
                 maxLines = 1,

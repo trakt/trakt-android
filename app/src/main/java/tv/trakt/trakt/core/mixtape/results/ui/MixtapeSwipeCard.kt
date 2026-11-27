@@ -39,7 +39,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val FLIP_DURATION_MS = 300
+internal const val FLIP_DURATION_MS = 300
 private const val TILT_DP_PER_DEGREE = 18F
 private const val TINT_ALPHA = 0.35F
 private const val STAMP_TILT = 8F
@@ -104,6 +104,7 @@ internal fun MixtapeSwipeCard(
                 .align(Alignment.TopStart)
                 .padding(20.dp),
         )
+
         CardStamp(
             text = stringResource(R.string.button_text_mixtape_not_this),
             color = Color.White,
