@@ -71,10 +71,10 @@ sealed class MixtapeItem {
             is ShowItem -> show.runtime
         }
 
-    val genre: MediaGenre?
+    val genres: List<MediaGenre>
         get() = when (this) {
-            is MovieItem -> movie.genres.firstOrNull()
-            is ShowItem -> show.genres.firstOrNull()
+            is MovieItem -> movie.genres
+            is ShowItem -> show.genres
         }
 
     companion object {
