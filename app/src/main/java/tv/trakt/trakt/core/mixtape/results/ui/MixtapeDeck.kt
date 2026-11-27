@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -45,11 +47,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.SingletonImageLoader
 import coil3.compose.AsyncImage
@@ -112,6 +116,7 @@ internal fun MixtapeDeck(
     var skipping by remember(current.item.key) { mutableStateOf(false) }
     var flipped by remember(current.item.key) { mutableStateOf(false) }
     var toast by remember { mutableStateOf<KeptToast?>(null) }
+    var cardInset by remember { mutableStateOf(0.dp) }
 
     PreloadPosters(suggestions = state.suggestions)
 
@@ -164,6 +169,7 @@ internal fun MixtapeDeck(
         ) {
             DeckHeader(
                 state = state,
+                slotsInset = cardInset,
                 onBackClick = onBackClick,
             )
 
@@ -171,7 +177,11 @@ internal fun MixtapeDeck(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .weight(1F)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .onSizeChanged { size ->
+                        val cardWidth = minOf(size.width.toFloat(), size.height * POSTER_RATIO)
+                        cardInset = with(density) { ((size.width - cardWidth) / 2).toDp() }
+                    },
             ) {
                 Box(
                     modifier = Modifier
@@ -238,6 +248,7 @@ internal fun MixtapeDeck(
             )
 
             DeckActions(
+                modifier = Modifier.padding(horizontal = cardInset),
                 keepStrength = keepStrength,
                 skipStrength = skipStrength,
                 onSkipClick = { commit(keep = false) },
@@ -288,6 +299,7 @@ private fun DeckBackdrop(item: MixtapeItem) {
 @Composable
 private fun DeckHeader(
     state: MixtapeResultsState,
+    slotsInset: Dp,
     onBackClick: () -> Unit,
 ) {
     val remaining = MIXTAPE_SLOT_COUNT - state.position
@@ -334,13 +346,22 @@ private fun DeckHeader(
             )
         }
 
-        GoalSlots(round = state.round)
+        GoalSlots(
+            round = state.round,
+            modifier = Modifier.padding(end = slotsInset),
+        )
     }
 }
 
 @Composable
-private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
-    Row(horizontalArrangement = spacedBy(6.dp)) {
+private fun GoalSlots(
+    round: ImmutableList<MixtapeItem>,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = spacedBy(6.dp),
+        modifier = modifier,
+    ) {
         repeat(MIXTAPE_SLOT_COUNT) { index ->
             val kept = round.getOrNull(index)
             val borderColor = when (index) {
@@ -454,11 +475,12 @@ private fun DeckActions(
     skipStrength: Float,
     onSkipClick: () -> Unit,
     onKeepClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         DeckAction(
             icon = R.drawable.ic_close,
@@ -515,6 +537,7 @@ private fun DeckAction(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(6.dp),
+        modifier = Modifier.width(ActionSize),
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -540,6 +563,8 @@ private fun DeckAction(
             text = label,
             style = TraktTheme.typography.meta,
             color = if (filled) TraktTheme.colors.accent else TraktTheme.colors.textSecondary,
+            maxLines = 1,
+            modifier = Modifier.wrapContentWidth(unbounded = true),
         )
     }
 }
