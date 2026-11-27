@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -70,6 +72,7 @@ internal class MixtapeResultsViewModel(
     val events = eventsFlow.asSharedFlow()
 
     private var lastMove: MixtapeMove? = null
+    private val pendingKeeps = mutableSetOf<Job>()
 
     init {
         loadMixtape()
@@ -113,10 +116,13 @@ internal class MixtapeResultsViewModel(
 
     private fun kept() = roundsState.value.flatten()
 
-    private fun logResult(action: String) {
+    private fun logResult(
+        action: String,
+        position: Int = position(),
+    ) {
         analytics.mixtape.logResult(
             action = action,
-            position = position() + 1,
+            position = position + 1,
             type = destination.type.value,
         )
     }
@@ -124,28 +130,29 @@ internal class MixtapeResultsViewModel(
     fun keep() {
         val slot = slots().getOrNull(position()) ?: return
         val target = savedToState.value
-        logResult(RESULT_WATCHLIST)
+        val position = position()
         roundsState.update { rounds ->
             val current = rounds.lastOrNull().orEmpty()
             (rounds.dropLast(1) + listOf((current + slot.item).toImmutableList())).toImmutableList()
         }
 
-        viewModelScope.launch {
+        val job = viewModelScope.launch {
             try {
                 saveUseCase.keep(target, slot.item)
+                logResult(RESULT_WATCHLIST, position)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
-                if (target is PersonalList) {
-                    roundsState.update { rounds ->
-                        rounds.map { round -> round.filterNot { it.id == slot.item.id }.toImmutableList() }
-                            .toImmutableList()
-                    }
-                    eventsFlow.emit(MixtapeResultsEvent.KeepFailed(slot.item.title))
+                roundsState.update { rounds ->
+                    rounds.map { round -> round.filterNot { it.id == slot.item.id }.toImmutableList() }
+                        .toImmutableList()
                 }
+                eventsFlow.emit(MixtapeResultsEvent.KeepFailed(slot.item.title))
             }
         }
+        pendingKeeps += job
+        job.invokeOnCompletion { pendingKeeps -= job }
     }
 
     fun skip() {
@@ -202,6 +209,7 @@ internal class MixtapeResultsViewModel(
         from: MixtapeTarget,
         to: MixtapeTarget,
     ) {
+        pendingKeeps.toList().joinAll()
         val items = kept()
         try {
             val added = saveUseCase.move(from = from, to = to, items = items)

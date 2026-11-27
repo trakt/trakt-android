@@ -111,7 +111,10 @@ internal class MixtapeViewModel(
     private fun loadPick(id: TraktId) {
         viewModelScope.launch {
             try {
-                val item = getPickUseCase.getPick(initialState.type, id) ?: return@launch
+                val type = initialState.type
+                val item = getPickUseCase.getPick(type, id) ?: return@launch
+                if (typeState.value != type) return@launch
+
                 picksState.update { picks ->
                     if (picks.any { it.id == item.id }) picks else (picks + item).toImmutableList()
                 }
