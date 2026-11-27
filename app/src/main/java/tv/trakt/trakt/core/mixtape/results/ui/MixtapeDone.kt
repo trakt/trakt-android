@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,7 +42,6 @@ import tv.trakt.trakt.core.mixtape.results.MixtapeResultsState
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -195,6 +195,7 @@ private fun SavedToRow(
         horizontalArrangement = spacedBy(10.dp),
         modifier = Modifier
             .fillMaxWidth()
+            .shadow(elevation = TraktTheme.colors.shadowDynamicSmall, shape = SavedToShape)
             .background(TraktTheme.colors.panelCardContainer, SavedToShape)
             .padding(start = 14.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
     ) {
@@ -202,11 +203,11 @@ private fun SavedToRow(
             painter = painterResource(R.drawable.ic_bookmark_on),
             contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(22.dp),
         )
         Text(
             text = stringResource(R.string.text_mixtape_saved_to, name),
-            style = TraktTheme.typography.paragraphSmall,
+            style = TraktTheme.typography.paragraph,
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -214,6 +215,7 @@ private fun SavedToRow(
         )
         PrimaryButton(
             text = stringResource(R.string.button_text_mixtape_change_target),
+            textStyle = TraktTheme.typography.buttonTertiary,
             onClick = onClick,
             height = ChangeButtonHeight,
             contentPadding = 14.dp,
@@ -281,13 +283,6 @@ private fun DoneButtons(
 ) {
     Column(verticalArrangement = spacedBy(12.dp)) {
         Row(horizontalArrangement = spacedBy(12.dp)) {
-            if (canFindMore) {
-                PrimaryButton(
-                    text = stringResource(R.string.button_text_mixtape_show_more),
-                    onClick = onFindMoreClick,
-                    modifier = Modifier.weight(1F),
-                )
-            }
             PrimaryButton(
                 text = stringResource(R.string.button_text_mixtape_finish),
                 onClick = onDoneClick,
@@ -295,15 +290,28 @@ private fun DoneButtons(
                 contentColor = TraktTheme.colors.textPrimary,
                 modifier = Modifier.weight(1F),
             )
+            if (canFindMore) {
+                PrimaryButton(
+                    text = stringResource(R.string.button_text_mixtape_show_more),
+                    onClick = onFindMoreClick,
+                    modifier = Modifier.weight(1F),
+                )
+            }
         }
         Row(horizontalArrangement = spacedBy(12.dp)) {
-            GhostButton(
+            PrimaryButton(
                 text = stringResource(R.string.button_text_mixtape_change_picks),
+                border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+                containerColor = Color.Transparent,
+                contentColor = TraktTheme.colors.textPrimary,
                 onClick = onChangePicksClick,
                 modifier = Modifier.weight(1F),
             )
-            GhostButton(
+            PrimaryButton(
                 text = stringResource(R.string.button_text_mixtape_start_over),
+                border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+                containerColor = Color.Transparent,
+                contentColor = TraktTheme.colors.textPrimary,
                 onClick = onStartOverClick,
                 modifier = Modifier.weight(1F),
             )
