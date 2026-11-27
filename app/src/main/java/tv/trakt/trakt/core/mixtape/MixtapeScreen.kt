@@ -110,6 +110,10 @@ internal fun MixtapeScreen(
             .collect(viewModel::setQuery)
     }
 
+    LaunchedEffect(state.isOutOfFits) {
+        if (state.isOutOfFits) viewModel.logNoFits()
+    }
+
     MixtapeContent(
         state = state,
         searchState = searchState,

@@ -19,4 +19,11 @@ internal data class MixtapeState(
 ) {
     val isFull: Boolean
         get() = picks.size >= MAX_MIXTAPE_PICKS
+
+    val isOutOfFits: Boolean
+        get() = picker.kind == MixtapePicker.Kind.Fits &&
+            picker.items.isEmpty() &&
+            !loading &&
+            !settling &&
+            !isFull
 }

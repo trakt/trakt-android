@@ -82,6 +82,7 @@ internal class MixtapeViewModel(
 
     private val requestedVectorIds = mutableSetOf<TraktId>()
     private val pickerHold = MixtapePickerHold()
+    private var reportedNoFits: Pair<MediaType, List<TraktId>>? = null
 
     init {
         dismissHint()
@@ -266,6 +267,20 @@ internal class MixtapeViewModel(
             type = typeState.value.value,
             picks = picksState.value.size,
             fits = if (picker.kind == MixtapePicker.Kind.Fits) picker.items.size else 0,
+        )
+    }
+
+    fun logNoFits() {
+        val current = state.value
+        if (!current.isOutOfFits) return
+
+        val key = current.type to current.picks.map { it.id }
+        if (key == reportedNoFits) return
+        reportedNoFits = key
+
+        analytics.mixtape.logNoFits(
+            type = current.type.value,
+            picks = current.picks.size,
         )
     }
 
