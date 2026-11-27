@@ -35,14 +35,15 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val FLIP_DURATION_MS = 400
+private const val FLIP_DURATION_MS = 300
 private const val TILT_DP_PER_DEGREE = 18F
 private const val TINT_ALPHA = 0.35F
-private const val STAMP_TILT = 12F
+private const val STAMP_TILT = 8F
 private const val CAMERA_DISTANCE = 12F
 
 internal val SwipeCardShape = RoundedCornerShape(20.dp)
@@ -99,19 +100,19 @@ internal fun MixtapeSwipeCard(
             text = stringResource(R.string.button_text_watchlist),
             color = TraktTheme.colors.accent,
             tilt = -STAMP_TILT,
+            alpha = keepStrength,
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(20.dp)
-                .graphicsLayer { alpha = keepStrength },
+                .padding(20.dp),
         )
         CardStamp(
             text = stringResource(R.string.button_text_mixtape_not_this),
-            color = TraktTheme.colors.sentimentsBadAccent,
+            color = Red400,
             tilt = STAMP_TILT,
+            alpha = skipStrength,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(20.dp)
-                .graphicsLayer { alpha = skipStrength },
+                .padding(20.dp),
         )
     }
 }
@@ -151,7 +152,7 @@ private fun CardFront(
                 .align(Alignment.BottomEnd)
                 .padding(12.dp)
                 .background(Color.Black.copy(alpha = 0.6F), RoundedCornerShape(100))
-                .padding(horizontal = 10.dp, vertical = 4.dp),
+                .padding(horizontal = 12.dp, vertical = 6.dp),
         )
     }
 }
@@ -194,6 +195,7 @@ private fun CardStamp(
     text: String,
     color: Color,
     tilt: Float,
+    alpha: Float,
     modifier: Modifier = Modifier,
 ) {
     Text(
@@ -201,7 +203,10 @@ private fun CardStamp(
         style = TraktTheme.typography.heading6,
         color = color,
         modifier = modifier
-            .graphicsLayer { rotationZ = tilt }
+            .graphicsLayer {
+                rotationZ = tilt
+                this.alpha = alpha
+            }
             .drawBehind {
                 val stroke = StampStroke.toPx()
                 drawRoundRect(
