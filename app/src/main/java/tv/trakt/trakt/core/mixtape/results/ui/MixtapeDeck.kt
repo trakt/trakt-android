@@ -54,6 +54,7 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil3.SingletonImageLoader
@@ -468,6 +469,7 @@ private fun DeckActions(
             icon = R.drawable.ic_close,
             label = stringResource(R.string.button_text_mixtape_another),
             filled = false,
+            size = 22.dp,
             scale = 1F + skipStrength * ACTION_SCALE_BOOST,
             onClick = onSkipClick,
         )
@@ -502,6 +504,7 @@ private fun DeckActions(
             icon = R.drawable.ic_bookmark_on,
             label = stringResource(R.string.button_text_mixtape_keep),
             filled = true,
+            size = 24.dp,
             scale = 1F + keepStrength * ACTION_SCALE_BOOST,
             onClick = onKeepClick,
         )
@@ -514,6 +517,7 @@ private fun DeckAction(
     label: String,
     filled: Boolean,
     scale: Float,
+    size: Dp,
     onClick: () -> Unit,
 ) {
     Column(
@@ -538,7 +542,7 @@ private fun DeckAction(
                 painter = painterResource(icon),
                 contentDescription = null,
                 tint = if (filled) TraktTheme.colors.textPrimaryOnAccent else TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(22.dp),
+                modifier = Modifier.size(size),
             )
         }
         Text(

@@ -25,7 +25,7 @@ import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val FLIGHT_DURATION_MS = 400
+private const val FLIGHT_DURATION_MS = 350
 
 private val StartCorner = 15.dp
 private val EndCorner = 12.dp

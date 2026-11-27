@@ -279,7 +279,7 @@ private fun LazyGridScope.headerItems(
             modifier = Modifier
                 .padding(
                     top = TraktTheme.spacing.mainGridVerticalSpace / 4,
-                    bottom = TraktTheme.spacing.mainGridVerticalSpace,
+                    bottom = 16.dp,
                 ),
         )
     }
