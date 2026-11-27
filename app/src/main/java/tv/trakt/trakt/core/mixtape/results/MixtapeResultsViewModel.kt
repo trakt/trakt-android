@@ -77,6 +77,10 @@ internal class MixtapeResultsViewModel(
     init {
         loadMixtape()
         loadLists()
+
+        analytics.logScreenView(
+            screenName = "mixtape_results",
+        )
     }
 
     private fun loadMixtape() {
