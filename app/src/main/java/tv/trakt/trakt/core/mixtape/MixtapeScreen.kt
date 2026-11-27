@@ -126,7 +126,7 @@ internal fun MixtapeScreen(
         onPickClick = viewModel::pick,
         onRemoveClick = viewModel::removePick,
         onClearClick = viewModel::clearPicks,
-        onRetryClick = viewModel::retryHistory,
+        onRetryClick = viewModel::retry,
         onMixClick = {
             viewModel.logMix()
             onNavigateToResults(state.type, state.picks)
@@ -382,7 +382,7 @@ private fun LazyGridScope.pickerItems(
             )
         }
 
-        state.picker.kind == MixtapePicker.Kind.Recent && state.historyError != null -> errorItem(onRetryClick)
+        state.error -> errorItem(onRetryClick)
 
         state.picker.items.isEmpty() -> messageItem(
             textRes = when (state.picker.kind) {
@@ -634,7 +634,7 @@ private fun Preview() {
 private fun ErrorPreview() {
     TraktThemePreview {
         MixtapeContent(
-            state = MixtapeState(loading = false, historyError = Exception()),
+            state = MixtapeState(loading = false, error = true),
         )
     }
 }

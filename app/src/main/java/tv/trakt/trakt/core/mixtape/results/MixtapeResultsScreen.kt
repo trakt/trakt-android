@@ -102,6 +102,7 @@ internal fun MixtapeResultsScreen(
         onFindMoreClick = viewModel::findMore,
         onSavedToClick = {
             snackbar.currentSnackbarData?.dismiss()
+            viewModel.loadLists()
             moveSheet = true
         },
         onChangePicksClick = onNavigateBack,

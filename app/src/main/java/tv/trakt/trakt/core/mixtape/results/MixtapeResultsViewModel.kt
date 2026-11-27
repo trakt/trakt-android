@@ -101,7 +101,7 @@ internal class MixtapeResultsViewModel(
         }
     }
 
-    private fun loadLists() {
+    fun loadLists() {
         viewModelScope.launch {
             try {
                 listsState.update { getListsUseCase.getLists().toImmutableList() }

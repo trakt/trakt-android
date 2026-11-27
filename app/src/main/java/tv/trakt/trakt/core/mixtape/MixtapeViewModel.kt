@@ -6,13 +6,16 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.collectLatest
@@ -87,8 +90,8 @@ internal class MixtapeViewModel(
     private val deepTimedOutState = MutableStateFlow<List<TraktId>?>(null)
     private val knownState = MutableStateFlow<PersistentMap<TraktId, MixtapeItem>>(persistentMapOf())
     private val vectorsState = MutableStateFlow(MixtapeVectors())
-    private val historyErrorState = MutableStateFlow<Exception?>(null)
-    private val historyRetryState = MutableStateFlow(0)
+    private val failedState = MutableStateFlow<PersistentSet<MixtapePicker.Kind>>(persistentSetOf())
+    private val retriesState = MutableStateFlow<PersistentMap<MixtapePicker.Kind, Int>>(persistentMapOf())
 
     private val requestedVectorIds = mutableSetOf<TraktId>()
     private val pickerHold = MixtapePickerHold()
@@ -136,10 +139,10 @@ internal class MixtapeViewModel(
 
     private fun observeHistory() {
         viewModelScope.launch {
-            combine(typeState, historyRetryState) { type, _ -> type }.collectLatest { type ->
+            combine(typeState, retries(MixtapePicker.Kind.Recent)) { type, _ -> type }.collectLatest { type ->
                 try {
                     historyLoadingState.update { true }
-                    historyErrorState.update { null }
+                    setFailed(MixtapePicker.Kind.Recent, false)
                     val history = getHistoryUseCase.getHistory(type)
                     historyState.update { history }
                     addKnown(history)
@@ -147,7 +150,7 @@ internal class MixtapeViewModel(
                 } catch (error: Exception) {
                     error.rethrowCancellation {
                         Timber.recordError(error)
-                        historyErrorState.update { error }
+                        setFailed(MixtapePicker.Kind.Recent, true)
                     }
                 } finally {
                     historyLoadingState.update { false }
@@ -158,11 +161,13 @@ internal class MixtapeViewModel(
 
     private fun observeSearch() {
         viewModelScope.launch {
-            queryState
+            val queries = queryState
                 .map { it.trim() }
                 .distinctUntilChanged()
                 .debounce(SEARCH_DEBOUNCE)
+            combine(queries, retries(MixtapePicker.Kind.Search)) { query, _ -> query }
                 .collectLatest { query ->
+                    setFailed(MixtapePicker.Kind.Search, false)
                     if (query.isEmpty()) {
                         searchResultsState.update { persistentListOf() }
                         searchLoadingState.update { false }
@@ -179,6 +184,8 @@ internal class MixtapeViewModel(
                     } catch (error: Exception) {
                         error.rethrowCancellation {
                             Timber.recordError(error)
+                            searchResultsState.update { persistentListOf() }
+                            setFailed(MixtapePicker.Kind.Search, true)
                         }
                     } finally {
                         searchLoadingState.update { false }
@@ -189,9 +196,11 @@ internal class MixtapeViewModel(
 
     private fun observeDeepFits() {
         viewModelScope.launch {
-            combine(typeState, picksState) { type, picks -> type to picks.map { it.id } }
-                .distinctUntilChanged()
+            combine(typeState, picksState, retries(MixtapePicker.Kind.Fits)) { type, picks, retry ->
+                Triple(type, picks.map { it.id }, retry)
+            }.distinctUntilChanged()
                 .collectLatest { (type, picks) ->
+                    setFailed(MixtapePicker.Kind.Fits, false)
                     if (picks.isEmpty()) return@collectLatest
 
                     val timeout = viewModelScope.launch {
@@ -211,12 +220,24 @@ internal class MixtapeViewModel(
                         error.rethrowCancellation {
                             Timber.recordError(error)
                             deepFitsState.update { DeepFits(picks) }
+                            setFailed(MixtapePicker.Kind.Fits, true)
                         }
                     } finally {
                         timeout.cancel()
                     }
                 }
         }
+    }
+
+    private fun retries(kind: MixtapePicker.Kind): Flow<Int> {
+        return retriesState.map { it[kind] ?: 0 }.distinctUntilChanged()
+    }
+
+    private fun setFailed(
+        kind: MixtapePicker.Kind,
+        failed: Boolean,
+    ) {
+        failedState.update { if (failed) it.add(kind) else it.remove(kind) }
     }
 
     private fun addKnown(items: List<MixtapeItem>) {
@@ -255,8 +276,11 @@ internal class MixtapeViewModel(
         }
     }
 
-    fun retryHistory() {
-        historyRetryState.update { it + 1 }
+    fun retry() {
+        val failed = failedState.value
+        retriesState.update { retries ->
+            failed.fold(retries) { acc, kind -> acc.put(kind, (acc[kind] ?: 0) + 1) }
+        }
     }
 
     fun setType(type: MediaType) {
@@ -342,7 +366,7 @@ internal class MixtapeViewModel(
         deepTimedOutState,
         knownState,
         vectorsState,
-        historyErrorState,
+        failedState,
     ) { state ->
         val type = state[0] as MediaType
         val query = state[1] as String
@@ -390,7 +414,7 @@ internal class MixtapeViewModel(
                 (settling && (shown === picker || shown.items.isEmpty())) ||
                 searchPending,
             settling = settling,
-            historyError = state[11] as Exception?,
+            error = shown.kind in (state[11] as Set<MixtapePicker.Kind>) && shown.items.isEmpty(),
         )
     }.flowOn(Dispatchers.Default)
         .stateIn(
