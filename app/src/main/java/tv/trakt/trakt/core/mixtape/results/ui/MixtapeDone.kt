@@ -66,8 +66,8 @@ internal fun MixtapeDone(
     onStartOverClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
 ) {
-    val kept = state.rounds.flatten()
-    val rounds = state.rounds
+    val kept = state.keptRounds.flatten()
+    val rounds = state.keptRounds
         .mapIndexed { index, items -> DoneRound(number = index + 1, items = items) }
         .filter { it.items.isNotEmpty() }
         .reversed()

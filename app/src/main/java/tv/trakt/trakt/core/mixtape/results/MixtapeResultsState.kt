@@ -3,8 +3,10 @@ package tv.trakt.trakt.core.mixtape.results
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
@@ -23,6 +25,8 @@ internal data class MixtapeResultsState(
     val savedTo: MixtapeTarget = MixtapeTarget.Watchlist,
     val lists: ImmutableList<MixtapeTarget.PersonalList> = persistentListOf(),
     val moving: Boolean = false,
+    val failed: ImmutableSet<TraktId> = persistentSetOf(),
+    val error: Exception? = null,
 ) {
     val round: ImmutableList<MixtapeItem>
         get() = rounds.lastOrNull() ?: persistentListOf()
@@ -39,11 +43,17 @@ internal data class MixtapeResultsState(
     val isFirstRound: Boolean
         get() = rounds.size <= 1
 
+    val keptRounds: List<List<MixtapeItem>>
+        get() = rounds.map { round -> round.filterNot { it.id in failed } }
+
+    val keptInRound: Int
+        get() = round.count { it.id !in failed }
+
     val keptSoFar: Int
-        get() = rounds.sumOf { it.size }
+        get() = keptRounds.sumOf { it.size }
 
     val isEmpty: Boolean
-        get() = !loading && keptSoFar == 0 && slots.isEmpty()
+        get() = !loading && error == null && keptSoFar == 0 && slots.isEmpty()
 
     val isDone: Boolean
         get() = !loading && (position >= MIXTAPE_SLOT_COUNT || current == null)

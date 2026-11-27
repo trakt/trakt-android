@@ -46,6 +46,7 @@ import tv.trakt.trakt.core.mixtape.results.ui.displayName
 import tv.trakt.trakt.core.mixtape.ui.HideBottomBar
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -75,12 +76,12 @@ internal fun MixtapeResultsScreen(
                         message = resources.getString(
                             R.string.text_mixtape_moved,
                             event.count,
-                            event.target.displayName(watchlistName),
+                            event.move.to.displayName(watchlistName),
                         ),
                         actionLabel = resources.getString(R.string.button_text_undo),
                         duration = SnackbarDuration.Long,
                     )
-                    if (result == SnackbarResult.ActionPerformed) viewModel.undoMove()
+                    if (result == SnackbarResult.ActionPerformed) viewModel.undoMove(event.move)
                 }
                 is MoveFailed -> {
                     snackbar.showSnackbar(resources.getString(R.string.text_mixtape_move_failed))
@@ -95,6 +96,7 @@ internal fun MixtapeResultsScreen(
     MixtapeResultsContent(
         state = state,
         onKeep = viewModel::keep,
+        onRetryClick = viewModel::retry,
         onSkip = viewModel::skip,
         onOpen = viewModel::open,
         onFindMoreClick = viewModel::findMore,
@@ -128,6 +130,7 @@ private fun MixtapeResultsContent(
     onOpen: () -> Unit = {},
     onFindMoreClick: () -> Unit = {},
     onSavedToClick: () -> Unit = {},
+    onRetryClick: () -> Unit = {},
     onChangePicksClick: () -> Unit = {},
     onStartOverClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
@@ -141,6 +144,10 @@ private fun MixtapeResultsContent(
         val current = state.current
         when {
             state.loading -> FilmProgressIndicator()
+            state.error != null && state.slots.isEmpty() -> ErrorResults(
+                onRetryClick = onRetryClick,
+                onChangePicksClick = onChangePicksClick,
+            )
             state.isEmpty -> EmptyResults(onChangePicksClick = onChangePicksClick)
             state.isDone || current == null -> MixtapeDone(
                 state = state,
@@ -159,6 +166,33 @@ private fun MixtapeResultsContent(
                 onBackClick = onCloseClick,
             )
         }
+    }
+}
+
+@Composable
+private fun ErrorResults(
+    onRetryClick: () -> Unit,
+    onChangePicksClick: () -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = spacedBy(20.dp),
+        modifier = Modifier.padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+    ) {
+        Text(
+            text = stringResource(R.string.error_text_unexpected_error_short),
+            style = TraktTheme.typography.paragraph,
+            color = TraktTheme.colors.textSecondary,
+            textAlign = TextAlign.Center,
+        )
+        PrimaryButton(
+            text = stringResource(R.string.button_text_retry),
+            onClick = onRetryClick,
+        )
+        GhostButton(
+            text = stringResource(R.string.button_text_mixtape_change_picks),
+            onClick = onChangePicksClick,
+        )
     }
 }
 

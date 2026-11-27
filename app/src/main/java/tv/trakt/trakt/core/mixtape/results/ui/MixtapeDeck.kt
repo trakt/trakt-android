@@ -62,6 +62,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.launch
@@ -69,6 +70,7 @@ import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MIXTAPE_SLOT_COUNT
@@ -321,12 +323,12 @@ private fun DeckHeader(
                 subtitle = when {
                     state.isFirstRound -> stringResource(
                         R.string.text_mixtape_kept,
-                        state.position,
+                        state.keptInRound,
                         MIXTAPE_SLOT_COUNT,
                     )
                     else -> stringResource(
                         R.string.text_mixtape_round_kept,
-                        state.position,
+                        state.keptInRound,
                         MIXTAPE_SLOT_COUNT,
                         state.keptSoFar,
                     )
@@ -334,15 +336,21 @@ private fun DeckHeader(
             )
         }
 
-        GoalSlots(round = state.round)
+        GoalSlots(
+            round = state.round,
+            failed = state.failed,
+        )
     }
 }
 
 @Composable
-private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
+private fun GoalSlots(
+    round: ImmutableList<MixtapeItem>,
+    failed: ImmutableSet<TraktId>,
+) {
     Row(horizontalArrangement = spacedBy(6.dp)) {
         repeat(MIXTAPE_SLOT_COUNT) { index ->
-            val kept = round.getOrNull(index)
+            val kept = round.getOrNull(index)?.takeUnless { it.id in failed }
             val borderColor = when (index) {
                 round.size -> TraktTheme.colors.accent
                 else -> TraktTheme.colors.chipContainer

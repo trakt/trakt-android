@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -18,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -25,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
+import tv.trakt.trakt.core.mixtape.model.MixtapeMove
 import tv.trakt.trakt.core.mixtape.model.MixtapeTarget
 import tv.trakt.trakt.core.mixtape.model.MixtapeTarget.PersonalList
 import tv.trakt.trakt.core.mixtape.model.toMixtapeSlots
@@ -36,13 +41,6 @@ import tv.trakt.trakt.core.mixtape.usecases.SaveMixtapeUseCase
 private const val RESULT_OPEN = "open"
 private const val RESULT_SKIP = "skip"
 private const val RESULT_WATCHLIST = "watchlist"
-
-private data class MixtapeMove(
-    val from: MixtapeTarget,
-    val to: MixtapeTarget,
-    val items: List<MixtapeItem>,
-    val added: List<MixtapeItem>,
-)
 
 @Suppress("UNCHECKED_CAST")
 internal class MixtapeResultsViewModel(
@@ -67,11 +65,12 @@ internal class MixtapeResultsViewModel(
     private val savedToState = MutableStateFlow(initialState.savedTo)
     private val listsState = MutableStateFlow(initialState.lists)
     private val movingState = MutableStateFlow(initialState.moving)
+    private val failedState = MutableStateFlow(initialState.failed)
+    private val errorState = MutableStateFlow(initialState.error)
 
     private val eventsFlow = MutableSharedFlow<MixtapeResultsEvent>(replay = 0)
     val events = eventsFlow.asSharedFlow()
 
-    private var lastMove: MixtapeMove? = null
     private val pendingKeeps = mutableSetOf<Job>()
 
     init {
@@ -81,6 +80,8 @@ internal class MixtapeResultsViewModel(
 
     private fun loadMixtape() {
         viewModelScope.launch {
+            loadingState.update { true }
+            errorState.update { null }
             try {
                 val mixtape = getMixtapeUseCase.getMixtape(
                     type = destination.type,
@@ -91,6 +92,7 @@ internal class MixtapeResultsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
+                    errorState.update { error }
                 }
             } finally {
                 loadingState.update { false }
@@ -114,7 +116,7 @@ internal class MixtapeResultsViewModel(
 
     private fun position() = roundsState.value.lastOrNull()?.size ?: 0
 
-    private fun kept() = roundsState.value.flatten()
+    private fun kept() = roundsState.value.flatten().filterNot { it.id in failedState.value }
 
     private fun logResult(
         action: String,
@@ -138,16 +140,16 @@ internal class MixtapeResultsViewModel(
 
         val job = viewModelScope.launch {
             try {
-                saveUseCase.keep(target, slot.item)
-                logResult(RESULT_WATCHLIST, position)
+                // Keeps are accepted in the UI right away, so leaving the screen must not cancel the write.
+                withContext(NonCancellable) {
+                    saveUseCase.keep(target, slot.item)
+                    logResult(RESULT_WATCHLIST, position)
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
-                roundsState.update { rounds ->
-                    rounds.map { round -> round.filterNot { it.id == slot.item.id }.toImmutableList() }
-                        .toImmutableList()
-                }
+                failedState.update { (it + slot.item.id).toImmutableSet() }
                 eventsFlow.emit(MixtapeResultsEvent.KeepFailed(slot.item.title))
             }
         }
@@ -159,6 +161,10 @@ internal class MixtapeResultsViewModel(
         val slot = slots().getOrNull(position()) ?: return
         logResult(RESULT_SKIP)
         skipsState.update { (it + slot.item.id).toImmutableList() }
+    }
+
+    fun retry() {
+        loadMixtape()
     }
 
     fun open() {
@@ -191,7 +197,7 @@ internal class MixtapeResultsViewModel(
         viewModelScope.launch {
             movingState.update { true }
             try {
-                val list = getListsUseCase.createList(name)
+                val list = withContext(NonCancellable) { getListsUseCase.createList(name) }
                 listsState.update { (it + list).toImmutableList() }
                 transfer(from = savedToState.value, to = list)
             } catch (error: Exception) {
@@ -212,10 +218,14 @@ internal class MixtapeResultsViewModel(
         pendingKeeps.toList().joinAll()
         val items = kept()
         try {
-            val added = saveUseCase.move(from = from, to = to, items = items)
-            lastMove = MixtapeMove(from = from, to = to, items = items, added = added)
+            val added = withContext(NonCancellable) { saveUseCase.move(from = from, to = to, items = items) }
             savedToState.update { to }
-            eventsFlow.emit(MixtapeResultsEvent.Moved(count = items.size, target = to))
+            eventsFlow.emit(
+                MixtapeResultsEvent.Moved(
+                    count = items.size,
+                    move = MixtapeMove(from = from, to = to, items = items, added = added),
+                ),
+            )
         } catch (error: Exception) {
             error.rethrowCancellation {
                 Timber.recordError(error)
@@ -224,19 +234,18 @@ internal class MixtapeResultsViewModel(
         }
     }
 
-    fun undoMove() {
-        val move = lastMove ?: return
-        lastMove = null
-
+    fun undoMove(move: MixtapeMove) {
         viewModelScope.launch {
             try {
-                saveUseCase.undoMove(
-                    from = move.from,
-                    to = move.to,
-                    items = move.items,
-                    added = move.added,
-                )
-                savedToState.update { move.from }
+                withContext(NonCancellable) {
+                    saveUseCase.undoMove(
+                        from = move.from,
+                        to = move.to,
+                        items = move.items,
+                        added = move.added,
+                    )
+                }
+                savedToState.update { current -> if (current == move.to) move.from else current }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -254,6 +263,8 @@ internal class MixtapeResultsViewModel(
         savedToState,
         listsState,
         movingState,
+        failedState,
+        errorState,
     ) { state ->
         initialState.copy(
             loading = state[0] as Boolean,
@@ -266,6 +277,8 @@ internal class MixtapeResultsViewModel(
             savedTo = state[4] as MixtapeTarget,
             lists = state[5] as ImmutableList<PersonalList>,
             moving = state[6] as Boolean,
+            failed = state[7] as ImmutableSet<TraktId>,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
