@@ -451,7 +451,7 @@ private fun DeckActions(
     onKeepClick: () -> Unit,
 ) {
     Row(
-        verticalAlignment = CenterVertically,
+        verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -466,6 +466,7 @@ private fun DeckActions(
         Row(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(4.dp),
+            modifier = Modifier.height(ActionSize),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_chevron_right),
