@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.mixtape.results.ui
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -30,7 +31,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,7 +61,6 @@ import coil3.request.ImageRequest
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -76,14 +75,13 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
-import kotlin.time.Duration.Companion.milliseconds
 
 private const val LEAVE_DURATION_MS = 260
-private const val TOAST_DURATION_MS = 2200L
 private const val LEAVE_DISTANCE_RATIO = 1.2F
 private const val BEHIND_SCALE = 0.94F
 private const val BEHIND_ALPHA = 0.5F
 private const val BACKDROP_ALPHA = 0.35F
+private const val BACKDROP_FADE_MS = 500
 private const val ACTION_SCALE_BOOST = 0.1F
 private const val POSTER_RATIO = 2F / 3F
 
@@ -92,12 +90,6 @@ private val BehindOffset = 14.dp
 private val ActionSize = 56.dp
 private val GoalSlotShape = RoundedCornerShape(6.dp)
 private val GoalSlotWidth = 32.dp
-
-@Immutable
-private data class KeptToast(
-    val title: String,
-    val left: Int,
-)
 
 @Composable
 internal fun MixtapeDeck(
@@ -118,15 +110,8 @@ internal fun MixtapeDeck(
     var leaving by remember(current.item.key) { mutableStateOf(false) }
     var skipping by remember(current.item.key) { mutableStateOf(false) }
     var flipped by remember(current.item.key) { mutableStateOf(false) }
-    var toast by remember { mutableStateOf<KeptToast?>(null) }
 
     PreloadPosters(suggestions = state.suggestions)
-
-    LaunchedEffect(toast) {
-        if (toast == null) return@LaunchedEffect
-        delay(TOAST_DURATION_MS.milliseconds)
-        toast = null
-    }
 
     fun commit(keep: Boolean) {
         if (leaving) return
@@ -139,8 +124,6 @@ internal fun MixtapeDeck(
                 animationSpec = tween(LEAVE_DURATION_MS),
             )
             if (keep) {
-                val left = MIXTAPE_SLOT_COUNT - state.position - 1
-                toast = KeptToast(current.item.title, left).takeIf { left > 0 }
                 onKeep()
             } else {
                 onSkip()
@@ -223,21 +206,6 @@ internal fun MixtapeDeck(
                                 },
                         )
                     }
-
-                    toast?.let {
-                        Text(
-                            text = stringResource(R.string.text_mixtape_kept_toast, it.title, it.left),
-                            style = TraktTheme.typography.meta,
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .align(Alignment.TopCenter)
-                                .padding(top = 12.dp)
-                                .background(TraktTheme.colors.navigationContainer, RoundedCornerShape(100))
-                                .padding(horizontal = 14.dp, vertical = 8.dp),
-                        )
-                    }
                 }
             },
             text = {
@@ -276,15 +244,21 @@ private fun DeckBackdrop(item: MixtapeItem) {
     val background = TraktTheme.colors.backgroundPrimary
 
     Box(modifier = Modifier.fillMaxSize()) {
-        AsyncImage(
-            model = item.images?.getPosterUrl(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer { alpha = BACKDROP_ALPHA }
-                .blur(40.dp),
-        )
+        Crossfade(
+            targetState = item,
+            animationSpec = tween(BACKDROP_FADE_MS),
+            label = "backdrop",
+        ) { backdrop ->
+            AsyncImage(
+                model = backdrop.images?.getPosterUrl(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { alpha = BACKDROP_ALPHA }
+                    .blur(40.dp),
+            )
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize()
