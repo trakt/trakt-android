@@ -48,6 +48,8 @@ private const val PARAMETER_VALUE = "value"
 private const val PARAMETER_TAB = "tab"
 private const val PARAMETER_POSITION = "position"
 private const val PARAMETER_MATCHED_ON = "matched_on"
+private const val PARAMETER_PICKS = "picks"
+private const val PARAMETER_FITS = "fits"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
@@ -74,6 +76,7 @@ internal class FirebaseAnalytics(
     override val playback: Analytics.Playback,
     override val lists: Analytics.Lists,
     override val today: Analytics.Today,
+    override val mixtape: Analytics.Mixtape,
     override val vip: Analytics.Vip,
 ) : Analytics {
     companion object Event {
@@ -1021,6 +1024,93 @@ internal class FirebaseAnalyticsLists(
 
     private fun log(name: String) {
         firebase.logEvent(eventName(name), null)
+    }
+}
+
+internal class FirebaseAnalyticsMixtape(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Mixtape {
+    companion object Event {
+        const val MIXTAPE_OPEN = "mixtape_open"
+        const val MIXTAPE_PICK = "mixtape_pick"
+        const val MIXTAPE_NO_FITS = "mixtape_no_fits"
+        const val MIXTAPE_MIX = "mixtape_mix"
+        const val MIXTAPE_RESULT = "mixtape_result"
+    }
+
+    init {
+        requireEventNames(MIXTAPE_OPEN, MIXTAPE_PICK, MIXTAPE_NO_FITS, MIXTAPE_MIX, MIXTAPE_RESULT)
+    }
+
+    override fun logOpen(
+        source: String,
+        type: String,
+    ) {
+        firebase.logEvent(
+            eventName(MIXTAPE_OPEN),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_TYPE to type,
+            ),
+        )
+    }
+
+    override fun logPick(
+        source: String,
+        type: String,
+        picks: Int,
+    ) {
+        firebase.logEvent(
+            eventName(MIXTAPE_PICK),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_TYPE to type,
+                PARAMETER_PICKS to picks,
+            ),
+        )
+    }
+
+    override fun logNoFits(
+        type: String,
+        picks: Int,
+    ) {
+        firebase.logEvent(
+            eventName(MIXTAPE_NO_FITS),
+            bundleOf(
+                PARAMETER_TYPE to type,
+                PARAMETER_PICKS to picks,
+            ),
+        )
+    }
+
+    override fun logMix(
+        type: String,
+        picks: Int,
+        fits: Int,
+    ) {
+        firebase.logEvent(
+            eventName(MIXTAPE_MIX),
+            bundleOf(
+                PARAMETER_TYPE to type,
+                PARAMETER_PICKS to picks,
+                PARAMETER_FITS to fits,
+            ),
+        )
+    }
+
+    override fun logResult(
+        action: String,
+        position: Int,
+        type: String,
+    ) {
+        firebase.logEvent(
+            eventName(MIXTAPE_RESULT),
+            bundleOf(
+                PARAMETER_ACTION to action,
+                PARAMETER_POSITION to position,
+                PARAMETER_TYPE to type,
+            ),
+        )
     }
 }
 

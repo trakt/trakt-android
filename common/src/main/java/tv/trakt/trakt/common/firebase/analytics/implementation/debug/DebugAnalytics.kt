@@ -12,6 +12,7 @@ internal class DebugAnalytics(
     override val playback: Analytics.Playback,
     override val lists: Analytics.Lists,
     override val today: Analytics.Today,
+    override val mixtape: Analytics.Mixtape,
     override val vip: Analytics.Vip,
 ) : Analytics {
     override fun setUserId(userId: String?) {
@@ -478,6 +479,46 @@ internal class DebugAnalyticsToday : Analytics.Today {
         frame: String,
     ) {
         Timber.d("logTodayAction: action=%s, frame=%s", action, frame)
+    }
+}
+
+internal class DebugAnalyticsMixtape : Analytics.Mixtape {
+    override fun logOpen(
+        source: String,
+        type: String,
+    ) {
+        Timber.d("logMixtapeOpen: source=%s, type=%s", source, type)
+    }
+
+    override fun logPick(
+        source: String,
+        type: String,
+        picks: Int,
+    ) {
+        Timber.d("logMixtapePick: source=%s, type=%s, picks=%d", source, type, picks)
+    }
+
+    override fun logNoFits(
+        type: String,
+        picks: Int,
+    ) {
+        Timber.d("logMixtapeNoFits: type=%s, picks=%d", type, picks)
+    }
+
+    override fun logMix(
+        type: String,
+        picks: Int,
+        fits: Int,
+    ) {
+        Timber.d("logMixtapeMix: type=%s, picks=%d, fits=%d", type, picks, fits)
+    }
+
+    override fun logResult(
+        action: String,
+        position: Int,
+        type: String,
+    ) {
+        Timber.d("logMixtapeResult: action=%s, position=%d, type=%s", action, position, type)
     }
 }
 

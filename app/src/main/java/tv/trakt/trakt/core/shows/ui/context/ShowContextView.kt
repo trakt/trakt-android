@@ -62,6 +62,7 @@ internal fun ShowContextView(
     onHideRecommendation: (Show) -> Unit,
     onWhyThis: () -> Unit,
     onListsClick: () -> Unit,
+    onMixtapeClick: (() -> Unit)? = null,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -114,6 +115,7 @@ internal fun ShowContextView(
         },
         onWhyThisClick = onWhyThis,
         onListsClick = onListsClick,
+        onMixtapeClick = onMixtapeClick,
         modifier = modifier,
     )
 
@@ -205,6 +207,7 @@ private fun ShowContextViewContent(
     onHideRecommendationClick: () -> Unit = {},
     onWhyThisClick: () -> Unit = {},
     onListsClick: () -> Unit = {},
+    onMixtapeClick: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -252,6 +255,7 @@ private fun ShowContextViewContent(
                 onHideRecommendationClick = onHideRecommendationClick,
                 onWhyThisClick = onWhyThisClick,
                 onListsClick = onListsClick,
+                onMixtapeClick = onMixtapeClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -271,6 +275,7 @@ private fun ShowActionButtons(
     onHideRecommendationClick: () -> Unit,
     onWhyThisClick: () -> Unit,
     onListsClick: () -> Unit,
+    onMixtapeClick: (() -> Unit)?,
 ) {
     val isReleased = show.rememberReleased()
 
@@ -363,6 +368,21 @@ private fun ShowActionButtons(
                     translationX = -6.dp.toPx()
                 },
         )
+
+        onMixtapeClick?.let {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                text = stringResource(R.string.button_text_start_mixtape_with_this),
+                onClick = it,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                icon = painterResource(R.drawable.ic_mixtape),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+        }
 
         if (showRecommended) {
             GhostButton(

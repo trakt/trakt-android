@@ -10,6 +10,7 @@ private val WEB_ROUTES = mapOf(
     "all_discover_anticipated" to "/discover/anticipated",
     "all_discover_recommended" to "/discover/recommended",
     "all_discover_releases" to "/discover/releases",
+    "mixtape" to "/discover/mixtape",
     "all_up_next" to "/users/[user]/progress",
     "all_watchlist" to "/users/[user]/watchlist",
     "all_library" to "/users/[user]/library",

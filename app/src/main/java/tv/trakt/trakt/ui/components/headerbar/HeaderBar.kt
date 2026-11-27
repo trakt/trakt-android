@@ -62,6 +62,7 @@ internal fun HeaderBar(
     showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
     todayContent: (@Composable () -> Unit)? = null,
+    leadingActions: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
     onVipSeen: (() -> Unit)? = null,
     onVipClick: () -> Unit = {},
@@ -80,6 +81,7 @@ internal fun HeaderBar(
             showWhatsNew = showWhatsNew,
             userLoading = userLoading,
             todayContent = todayContent,
+            leadingActions = leadingActions,
             actions = actions,
         )
         return
@@ -109,6 +111,7 @@ internal fun HeaderBar(
         seasonEnabled = seasonEnabled,
         userLoading = userLoading,
         todayContent = todayContent,
+        leadingActions = leadingActions,
         actions = actions,
         onVipSeen = onVipSeen,
         onVipClick = onVipClick,
@@ -143,6 +146,7 @@ private fun HeaderBar(
     seasonEnabled: Boolean = false,
     userLoading: Boolean = false,
     todayContent: (@Composable () -> Unit)? = null,
+    leadingActions: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onVipSeen: (() -> Unit)? = null,
@@ -216,6 +220,8 @@ private fun HeaderBar(
                 }
 
                 todayContent?.invoke()
+
+                leadingActions?.invoke()
 
                 if (season != null && showFilters) {
                     SeasonalThemeIcon(

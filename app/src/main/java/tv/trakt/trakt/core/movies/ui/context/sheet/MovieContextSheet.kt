@@ -25,9 +25,11 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.mixtape.navigation.LocalStartMixtape
 import tv.trakt.trakt.core.movies.ui.context.MovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -56,6 +58,7 @@ internal fun MovieContextSheet(
 
     if (movie != null) {
         val localSnack = LocalSnackbarState.current
+        val startMixtape = LocalStartMixtape.current
         val localRes = LocalResources.current
 
         TraktBottomSheet(
@@ -131,6 +134,17 @@ internal fun MovieContextSheet(
                         onDismiss = onDismiss,
                         message = null,
                     )
+                },
+                onMixtapeClick = startMixtape?.let { start ->
+                    {
+                        sheetScope.launch { state.hide() }
+                            .invokeOnCompletion {
+                                if (!state.isVisible) {
+                                    onDismiss()
+                                    start(MediaType.Movie, movie.ids.trakt)
+                                }
+                            }
+                    }
                 },
                 onCheckIn = {
                     sheetScope.launch { state.hide() }

@@ -12,6 +12,7 @@ interface Analytics {
     val playback: Playback
     val lists: Lists
     val today: Today
+    val mixtape: Mixtape
     val vip: Vip
 
     /**
@@ -592,6 +593,64 @@ interface Analytics {
         fun logAction(
             action: String,
             frame: String,
+        )
+    }
+
+    interface Mixtape {
+        /**
+         * Logs opening Mixtape.
+         * @param source Where Mixtape was opened from (navbar, poster-menu).
+         * @param type The media type (movie, show).
+         */
+        fun logOpen(
+            source: String,
+            type: String,
+        )
+
+        /**
+         * Logs adding a pick.
+         * @param source Where the pick was made (grid, search).
+         * @param type The media type (movie, show).
+         * @param picks Number of picks after this one.
+         */
+        fun logPick(
+            source: String,
+            type: String,
+            picks: Int,
+        )
+
+        /**
+         * Logs the picker running out of titles that fit every pick.
+         * @param type The media type (movie, show).
+         * @param picks Number of picks.
+         */
+        fun logNoFits(
+            type: String,
+            picks: Int,
+        )
+
+        /**
+         * Logs starting a mix.
+         * @param type The media type (movie, show).
+         * @param picks Number of picks.
+         * @param fits Number of fitting titles shown.
+         */
+        fun logMix(
+            type: String,
+            picks: Int,
+            fits: Int,
+        )
+
+        /**
+         * Logs an action on a result card.
+         * @param action The action (open, skip, watchlist).
+         * @param position 1-based position of the card in the round.
+         * @param type The media type (movie, show).
+         */
+        fun logResult(
+            action: String,
+            position: Int,
+            type: String,
         )
     }
 

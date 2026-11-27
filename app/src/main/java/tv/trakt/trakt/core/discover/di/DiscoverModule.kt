@@ -80,6 +80,7 @@ internal val discoverModule = module {
             upsellImpressions = get(),
             collectionStateProvider = get(),
             getCalendarViewUseCase = get(),
+            mixtapeHintUseCase = get(),
         )
     }
 

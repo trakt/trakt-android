@@ -22,6 +22,7 @@ import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.discover.DiscoverState.UserState
+import tv.trakt.trakt.core.mixtape.usecases.MixtapeHintUseCase
 
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
@@ -29,6 +30,7 @@ internal class DiscoverViewModel(
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
     private val getCalendarViewUseCase: GetCalendarViewUseCase,
+    private val mixtapeHintUseCase: MixtapeHintUseCase,
     private val analytics: Analytics,
     private val upsellImpressions: VipUpsellImpressions,
 ) : ViewModel() {
@@ -36,11 +38,13 @@ internal class DiscoverViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val releasesViewState = MutableStateFlow(initialState.releasesView)
+    private val mixtapeHintState = MutableStateFlow(initialState.mixtapeHint)
 
     init {
         observeUser()
         observeData()
         observeReleasesView()
+        observeMixtapeHint()
 
         analytics.logScreenView(
             screenName = "discover",
@@ -72,6 +76,12 @@ internal class DiscoverViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeMixtapeHint() {
+        mixtapeHintUseCase.observeHint()
+            .onEach { visible -> mixtapeHintState.update { visible } }
+            .launchIn(viewModelScope)
+    }
+
     fun onVipUpsellSeen() {
         upsellImpressions.log(VipUpsellSource.NavbarMobile)
     }
@@ -80,11 +90,13 @@ internal class DiscoverViewModel(
         userState,
         collectionStateProvider.stateFlow,
         releasesViewState,
+        mixtapeHintState,
     ) { state ->
         DiscoverState(
             user = state[0] as UserState,
             collection = state[1] as UserCollectionState,
             releasesView = state[2] as CalendarView,
+            mixtapeHint = state[3] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

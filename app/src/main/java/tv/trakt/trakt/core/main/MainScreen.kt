@@ -82,6 +82,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
 import tv.trakt.trakt.core.auth.model.AuthorizationException
@@ -110,6 +112,9 @@ import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
 import tv.trakt.trakt.core.main.ui.seasonal.SeasonalSplashView
 import tv.trakt.trakt.core.main.ui.yir.MainYearInReviewView
+import tv.trakt.trakt.core.mixtape.navigation.LocalStartMixtape
+import tv.trakt.trakt.core.mixtape.navigation.MIXTAPE_SOURCE_POSTER_MENU
+import tv.trakt.trakt.core.mixtape.navigation.navigateToMixtape
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.ratings.data.work.PostRatingException
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
@@ -280,9 +285,16 @@ internal fun MainScreen(
         state.user != null &&
         !state.welcome.isActive
 
+    val startMixtape = remember(navController) {
+        { type: MediaType, id: TraktId ->
+            navController.navigateToMixtape(type = type, pick = id, source = MIXTAPE_SOURCE_POSTER_MENU)
+        }
+    }
+
     CompositionLocalProvider(
         LocalUriHandler provides inReviewUriHandler,
         LocalUserTierState provides state.userTiers,
+        LocalStartMixtape provides startMixtape.takeIf { state.user != null },
     ) {
         MainScreenContent(
             modifier = modifier,

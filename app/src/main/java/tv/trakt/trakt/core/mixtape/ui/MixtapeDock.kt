@@ -1,0 +1,317 @@
+package tv.trakt.trakt.core.mixtape.ui
+
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
+import tv.trakt.trakt.common.model.mixtape.MixtapeItem
+import tv.trakt.trakt.core.mixtape.MAX_MIXTAPE_PICKS
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val SLOT_RATIO = 2F / 3F
+private const val REMOVE_FADE_MS = 250
+
+private val SlotSpacing = 8.dp
+private val MixButtonMinWidth = 84.dp
+private val SlotRadius = 12.dp
+private val SlotShape = RoundedCornerShape(SlotRadius)
+private val DockShape = RoundedCornerShape(24.dp)
+private val RemoveSize = 18.dp
+
+@Composable
+internal fun MixtapeDock(
+    picks: ImmutableList<MixtapeItem>,
+    modifier: Modifier = Modifier,
+    landingKeys: ImmutableSet<String> = persistentSetOf(),
+    onAddSlotPositioned: (Rect) -> Unit = {},
+    onRemoveClick: (MixtapeItem) -> Unit = {},
+    onClearClick: () -> Unit = {},
+    onMixClick: () -> Unit = {},
+) {
+    val hasPicks = picks.isNotEmpty()
+    val backgroundColor = TraktTheme.colors.backgroundPrimary
+    val gradient = remember(backgroundColor) {
+        verticalGradient(
+            colors = listOf(
+                Color.Transparent,
+                backgroundColor.copy(alpha = 0.95F),
+                backgroundColor,
+            ),
+        )
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(gradient)
+            .padding(
+                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                top = 32.dp,
+                bottom = WindowInsets.navigationBars.asPaddingValues()
+                    .calculateBottomPadding()
+                    .plus(12.dp),
+            )
+            .onEmptyClick(),
+    ) {
+        DockCard(
+            picks = picks,
+            hasPicks = hasPicks,
+            landingKeys = landingKeys,
+            onAddSlotPositioned = onAddSlotPositioned,
+            onRemoveClick = onRemoveClick,
+            onClearClick = onClearClick,
+            onMixClick = onMixClick,
+        )
+    }
+}
+
+@Composable
+private fun DockCard(
+    picks: ImmutableList<MixtapeItem>,
+    hasPicks: Boolean,
+    landingKeys: ImmutableSet<String>,
+    onAddSlotPositioned: (Rect) -> Unit,
+    onRemoveClick: (MixtapeItem) -> Unit,
+    onClearClick: () -> Unit,
+    onMixClick: () -> Unit,
+) {
+    val shadow = Shadow(
+        radius = 8.dp,
+        color = Color.Black,
+        spread = 2.dp,
+        alpha = if (TraktTheme.colors.isLight) 0.1F else 0.25F,
+    )
+
+    Column(
+        verticalArrangement = spacedBy(12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .dropShadow(shape = DockShape, shadow = shadow)
+            .background(TraktTheme.colors.navigationContainer, DockShape)
+            .padding(16.dp),
+    ) {
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            val slotWidth = (maxWidth - SlotSpacing * (MAX_MIXTAPE_PICKS - 1)) / MAX_MIXTAPE_PICKS
+            val slotModifier = Modifier
+                .width(slotWidth)
+                .aspectRatio(SLOT_RATIO)
+
+            Row(
+                horizontalArrangement = spacedBy(SlotSpacing),
+                verticalAlignment = CenterVertically,
+            ) {
+                picks.forEach { item ->
+                    PickSlot(
+                        item = item,
+                        landing = item.key in landingKeys,
+                        onRemoveClick = { onRemoveClick(item) },
+                        modifier = slotModifier,
+                    )
+                }
+
+                if (picks.size < MAX_MIXTAPE_PICKS) {
+                    AddSlot(
+                        first = !hasPicks,
+                        modifier = slotModifier.onGloballyPositioned {
+                            onAddSlotPositioned(it.boundsInWindow())
+                        },
+                    )
+                }
+            }
+        }
+
+        Row(
+            horizontalArrangement = spacedBy(8.dp),
+            verticalAlignment = CenterVertically,
+        ) {
+            Text(
+                text = when {
+                    hasPicks -> stringResource(R.string.text_mixtape_pick_count, picks.size.toString())
+                    else -> stringResource(R.string.text_mixtape_pick_prompt)
+                },
+                style = TraktTheme.typography.paragraphSmaller,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1F),
+            )
+
+            if (hasPicks) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(end = 6.dp)
+                        .size(21.dp)
+                        .onClick(onClick = onClearClick),
+                )
+            }
+
+            TertiaryButton(
+                text = stringResource(R.string.button_text_mix_it),
+                enabled = hasPicks,
+                onClick = onMixClick,
+                height = 36.dp,
+                modifier = Modifier.widthIn(min = MixButtonMinWidth),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PickSlot(
+    item: MixtapeItem,
+    landing: Boolean,
+    onRemoveClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val removeAlpha by animateFloatAsState(
+        targetValue = if (landing) 0F else 1F,
+        animationSpec = tween(REMOVE_FADE_MS),
+        label = "removeAlpha",
+    )
+
+    Box(
+        modifier = modifier,
+    ) {
+        AsyncImage(
+            model = item.images?.getPosterUrl(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(if (landing) 0F else 1F)
+                .clip(SlotShape)
+                .background(TraktTheme.colors.placeholderContainer),
+        )
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .alpha(removeAlpha)
+                .padding(2.dp)
+                .size(RemoveSize)
+                .clip(CircleShape)
+                .background(TraktTheme.colors.backgroundPrimary)
+                .onClick(onClick = onRemoveClick),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(10.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun AddSlot(
+    first: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val dashColor = TraktTheme.colors.chipContainer
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = spacedBy(4.dp, CenterVertically),
+        modifier = modifier
+            .drawBehind {
+                val radius = SlotRadius.toPx()
+                drawRoundRect(
+                    color = dashColor,
+                    cornerRadius = CornerRadius(radius, radius),
+                    style = Stroke(
+                        width = 1.dp.toPx(),
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 4.dp.toPx())),
+                    ),
+                )
+            }
+            .padding(horizontal = 2.dp),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_plus),
+            contentDescription = null,
+            tint = TraktTheme.colors.textSecondary,
+            modifier = Modifier.size(14.dp),
+        )
+        Text(
+            text = stringResource(
+                if (first) R.string.text_mixtape_slot_first else R.string.text_mixtape_slot_next,
+            ),
+            style = TraktTheme.typography.meta,
+            color = TraktTheme.colors.textSecondary,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun Preview() {
+    TraktThemePreview {
+        MixtapeDock(picks = persistentListOf())
+    }
+}

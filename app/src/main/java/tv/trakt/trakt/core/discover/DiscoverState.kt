@@ -11,6 +11,7 @@ internal data class DiscoverState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
     val releasesView: CalendarView = CalendarView.Weekly,
+    val mixtapeHint: Boolean = false,
 ) {
     data class UserState(
         val user: User? = null,

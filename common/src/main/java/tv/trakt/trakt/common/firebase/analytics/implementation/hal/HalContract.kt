@@ -77,6 +77,11 @@ internal object HalContract {
     const val EVENT_SEASONAL_FILTER = "seasonal-action.filter"
     const val EVENT_INSIGHTS_OPEN = "insights.open"
     const val EVENT_INSIGHTS_TAB = "insights.tab"
+    const val EVENT_MIXTAPE_OPEN = "mixtape.open"
+    const val EVENT_MIXTAPE_PICK = "mixtape.pick"
+    const val EVENT_MIXTAPE_NO_FITS = "mixtape.no-fits"
+    const val EVENT_MIXTAPE_MIX = "mixtape.mix"
+    const val EVENT_MIXTAPE_RESULT = "mixtape.result"
 
     const val DIM_ROUTE = "route"
     const val DIM_SOURCE = "source"
@@ -108,6 +113,8 @@ internal object HalContract {
     const val METRIC_DURATION = "duration"
     const val METRIC_FRAMES = "frames"
     const val METRIC_GROUPS = "groups"
+    const val METRIC_PICKS = "picks"
+    const val METRIC_FITS = "fits"
 }
 
 internal fun halMediaMode(mode: String): String? {

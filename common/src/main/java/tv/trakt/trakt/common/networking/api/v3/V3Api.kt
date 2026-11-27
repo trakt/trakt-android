@@ -16,7 +16,11 @@ import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.data.dto.ListCollaboratorDto
 import tv.trakt.trakt.common.data.dto.ListFeaturedPeopleDto
 import tv.trakt.trakt.common.data.dto.MediaMatchDto
+import tv.trakt.trakt.common.data.dto.MixtapeDto
+import tv.trakt.trakt.common.data.dto.MixtapeMediaDto
+import tv.trakt.trakt.common.data.dto.MixtapeVectorsDto
 import tv.trakt.trakt.common.data.dto.SmartListFilterOptionDto
+import tv.trakt.trakt.common.data.request.MixtapeRequest
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -429,6 +433,45 @@ class V3Api(
         mediaId: TraktId,
     ): V3RecommendationReasonsResponse {
         val response = client.get("${baseV3Url}recommendations/${type.value}/${mediaId.value}/reasons")
+        return response.body()
+    }
+
+    // Mixtape
+
+    suspend fun getMixtapeHistory(
+        type: MediaType,
+        query: String?,
+    ): List<MixtapeMediaDto> {
+        val response = client.get("${baseV3Url}mixtape/history") {
+            parameter("type", type.value)
+            parameter("extended", "full")
+            query?.let { parameter("query", it) }
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return emptyList()
+        }
+        return response.body()
+    }
+
+    suspend fun getMixtapeVectors(
+        type: MediaType,
+        ids: List<TraktId>,
+    ): MixtapeVectorsDto? {
+        val response = client.get("${baseV3Url}mixtape/vectors") {
+            parameter("type", type.value)
+            parameter("ids", ids.joinToString(",") { it.value.toString() })
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
+    }
+
+    suspend fun postMixtape(request: MixtapeRequest): MixtapeDto {
+        val response = client.post("${baseV3Url}mixtape") {
+            parameter("extended", "full")
+            setBody(request)
+        }
         return response.body()
     }
 
