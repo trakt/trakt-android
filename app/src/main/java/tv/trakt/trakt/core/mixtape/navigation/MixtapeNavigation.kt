@@ -1,17 +1,27 @@
 package tv.trakt.trakt.core.mixtape.navigation
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.MixtapeScreen
 import tv.trakt.trakt.core.mixtape.results.MixtapeResultsScreen
 
+internal const val MIXTAPE_SOURCE_POSTER_MENU = "poster-menu"
+
 @Serializable
-internal data object MixtapeDestination
+internal data class MixtapeDestination(
+    val type: MediaType? = null,
+    val pick: Int? = null,
+    val source: String? = null,
+)
+
+internal val LocalStartMixtape = staticCompositionLocalOf<((MediaType, TraktId) -> Unit)?> { null }
 
 internal fun NavGraphBuilder.mixtapeScreen(
     onNavigateBack: () -> Unit,
@@ -26,8 +36,18 @@ internal fun NavGraphBuilder.mixtapeScreen(
     }
 }
 
-internal fun NavController.navigateToMixtape() {
-    navigate(route = MixtapeDestination)
+internal fun NavController.navigateToMixtape(
+    type: MediaType? = null,
+    pick: TraktId? = null,
+    source: String? = null,
+) {
+    navigate(
+        route = MixtapeDestination(
+            type = type,
+            pick = pick?.value,
+            source = source,
+        ),
+    )
 }
 
 @Serializable
@@ -64,5 +84,5 @@ internal fun NavController.navigateToMixtapeResults(
 }
 
 internal fun NavController.closeMixtape() {
-    popBackStack(route = MixtapeDestination, inclusive = true)
+    popBackStack<MixtapeDestination>(inclusive = true)
 }

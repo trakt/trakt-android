@@ -9,6 +9,7 @@ import tv.trakt.trakt.core.mixtape.MixtapeViewModel
 import tv.trakt.trakt.core.mixtape.results.MixtapeResultsViewModel
 import tv.trakt.trakt.core.mixtape.usecases.AddMixtapeToWatchlistUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeHistoryUseCase
+import tv.trakt.trakt.core.mixtape.usecases.GetMixtapePickUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeVectorsUseCase
 import tv.trakt.trakt.core.mixtape.usecases.MixtapeHintUseCase
@@ -26,6 +27,7 @@ internal val mixtapeModule = module {
     factoryOf(::GetMixtapeUseCase)
     factoryOf(::ScoreMixtapeFitsUseCase)
     factoryOf(::AddMixtapeToWatchlistUseCase)
+    factoryOf(::GetMixtapePickUseCase)
 
     viewModelOf(::MixtapeViewModel)
     viewModelOf(::MixtapeResultsViewModel)

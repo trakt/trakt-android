@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.mixtape
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentListOf
@@ -35,7 +37,9 @@ import tv.trakt.trakt.common.model.mixtape.MixtapeVectors
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.mixtape.model.MixtapePicker
 import tv.trakt.trakt.core.mixtape.model.MixtapePickerHold
+import tv.trakt.trakt.core.mixtape.navigation.MixtapeDestination
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeHistoryUseCase
+import tv.trakt.trakt.core.mixtape.usecases.GetMixtapePickUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeVectorsUseCase
 import tv.trakt.trakt.core.mixtape.usecases.MixtapeHintUseCase
@@ -56,6 +60,7 @@ private data class DeepFits(
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class MixtapeViewModel(
+    savedStateHandle: SavedStateHandle,
     filterManager: GlobalFilterManager,
     private val analytics: Analytics,
     private val mixtapeHintUseCase: MixtapeHintUseCase,
@@ -63,9 +68,12 @@ internal class MixtapeViewModel(
     private val getVectorsUseCase: GetMixtapeVectorsUseCase,
     private val getMixtapeUseCase: GetMixtapeUseCase,
     private val scoreFitsUseCase: ScoreMixtapeFitsUseCase,
+    private val getPickUseCase: GetMixtapePickUseCase,
 ) : ViewModel() {
+    private val destination = savedStateHandle.toRoute<MixtapeDestination>()
+
     private val initialState = MixtapeState(
-        type = filterManager.getFilter().mode.toMixtapeType(),
+        type = destination.type ?: filterManager.getFilter().mode.toMixtapeType(),
     )
 
     private val typeState = MutableStateFlow(initialState.type)
@@ -89,14 +97,30 @@ internal class MixtapeViewModel(
         observeHistory()
         observeSearch()
         observeDeepFits()
+        destination.pick?.let { loadPick(TraktId(it)) }
 
         analytics.logScreenView(
             screenName = "mixtape",
         )
         analytics.mixtape.logOpen(
-            source = OPEN_SOURCE,
+            source = destination.source ?: OPEN_SOURCE,
             type = initialState.type.value,
         )
+    }
+
+    private fun loadPick(id: TraktId) {
+        viewModelScope.launch {
+            try {
+                val item = getPickUseCase.getPick(initialState.type, id) ?: return@launch
+                picksState.update { picks ->
+                    if (picks.any { it.id == item.id }) picks else (picks + item).toImmutableList()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     private fun dismissHint() {
