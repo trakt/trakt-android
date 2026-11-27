@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -63,7 +64,9 @@ import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MIXTAPE_SLOT_COUNT
 import tv.trakt.trakt.core.mixtape.results.MixtapeResultsState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val LEAVE_DURATION_MS = 260
 private const val TOAST_DURATION_MS = 2200L
@@ -75,7 +78,8 @@ private const val POSTER_RATIO = 2F / 3F
 
 private val SwipeCommitDistance = 100.dp
 private val ActionSize = 56.dp
-private val GoalSlotShape = RoundedCornerShape(4.dp)
+private val GoalSlotShape = RoundedCornerShape(6.dp)
+private val GoalSlotWidth = 32.dp
 
 @Immutable
 private data class KeptToast(
@@ -91,7 +95,7 @@ internal fun MixtapeDeck(
     onKeep: () -> Unit = {},
     onSkip: () -> Unit = {},
     onOpen: () -> Unit = {},
-    onCloseClick: () -> Unit = {},
+    onBackClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -108,7 +112,7 @@ internal fun MixtapeDeck(
 
     LaunchedEffect(toast) {
         if (toast == null) return@LaunchedEffect
-        delay(TOAST_DURATION_MS)
+        delay(TOAST_DURATION_MS.milliseconds)
         toast = null
     }
 
@@ -147,7 +151,7 @@ internal fun MixtapeDeck(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding().plus(12.dp),
+                    top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding().plus(4.dp),
                     bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding().plus(20.dp),
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -155,7 +159,7 @@ internal fun MixtapeDeck(
         ) {
             DeckHeader(
                 state = state,
-                onCloseClick = onCloseClick,
+                onBackClick = onBackClick,
             )
 
             Box(
@@ -279,32 +283,37 @@ private fun DeckBackdrop(item: MixtapeItem) {
 @Composable
 private fun DeckHeader(
     state: MixtapeResultsState,
-    onCloseClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val remaining = MIXTAPE_SLOT_COUNT - state.position
 
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(TraktTheme.size.titleBarHeight),
     ) {
-        Column(
-            verticalArrangement = spacedBy(2.dp),
-            modifier = Modifier.weight(1F),
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .weight(1F)
+                .graphicsLayer { translationX = -2.dp.toPx() }
+                .onClick(onClick = onBackClick),
         ) {
-            Text(
-                text = when {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            TraktHeader(
+                title = when {
                     remaining == 1 -> stringResource(R.string.header_mixtape_find_last)
                     state.isFirstRound -> stringResource(R.string.header_mixtape_find, MIXTAPE_SLOT_COUNT)
                     else -> stringResource(R.string.header_mixtape_find_more, MIXTAPE_SLOT_COUNT)
                 },
-                style = TraktTheme.typography.heading5,
-                color = TraktTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                text = when {
+                subtitle = when {
                     state.isFirstRound -> stringResource(
                         R.string.text_mixtape_kept,
                         state.position,
@@ -317,29 +326,16 @@ private fun DeckHeader(
                         state.keptSoFar,
                     )
                 },
-                style = TraktTheme.typography.paragraphSmall,
-                color = TraktTheme.colors.textSecondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
             )
         }
 
         GoalSlots(round = state.round)
-
-        Icon(
-            painter = painterResource(R.drawable.ic_close),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .size(24.dp)
-                .onClick(onClick = onCloseClick),
-        )
     }
 }
 
 @Composable
 private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
-    Row(horizontalArrangement = spacedBy(4.dp)) {
+    Row(horizontalArrangement = spacedBy(6.dp)) {
         repeat(MIXTAPE_SLOT_COUNT) { index ->
             val kept = round.getOrNull(index)
             val borderColor = when (index) {
@@ -350,7 +346,7 @@ private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(width = 24.dp, height = 36.dp)
+                    .size(width = GoalSlotWidth, height = GoalSlotWidth / POSTER_RATIO)
                     .clip(GoalSlotShape)
                     .border(1.dp, borderColor, GoalSlotShape),
             ) {
@@ -366,7 +362,7 @@ private fun GoalSlots(round: ImmutableList<MixtapeItem>) {
                         painter = painterResource(R.drawable.ic_bookmark_off),
                         contentDescription = null,
                         tint = TraktTheme.colors.textSecondary,
-                        modifier = Modifier.size(12.dp),
+                        modifier = Modifier.size(14.dp),
                     )
                 }
             }

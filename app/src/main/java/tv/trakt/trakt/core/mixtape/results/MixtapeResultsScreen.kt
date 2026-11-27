@@ -79,7 +79,7 @@ private fun MixtapeResultsContent(
                 onKeep = onKeep,
                 onSkip = onSkip,
                 onOpen = onOpen,
-                onCloseClick = onCloseClick,
+                onBackClick = onChangePicksClick,
             )
         }
     }
