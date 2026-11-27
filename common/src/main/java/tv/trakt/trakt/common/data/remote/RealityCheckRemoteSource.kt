@@ -4,13 +4,13 @@ import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3MediaInsightsApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3DocumentaryCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RealityCheckResponse
 import java.util.Locale
 
 class RealityCheckRemoteSource(
-    private val v3Api: V3Api,
+    private val v3MediaInsightsApi: V3MediaInsightsApi,
 ) {
     suspend fun getRealityCheck(
         type: MediaType,
@@ -18,7 +18,7 @@ class RealityCheckRemoteSource(
         locale: Locale,
     ): V3RealityCheckResponse? {
         return try {
-            v3Api.getRealityCheck(
+            v3MediaInsightsApi.getRealityCheck(
                 type = type,
                 mediaId = mediaId,
                 locale = locale,
@@ -38,7 +38,7 @@ class RealityCheckRemoteSource(
         locale: Locale,
     ): V3DocumentaryCheckResponse? {
         return try {
-            v3Api.getDocumentaryCheck(
+            v3MediaInsightsApi.getDocumentaryCheck(
                 type = type,
                 mediaId = mediaId,
                 locale = locale,

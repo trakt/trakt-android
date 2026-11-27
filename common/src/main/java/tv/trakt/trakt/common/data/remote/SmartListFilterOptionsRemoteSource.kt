@@ -5,12 +5,12 @@ import org.openapitools.client.apis.LanguagesApi
 import tv.trakt.trakt.common.data.dto.SmartListFilterOptionDto
 import tv.trakt.trakt.common.networking.AwardCeremonyDto
 import tv.trakt.trakt.common.networking.LanguageDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3ListsApi
 
 class SmartListFilterOptionsRemoteSource(
     private val awardsApi: AwardsApi,
     private val languagesApi: LanguagesApi,
-    private val v3Api: V3Api,
+    private val v3ListsApi: V3ListsApi,
 ) {
     suspend fun getAwardCatalog(): List<AwardCeremonyDto> {
         return awardsApi.getAwardsCatalog().body()
@@ -21,7 +21,7 @@ class SmartListFilterOptionsRemoteSource(
         query: String,
         limit: Int,
     ): List<SmartListFilterOptionDto> {
-        return v3Api.getSmartListFilterOptions(
+        return v3ListsApi.getSmartListFilterOptions(
             kind = kind,
             query = query,
             limit = limit,

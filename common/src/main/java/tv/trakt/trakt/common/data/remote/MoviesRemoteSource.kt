@@ -19,7 +19,8 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3MediaInsightsApi
+import tv.trakt.trakt.common.networking.api.v3.V3RecommendationsApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
@@ -31,7 +32,8 @@ import java.util.Locale
 class MoviesRemoteSource(
     private val moviesApi: MoviesApi,
     private val calendarsApi: CalendarsApi,
-    private val v3Api: V3Api,
+    private val v3MediaInsightsApi: V3MediaInsightsApi,
+    private val v3RecommendationsApi: V3RecommendationsApi,
     private val recommendationsApi: RecommendationsApi,
 ) {
     suspend fun getTrending(
@@ -115,7 +117,7 @@ class MoviesRemoteSource(
         limit: Int,
         filters: GlobalFilter = GlobalFilter.Default,
     ): List<V3MovieRecommendationResponse> {
-        return v3Api.getMovieRecommendations(
+        return v3RecommendationsApi.getMovieRecommendations(
             V3RecommendationsRequest(
                 limit = limit,
                 extended = "full,streaming_ids,colors",
@@ -319,7 +321,7 @@ class MoviesRemoteSource(
 
     suspend fun getSentiments(movieId: TraktId): V3SentimentResponse? {
         return try {
-            v3Api.getMovieSentiment(movieId)
+            v3MediaInsightsApi.getMovieSentiment(movieId)
         } catch (error: Exception) {
             // 404 means no sentiment data is available for this movie, so we return null.
             if (error.getHttpCode() == 404) {
@@ -334,7 +336,7 @@ class MoviesRemoteSource(
         locale: Locale,
     ): V3YouTubeSpecialResponse? {
         return try {
-            v3Api.getMovieYouTubeSpecial(movieId, locale)
+            v3MediaInsightsApi.getMovieYouTubeSpecial(movieId, locale)
         } catch (error: Exception) {
             // 404 means the movie has no free YouTube upload.
             if (error.getHttpCode() == 404) {

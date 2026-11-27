@@ -6,16 +6,16 @@ import tv.trakt.trakt.common.data.dto.MixtapeVectorsDto
 import tv.trakt.trakt.common.data.request.MixtapeRequest
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3RecommendationsApi
 
 class MixtapeRemoteSource(
-    private val v3Api: V3Api,
+    private val v3RecommendationsApi: V3RecommendationsApi,
 ) {
     suspend fun getHistory(
         type: MediaType,
         query: String? = null,
     ): List<MixtapeMediaDto> {
-        return v3Api.getMixtapeHistory(
+        return v3RecommendationsApi.getMixtapeHistory(
             type = type,
             query = query,
         )
@@ -25,7 +25,7 @@ class MixtapeRemoteSource(
         type: MediaType,
         ids: List<TraktId>,
     ): MixtapeVectorsDto? {
-        return v3Api.getMixtapeVectors(
+        return v3RecommendationsApi.getMixtapeVectors(
             type = type,
             ids = ids,
         )
@@ -37,7 +37,7 @@ class MixtapeRemoteSource(
         candidates: List<TraktId> = emptyList(),
         suggestions: Boolean,
     ): MixtapeDto {
-        return v3Api.postMixtape(
+        return v3RecommendationsApi.postMixtape(
             MixtapeRequest(
                 type = type.value,
                 picks = picks.map { it.value },

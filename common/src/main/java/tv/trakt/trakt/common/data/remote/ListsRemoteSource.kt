@@ -26,12 +26,12 @@ import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.PersonDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3ListsApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class ListsRemoteSource(
     private val listsApi: ListsApi,
-    private val v3Api: V3Api,
+    private val v3ListsApi: V3ListsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun createList(
@@ -98,7 +98,7 @@ class ListsRemoteSource(
     }
 
     suspend fun getListFeaturedPeople(listId: TraktId): List<PersonDto> {
-        return v3Api.getListFeaturedPeople(listId)?.featured.orEmpty()
+        return v3ListsApi.getListFeaturedPeople(listId)?.featured.orEmpty()
     }
 
     suspend fun deleteList(listId: TraktId) {
@@ -525,7 +525,7 @@ class ListsRemoteSource(
     }
 
     suspend fun getCollaborators(listId: TraktId): List<ListCollaboratorDto> {
-        return v3Api.getListCollaborators(listId)
+        return v3ListsApi.getListCollaborators(listId)
     }
 
     /**
@@ -536,7 +536,7 @@ class ListsRemoteSource(
         userSlug: String,
     ): Boolean {
         try {
-            v3Api.postListCollaborator(listId, userSlug)
+            v3ListsApi.postListCollaborator(listId, userSlug)
         } catch (error: ClientRequestException) {
             if (error.response.status.value == COLLABORATOR_LIMIT_STATUS) {
                 return false
@@ -552,7 +552,7 @@ class ListsRemoteSource(
         listId: TraktId,
         userSlug: String,
     ) {
-        v3Api.deleteListCollaborator(listId, userSlug)
+        v3ListsApi.deleteListCollaborator(listId, userSlug)
         cacheMarker.invalidate()
     }
 

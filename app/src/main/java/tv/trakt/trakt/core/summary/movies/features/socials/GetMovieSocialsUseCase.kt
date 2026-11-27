@@ -7,11 +7,11 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3SocialApi
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 
 internal class GetMovieSocialsUseCase(
-    private val remoteSource: V3Api,
+    private val remoteSource: V3SocialApi,
     private val sessionManager: SessionManager,
 ) {
     suspend fun getSocials(movieId: TraktId): ImmutableList<MediaSocialActivity> {

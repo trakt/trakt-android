@@ -11,17 +11,17 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3ListsApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserWatchlistRemoteSource(
     private val usersApi: UsersApi,
     private val syncApi: SyncApi,
-    private val v3Api: V3Api,
+    private val v3ListsApi: V3ListsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun getWatchlistMinimal(): Pair<Set<TraktId>, Set<TraktId>> {
-        return v3Api.getWatchlistMinimal()
+        return v3ListsApi.getWatchlistMinimal()
     }
 
     suspend fun getWatchlist(

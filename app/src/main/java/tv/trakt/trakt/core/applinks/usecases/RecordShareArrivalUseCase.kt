@@ -4,7 +4,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3SocialApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
 import tv.trakt.trakt.core.applinks.ShareArrivalEvents
 import tv.trakt.trakt.core.applinks.model.AppLink
@@ -17,7 +17,7 @@ import tv.trakt.trakt.core.applinks.model.ShareArrivalResult
  */
 internal class RecordShareArrivalUseCase(
     private val sessionManager: SessionManager,
-    private val v3Api: V3Api,
+    private val v3SocialApi: V3SocialApi,
     private val analytics: Analytics,
     private val shareArrivalEvents: ShareArrivalEvents,
 ) {
@@ -45,7 +45,7 @@ internal class RecordShareArrivalUseCase(
         if (!sessionManager.isAuthenticated()) return ShareArrivalResult.Anonymous
 
         return try {
-            val response = v3Api.postShareClick(
+            val response = v3SocialApi.postShareClick(
                 V3ShareClickRequest(
                     code = share.code,
                     url = share.url,

@@ -24,7 +24,7 @@ import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3UserApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3PushTokenRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
@@ -33,7 +33,7 @@ import java.time.YearMonth
 
 class UserRemoteSource(
     private val usersApi: UsersApi,
-    private val v3Api: V3Api,
+    private val v3UserApi: V3UserApi,
     private val syncApi: SyncApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) {
@@ -90,7 +90,7 @@ class UserRemoteSource(
     }
 
     suspend fun getSyncConnections(): List<V3SyncConnectionResponse> {
-        return v3Api.getSyncConnections()
+        return v3UserApi.getSyncConnections()
     }
 
     /**
@@ -100,7 +100,7 @@ class UserRemoteSource(
         userSlug: SlugId,
         type: String?,
     ): V3UserMatchResponse {
-        return v3Api.getUserMatch(userSlug.value, type)
+        return v3UserApi.getUserMatch(userSlug.value, type)
     }
 
     suspend fun updateProfileLocation(location: String?) {
@@ -128,7 +128,7 @@ class UserRemoteSource(
     }
 
     suspend fun updateProfileUsername(username: String) {
-        v3Api.putUsername(username)
+        v3UserApi.putUsername(username)
         cacheMarkerProvider.invalidate()
     }
 
@@ -245,7 +245,7 @@ class UserRemoteSource(
         token: String,
         deviceId: String,
     ) {
-        v3Api.postPushToken(
+        v3UserApi.postPushToken(
             V3PushTokenRequest(
                 token = token,
                 deviceId = deviceId,
