@@ -66,6 +66,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MIXTAPE_SLOT_COUNT
@@ -83,7 +84,7 @@ private const val LEAVE_DISTANCE_RATIO = 1.2F
 private const val BEHIND_SCALE = 0.94F
 private const val BEHIND_ALPHA = 0.5F
 private const val BACKDROP_ALPHA = 0.35F
-private const val ACTION_SCALE_BOOST = 0.2F
+private const val ACTION_SCALE_BOOST = 0.1F
 private const val POSTER_RATIO = 2F / 3F
 
 private val SwipeCommitDistance = 100.dp
@@ -264,7 +265,8 @@ private fun PreloadPosters(suggestions: ImmutableList<Suggestion>) {
     LaunchedEffect(suggestions) {
         val loader = SingletonImageLoader.get(context)
         suggestions
-            .mapNotNull { it.item.images?.getPosterUrl() }
+            .flatMap { listOf(it.item.images?.getPosterUrl(), it.item.images?.getPosterUrl(Size.MEDIUM)) }
+            .filterNotNull()
             .forEach { loader.enqueue(ImageRequest.Builder(context).data(it).build()) }
     }
 }
@@ -314,7 +316,6 @@ private fun DeckHeader(
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
                 .weight(1F)
-                .graphicsLayer { translationX = -2.dp.toPx() }
                 .onClick(onClick = onBackClick),
         ) {
             Icon(
@@ -408,7 +409,7 @@ private fun BehindCard(
     ) {
         if (next != null && !mystery) {
             AsyncImage(
-                model = next.images?.getPosterUrl(),
+                model = next.images?.getPosterUrl(Size.MEDIUM),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -447,7 +448,7 @@ private fun DeckText(
         }
         Text(
             text = suggestion.item.title,
-            style = TraktTheme.typography.heading5,
+            style = TraktTheme.typography.heading3,
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
