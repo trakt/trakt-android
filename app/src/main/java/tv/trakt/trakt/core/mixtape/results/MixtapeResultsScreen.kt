@@ -7,36 +7,80 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.mixtape.results.ui.MixtapeDeck
 import tv.trakt.trakt.core.mixtape.results.ui.MixtapeDone
+import tv.trakt.trakt.core.mixtape.results.ui.MixtapeMoveSheet
+import tv.trakt.trakt.core.mixtape.results.ui.displayName
 import tv.trakt.trakt.core.mixtape.ui.HideBottomBar
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MixtapeResultsScreen(
     viewModel: MixtapeResultsViewModel,
     onNavigateBack: () -> Unit,
     onNavigateClose: () -> Unit,
+    onNavigateStartOver: (MediaType) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbar = LocalSnackbarState.current
+    val resources = LocalResources.current
+    var moveSheet by remember { mutableStateOf(false) }
 
     HideBottomBar()
 
     BackHandler(onBack = onNavigateClose)
+
+    LaunchedEffect(viewModel) {
+        viewModel.events.collect { event ->
+            val watchlistName = resources.getString(R.string.page_title_watchlist)
+            when (event) {
+                is MixtapeResultsEvent.Moved -> launch {
+                    val result = snackbar.showSnackbar(
+                        message = resources.getString(
+                            R.string.text_mixtape_moved,
+                            event.count,
+                            event.target.displayName(watchlistName),
+                        ),
+                        actionLabel = resources.getString(R.string.button_text_undo),
+                        duration = SnackbarDuration.Long,
+                    )
+                    if (result == SnackbarResult.ActionPerformed) viewModel.undoMove()
+                }
+                MixtapeResultsEvent.MoveFailed -> launch {
+                    snackbar.showSnackbar(resources.getString(R.string.text_mixtape_move_failed))
+                }
+                is MixtapeResultsEvent.KeepFailed -> launch {
+                    snackbar.showSnackbar(resources.getString(R.string.text_mixtape_keep_failed, event.title))
+                }
+            }
+        }
+    }
 
     MixtapeResultsContent(
         state = state,
@@ -44,8 +88,24 @@ internal fun MixtapeResultsScreen(
         onSkip = viewModel::skip,
         onOpen = viewModel::open,
         onFindMoreClick = viewModel::findMore,
+        onSavedToClick = { moveSheet = true },
         onChangePicksClick = onNavigateBack,
+        onStartOverClick = { onNavigateStartOver(state.type) },
         onCloseClick = onNavigateClose,
+    )
+
+    MixtapeMoveSheet(
+        active = moveSheet,
+        current = state.savedTo,
+        lists = state.lists,
+        suggestedName = stringResource(
+            R.string.text_mixtape_new_list_name,
+            state.pickTitles.values.joinToString(" + "),
+        ),
+        moving = state.moving,
+        onMove = viewModel::move,
+        onMoveNew = viewModel::moveToNewList,
+        onDismiss = { moveSheet = false },
     )
 }
 
@@ -57,7 +117,9 @@ private fun MixtapeResultsContent(
     onSkip: () -> Unit = {},
     onOpen: () -> Unit = {},
     onFindMoreClick: () -> Unit = {},
+    onSavedToClick: () -> Unit = {},
     onChangePicksClick: () -> Unit = {},
+    onStartOverClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
 ) {
     Box(
@@ -72,8 +134,10 @@ private fun MixtapeResultsContent(
             state.isEmpty -> EmptyResults(onChangePicksClick = onChangePicksClick)
             state.isDone || current == null -> MixtapeDone(
                 state = state,
+                onSavedToClick = onSavedToClick,
                 onFindMoreClick = onFindMoreClick,
                 onChangePicksClick = onChangePicksClick,
+                onStartOverClick = onStartOverClick,
                 onCloseClick = onCloseClick,
             )
             else -> MixtapeDeck(

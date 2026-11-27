@@ -60,12 +60,14 @@ internal data class MixtapeResultsDestination(
 internal fun NavGraphBuilder.mixtapeResultsScreen(
     onNavigateBack: () -> Unit,
     onNavigateClose: () -> Unit,
+    onNavigateStartOver: (MediaType) -> Unit,
 ) {
     composable<MixtapeResultsDestination> {
         MixtapeResultsScreen(
             viewModel = koinViewModel(),
             onNavigateBack = onNavigateBack,
             onNavigateClose = onNavigateClose,
+            onNavigateStartOver = onNavigateStartOver,
         )
     }
 }
@@ -85,4 +87,9 @@ internal fun NavController.navigateToMixtapeResults(
 
 internal fun NavController.closeMixtape() {
     popBackStack<MixtapeDestination>(inclusive = true)
+}
+
+internal fun NavController.restartMixtape(type: MediaType) {
+    closeMixtape()
+    navigateToMixtape(type = type)
 }

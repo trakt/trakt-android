@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.mixtape.Mixtape.Suggestion
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.model.MIXTAPE_SLOT_COUNT
+import tv.trakt.trakt.core.mixtape.model.MixtapeTarget
 
 @Immutable
 internal data class MixtapeResultsState(
@@ -19,6 +20,9 @@ internal data class MixtapeResultsState(
     val slots: ImmutableList<Suggestion> = persistentListOf(),
     val rounds: ImmutableList<ImmutableList<MixtapeItem>> = persistentListOf(persistentListOf()),
     val pickTitles: ImmutableMap<TraktId, String> = persistentMapOf(),
+    val savedTo: MixtapeTarget = MixtapeTarget.Watchlist,
+    val lists: ImmutableList<MixtapeTarget.PersonalList> = persistentListOf(),
+    val moving: Boolean = false,
 ) {
     val round: ImmutableList<MixtapeItem>
         get() = rounds.lastOrNull() ?: persistentListOf()

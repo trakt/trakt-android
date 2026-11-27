@@ -38,19 +38,20 @@ class ListsRemoteSource(
         name: String,
         description: String?,
         privacy: String,
-    ) {
+    ): TraktId {
         val request = PostUsersListsCreateRequest(
             name = name,
             description = description,
             privacy = privacy,
         )
 
-        listsApi.postUsersListsCreate(
+        val response = listsApi.postUsersListsCreate(
             id = "me",
             postUsersListsCreateRequest = request,
         )
 
         cacheMarker.invalidate()
+        return TraktId(response.body().ids.trakt)
     }
 
     suspend fun editList(
