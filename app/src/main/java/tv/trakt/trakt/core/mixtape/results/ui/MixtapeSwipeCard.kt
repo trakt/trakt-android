@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.mixtape.results.ui
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -43,6 +46,8 @@ private const val STAMP_TILT = 12F
 private const val CAMERA_DISTANCE = 12F
 
 internal val SwipeCardShape = RoundedCornerShape(20.dp)
+private val StampStroke = 2.dp
+private val StampCorner = 8.dp
 
 @Composable
 internal fun MixtapeSwipeCard(
@@ -143,7 +148,7 @@ private fun CardFront(
             style = TraktTheme.typography.meta,
             color = Color.White,
             modifier = Modifier
-                .align(Alignment.BottomStart)
+                .align(Alignment.BottomEnd)
                 .padding(12.dp)
                 .background(Color.Black.copy(alpha = 0.6F), RoundedCornerShape(100))
                 .padding(horizontal = 10.dp, vertical = 4.dp),
@@ -157,7 +162,7 @@ private fun CardBack(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = spacedBy(8.dp),
+        verticalArrangement = spacedBy(10.dp),
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.navigationContainer)
@@ -177,7 +182,7 @@ private fun CardBack(
         item.overview?.let {
             Text(
                 text = it,
-                style = TraktTheme.typography.paragraphSmall,
+                style = TraktTheme.typography.paragraphSmaller,
                 color = TraktTheme.colors.textPrimary,
             )
         }
@@ -197,7 +202,16 @@ private fun CardStamp(
         color = color,
         modifier = modifier
             .graphicsLayer { rotationZ = tilt }
-            .border(2.dp, color, RoundedCornerShape(8.dp))
+            .drawBehind {
+                val stroke = StampStroke.toPx()
+                drawRoundRect(
+                    color = color,
+                    topLeft = Offset(stroke / 2, stroke / 2),
+                    size = size.copy(width = size.width - stroke, height = size.height - stroke),
+                    cornerRadius = CornerRadius(StampCorner.toPx()),
+                    style = Stroke(stroke),
+                )
+            }
             .padding(horizontal = 10.dp, vertical = 4.dp),
     )
 }
