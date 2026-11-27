@@ -294,7 +294,7 @@ internal fun MainScreen(
     CompositionLocalProvider(
         LocalUriHandler provides inReviewUriHandler,
         LocalUserTierState provides state.userTiers,
-        LocalStartMixtape provides startMixtape,
+        LocalStartMixtape provides startMixtape.takeIf { state.user != null },
     ) {
         MainScreenContent(
             modifier = modifier,

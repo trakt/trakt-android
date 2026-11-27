@@ -134,14 +134,18 @@ internal fun MixtapeDeck(
         skipping = !keep
         scope.launch {
             val direction = if (keep) 1 else -1
-            offsetX.animateTo(
-                targetValue = direction * windowWidth * LEAVE_DISTANCE_RATIO,
-                animationSpec = tween(LEAVE_DURATION_MS),
-            )
-            if (keep) {
-                onKeep()
-            } else {
-                onSkip()
+            try {
+                offsetX.animateTo(
+                    targetValue = direction * windowWidth * LEAVE_DISTANCE_RATIO,
+                    animationSpec = tween(LEAVE_DURATION_MS),
+                )
+            } finally {
+                // Leaving the screen mid-animation cancels it, but the choice is already made.
+                if (keep) {
+                    onKeep()
+                } else {
+                    onSkip()
+                }
             }
         }
     }
