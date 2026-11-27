@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.model.MediaType
@@ -60,7 +59,7 @@ internal fun MixtapeResultsScreen(
         viewModel.events.collect { event ->
             val watchlistName = resources.getString(R.string.page_title_watchlist)
             when (event) {
-                is MixtapeResultsEvent.Moved -> launch {
+                is MixtapeResultsEvent.Moved -> {
                     val result = snackbar.showSnackbar(
                         message = resources.getString(
                             R.string.text_mixtape_moved,
@@ -72,10 +71,10 @@ internal fun MixtapeResultsScreen(
                     )
                     if (result == SnackbarResult.ActionPerformed) viewModel.undoMove()
                 }
-                MixtapeResultsEvent.MoveFailed -> launch {
+                MixtapeResultsEvent.MoveFailed -> {
                     snackbar.showSnackbar(resources.getString(R.string.text_mixtape_move_failed))
                 }
-                is MixtapeResultsEvent.KeepFailed -> launch {
+                is MixtapeResultsEvent.KeepFailed -> {
                     snackbar.showSnackbar(resources.getString(R.string.text_mixtape_keep_failed, event.title))
                 }
             }
