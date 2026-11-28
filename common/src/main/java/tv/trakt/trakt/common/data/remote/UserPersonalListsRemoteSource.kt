@@ -13,12 +13,12 @@ import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3ListsApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 
 class UserPersonalListsRemoteSource(
     private val usersApi: UsersApi,
-    private val v3Api: V3Api,
+    private val v3ListsApi: V3ListsApi,
 ) {
     suspend fun getPersonalLists(
         pagination: Pagination,
@@ -42,7 +42,7 @@ class UserPersonalListsRemoteSource(
         userId: String = "me",
         sorting: ListsSorting? = null,
     ): List<ListDto> {
-        return v3Api.getUserLists(
+        return v3ListsApi.getUserLists(
             userId = userId,
             collaborative = collaborative,
             extended = "images",
@@ -53,7 +53,7 @@ class UserPersonalListsRemoteSource(
     }
 
     suspend fun getPersonalListsMinimal(): List<V3MinimalList> {
-        return v3Api.getListsMinimal()
+        return v3ListsApi.getListsMinimal()
     }
 
     suspend fun getPersonalListItems(
@@ -203,22 +203,22 @@ class UserPersonalListsRemoteSource(
     }
 
     suspend fun getShowLists(showId: TraktId): Set<TraktId> {
-        val response = v3Api.getShowMeLists(showId)
+        val response = v3ListsApi.getShowMeLists(showId)
         return response.map { it.toTraktId() }.toSet()
     }
 
     suspend fun getMovieLists(movieId: TraktId): Set<TraktId> {
-        val response = v3Api.getMovieMeLists(movieId)
+        val response = v3ListsApi.getMovieMeLists(movieId)
         return response.map { it.toTraktId() }.toSet()
     }
 
     suspend fun getSeasonLists(seasonId: TraktId): Set<TraktId> {
-        val response = v3Api.getSeasonMeLists(seasonId)
+        val response = v3ListsApi.getSeasonMeLists(seasonId)
         return response.map { it.toTraktId() }.toSet()
     }
 
     suspend fun getEpisodeLists(episodeId: TraktId): Set<TraktId> {
-        val response = v3Api.getEpisodeMeLists(episodeId)
+        val response = v3ListsApi.getEpisodeMeLists(episodeId)
         return response.map { it.toTraktId() }.toSet()
     }
 }

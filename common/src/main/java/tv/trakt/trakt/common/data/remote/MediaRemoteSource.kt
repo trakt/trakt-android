@@ -9,14 +9,14 @@ import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.networking.AnticipatedMediaDto
 import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.TrendingMediaDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3RecommendationsApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationReasonsResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 
 class MediaRemoteSource(
     private val mediaApi: MediaApi,
-    private val v3Api: V3Api,
+    private val v3RecommendationsApi: V3RecommendationsApi,
 ) {
     suspend fun getTrending(
         page: Int = 1,
@@ -127,7 +127,7 @@ class MediaRemoteSource(
         limit: Int,
         filters: GlobalFilter,
     ): List<V3MediaRecommendationResponse> {
-        return v3Api.getMediaRecommendations(
+        return v3RecommendationsApi.getMediaRecommendations(
             V3RecommendationsRequest(
                 limit = limit,
                 extended = "full,streaming_ids,colors",
@@ -157,13 +157,13 @@ class MediaRemoteSource(
         type: MediaType,
         mediaId: TraktId,
     ): MediaMatchDto {
-        return v3Api.getMediaMatch(type = type, mediaId = mediaId)
+        return v3RecommendationsApi.getMediaMatch(type = type, mediaId = mediaId)
     }
 
     suspend fun getRecommendationReasons(
         type: MediaType,
         mediaId: TraktId,
     ): V3RecommendationReasonsResponse {
-        return v3Api.getRecommendationReasons(type = type, mediaId = mediaId)
+        return v3RecommendationsApi.getRecommendationReasons(type = type, mediaId = mediaId)
     }
 }

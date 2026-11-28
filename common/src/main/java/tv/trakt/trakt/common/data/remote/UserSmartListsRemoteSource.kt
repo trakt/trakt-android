@@ -17,13 +17,13 @@ import tv.trakt.trakt.common.networking.SmartListDto
 import tv.trakt.trakt.common.networking.SmartListItemDto
 import tv.trakt.trakt.common.networking.SmartListTemplateDto
 import tv.trakt.trakt.common.networking.UpdateSmartListRequestDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3ListsApi
 
 class UserSmartListsRemoteSource(
     private val smartListsApi: SmartListsApi,
     private val smartListDraftsApi: SmartListDraftsApi,
     private val listsApi: ListsApi,
-    private val v3Api: V3Api,
+    private val v3ListsApi: V3ListsApi,
 ) {
     suspend fun getSmartLists(userId: String = "me"): List<SmartListDto> {
         return smartListsApi.getUsersSmartListsPersonal(id = userId).body()
@@ -90,7 +90,7 @@ class UserSmartListsRemoteSource(
         pagination: Pagination = Pagination(),
         extended: String = "full,colors",
     ): List<SmartListItemDto> {
-        return v3Api.getSmartListPreviewItems(
+        return v3ListsApi.getSmartListPreviewItems(
             params = filters.toPreviewParams() + ("extended" to extended),
             pagination = pagination,
         )
@@ -116,7 +116,7 @@ class UserSmartListsRemoteSource(
         pagination: Pagination = Pagination(),
         extended: String = "full,colors",
     ): List<SmartListItemDto> {
-        return v3Api.getSmartListDraftItems(
+        return v3ListsApi.getSmartListDraftItems(
             listId = listId,
             extended = extended,
             pagination = pagination,

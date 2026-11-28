@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.UserBlockedDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserFollowRequestDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3UserApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.Instant
@@ -19,7 +19,7 @@ import java.time.ZonedDateTime
 
 class UserSocialRemoteSource(
     private val usersApi: UsersApi,
-    private val v3Api: V3Api,
+    private val v3UserApi: V3UserApi,
     private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun getSocialActivity(
@@ -103,7 +103,7 @@ class UserSocialRemoteSource(
     }
 
     suspend fun getLeaderboard(pagination: Pagination): V3LeaderboardResponse {
-        return v3Api.getLeaderboard(pagination)
+        return v3UserApi.getLeaderboard(pagination)
     }
 
     suspend fun approveRequest(requestId: Int) {

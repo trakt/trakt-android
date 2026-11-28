@@ -10,7 +10,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3UserApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3WatchedPlayResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import kotlin.time.Instant
@@ -18,7 +18,7 @@ import kotlin.time.Instant
 class UserHistoryRemoteSource(
     private val historyApi: HistoryApi,
     private val syncApi: SyncApi,
-    private val v3Api: V3Api,
+    private val v3UserApi: V3UserApi,
     private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun getMediaHistory(
@@ -183,11 +183,11 @@ class UserHistoryRemoteSource(
     }
 
     suspend fun getWatchedMoviePlays(): Map<String, List<V3WatchedPlayResponse>> {
-        return v3Api.getWatchedMoviePlays()
+        return v3UserApi.getWatchedMoviePlays()
     }
 
     suspend fun getWatchedShowPlays(): Map<String, Map<String, Map<String, List<V3WatchedPlayResponse>>>> {
-        return v3Api.getWatchedShowPlays()
+        return v3UserApi.getWatchedShowPlays()
     }
 
     suspend fun removePlays(playIds: List<Long>) {

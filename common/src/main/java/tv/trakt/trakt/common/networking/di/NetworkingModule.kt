@@ -44,7 +44,13 @@ import tv.trakt.trakt.common.networking.api.people.PeopleExtrasApi
 import tv.trakt.trakt.common.networking.api.plex.PlexStreamApi
 import tv.trakt.trakt.common.networking.api.portraits.PortraitsApi
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3ListsApi
+import tv.trakt.trakt.common.networking.api.v3.V3MediaInsightsApi
+import tv.trakt.trakt.common.networking.api.v3.V3NotesApi
+import tv.trakt.trakt.common.networking.api.v3.V3ReactionsApi
+import tv.trakt.trakt.common.networking.api.v3.V3RecommendationsApi
+import tv.trakt.trakt.common.networking.api.v3.V3SocialApi
+import tv.trakt.trakt.common.networking.api.v3.V3UserApi
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 import tv.trakt.trakt.common.networking.helpers.AccountLockMonitor
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -121,14 +127,71 @@ val networkingApiModule = module {
             get<ScrobbleApi>(),
             get<UsersApi>(),
             get<WatchedApi>(),
-            get<V3Api>(),
+            get<V3ListsApi>(),
+            get<V3MediaInsightsApi>(),
+            get<V3NotesApi>(),
+            get<V3ReactionsApi>(),
+            get<V3RecommendationsApi>(),
+            get<V3SocialApi>(),
+            get<V3UserApi>(),
             get<ScrobbleExtrasApi>(),
             get<SmartListDraftsApi>(),
         )
     }
 
-    single<V3Api> {
-        V3Api(
+    single<V3ListsApi> {
+        V3ListsApi(
+            baseUrl = API_BASE_URL,
+            baseV3Url = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<V3MediaInsightsApi> {
+        V3MediaInsightsApi(
+            baseV3Url = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<V3NotesApi> {
+        V3NotesApi(
+            baseV3Url = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<V3ReactionsApi> {
+        V3ReactionsApi(
+            baseV3Url = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<V3RecommendationsApi> {
+        V3RecommendationsApi(
+            baseUrl = API_BASE_URL,
+            baseV3Url = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<V3SocialApi> {
+        V3SocialApi(
+            baseUrl = API_BASE_URL,
+            baseV3Url = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<V3UserApi> {
+        V3UserApi(
             baseUrl = API_BASE_URL,
             baseV3Url = API_V3_BASE_URL,
             httpClientEngine = get(),

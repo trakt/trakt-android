@@ -6,13 +6,13 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.trivia.Trivia
 import tv.trakt.trakt.common.model.trivia.TriviaFact
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3MediaInsightsApi
 import java.util.Locale
 
 private const val SUMMARY_LIMIT = 3
 
 internal class GetTriviaUseCase(
-    private val v3Api: V3Api,
+    private val v3MediaInsightsApi: V3MediaInsightsApi,
 ) {
     suspend fun getTrivia(
         mediaId: TraktId,
@@ -20,12 +20,12 @@ internal class GetTriviaUseCase(
     ): Trivia {
         val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.US
         val response = when (mediaType) {
-            MediaType.Movie -> v3Api.getMovieTrivia(
+            MediaType.Movie -> v3MediaInsightsApi.getMovieTrivia(
                 movieId = mediaId,
                 locale = locale,
             )
 
-            MediaType.Show -> v3Api.getShowTrivia(
+            MediaType.Show -> v3MediaInsightsApi.getShowTrivia(
                 showId = mediaId,
                 locale = locale,
             )

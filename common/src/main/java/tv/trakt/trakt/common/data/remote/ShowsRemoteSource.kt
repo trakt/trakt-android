@@ -22,7 +22,8 @@ import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.ShowWatchedProgressDto
-import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.V3MediaInsightsApi
+import tv.trakt.trakt.common.networking.api.v3.V3RecommendationsApi
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
@@ -32,7 +33,8 @@ import java.time.temporal.ChronoUnit.DAYS
 class ShowsRemoteSource(
     private val showsApi: ShowsApi,
     private val calendarsApi: CalendarsApi,
-    private val v3Api: V3Api,
+    private val v3MediaInsightsApi: V3MediaInsightsApi,
+    private val v3RecommendationsApi: V3RecommendationsApi,
     private val recommendationsApi: RecommendationsApi,
 ) {
     suspend fun getTrending(
@@ -115,7 +117,7 @@ class ShowsRemoteSource(
         limit: Int,
         filters: GlobalFilter = GlobalFilter.Default,
     ): List<V3ShowRecommendationResponse> {
-        return v3Api.getShowRecommendations(
+        return v3RecommendationsApi.getShowRecommendations(
             V3RecommendationsRequest(
                 limit = limit,
                 extended = "full,streaming_ids,colors",
@@ -356,7 +358,7 @@ class ShowsRemoteSource(
 
     suspend fun getSentiments(showId: TraktId): V3SentimentResponse? {
         return try {
-            v3Api.getShowSentiment(showId)
+            v3MediaInsightsApi.getShowSentiment(showId)
         } catch (error: Exception) {
             // 404 means no sentiment data is available for this show, so we return null.
             if (error.getHttpCode() == 404) {
