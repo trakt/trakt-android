@@ -270,6 +270,7 @@ internal fun MixtapeDeck(
                     skipStrength = skipStrength,
                     onSkipClick = { commit(keep = false) },
                     onKeepClick = { commit(keep = true) },
+                    modifier = Modifier.padding(horizontal = 24.dp),
                 )
             },
         )
@@ -504,7 +505,8 @@ private fun DeckActions(
     Row(
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth(),
     ) {
         DeckAction(
             icon = R.drawable.ic_close,
