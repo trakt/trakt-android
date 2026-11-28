@@ -16,8 +16,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
@@ -92,6 +94,10 @@ internal class MixtapeViewModel(
     private val vectorsState = MutableStateFlow(MixtapeVectors())
     private val failedState = MutableStateFlow<PersistentSet<MixtapePicker.Kind>>(persistentSetOf())
     private val retriesState = MutableStateFlow<PersistentMap<MixtapePicker.Kind, Int>>(persistentMapOf())
+    private val mixingState = MutableStateFlow(initialState.mixing)
+
+    private val eventsFlow = MutableSharedFlow<MixtapeEvent>(replay = 0)
+    val events = eventsFlow.asSharedFlow()
 
     private val requestedVectorIds = mutableSetOf<TraktId>()
     private val pickerHold = MixtapePickerHold()
@@ -283,7 +289,7 @@ internal class MixtapeViewModel(
     }
 
     fun setType(type: MediaType) {
-        if (type == typeState.value) return
+        if (type == typeState.value || mixingState.value) return
 
         picksState.update { persistentListOf() }
         historyState.update { persistentListOf() }
@@ -304,6 +310,7 @@ internal class MixtapeViewModel(
 
     fun pick(item: MixtapeItem) {
         val picks = picksState.value
+        if (mixingState.value) return
         if (picks.size >= MAX_MIXTAPE_PICKS || picks.any { it.id == item.id }) return
 
         analytics.mixtape.logPick(
@@ -316,10 +323,31 @@ internal class MixtapeViewModel(
     }
 
     fun removePick(item: MixtapeItem) {
+        if (mixingState.value) return
         picksState.update { picks -> picks.filterNot { it.id == item.id }.toImmutableList() }
     }
 
-    fun logMix() {
+    fun mix() {
+        val type = typeState.value
+        val picks = picksState.value
+        if (picks.isEmpty() || mixingState.value) return
+
+        logMix()
+        mixingState.update { true }
+        viewModelScope.launch {
+            try {
+                getMixtapeUseCase.preloadSuggestions(type, picks.map { it.id })
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+            eventsFlow.emit(MixtapeEvent.Mixed(type, picks))
+            mixingState.update { false }
+        }
+    }
+
+    private fun logMix() {
         val picker = state.value.picker
         analytics.mixtape.logMix(
             type = typeState.value.value,
@@ -343,6 +371,7 @@ internal class MixtapeViewModel(
     }
 
     fun clearPicks() {
+        if (mixingState.value) return
         picksState.update { persistentListOf() }
     }
 
@@ -366,6 +395,7 @@ internal class MixtapeViewModel(
         knownState,
         vectorsState,
         failedState,
+        mixingState,
     ) { state ->
         val type = state[0] as MediaType
         val query = state[1] as String
@@ -414,6 +444,7 @@ internal class MixtapeViewModel(
                 searchPending,
             settling = settling,
             error = shown.kind in (state[11] as Set<MixtapePicker.Kind>) && shown.items.isEmpty(),
+            mixing = state[12] as Boolean,
         )
     }.flowOn(Dispatchers.Default)
         .stateIn(

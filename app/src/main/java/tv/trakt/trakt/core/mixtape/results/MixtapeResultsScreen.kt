@@ -99,6 +99,7 @@ internal fun MixtapeResultsScreen(
         onRetryClick = viewModel::retry,
         onSkip = viewModel::skip,
         onOpen = viewModel::open,
+        onSwipeHintShown = viewModel::dismissSwipeHint,
         onFindMoreClick = viewModel::findMore,
         onSavedToClick = {
             snackbar.currentSnackbarData?.dismiss()
@@ -132,6 +133,7 @@ private fun MixtapeResultsContent(
     onKeep: () -> Unit = {},
     onSkip: () -> Unit = {},
     onOpen: () -> Unit = {},
+    onSwipeHintShown: () -> Unit = {},
     onFindMoreClick: () -> Unit = {},
     onSavedToClick: () -> Unit = {},
     onRetryClick: () -> Unit = {},
@@ -167,6 +169,7 @@ private fun MixtapeResultsContent(
                 onKeep = onKeep,
                 onSkip = onSkip,
                 onOpen = onOpen,
+                onSwipeHintShown = onSwipeHintShown,
                 onBackClick = onCloseClick,
             )
         }

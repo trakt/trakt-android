@@ -27,6 +27,7 @@ internal data class MixtapeResultsState(
     val moving: Boolean = false,
     val failed: ImmutableSet<TraktId> = persistentSetOf(),
     val error: Exception? = null,
+    val swipeHint: Boolean = false,
 ) {
     val round: ImmutableList<MixtapeItem>
         get() = rounds.lastOrNull() ?: persistentListOf()

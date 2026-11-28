@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -65,6 +66,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -80,8 +82,9 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
-private const val LEAVE_DURATION_MS = 260
+private const val LEAVE_DURATION_MS = 200
 private const val LEAVE_DISTANCE_RATIO = 1.2F
 private const val BEHIND_SCALE = 0.94F
 private const val BEHIND_ALPHA = 0.5F
@@ -90,12 +93,15 @@ private const val BACKDROP_ALPHA = 0.35F
 private const val BACKDROP_FADE_MS = 350
 private const val ACTION_SCALE_BOOST = 0.1F
 private const val POSTER_RATIO = 2F / 3F
+private const val HINT_DELAY_MS = 500L
+private const val HINT_DURATION_MS = 1000
 
 private val SwipeCommitDistance = 100.dp
 private val BehindOffset = 14.dp
 private val ActionSize = 56.dp
 private val GoalSlotShape = RoundedCornerShape(6.dp)
 private val GoalSlotWidth = 32.dp
+private val HintOffset = 36.dp
 
 @Composable
 internal fun MixtapeDeck(
@@ -105,6 +111,7 @@ internal fun MixtapeDeck(
     onKeep: () -> Unit = {},
     onSkip: () -> Unit = {},
     onOpen: () -> Unit = {},
+    onSwipeHintShown: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -127,6 +134,28 @@ internal fun MixtapeDeck(
     )
 
     PreloadPosters(suggestions = state.suggestions)
+
+    LaunchedEffect(current.item.key, state.swipeHint) {
+        if (!state.swipeHint || state.position > 0 || !state.isFirstRound) return@LaunchedEffect
+
+        delay(HINT_DELAY_MS.milliseconds)
+        if (leaving || flipped || offsetX.value != 0F) return@LaunchedEffect
+
+        val hint = with(density) { HintOffset.toPx() }
+        try {
+            offsetX.animateTo(
+                targetValue = 0F,
+                animationSpec = keyframes {
+                    durationMillis = HINT_DURATION_MS
+                    hint at 220
+                    -hint * 0.8F at 520
+                    hint * 0.3F at 780
+                },
+            )
+        } finally {
+            onSwipeHintShown()
+        }
+    }
 
     fun commit(keep: Boolean) {
         if (leaving) return

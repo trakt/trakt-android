@@ -55,6 +55,7 @@ import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
 import tv.trakt.trakt.core.mixtape.MAX_MIXTAPE_PICKS
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
@@ -76,6 +77,7 @@ private val RemoveSize = 18.dp
 internal fun MixtapeDock(
     picks: ImmutableList<MixtapeItem>,
     modifier: Modifier = Modifier,
+    mixing: Boolean = false,
     landingKeys: ImmutableSet<String> = persistentSetOf(),
     onAddSlotPositioned: (Rect) -> Unit = {},
     onRemoveClick: (MixtapeItem) -> Unit = {},
@@ -111,6 +113,7 @@ internal fun MixtapeDock(
         DockCard(
             picks = picks,
             hasPicks = hasPicks,
+            mixing = mixing,
             landingKeys = landingKeys,
             onAddSlotPositioned = onAddSlotPositioned,
             onRemoveClick = onRemoveClick,
@@ -124,6 +127,7 @@ internal fun MixtapeDock(
 private fun DockCard(
     picks: ImmutableList<MixtapeItem>,
     hasPicks: Boolean,
+    mixing: Boolean,
     landingKeys: ImmutableSet<String>,
     onAddSlotPositioned: (Rect) -> Unit,
     onRemoveClick: (MixtapeItem) -> Unit,
@@ -161,6 +165,8 @@ private fun DockCard(
                     PickSlot(
                         item = item,
                         landing = item.key in landingKeys,
+                        removable = !mixing,
+                        mixing = mixing,
                         onRemoveClick = { onRemoveClick(item) },
                         modifier = slotModifier,
                     )
@@ -197,18 +203,22 @@ private fun DockCard(
                 Icon(
                     painter = painterResource(R.drawable.ic_trash),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = when {
+                        mixing -> TraktTheme.colors.textSecondary
+                        else -> TraktTheme.colors.textPrimary
+                    },
                     modifier = Modifier
                         .padding(end = 6.dp)
                         .size(21.dp)
-                        .onClick(onClick = onClearClick),
+                        .onClick(enabled = !mixing, onClick = onClearClick),
                 )
             }
 
             TertiaryButton(
                 text = stringResource(R.string.button_text_mix_it),
-                enabled = hasPicks,
-                onClick = onMixClick,
+                enabled = hasPicks && !mixing,
+                loading = mixing,
+                onClick = { if (!mixing) onMixClick() },
                 height = 36.dp,
                 modifier = Modifier.widthIn(min = MixButtonMinWidth),
             )
@@ -220,6 +230,8 @@ private fun DockCard(
 private fun PickSlot(
     item: MixtapeItem,
     landing: Boolean,
+    removable: Boolean,
+    mixing: Boolean,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -243,23 +255,25 @@ private fun PickSlot(
                 .background(TraktTheme.colors.placeholderContainer),
         )
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .alpha(removeAlpha)
-                .padding(2.dp)
-                .size(RemoveSize)
-                .clip(CircleShape)
-                .background(TraktTheme.colors.backgroundPrimary)
-                .onClick(onClick = onRemoveClick),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_close),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(10.dp),
-            )
+        if (!mixing) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .alpha(removeAlpha)
+                    .padding(2.dp)
+                    .size(RemoveSize)
+                    .clip(CircleShape)
+                    .background(TraktTheme.colors.backgroundPrimary)
+                    .onClick(enabled = removable, onClick = onRemoveClick),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(10.dp),
+                )
+            }
         }
     }
 }
@@ -313,5 +327,16 @@ private fun AddSlot(
 private fun Preview() {
     TraktThemePreview {
         MixtapeDock(picks = persistentListOf())
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun MixingPreview() {
+    TraktThemePreview {
+        MixtapeDock(
+            picks = persistentListOf(MixtapeItem.ShowItem(PreviewData.show1)),
+            mixing = true,
+        )
     }
 }

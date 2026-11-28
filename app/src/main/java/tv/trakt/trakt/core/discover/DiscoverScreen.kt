@@ -268,7 +268,7 @@ private fun ScreenHeader(
                     attention = state.mixtapeHint,
                     size = MIXTAPE_ICON_SIZE,
                     modifier = Modifier
-                        .padding(end = 2.dp)
+                        .padding(end = 4.dp)
                         .onClick(onClick = onMixtapeClick),
                 )
             }

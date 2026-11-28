@@ -1,6 +1,9 @@
 package tv.trakt.trakt.core.mixtape
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -68,6 +71,7 @@ import kotlinx.collections.immutable.toImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.mixtape.MixtapeItem
@@ -91,6 +95,7 @@ private const val SKELETON_COUNT = 9
 private const val SETTLING_ALPHA = 0.5F
 private const val FULL_ITEM_KEY = "full"
 private const val VERTICAL_POSTER_RATIO = 2F / 3F
+private const val LEAVE_DURATION_MS = 250
 
 private val ROW_ITEM_SPACING = 12.dp
 private val TypeOptions = persistentListOf(MediaMode.Shows, MediaMode.Movies)
@@ -103,8 +108,17 @@ internal fun MixtapeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val searchState = rememberTextFieldState()
+    var mixed by remember { mutableStateOf<MixtapeEvent.Mixed?>(null) }
 
     HideBottomBar()
+
+    LaunchedEffect(viewModel) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is MixtapeEvent.Mixed -> mixed = event
+            }
+        }
+    }
 
     LaunchedEffect(searchState) {
         snapshotFlow { searchState.text.toString() }
@@ -118,6 +132,7 @@ internal fun MixtapeScreen(
     MixtapeContent(
         state = state,
         searchState = searchState,
+        leaving = mixed != null,
         onBackClick = onNavigateBack,
         onTypeClick = {
             searchState.clearText()
@@ -127,9 +142,9 @@ internal fun MixtapeScreen(
         onRemoveClick = viewModel::removePick,
         onClearClick = viewModel::clearPicks,
         onRetryClick = viewModel::retry,
-        onMixClick = {
-            viewModel.logMix()
-            onNavigateToResults(state.type, state.picks)
+        onMixClick = viewModel::mix,
+        onLeft = {
+            mixed?.let { onNavigateToResults(it.type, it.picks) }
         },
     )
 }
@@ -139,6 +154,7 @@ private fun MixtapeContent(
     state: MixtapeState,
     modifier: Modifier = Modifier,
     searchState: TextFieldState = rememberTextFieldState(),
+    leaving: Boolean = false,
     onBackClick: () -> Unit = {},
     onTypeClick: (MediaType) -> Unit = {},
     onPickClick: (MixtapeItem) -> Unit = {},
@@ -146,6 +162,7 @@ private fun MixtapeContent(
     onClearClick: () -> Unit = {},
     onRetryClick: () -> Unit = {},
     onMixClick: () -> Unit = {},
+    onLeft: () -> Unit = {},
 ) {
     val density = LocalDensity.current
     val gridState = rememberLazyGridState()
@@ -157,6 +174,13 @@ private fun MixtapeContent(
     val flights = remember { mutableStateListOf<PosterFlight>() }
     val landingKeys = flights.map { it.item.key }.toImmutableSet()
     val departedKeys = (state.picks.map { it.key } + landingKeys).toImmutableSet()
+    val busy = state.mixing || leaving
+    val leaveProgress by animateFloatAsState(
+        targetValue = if (leaving) 1F else 0F,
+        animationSpec = tween(LEAVE_DURATION_MS, easing = FastOutLinearInEasing),
+        label = "leave",
+        finishedListener = { if (it == 1F) onLeft() },
+    )
 
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -178,9 +202,11 @@ private fun MixtapeContent(
             verticalArrangement = spacedBy(0.dp),
             contentPadding = contentPadding,
             overscrollEffect = null,
+            modifier = Modifier.graphicsLayer { alpha = 1F - leaveProgress },
         ) {
             headerItems(
                 state = state,
+                enabled = !busy,
                 searchState = searchState,
                 searchFocus = searchFocus,
                 onBackClick = onBackClick,
@@ -189,6 +215,7 @@ private fun MixtapeContent(
 
             pickerItems(
                 state = state,
+                enabled = !busy,
                 gridState = gridState,
                 departedKeys = departedKeys,
                 onRetryClick = onRetryClick,
@@ -210,14 +237,22 @@ private fun MixtapeContent(
 
         MixtapeDock(
             picks = state.picks,
+            mixing = busy,
             landingKeys = landingKeys,
             onAddSlotPositioned = { addSlotBounds = it },
             onRemoveClick = onRemoveClick,
             onClearClick = onClearClick,
-            onMixClick = onMixClick,
+            onMixClick = {
+                focusManager.clearFocus()
+                onMixClick()
+            },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .onSizeChanged { dockHeight = with(density) { it.height.toDp() } },
+                .onSizeChanged { dockHeight = with(density) { it.height.toDp() } }
+                .graphicsLayer {
+                    alpha = 1F - leaveProgress
+                    translationY = size.height * leaveProgress
+                },
         )
 
         flights.forEach { flight ->
@@ -233,6 +268,7 @@ private fun MixtapeContent(
 
 private fun LazyGridScope.headerItems(
     state: MixtapeState,
+    enabled: Boolean,
     searchState: TextFieldState,
     searchFocus: FocusRequester,
     onBackClick: () -> Unit,
@@ -266,6 +302,7 @@ private fun LazyGridScope.headerItems(
 
             TypeSelector(
                 selected = state.type.toMediaMode(),
+                enabled = enabled,
                 onSelect = { onTypeClick(it.toMediaType()) },
             )
         }
@@ -343,6 +380,7 @@ private fun LazyGridScope.headerItems(
                     -> R.string.input_placeholder_mixtape_search_movies
                 },
             ),
+            enabled = enabled,
             endSlot = {
                 if (searchState.text.isNotBlank()) {
                     Icon(
@@ -351,7 +389,7 @@ private fun LazyGridScope.headerItems(
                         tint = TraktTheme.colors.textSecondary,
                         modifier = Modifier
                             .size(18.dp)
-                            .onClick { searchState.clearText() },
+                            .onClick(enabled = enabled) { searchState.clearText() },
                     )
                 }
             },
@@ -365,6 +403,7 @@ private fun LazyGridScope.headerItems(
 
 private fun LazyGridScope.pickerItems(
     state: MixtapeState,
+    enabled: Boolean,
     gridState: LazyGridState,
     departedKeys: ImmutableSet<String>,
     onRetryClick: () -> Unit,
@@ -382,7 +421,7 @@ private fun LazyGridScope.pickerItems(
             )
         }
 
-        state.error -> errorItem(onRetryClick)
+        state.error -> errorItem(enabled, onRetryClick)
 
         state.picker.items.isEmpty() -> messageItem(
             textRes = when (state.picker.kind) {
@@ -399,7 +438,7 @@ private fun LazyGridScope.pickerItems(
             val entry = state.picker.items[index]
             PickerCard(
                 entry = entry,
-                enabled = !state.settling,
+                enabled = enabled && !state.settling,
                 onClick = { posterBounds -> onPickClick(entry.item, posterBounds) },
                 modifier = Modifier
                     .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace)
@@ -416,7 +455,10 @@ private fun LazyGridScope.pickerItems(
     }
 }
 
-private fun LazyGridScope.errorItem(onRetryClick: () -> Unit) {
+private fun LazyGridScope.errorItem(
+    enabled: Boolean,
+    onRetryClick: () -> Unit,
+) {
     item(span = { GridItemSpan(maxLineSpan) }) {
         Column(verticalArrangement = spacedBy(12.dp)) {
             Text(
@@ -426,6 +468,7 @@ private fun LazyGridScope.errorItem(onRetryClick: () -> Unit) {
             )
             PrimaryButton(
                 text = stringResource(R.string.button_text_retry),
+                enabled = enabled,
                 onClick = onRetryClick,
             )
         }
@@ -535,6 +578,7 @@ private fun PickerCard(
 @Composable
 private fun TypeSelector(
     selected: MediaMode,
+    enabled: Boolean,
     onSelect: (MediaMode) -> Unit,
 ) {
     FilterChipGroup(
@@ -557,7 +601,7 @@ private fun TypeSelector(
                         modifier = Modifier.size(16.dp),
                     )
                 },
-                onClick = { onSelect(mode) },
+                onClick = { if (enabled) onSelect(mode) },
             )
         }
     }
@@ -625,6 +669,20 @@ private fun Preview() {
     TraktThemePreview {
         MixtapeContent(
             state = MixtapeState(loading = false),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun MixingPreview() {
+    TraktThemePreview {
+        MixtapeContent(
+            state = MixtapeState(
+                loading = false,
+                mixing = true,
+                picks = persistentListOf(MixtapeItem.ShowItem(PreviewData.show1)),
+            ),
         )
     }
 }

@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.mixtape.model.toMixtapeSlots
 import tv.trakt.trakt.core.mixtape.navigation.MixtapeResultsDestination
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeListsUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeUseCase
+import tv.trakt.trakt.core.mixtape.usecases.MixtapeSwipeHintUseCase
 import tv.trakt.trakt.core.mixtape.usecases.SaveMixtapeUseCase
 
 private const val RESULT_OPEN = "open"
@@ -49,12 +50,17 @@ internal class MixtapeResultsViewModel(
     private val getMixtapeUseCase: GetMixtapeUseCase,
     private val getListsUseCase: GetMixtapeListsUseCase,
     private val saveUseCase: SaveMixtapeUseCase,
+    private val swipeHintUseCase: MixtapeSwipeHintUseCase,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MixtapeResultsDestination>()
     private val picks = destination.picks.map(::TraktId)
+    private val preloaded = getMixtapeUseCase.takePreloadedSuggestions(destination.type, picks)
 
     private val initialState = MixtapeResultsState(
         type = destination.type,
+        loading = preloaded == null,
+        suggestions = preloaded ?: persistentListOf(),
+        slots = toMixtapeSlots(preloaded.orEmpty(), persistentListOf()),
         pickTitles = picks.zip(destination.titles).toMap().toImmutableMap(),
     )
 
@@ -67,6 +73,7 @@ internal class MixtapeResultsViewModel(
     private val movingState = MutableStateFlow(initialState.moving)
     private val failedState = MutableStateFlow(initialState.failed)
     private val errorState = MutableStateFlow(initialState.error)
+    private val swipeHintState = MutableStateFlow(initialState.swipeHint)
 
     private val eventsFlow = MutableSharedFlow<MixtapeResultsEvent>(replay = 0)
     val events = eventsFlow.asSharedFlow()
@@ -75,8 +82,9 @@ internal class MixtapeResultsViewModel(
     private var lastMove: MixtapeMove? = null
 
     init {
-        loadMixtape()
+        if (preloaded == null) loadMixtape()
         loadLists()
+        loadSwipeHint()
 
         analytics.logScreenView(
             screenName = "mixtape_results",
@@ -109,6 +117,32 @@ internal class MixtapeResultsViewModel(
         viewModelScope.launch {
             try {
                 listsState.update { getListsUseCase.getLists().toImmutableList() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadSwipeHint() {
+        viewModelScope.launch {
+            try {
+                swipeHintState.update { swipeHintUseCase.isHintPending() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun dismissSwipeHint() {
+        if (!swipeHintState.value) return
+        swipeHintState.update { false }
+        viewModelScope.launch {
+            try {
+                swipeHintUseCase.dismissHint()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -279,6 +313,7 @@ internal class MixtapeResultsViewModel(
         movingState,
         failedState,
         errorState,
+        swipeHintState,
     ) { state ->
         initialState.copy(
             loading = state[0] as Boolean,
@@ -293,6 +328,7 @@ internal class MixtapeResultsViewModel(
             moving = state[6] as Boolean,
             failed = state[7] as ImmutableSet<TraktId>,
             error = state[8] as Exception?,
+            swipeHint = state[9] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

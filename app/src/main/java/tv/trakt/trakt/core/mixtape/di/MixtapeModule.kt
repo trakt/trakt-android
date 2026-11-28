@@ -13,12 +13,19 @@ import tv.trakt.trakt.core.mixtape.usecases.GetMixtapePickUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeUseCase
 import tv.trakt.trakt.core.mixtape.usecases.GetMixtapeVectorsUseCase
 import tv.trakt.trakt.core.mixtape.usecases.MixtapeHintUseCase
+import tv.trakt.trakt.core.mixtape.usecases.MixtapeSwipeHintUseCase
 import tv.trakt.trakt.core.mixtape.usecases.SaveMixtapeUseCase
 import tv.trakt.trakt.core.mixtape.usecases.ScoreMixtapeFitsUseCase
 
 internal val mixtapeModule = module {
     factory {
         MixtapeHintUseCase(
+            dataStore = get(named(DISCOVER_PREFERENCES)),
+        )
+    }
+
+    factory {
+        MixtapeSwipeHintUseCase(
             dataStore = get(named(DISCOVER_PREFERENCES)),
         )
     }
