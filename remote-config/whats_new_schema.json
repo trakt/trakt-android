@@ -1,5 +1,23 @@
 [
   {
+    "id": 35,
+    "version": "3.31.0",
+    "notes": [
+      {
+        "title": "Mixtape",
+        "text": "Pick up movies or shows you love, then swipe through matching picks. Start one from Discover screen!"
+      },
+      {
+        "title": "Shared Lists",
+        "text": "Add followers as collaborators on your lists. Find lists you share in the new Shared tab."
+      },
+      {
+        "title": "Smart Lists",
+        "text": "Start a smart list from a ready-made template, or turn lists that stopped updating into smart lists."
+      }
+    ]
+  },
+  {
     "id": 34,
     "version": "3.30.0",
     "notes": [
@@ -90,24 +108,6 @@
   {
     "id": 30,
     "version": "3.26.0",
-    "notes": [
-      {
-        "title": "Monthly Calendar",
-        "text": "Switch the calendar to a monthly view with the toggle at the top. Tap any day to see what's releasing."
-      },
-      {
-        "title": "UI Refresh",
-        "text": "The app has a fresh new look with updated colors, icons and typography!"
-      },
-      {
-        "title": "Month in Review",
-        "text": "VIP members get a recap of last month on Home during the first week of each month. Tap it to see your stats."
-      }
-    ]
-  },
-  {
-    "id": 29,
-    "version": "3.25.0",
     "notes": [
       {
         "title": "Monthly Calendar",
